@@ -1,0 +1,34 @@
+[
+  {
+    "id": "4dd06e44-9591-4e04-b7b6-7801fbea9cee",
+    "tipo": "Queja",
+    "prioridad": "Media",
+    "nombre_solicitante": "Jose Palomares",
+    "email_solicitante": "coboltaf@gmail.com",
+    "telefono_solicitante": "3122215819",
+    "empresa_solicitante": "Palomares Consultor",
+    "asunto": "Necesito Soporte para implementar producto saas Factory",
+    "detalle_incidencia": "Me pueden llamar",
+    "fecha_registro": "2026-03-25",
+    "hora_registro": "11:03 p. m.",
+    "importada": true
+  },
+  {
+    "id": "fa5278a0-85d4-4755-a817-b2ad91faaeaa",
+    "radicado": "RAD-20260326-0001",
+    "fecha": "2026-03-26",
+    "tipo": "Petición",
+    "prioridad": "Media",
+    "cliente_id": "531005b9-326b-4bac-bfc7-592dd91b5599",
+    "cliente_codigo": "CLI-00001",
+    "cliente_nombre": "Palomares  Consultor",
+    "fecha_aviso": "2026-03-26",
+    "hora_aviso": "",
+    "persona_avisa": "Maria Gomez",
+    "movil_avisa": "312678903",
+    "detalle_incidencia": "Necesito un soporte para agregar unos procesos",
+    "fecha_registro": "2026-03-26",
+    "hora_registro": "10:32 a. m.",
+    "importada": true
+  }
+]

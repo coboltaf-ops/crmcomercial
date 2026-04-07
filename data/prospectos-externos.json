@@ -1,0 +1,26 @@
+[
+  {
+    "id": "49d5ed22-8b12-4d48-baab-2402492030a3",
+    "nombre": "Real",
+    "apellido": "User",
+    "empresa": "Empresa",
+    "correo": "coboltaf@gmail.com",
+    "nro_movil": "3122215819",
+    "descripcion_requerimiento": "Prueba real",
+    "fecha_registro": "2026-04-06",
+    "hora_registro": "10:08 p. m.",
+    "importado": false
+  },
+  {
+    "id": "672d6dea-aaa8-4713-8c3c-b9a2759b2782",
+    "nombre": "KV",
+    "apellido": "Test",
+    "empresa": "E",
+    "correo": "coboltaf@gmail.com",
+    "nro_movil": "3000000",
+    "descripcion_requerimiento": "KV ok",
+    "fecha_registro": "2026-04-06",
+    "hora_registro": "10:26 p. m.",
+    "importado": false
+  }
+]

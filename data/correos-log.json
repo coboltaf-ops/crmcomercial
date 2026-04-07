@@ -1,0 +1,167 @@
+[
+  {
+    "id": "7e2ad5a4-06ee-41b8-b962-41a8fa2a2df2",
+    "fecha": "28/03/2026",
+    "hora": "11:58:08 a. m.",
+    "de": "coboltaf@gmail.com",
+    "para": "coboltaf@gmail.com",
+    "asunto": "Solicitud de Servicio Recibida",
+    "modulo": "prospectos",
+    "referencia": "Gloria Velasquez Patiño",
+    "estado": "Enviado"
+  },
+  {
+    "id": "447d4bfd-ec80-4d7c-8d72-b1ce6d3e4ba3",
+    "fecha": "31/03/2026",
+    "hora": "07:32:10 a. m.",
+    "de": "coboltaf@gmail.com",
+    "para": "cslglobal@gmail.com",
+    "asunto": "Solicitud de Servicio Recibida",
+    "modulo": "prospectos",
+    "referencia": "Jose Vargas",
+    "estado": "Enviado"
+  },
+  {
+    "id": "4666a32f-3d6e-494e-9165-391a6e4e2e6a",
+    "fecha": "06/04/2026",
+    "hora": "09:14:20 p. m.",
+    "de": "coboltaf@gmail.com",
+    "para": "test@test.com",
+    "asunto": "Solicitud de Servicio Recibida",
+    "modulo": "prospectos",
+    "referencia": "Test Bot",
+    "estado": "Enviado"
+  },
+  {
+    "id": "de450273-7aca-42b0-8186-c5e129958052",
+    "fecha": "06/04/2026",
+    "hora": "09:23:23 p. m.",
+    "de": "coboltaf@gmail.com",
+    "para": "qa@test.com",
+    "asunto": "Solicitud de Servicio Recibida",
+    "modulo": "prospectos",
+    "referencia": "Bucle Test",
+    "estado": "Enviado"
+  },
+  {
+    "id": "7f4f35a7-4ede-4c12-8c4c-48ceb9f4c595",
+    "fecha": "06/04/2026",
+    "hora": "09:26:49 p. m.",
+    "de": "coboltaf@gmail.com",
+    "para": "l1@t.com",
+    "asunto": "Solicitud de Servicio Recibida",
+    "modulo": "prospectos",
+    "referencia": "Loop1 Auto",
+    "estado": "Enviado"
+  },
+  {
+    "id": "308fefd0-8bec-4d9d-9684-6a8d54c0f577",
+    "fecha": "06/04/2026",
+    "hora": "09:26:50 p. m.",
+    "de": "coboltaf@gmail.com",
+    "para": "l2@t.com",
+    "asunto": "Solicitud de Servicio Recibida",
+    "modulo": "prospectos",
+    "referencia": "Loop2 Auto",
+    "estado": "Enviado"
+  },
+  {
+    "id": "534f5e0e-908f-480a-bb6e-5808f3a6e687",
+    "fecha": "06/04/2026",
+    "hora": "09:26:52 p. m.",
+    "de": "coboltaf@gmail.com",
+    "para": "l3@t.com",
+    "asunto": "Solicitud de Servicio Recibida",
+    "modulo": "prospectos",
+    "referencia": "Loop3 Auto",
+    "estado": "Enviado"
+  },
+  {
+    "id": "fc3d739d-0d8c-4898-ae88-abf6b22d5b3d",
+    "fecha": "06/04/2026",
+    "hora": "09:38:56 p. m.",
+    "de": "coboltaf@gmail.com",
+    "para": "h1@t.com",
+    "asunto": "Solicitud de Servicio Recibida",
+    "modulo": "prospectos",
+    "referencia": "Hyd1 Fix",
+    "estado": "Enviado"
+  },
+  {
+    "id": "51791c98-f827-47ab-9243-b043d446b34c",
+    "fecha": "06/04/2026",
+    "hora": "09:38:58 p. m.",
+    "de": "coboltaf@gmail.com",
+    "para": "h2@t.com",
+    "asunto": "Solicitud de Servicio Recibida",
+    "modulo": "prospectos",
+    "referencia": "Hyd2 Fix",
+    "estado": "Enviado"
+  },
+  {
+    "id": "f3934bdc-5cc4-4b87-b24f-b2044ab68935",
+    "fecha": "06/04/2026",
+    "hora": "09:39:00 p. m.",
+    "de": "coboltaf@gmail.com",
+    "para": "h3@t.com",
+    "asunto": "Solicitud de Servicio Recibida",
+    "modulo": "prospectos",
+    "referencia": "Hyd3 Fix",
+    "estado": "Enviado"
+  },
+  {
+    "id": "c16ed894-6c57-4b2d-88ee-c31c77cd5a6c",
+    "fecha": "06/04/2026",
+    "hora": "09:39:02 p. m.",
+    "de": "coboltaf@gmail.com",
+    "para": "h4@t.com",
+    "asunto": "Solicitud de Servicio Recibida",
+    "modulo": "prospectos",
+    "referencia": "Hyd4 Fix",
+    "estado": "Enviado"
+  },
+  {
+    "id": "f3e75e27-e5ab-4c00-850e-5885d6f7ba58",
+    "fecha": "06/04/2026",
+    "hora": "09:39:03 p. m.",
+    "de": "coboltaf@gmail.com",
+    "para": "h5@t.com",
+    "asunto": "Solicitud de Servicio Recibida",
+    "modulo": "prospectos",
+    "referencia": "Hyd5 Fix",
+    "estado": "Enviado"
+  },
+  {
+    "id": "cfeb93c0-38e0-426d-9c0c-fbcd7f3160b2",
+    "fecha": "06/04/2026",
+    "hora": "10:03:15 p. m.",
+    "de": "coboltaf@gmail.com",
+    "para": "final@test.com",
+    "asunto": "Solicitud de Servicio Recibida",
+    "modulo": "prospectos",
+    "referencia": "Final Validacion",
+    "estado": "Enviado"
+  },
+  {
+    "id": "b3f77745-4355-4665-8844-5eb5f08a0be7",
+    "fecha": "06/04/2026",
+    "hora": "10:08:25 p. m.",
+    "de": "coboltaf@gmail.com",
+    "para": "coboltaf@gmail.com",
+    "asunto": "Solicitud de Servicio Recibida",
+    "modulo": "prospectos",
+    "referencia": "Real User",
+    "estado": "Enviado"
+  },
+  {
+    "id": "b878d850-987a-465d-8bbd-31a8024505bf",
+    "fecha": "06/04/2026",
+    "hora": "10:26:08 p. m.",
+    "de": "coboltaf@gmail.com",
+    "para": "coboltaf@gmail.com",
+    "asunto": "Solicitud de Servicio Recibida",
+    "modulo": "prospectos",
+    "referencia": "KV Test",
+    "estado": "Enviado"
+  }
+]
