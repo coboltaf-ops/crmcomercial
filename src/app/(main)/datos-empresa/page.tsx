@@ -8,8 +8,12 @@ import { usePermisos } from '@/shared/hooks/use-permisos'
 import { nextConsecutivo } from '@/shared/lib/consecutivo'
 import SeguimientoPanel from '@/shared/components/seguimiento-panel'
 import { Seguimiento } from '@/shared/types/seguimiento'
+import { useT, useIdioma, useTStatus } from '@/shared/i18n/use-t'
 
 export default function DatosEmpresaPage() {
+  const t = useT()
+  const ts = useTStatus()
+  const idioma = useIdioma()
   const permisos = usePermisos('datos-empresa')
   const currentUser = useCurrentUserStore(s => s.user)
   const { empresas, addEmpresa, updateEmpresa, deleteEmpresa } = useEmpresaStore()
@@ -21,7 +25,7 @@ export default function DatosEmpresaPage() {
   const [viewDetail, setViewDetail] = useState<Empresa | null>(null)
 
   if (currentUser?.rol.toLowerCase() !== 'admin') {
-    return <div style={{ color: '#fca5a5', padding: 40, textAlign: 'center' }}>No tienes acceso a esta sección</div>
+    return <div style={{ color: '#013978', padding: 40, textAlign: 'center' }}>{idioma === 'en' ? 'You do not have access to this section' : 'No tienes acceso a esta sección'}</div>
   }
 
   const emptyEmpresa = (): Empresa => {
@@ -59,69 +63,70 @@ export default function DatosEmpresaPage() {
 
   const inputStyle: React.CSSProperties = { width: '100%', padding: '8px 12px', borderRadius: 8, background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.2)', color: '#ffffff', fontSize: 13, outline: 'none' }
   const btnStyle: React.CSSProperties = { padding: '8px 16px', borderRadius: 8, border: 'none', cursor: 'pointer', fontSize: 13, fontWeight: 600 }
-  const labelStyle: React.CSSProperties = { color: '#ffffff', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }
+  const labelStyle: React.CSSProperties = { color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }
 
   // ── VIEW DETAIL ──
   if (viewDetail) {
     return (
       <div>
-        <button onClick={() => setViewDetail(null)} style={{ ...btnStyle, background: '#000000', color: '#ffffff', border: '1px solid #333333', marginBottom: 16 }}>← Volver</button>
-        <div style={{ background: 'rgba(255,255,255,0.05)', borderRadius: 16, padding: 24, border: '1px solid rgba(255,255,255,0.15)' }}>
+        <button onClick={() => setViewDetail(null)} style={{ ...btnStyle, background: '#000000', color: '#ffffff', border: '1px solid #333333', marginBottom: 16 }}>{t('btn.volver')}</button>
+        <div style={{ background: '#ffffff', borderRadius: 16, padding: 24, border: '1px solid #cbd5e1' }}>
           <div style={{ display: 'flex', gap: 20, alignItems: 'center', marginBottom: 20 }}>
             {viewDetail.logo_url ? (
               <img src={viewDetail.logo_url} alt="Logo" style={{ width: 80, height: 80, borderRadius: 12, objectFit: 'contain', background: 'rgba(255,255,255,0.1)', padding: 8 }} />
             ) : (
-              <div style={{ width: 80, height: 80, borderRadius: 12, background: 'rgba(255,255,255,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'rgba(255,255,255,0.5)', fontSize: 12 }}>Sin logo</div>
+              <div style={{ width: 80, height: 80, borderRadius: 12, background: 'rgba(255,255,255,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#475569', fontSize: 12 }}>{t('lbl.sinLogo')}</div>
             )}
             <div>
-              <h2 style={{ color: '#ffffff', fontSize: 20, fontWeight: 700 }}>{viewDetail.nombre}</h2>
-              <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: 13 }}>{viewDetail.codigo}</p>
+              <h2 style={{ color: '#013978', fontSize: 20, fontWeight: 700 }}>{viewDetail.nombre}</h2>
+              <p style={{ color: '#013978', fontSize: 13 }}>{viewDetail.codigo}</p>
             </div>
           </div>
 
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 16 }}>
             {[
-              { label: 'Código', value: viewDetail.codigo },
-              { label: 'Tipo Identificación', value: viewDetail.tipo_identificacion },
-              { label: 'Nro. Documento', value: viewDetail.nro_documento },
-              { label: 'Correo', value: viewDetail.correo },
-              { label: 'Teléfono', value: viewDetail.telefono },
-              { label: 'Nro Móvil', value: viewDetail.nro_movil },
-              { label: 'Página Web', value: viewDetail.pagina_web },
-              { label: 'Representante Legal', value: viewDetail.representante_legal },
+              { label: t('lbl.codigo'), value: viewDetail.codigo },
+              { label: t('lbl.tipoIdentificacion'), value: viewDetail.tipo_identificacion },
+              { label: t('lbl.nroDocumento'), value: viewDetail.nro_documento },
+              { label: t('lbl.correo'), value: viewDetail.correo },
+              { label: t('lbl.telefono'), value: viewDetail.telefono },
+              { label: t('lbl.nroMovil'), value: viewDetail.nro_movil },
+              { label: t('lbl.paginaWeb'), value: viewDetail.pagina_web },
+              { label: t('lbl.representanteLegal'), value: viewDetail.representante_legal },
             ].map(f => (
               <div key={f.label}>
-                <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 11, marginBottom: 2 }}>{f.label}</p>
-                <p style={{ color: '#ffffff', fontSize: 14 }}>{f.value || '—'}</p>
+                <p style={{ color: '#013978', fontSize: 16, fontWeight: 900, marginBottom: 4 }}>{f.label}</p>
+                <p style={{ color: '#013978', fontSize: 14 }}>{f.value || '—'}</p>
               </div>
             ))}
           </div>
 
           {/* Ubicación */}
-          <div style={{ marginTop: 16, padding: 16, background: 'rgba(255,255,255,0.03)', borderRadius: 12, border: '1px solid rgba(255,255,255,0.15)' }}>
-            <h3 style={{ color: '#ffffff', fontSize: 14, fontWeight: 700, marginBottom: 12 }}>Ubicación</h3>
+          <div style={{ marginTop: 16, padding: 16, background: '#f1f5f9', borderRadius: 12, border: '1px solid #cbd5e1' }}>
+            <h3 style={{ color: '#013978', fontSize: 14, fontWeight: 700, marginBottom: 12 }}>{t('lbl.ubicacion')}</h3>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: 16 }}>
               {[
-                { label: 'Dirección', value: viewDetail.direccion },
-                { label: 'Ciudad', value: viewDetail.ciudad },
-                { label: 'País', value: viewDetail.pais },
-                { label: 'Código Postal', value: viewDetail.codigo_postal },
+                { label: t('lbl.direccion'), value: viewDetail.direccion },
+                { label: t('lbl.ciudad'), value: viewDetail.ciudad },
+                { label: t('lbl.pais'), value: viewDetail.pais },
+                { label: t('lbl.codigoPostal'), value: viewDetail.codigo_postal },
               ].map(f => (
                 <div key={f.label}>
-                  <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 11, marginBottom: 2 }}>{f.label}</p>
-                  <p style={{ color: '#ffffff', fontSize: 14 }}>{f.value || '—'}</p>
+                  <p style={{ color: '#013978', fontSize: 16, fontWeight: 900, marginBottom: 4 }}>{f.label}</p>
+                  <p style={{ color: '#013978', fontSize: 14 }}>{f.value || '—'}</p>
                 </div>
               ))}
             </div>
           </div>
 
-          <button onClick={() => { setSelected(viewDetail); setIsForm(true); setViewDetail(null) }} style={{ ...btnStyle, background: '#15803d', color: '#ffffff', border: '1px solid #16a34a', marginTop: 16 }}>Editar</button>
+          <button onClick={() => { setSelected(viewDetail); setIsForm(true); setViewDetail(null) }} style={{ ...btnStyle, background: '#15803d', color: '#ffffff', border: '1px solid #16a34a', marginTop: 16 }}>{t('btn.editar')}</button>
           <SeguimientoPanel
             seguimientos={viewDetail.seguimientos || []}
             usuario={`${currentUser?.nombre} ${currentUser?.apellido}`}
             situacionActual={viewDetail.situacion || 'Activo'}
+            situacionOpciones={['Activo', 'Inactivo', 'Suspendida']}
             onAdd={(seg: Seguimiento) => {
-              const updated = { ...viewDetail, seguimientos: [...(viewDetail.seguimientos || []), seg] }
+              const updated = { ...viewDetail, situacion: seg.situacion, seguimientos: [...(viewDetail.seguimientos || []), seg] }
               updateEmpresa(viewDetail.id, updated)
               setViewDetail(updated)
             }}
@@ -136,101 +141,102 @@ export default function DatosEmpresaPage() {
   if (isForm && selected) {
     return (
       <div>
-        <button onClick={() => { setIsForm(false); setSelected(null) }} style={{ ...btnStyle, background: '#000000', color: '#ffffff', border: '1px solid #333333', marginBottom: 16 }}>← Volver</button>
-        <form onSubmit={handleSave} style={{ background: 'rgba(255,255,255,0.05)', borderRadius: 16, padding: 24, border: '1px solid rgba(255,255,255,0.15)' }}>
-          <h2 style={{ color: '#ffffff', fontSize: 18, fontWeight: 700, marginBottom: 20 }}>{selected.id ? 'Editar' : 'Nueva'} Empresa</h2>
+        <button onClick={() => { setIsForm(false); setSelected(null) }} style={{ ...btnStyle, background: '#000000', color: '#ffffff', border: '1px solid #333333', marginBottom: 16 }}>{t('btn.volver')}</button>
+        <form onSubmit={handleSave} style={{ background: '#ffffff', borderRadius: 16, padding: 24, border: '1px solid #cbd5e1' }}>
+          <h2 style={{ color: '#013978', fontSize: 18, fontWeight: 700, marginBottom: 20 }}>{selected.id ? 'Editar' : 'Nueva'} Empresa</h2>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 16 }}>
             <div>
-              <label style={labelStyle}>Código</label>
+              <label style={labelStyle}>{t('lbl.codigo')}</label>
               <input value={selected.codigo} readOnly style={{ ...inputStyle, opacity: 0.5 }} />
             </div>
             <div style={{ gridColumn: 'span 2' }}>
-              <label style={labelStyle}>Nombre Empresa *</label>
-              <input value={selected.nombre} onChange={e => setSelected({ ...selected, nombre: e.target.value })} required style={inputStyle} />
+              <label style={labelStyle}>{t('lbl.nombreEmpresa')} *</label>
+              <input value={selected.nombre} onChange={e => setSelected({ ...selected, nombre: e.target.value.toUpperCase() })} required style={inputStyle} />
             </div>
             <div>
-              <label style={labelStyle}>Tipo Identificación</label>
+              <label style={labelStyle}>{t('lbl.tipoIdentificacion')}</label>
               <select value={selected.tipo_identificacion} onChange={e => setSelected({ ...selected, tipo_identificacion: e.target.value })} style={inputStyle}>
                 {refOptions('tipo_identificacion').map(o => <option key={o} value={o}>{o}</option>)}
               </select>
             </div>
             <div>
-              <label style={labelStyle}>Nro. Documento *</label>
+              <label style={labelStyle}>{t('lbl.nroDocumento')} *</label>
               <input value={selected.nro_documento} onChange={e => setSelected({ ...selected, nro_documento: e.target.value })} required style={inputStyle} />
             </div>
             <div>
-              <label style={labelStyle}>Correo Empresa</label>
+              <label style={labelStyle}>{t('lbl.correoEmpresa')}</label>
               <input type="email" value={selected.correo} onChange={e => setSelected({ ...selected, correo: e.target.value })} style={inputStyle} />
             </div>
             <div>
-              <label style={labelStyle}>Teléfono Empresa</label>
+              <label style={labelStyle}>{t('lbl.telefonoEmpresa')}</label>
               <input value={selected.telefono} onChange={e => setSelected({ ...selected, telefono: e.target.value })} style={inputStyle} />
             </div>
             <div>
-              <label style={labelStyle}>Nro Móvil</label>
+              <label style={labelStyle}>{t('lbl.nroMovil')}</label>
               <input value={selected.nro_movil} onChange={e => setSelected({ ...selected, nro_movil: e.target.value })} style={inputStyle} />
             </div>
             <div>
-              <label style={labelStyle}>Página Web</label>
+              <label style={labelStyle}>{t('lbl.paginaWeb')}</label>
               <input value={selected.pagina_web} onChange={e => setSelected({ ...selected, pagina_web: e.target.value })} style={inputStyle} />
             </div>
             <div>
-              <label style={labelStyle}>Representante Legal</label>
-              <input value={selected.representante_legal} onChange={e => setSelected({ ...selected, representante_legal: e.target.value })} style={inputStyle} />
+              <label style={labelStyle}>{t('lbl.representanteLegal')}</label>
+              <input value={selected.representante_legal} onChange={e => setSelected({ ...selected, representante_legal: e.target.value.toUpperCase() })} style={inputStyle} />
             </div>
 
             {/* Logo */}
             <div style={{ gridColumn: 'span 3' }}>
-              <label style={labelStyle}>Logo de la Empresa</label>
+              <label style={labelStyle}>{t('lbl.logoEmpresa')}</label>
               <div style={{ display: 'flex', gap: 16, alignItems: 'center' }}>
                 {selected.logo_url ? (
                   <img src={selected.logo_url} alt="Logo" style={{ width: 80, height: 80, borderRadius: 12, objectFit: 'contain', background: 'rgba(255,255,255,0.1)', padding: 8 }} />
                 ) : (
-                  <div style={{ width: 80, height: 80, borderRadius: 12, background: 'rgba(255,255,255,0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'rgba(255,255,255,0.5)', fontSize: 11 }}>Sin logo</div>
+                  <div style={{ width: 80, height: 80, borderRadius: 12, background: 'rgba(255,255,255,0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#475569', fontSize: 11 }}>{t('lbl.sinLogo')}</div>
                 )}
                 <div style={{ display: 'flex', gap: 8 }}>
                   <input ref={fileRef} type="file" accept="image/*" onChange={handleLogoUpload} style={{ display: 'none' }} />
                   <button type="button" onClick={() => fileRef.current?.click()} style={{ ...btnStyle, background: '#15803d', color: '#ffffff', border: '1px solid #16a34a' }}>Subir Logo</button>
-                  {selected.logo_url && <button type="button" onClick={() => setSelected({ ...selected, logo_url: '' })} style={{ ...btnStyle, background: '#dc2626', color: '#ffffff', border: '1px solid #ef4444' }}>Quitar</button>}
+                  {selected.logo_url && <button type="button" onClick={() => setSelected({ ...selected, logo_url: '' })} style={{ ...btnStyle, background: '#dc2626', color: '#ffffff', border: '1px solid #ef4444' }}>{idioma === 'en' ? 'Remove' : 'Quitar'}</button>}
                 </div>
               </div>
             </div>
           </div>
 
           {/* Ubicación */}
-          <div style={{ marginTop: 20, padding: 16, background: 'rgba(255,255,255,0.03)', borderRadius: 12, border: '1px solid rgba(255,255,255,0.15)' }}>
-            <h3 style={{ color: '#ffffff', fontSize: 14, fontWeight: 700, marginBottom: 12 }}>Ubicación</h3>
+          <div style={{ marginTop: 20, padding: 16, background: '#f1f5f9', borderRadius: 12, border: '1px solid #cbd5e1' }}>
+            <h3 style={{ color: '#013978', fontSize: 14, fontWeight: 700, marginBottom: 12 }}>{t('lbl.ubicacion')}</h3>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 16 }}>
               <div style={{ gridColumn: 'span 3' }}>
-                <label style={labelStyle}>Dirección</label>
+                <label style={labelStyle}>{t('lbl.direccion')}</label>
                 <input value={selected.direccion} onChange={e => setSelected({ ...selected, direccion: e.target.value })} style={inputStyle} />
               </div>
               <div>
-                <label style={labelStyle}>Ciudad</label>
+                <label style={labelStyle}>{t('lbl.ciudad')}</label>
                 <select value={selected.ciudad} onChange={e => setSelected({ ...selected, ciudad: e.target.value })} style={inputStyle}>
-                  <option value="">Seleccionar...</option>
+                  <option value="">{t("campo.seleccionar")}</option>
                   {refOptions('ciudad').map(o => <option key={o} value={o}>{o}</option>)}
                 </select>
               </div>
               <div>
-                <label style={labelStyle}>País</label>
+                <label style={labelStyle}>{t('lbl.pais')}</label>
                 <select value={selected.pais} onChange={e => setSelected({ ...selected, pais: e.target.value })} style={inputStyle}>
-                  <option value="">Seleccionar...</option>
+                  <option value="">{t("campo.seleccionar")}</option>
                   {refOptions('pais').map(o => <option key={o} value={o}>{o}</option>)}
                 </select>
               </div>
               <div>
-                <label style={labelStyle}>Código Postal</label>
+                <label style={labelStyle}>{t('lbl.codigoPostal')}</label>
                 <input value={selected.codigo_postal} onChange={e => setSelected({ ...selected, codigo_postal: e.target.value })} style={inputStyle} />
               </div>
             </div>
           </div>
 
           <div style={{ display: 'flex', gap: 10, marginTop: 20 }}>
-            <button type="submit" style={{ ...btnStyle, background: '#0f1b3d', color: '#ffffff' }}>Guardar</button>
-            <button type="button" onClick={() => { setIsForm(false); setSelected(null) }} style={{ ...btnStyle, background: '#64748b', color: '#ffffff' }}>Cancelar</button>
+            <button type="submit" style={{ ...btnStyle, background: '#1e3a8a', color: '#ffffff' }}>{t('btn.guardar')}</button>
+            <button type="button" onClick={() => { setIsForm(false); setSelected(null) }} style={{ ...btnStyle, background: '#64748b', color: '#ffffff' }}>{t('btn.cancelar')}</button>
           </div>
         </form>
+        {selected.id && <DocumentosPanel modulo="datos-empresa" registroId={selected.id} />}
       </div>
     )
   }
@@ -240,47 +246,47 @@ export default function DatosEmpresaPage() {
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
         <div>
-          <h1 style={{ fontSize: 24, fontWeight: 700, color: '#ffffff', marginBottom: 4 }}>Datos Empresa</h1>
-          <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: 14 }}>Información de las empresas del sistema</p>
+          <h1 style={{ fontSize: 24, fontWeight: 700, color: '#013978', marginBottom: 4 }}>{t('page.miEmpresa.title')}</h1>
+          <p style={{ color: '#013978', fontSize: 14 }}>{t('page.miEmpresa.subtitle')}</p>
         </div>
-        <button onClick={() => { setSelected(emptyEmpresa()); setIsForm(true) }} style={{ ...btnStyle, background: '#0f1b3d', color: '#ffffff' }}>+ Nueva Empresa</button>
+        <button onClick={() => { setSelected(emptyEmpresa()); setIsForm(true) }} style={{ ...btnStyle, background: '#1e3a8a', color: '#ffffff' }}>+ {t('btn.nuevo')}</button>
       </div>
 
-      <div style={{ borderRadius: 12, border: '1px solid rgba(255,255,255,0.15)', overflow: 'hidden' }}>
+      <div style={{ borderRadius: 12, border: '1px solid #cbd5e1', overflow: 'hidden' }}>
         <table style={{ width: '100%', borderCollapse: 'collapse' }}>
           <thead>
             <tr>
               {['Logo', 'Código', 'Nombre', 'Documento', 'Correo', 'Teléfono', 'Rep. Legal', 'Acciones'].map(h => (
-                <th key={h} style={{ padding: '12px 14px', background: '#1e3a5f', color: '#fff', fontSize: 12, textAlign: 'left' }}>{h}</th>
+                <th key={h} style={{ padding: '12px 14px', background: '#1e3a8a', color: '#fff', fontSize: 12, textAlign: 'left' }}>{h}</th>
               ))}
             </tr>
           </thead>
           <tbody>
             {empresas.map((emp, i) => (
               <tr key={emp.id} style={{ background: i % 2 === 0 ? 'rgba(255,255,255,0.03)' : 'transparent' }}>
-                <td style={{ padding: '10px 14px', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
+                <td style={{ padding: '8px 10px', borderBottom: '1px solid #e2e8f0' }}>
                   {emp.logo_url ? (
-                    <img src={emp.logo_url} alt="Logo" style={{ width: 36, height: 36, borderRadius: 8, objectFit: 'contain', background: 'rgba(255,255,255,0.1)' }} />
+                    <img src={emp.logo_url} alt="Logo" style={{ width: 32, height: 32, borderRadius: 6, objectFit: 'contain', background: 'rgba(255,255,255,0.1)' }} />
                   ) : (
-                    <div style={{ width: 36, height: 36, borderRadius: 8, background: 'rgba(255,255,255,0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'rgba(255,255,255,0.5)', fontSize: 10 }}>—</div>
+                    <div style={{ width: 32, height: 32, borderRadius: 6, background: 'rgba(255,255,255,0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#475569', fontSize: 9 }}>—</div>
                   )}
                 </td>
-                <td style={{ padding: '10px 14px', borderBottom: '1px solid rgba(255,255,255,0.1)', color: '#4ade80', fontSize: 13, fontFamily: 'monospace' }}>{emp.codigo}</td>
-                <td style={{ padding: '10px 14px', borderBottom: '1px solid rgba(255,255,255,0.1)', color: '#ffffff', fontSize: 13, fontWeight: 600 }}>{emp.nombre}</td>
-                <td style={{ padding: '10px 14px', borderBottom: '1px solid rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.7)', fontSize: 13 }}>{emp.tipo_identificacion} {emp.nro_documento}</td>
-                <td style={{ padding: '10px 14px', borderBottom: '1px solid rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.7)', fontSize: 13 }}>{emp.correo}</td>
-                <td style={{ padding: '10px 14px', borderBottom: '1px solid rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.7)', fontSize: 13 }}>{emp.telefono}</td>
-                <td style={{ padding: '10px 14px', borderBottom: '1px solid rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.7)', fontSize: 13 }}>{emp.representante_legal}</td>
-                <td style={{ padding: '10px 14px', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
-                  <div style={{ display: 'flex', gap: 6 }}>
-                    <button onClick={() => setViewDetail(emp)} style={{ ...btnStyle, padding: '4px 12px', fontSize: 11, background: '#ea580c', color: '#ffffff', border: '1px solid #f97316' }}>Ver</button>
-                    <button onClick={() => { setSelected(emp); setIsForm(true) }} style={{ ...btnStyle, padding: '4px 12px', fontSize: 11, background: '#15803d', color: '#ffffff', border: '1px solid #16a34a' }}>Editar</button>
-                    <button onClick={() => { if (confirm(`¿Eliminar "${emp.nombre}"?`)) deleteEmpresa(emp.id) }} style={{ ...btnStyle, padding: '4px 12px', fontSize: 11, background: '#dc2626', color: '#ffffff', border: '1px solid #ef4444' }}>Eliminar</button>
+                <td style={{ padding: '8px 10px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 12, fontFamily: 'monospace' }}>{emp.codigo}</td>
+                <td style={{ padding: '8px 10px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 12, fontWeight: 600 }}>{emp.nombre}</td>
+                <td style={{ padding: '8px 10px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 12 }}>{emp.tipo_identificacion} {emp.nro_documento}</td>
+                <td style={{ padding: '8px 10px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 12 }}>{emp.correo}</td>
+                <td style={{ padding: '8px 10px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 12 }}>{emp.telefono}</td>
+                <td style={{ padding: '8px 10px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 12 }}>{emp.representante_legal}</td>
+                <td style={{ padding: '8px 10px', borderBottom: '1px solid #e2e8f0' }}>
+                  <div style={{ display: 'flex', gap: 4 }}>
+                    <button onClick={() => setViewDetail(emp)} style={{ ...btnStyle, padding: '3px 10px', fontSize: 10, background: '#ea580c', color: '#ffffff', border: '1px solid #f97316' }}>{idioma === 'en' ? 'View' : 'Ver'}</button>
+                    <button onClick={() => { setSelected(emp); setIsForm(true) }} style={{ ...btnStyle, padding: '3px 10px', fontSize: 10, background: '#15803d', color: '#ffffff', border: '1px solid #16a34a' }}>{t('btn.editar')}</button>
+                    <button onClick={() => { if (confirm(idioma === 'en' ? `Delete "${emp.nombre}"?` : `¿Eliminar "${emp.nombre}"?`)) deleteEmpresa(emp.id) }} style={{ ...btnStyle, padding: '3px 10px', fontSize: 10, background: '#dc2626', color: '#ffffff', border: '1px solid #ef4444' }}>{t('btn.eliminar')}</button>
                   </div>
                 </td>
               </tr>
             ))}
-            {empresas.length === 0 && <tr><td colSpan={8} style={{ padding: 32, textAlign: 'center', color: 'rgba(255,255,255,0.5)', fontSize: 14 }}>No hay empresas registradas</td></tr>}
+            {empresas.length === 0 && <tr><td colSpan={8} style={{ padding: 32, textAlign: 'center', color: '#013978', fontSize: 14 }}>No hay empresas registradas</td></tr>}
           </tbody>
         </table>
       </div>

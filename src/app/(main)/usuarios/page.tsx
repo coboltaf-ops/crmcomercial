@@ -1,13 +1,23 @@
 'use client'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useUsuariosStore } from '@/features/usuarios-gestion/store/usuarios-store'
 import { useCurrentUserStore } from '@/features/usuarios-gestion/store/current-user-store'
 import { useRolesStore } from '@/features/usuarios-gestion/store/roles-store'
 import { Usuario, MODULOS_CRM, ESTADOS_CONFIG } from '@/features/usuarios-gestion/types'
 import { exportToPDF, exportToExcel } from '@/shared/lib/export-report'
+import { useT, useIdioma } from '@/shared/i18n/use-t'
 
 export default function UsuariosPage() {
-  const { usuarios, addUsuario, updateUsuario, deleteUsuario } = useUsuariosStore()
+  const t = useT()
+  const idioma = useIdioma()
+  const { usuarios, addUsuario, updateUsuario, deleteUsuario, syncFromKV } = useUsuariosStore()
+
+  // Sincronizar desde Vercel KV al entrar y cada 30 segundos
+  useEffect(() => {
+    syncFromKV()
+    const id = setInterval(syncFromKV, 30000)
+    return () => clearInterval(id)
+  }, [syncFromKV])
   const currentUser = useCurrentUserStore(s => s.user)
   const { roles, addRol, updateRol, deleteRol } = useRolesStore()
 
@@ -19,7 +29,7 @@ export default function UsuariosPage() {
   const [showNewRol, setShowNewRol] = useState(false)
 
   if (currentUser?.rol.toLowerCase() !== 'admin') {
-    return <div style={{ color: '#fca5a5', padding: 40, textAlign: 'center' }}>No tienes acceso a esta sección</div>
+    return <div style={{ color: '#013978', padding: 40, textAlign: 'center' }}>{idioma === 'en' ? 'You do not have access to this section' : 'No tienes acceso a esta sección'}</div>
   }
 
   const selectedRolObj = roles.find(r => r.id === selectedRolId)
@@ -34,9 +44,18 @@ export default function UsuariosPage() {
     }
   }
 
+  const MAX_USUARIOS_ACTIVOS = 10
+
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault()
     if (!selected) return
+    // Validar límite de usuarios activos
+    const activosActuales = usuarios.filter(u => u.situacion === 'Activo' && u.id !== selected.id).length
+    const seraActivo = selected.situacion === 'Activo'
+    if (seraActivo && activosActuales >= MAX_USUARIOS_ACTIVOS) {
+      alert(`Límite alcanzado: máximo ${MAX_USUARIOS_ACTIVOS} usuarios activos permitidos.\n\nDesactive un usuario antes de crear o activar otro.`)
+      return
+    }
     // Assign permisos from the role
     const rol = roles.find(r => r.nombre === selected.rol)
     const withPermisos = { ...selected, permisos: rol?.permisos || selected.permisos }
@@ -93,7 +112,7 @@ export default function UsuariosPage() {
 
   const inputStyle: React.CSSProperties = { width: '100%', padding: '8px 12px', borderRadius: 8, background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.2)', color: '#ffffff', fontSize: 13, outline: 'none' }
   const btnStyle: React.CSSProperties = { padding: '8px 16px', borderRadius: 8, border: 'none', cursor: 'pointer', fontSize: 13, fontWeight: 600 }
-  const tabBtnStyle = (active: boolean): React.CSSProperties => ({ ...btnStyle, background: active ? '#1e3a8a' : 'rgba(255,255,255,0.15)', color: active ? '#ffffff' : 'rgba(255,255,255,0.7)', border: active ? '1px solid #2563eb' : '1px solid rgba(255,255,255,0.2)' })
+  const tabBtnStyle = (active: boolean): React.CSSProperties => ({ ...btnStyle, background: active ? '#1e3a8a' : 'rgba(255,255,255,0.15)', color: active ? '#ffffff' : '#0f172a', border: active ? '1px solid #3b82f6' : '1px solid rgba(255,255,255,0.2)' })
 
   const reportOpts = {
     title: 'Gestión de Usuarios',
@@ -109,27 +128,40 @@ export default function UsuariosPage() {
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
         <div>
-          <h1 style={{ fontSize: 24, fontWeight: 700, color: '#ffffff', marginBottom: 4 }}>Gestión de Usuarios</h1>
-          <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: 14 }}>Administra usuarios, roles y permisos del sistema</p>
+          <h1 style={{ fontSize: 24, fontWeight: 700, color: '#013978', marginBottom: 4 }}>{t('page.usuarios.title')}</h1>
+          <p style={{ color: '#013978', fontSize: 14 }}>{t('page.usuarios.subtitle')}</p>
         </div>
-        {tab === 'usuarios' && !isForm && <button onClick={() => { setSelected(emptyUser()); setIsForm(true) }} style={{ ...btnStyle, background: '#0f1b3d', color: '#ffffff' }}>+ Nuevo Usuario</button>}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+          {(() => {
+            const activos = usuarios.filter(u => u.situacion === 'Activo').length
+            const limite = 10
+            const lleno = activos >= limite
+            return (
+              <div style={{ textAlign: 'right', padding: '6px 14px', borderRadius: 10, background: lleno ? 'rgba(239,68,68,0.12)' : 'rgba(34,197,94,0.12)', border: `1px solid ${lleno ? 'rgba(239,68,68,0.35)' : 'rgba(34,197,94,0.35)'}` }}>
+                <p style={{ color: lleno ? '#fca5a5' : '#86efac', fontSize: 10, fontWeight: 700, letterSpacing: 0.5, margin: 0 }}>{idioma === 'en' ? 'ACTIVE LICENSES' : 'LICENCIAS ACTIVAS'}</p>
+                <p style={{ color: '#013978', fontSize: 18, fontWeight: 900, margin: 0 }}>{activos} <span style={{ color: '#013978', fontSize: 13 }}>/ {limite}</span></p>
+              </div>
+            )
+          })()}
+          {tab === 'usuarios' && !isForm && <button onClick={() => { setSelected(emptyUser()); setIsForm(true) }} style={{ ...btnStyle, background: '#1e3a8a', color: '#ffffff' }}>+ {idioma === 'en' ? 'New User' : 'Nuevo Usuario'}</button>}
+        </div>
       </div>
 
       {/* Tabs */}
       <div style={{ display: 'flex', gap: 8, marginBottom: 20 }}>
-        <button onClick={() => setTab('usuarios')} style={tabBtnStyle(tab === 'usuarios')}>👤 Usuarios</button>
-        <button onClick={() => setTab('roles')} style={tabBtnStyle(tab === 'roles')}>🔐 Roles y Permisos</button>
-        <button onClick={() => setTab('reportes')} style={tabBtnStyle(tab === 'reportes')}>📊 Reportes</button>
+        <button onClick={() => setTab('usuarios')} style={tabBtnStyle(tab === 'usuarios')}>👤 {idioma === 'en' ? 'Users' : 'Usuarios'}</button>
+        <button onClick={() => setTab('roles')} style={tabBtnStyle(tab === 'roles')}>🔐 {idioma === 'en' ? 'Roles & Permissions' : 'Roles y Permisos'}</button>
+        <button onClick={() => setTab('reportes')} style={tabBtnStyle(tab === 'reportes')}>📊 {t('tab.reportes')}</button>
       </div>
 
       {/* ═══ TAB: USUARIOS ═══ */}
       {tab === 'usuarios' && !isForm && (
-        <div style={{ borderRadius: 12, border: '1px solid rgba(255,255,255,0.15)', overflow: 'hidden' }}>
+        <div style={{ borderRadius: 12, border: '1px solid #cbd5e1', overflow: 'hidden' }}>
           <table style={{ width: '100%', borderCollapse: 'collapse' }}>
             <thead>
               <tr>
                 {['Usuario', 'Nombre', 'Apellido', 'Correo', 'Rol', 'Estado', 'Acciones'].map(h => (
-                  <th key={h} style={{ padding: '12px 14px', background: '#1e3a5f', color: '#fff', fontSize: 12, textAlign: 'left' }}>{h}</th>
+                  <th key={h} style={{ padding: '12px 14px', background: '#1e3a8a', color: '#fff', fontSize: 12, textAlign: 'left' }}>{h}</th>
                 ))}
               </tr>
             </thead>
@@ -138,18 +170,18 @@ export default function UsuariosPage() {
                 const est = ESTADOS_CONFIG[u.situacion] || {}
                 return (
                   <tr key={u.id} style={{ background: i % 2 === 0 ? 'rgba(255,255,255,0.03)' : 'transparent' }}>
-                    <td style={{ padding: '10px 14px', borderBottom: '1px solid rgba(255,255,255,0.1)', color: '#ffffff', fontSize: 13 }}>{u.usuario}</td>
-                    <td style={{ padding: '10px 14px', borderBottom: '1px solid rgba(255,255,255,0.1)', color: '#ffffff', fontSize: 13 }}>{u.nombre}</td>
-                    <td style={{ padding: '10px 14px', borderBottom: '1px solid rgba(255,255,255,0.1)', color: '#ffffff', fontSize: 13 }}>{u.apellido}</td>
-                    <td style={{ padding: '10px 14px', borderBottom: '1px solid rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.7)', fontSize: 13 }}>{u.correo}</td>
-                    <td style={{ padding: '10px 14px', borderBottom: '1px solid rgba(255,255,255,0.1)', color: '#4ade80', fontSize: 13 }}>{u.rol}</td>
-                    <td style={{ padding: '10px 14px', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
+                    <td style={{ padding: '10px 14px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 13 }}>{u.usuario}</td>
+                    <td style={{ padding: '10px 14px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 13 }}>{u.nombre}</td>
+                    <td style={{ padding: '10px 14px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 13 }}>{u.apellido}</td>
+                    <td style={{ padding: '10px 14px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 13 }}>{u.correo}</td>
+                    <td style={{ padding: '10px 14px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 13 }}>{u.rol}</td>
+                    <td style={{ padding: '10px 14px', borderBottom: '1px solid #e2e8f0' }}>
                       <span style={{ padding: '3px 10px', borderRadius: 20, fontSize: 11, fontWeight: 600, background: est.bg, color: est.color, border: est.border }}>{u.situacion}</span>
                     </td>
-                    <td style={{ padding: '10px 14px', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
-                      <div style={{ display: 'flex', gap: 6 }}>
-                        <button onClick={() => { setSelected(u); setIsForm(true) }} style={{ ...btnStyle, padding: '4px 12px', fontSize: 11, background: '#15803d', color: '#ffffff', border: '1px solid #16a34a' }}>Editar</button>
-                        {u.id !== 'admin-1' && <button onClick={() => { if (confirm(`¿Eliminar usuario "${u.usuario}"?`)) deleteUsuario(u.id) }} style={{ ...btnStyle, padding: '4px 12px', fontSize: 11, background: '#dc2626', color: '#ffffff', border: '1px solid #ef4444' }}>Eliminar</button>}
+                    <td style={{ padding: '8px 10px', borderBottom: '1px solid #e2e8f0' }}>
+                      <div style={{ display: 'flex', gap: 4 }}>
+                        <button onClick={() => { setSelected(u); setIsForm(true) }} style={{ ...btnStyle, padding: '3px 10px', fontSize: 10, background: '#15803d', color: '#ffffff', border: '1px solid #16a34a' }}>Edit</button>
+                        {u.id !== 'admin-1' && <button onClick={() => { if (confirm(`¿Eliminar usuario "${u.usuario}"?`)) deleteUsuario(u.id) }} style={{ ...btnStyle, padding: '3px 10px', fontSize: 10, background: '#dc2626', color: '#ffffff', border: '1px solid #ef4444' }}>Elim</button>}
                       </div>
                     </td>
                   </tr>
@@ -162,24 +194,24 @@ export default function UsuariosPage() {
 
       {/* ═══ TAB: FORM USUARIO ═══ */}
       {tab === 'usuarios' && isForm && selected && (
-        <form onSubmit={handleSave} style={{ background: 'rgba(255,255,255,0.05)', borderRadius: 16, padding: 24, border: '1px solid rgba(255,255,255,0.15)' }}>
-          <h3 style={{ color: '#ffffff', fontSize: 16, fontWeight: 600, marginBottom: 16 }}>{selected.id ? 'Editar' : 'Nuevo'} Usuario</h3>
+        <form onSubmit={handleSave} style={{ background: '#ffffff', borderRadius: 16, padding: 24, border: '1px solid #cbd5e1' }}>
+          <h3 style={{ color: '#013978', fontSize: 16, fontWeight: 600, marginBottom: 16 }}>{selected.id ? 'Editar' : 'Nuevo'} Usuario</h3>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
             {[
               { label: 'Nombre', key: 'nombre' }, { label: 'Apellido', key: 'apellido' },
               { label: 'Usuario', key: 'usuario' }, { label: 'Correo', key: 'correo' },
             ].map(f => (
               <div key={f.key}>
-                <label style={{ color: '#ffffff', fontSize: 12, fontWeight: 600, marginBottom: 4, display: 'block' }}>{f.label}</label>
-                <input value={(selected as unknown as Record<string, string>)[f.key] || ''} onChange={e => setSelected({ ...selected, [f.key]: e.target.value })} required style={inputStyle} />
+                <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, marginBottom: 4, display: 'block' }}>{f.label}</label>
+                <input value={(selected as unknown as Record<string, string>)[f.key] || ''} onChange={e => setSelected({ ...selected, [f.key]: (f.key === 'nombre' || f.key === 'apellido') ? e.target.value.toUpperCase() : e.target.value })} required style={inputStyle} />
               </div>
             ))}
             <div>
-              <label style={{ color: '#ffffff', fontSize: 12, fontWeight: 600, marginBottom: 4, display: 'block' }}>Clave {selected.id && '(dejar vacío = mantener)'}</label>
+              <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, marginBottom: 4, display: 'block' }}>Clave {selected.id && '(dejar vacío = mantener)'}</label>
               <input type="password" value={selected.clave || ''} onChange={e => setSelected({ ...selected, clave: e.target.value })} required={!selected.id} style={inputStyle} />
             </div>
             <div>
-              <label style={{ color: '#ffffff', fontSize: 12, fontWeight: 600, marginBottom: 4, display: 'block' }}>Rol</label>
+              <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, marginBottom: 4, display: 'block' }}>{t('lbl.rol')}</label>
               <select value={selected.rol} onChange={e => {
                 const rol = roles.find(r => r.nombre === e.target.value)
                 setSelected({ ...selected, rol: e.target.value, permisos: rol?.permisos || selected.permisos })
@@ -188,15 +220,15 @@ export default function UsuariosPage() {
               </select>
             </div>
             <div>
-              <label style={{ color: '#ffffff', fontSize: 12, fontWeight: 600, marginBottom: 4, display: 'block' }}>Situación</label>
+              <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, marginBottom: 4, display: 'block' }}>{t('lbl.situacion')}</label>
               <select value={selected.situacion} onChange={e => setSelected({ ...selected, situacion: e.target.value })} style={inputStyle}>
                 {['Activo', 'Inactivo', 'Bloqueado'].map(s => <option key={s} value={s}>{s}</option>)}
               </select>
             </div>
           </div>
           <div style={{ display: 'flex', gap: 10, marginTop: 20 }}>
-            <button type="submit" style={{ ...btnStyle, background: '#0f1b3d', color: '#ffffff' }}>Guardar</button>
-            <button type="button" onClick={() => { setIsForm(false); setSelected(null) }} style={{ ...btnStyle, background: '#64748b', color: '#ffffff' }}>Cancelar</button>
+            <button type="submit" style={{ ...btnStyle, background: '#1e3a8a', color: '#ffffff' }}>{t('btn.guardar')}</button>
+            <button type="button" onClick={() => { setIsForm(false); setSelected(null) }} style={{ ...btnStyle, background: '#64748b', color: '#ffffff' }}>{t('btn.cancelar')}</button>
           </div>
         </form>
       )}
@@ -211,7 +243,7 @@ export default function UsuariosPage() {
                 style={{ ...btnStyle, background: '#000000', color: '#ffffff', border: '1px solid #333333', fontSize: 14 }}>
                 {r.nombre}
                 {r.nombre !== 'Admin' && (
-                  <span style={{ marginLeft: 6, fontSize: 11, color: 'rgba(255,255,255,0.7)' }}>({usuarios.filter(u => u.rol === r.nombre).length})</span>
+                  <span style={{ marginLeft: 6, fontSize: 11, color: '#013978' }}>({usuarios.filter(u => u.rol === r.nombre).length})</span>
                 )}
               </button>
             ))}
@@ -220,7 +252,7 @@ export default function UsuariosPage() {
             ) : (
               <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
                 <input value={nuevoRolNombre} onChange={e => setNuevoRolNombre(e.target.value)} placeholder="Nombre del rol..." style={{ ...inputStyle, width: 180 }} onKeyDown={e => e.key === 'Enter' && handleCreateRol()} autoFocus />
-                <button onClick={handleCreateRol} style={{ ...btnStyle, background: '#0f1b3d', color: '#ffffff' }}>Crear</button>
+                <button onClick={handleCreateRol} style={{ ...btnStyle, background: '#1e3a8a', color: '#ffffff' }}>{t('btn.crear')}</button>
                 <button onClick={() => { setShowNewRol(false); setNuevoRolNombre('') }} style={{ ...btnStyle, background: '#64748b', color: '#ffffff' }}>×</button>
               </div>
             )}
@@ -228,11 +260,11 @@ export default function UsuariosPage() {
 
           {/* Permisos del rol seleccionado */}
           {selectedRolObj && (
-            <div style={{ background: 'rgba(255,255,255,0.05)', borderRadius: 16, padding: 24, border: '1px solid rgba(255,255,255,0.15)' }}>
+            <div style={{ background: '#ffffff', borderRadius: 16, padding: 24, border: '1px solid #cbd5e1' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
                 <div>
-                  <h3 style={{ color: '#ffffff', fontSize: 18, fontWeight: 700 }}>Permisos: {selectedRolObj.nombre}</h3>
-                  <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: 13 }}>
+                  <h3 style={{ color: '#013978', fontSize: 18, fontWeight: 700 }}>Permisos: {selectedRolObj.nombre}</h3>
+                  <p style={{ color: '#013978', fontSize: 13 }}>
                     {selectedRolObj.nombre === 'Admin' ? 'Acceso total al sistema (no editable)' : `Configura los permisos para el rol ${selectedRolObj.nombre}`}
                   </p>
                 </div>
@@ -251,9 +283,9 @@ export default function UsuariosPage() {
                   const perms = selectedRolObj.permisos.find(p => p.modulo === m.id)
                   const isAdmin = selectedRolObj.nombre === 'Admin'
                   return (
-                    <div key={m.id} style={{ display: 'flex', alignItems: 'center', padding: '12px 16px', background: i % 2 === 0 ? 'rgba(255,255,255,0.03)' : 'transparent', borderRadius: 10, border: '1px solid rgba(255,255,255,0.1)' }}>
+                    <div key={m.id} style={{ display: 'flex', alignItems: 'center', padding: '12px 16px', background: i % 2 === 0 ? 'rgba(255,255,255,0.03)' : 'transparent', borderRadius: 10, border: '1px solid #e2e8f0' }}>
                       <div style={{ flex: 1 }}>
-                        <p style={{ color: '#ffffff', fontSize: 14, fontWeight: 600 }}>{m.label}</p>
+                        <p style={{ color: '#013978', fontSize: 14, fontWeight: 600 }}>{m.label}</p>
                       </div>
                       <div style={{ display: 'flex', gap: 24 }}>
                         {(['leer', 'editar', 'eliminar'] as const).map(p => (
@@ -286,8 +318,8 @@ export default function UsuariosPage() {
 
           {/* Usuarios con este rol */}
           {selectedRolObj && usuarios.filter(u => u.rol === selectedRolObj.nombre).length > 0 && (
-            <div style={{ marginTop: 16, background: 'rgba(255,255,255,0.03)', borderRadius: 12, padding: 16, border: '1px solid rgba(255,255,255,0.15)' }}>
-              <p style={{ color: '#ffffff', fontSize: 13, fontWeight: 600, marginBottom: 8 }}>Usuarios con rol {selectedRolObj.nombre}:</p>
+            <div style={{ marginTop: 16, background: '#f1f5f9', borderRadius: 12, padding: 16, border: '1px solid #cbd5e1' }}>
+              <p style={{ color: '#013978', fontSize: 13, fontWeight: 600, marginBottom: 8 }}>Usuarios con rol {selectedRolObj.nombre}:</p>
               <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
                 {usuarios.filter(u => u.rol === selectedRolObj.nombre).map(u => (
                   <span key={u.id} style={{ padding: '4px 12px', borderRadius: 20, fontSize: 12, background: 'rgba(34,197,94,0.15)', color: '#86efac', border: '1px solid rgba(34,197,94,0.2)' }}>

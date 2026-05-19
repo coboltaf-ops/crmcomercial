@@ -1,4 +1,5 @@
 'use client'
+import { logAudit, computarDiff } from '@/shared/lib/audit'
 import { useState } from 'react'
 import { useTareasStore, Tarea } from '@/features/tareas/store/tareas-store'
 import { useCurrentUserStore } from '@/features/usuarios-gestion/store/current-user-store'
@@ -8,6 +9,8 @@ import { usePermisos } from '@/shared/hooks/use-permisos'
 import SeguimientoPanel from '@/shared/components/seguimiento-panel'
 import DocumentosPanel from '@/shared/components/documentos-panel'
 import ReportPanel from '@/shared/components/report-panel'
+import { Seguimiento } from '@/shared/types/seguimiento'
+import { useT, useIdioma, useTStatus } from '@/shared/i18n/use-t'
 
 function todayCO() { return new Date().toLocaleDateString('en-CA', { timeZone: 'America/Bogota' }) }
 function fDate(d: string) { if (!d) return '—'; const [y, m, dd] = d.split('-'); return `${dd}/${m}/${y}` }
@@ -20,16 +23,20 @@ const emptyTarea = (codigo: string): Tarea => ({
 
 const colorMap: Record<string, { bg: string; color: string; border: string }> = {
   yellow: { bg: 'rgba(234,179,8,0.15)', color: '#eab308', border: 'rgba(234,179,8,0.3)' },
-  blue: { bg: 'rgba(59,130,246,0.15)', color: '#60a5fa', border: 'rgba(59,130,246,0.3)' },
+  blue: { bg: 'rgba(59,130,246,0.15)', color: '#013978', border: 'rgba(59,130,246,0.3)' },
   green: { bg: 'rgba(34,197,94,0.15)', color: '#22c55e', border: 'rgba(34,197,94,0.3)' },
   gray: { bg: 'rgba(156,163,175,0.15)', color: '#9ca3af', border: 'rgba(156,163,175,0.3)' },
   red: { bg: 'rgba(239,68,68,0.15)', color: '#ef4444', border: 'rgba(239,68,68,0.3)' },
+  purple: { bg: 'rgba(168,85,247,0.15)', color: '#a855f7', border: 'rgba(168,85,247,0.3)' },
 }
 
 type Vista = 'lista' | 'form' | 'detalle'
 type VistaLista = 'tabla' | 'kanban'
 
 export default function TareasPage() {
+  const tr = useT()
+  const ts = useTStatus()
+  const idi = useIdioma()
   const user = useCurrentUserStore(s => s.user)
   const permisos = usePermisos('tareas')
   const { tareas, situaciones, addTarea, updateTarea, deleteTarea } = useTareasStore()
@@ -52,8 +59,8 @@ export default function TareasPage() {
   // Styles
   const btnStyle: React.CSSProperties = { padding: '8px 16px', borderRadius: 8, border: 'none', cursor: 'pointer', fontSize: 13, fontWeight: 600 }
   const inputStyle: React.CSSProperties = { padding: '8px 12px', borderRadius: 8, background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.2)', color: '#ffffff', fontSize: 13, outline: 'none', width: '100%' }
-  const labelStyle: React.CSSProperties = { color: 'rgba(255,255,255,0.6)', fontSize: 11, marginBottom: 4, display: 'block' }
-  const cardStyle: React.CSSProperties = { background: 'rgba(255,255,255,0.05)', borderRadius: 12, padding: 16, border: '1px solid rgba(255,255,255,0.1)' }
+  const labelStyle: React.CSSProperties = { color: '#013978', fontSize: 11, marginBottom: 4, display: 'block' }
+  const cardStyle: React.CSSProperties = { background: '#ffffff', borderRadius: 12, padding: 16, border: '1px solid #e2e8f0' }
 
   const situacionBadge = (sit: string): React.CSSProperties => {
     const s = situaciones.find(s => s.nombre === sit)
@@ -70,17 +77,24 @@ export default function TareasPage() {
     return true
   }).sort((a, b) => b.fecha_registro.localeCompare(a.fecha_registro))
 
+  const auditParams = () => ({
+    usuario: user?.usuario || 'desconocido',
+    usuario_nombre: `${user?.nombre || ''} ${user?.apellido || ''}`.trim(),
+    rol: user?.rol || '',
+    modulo: 'tareas',
+  })
+
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!selected) return
     if (!selected.persona_asigna || !selected.persona_ejecuta || !selected.fecha_requerida_fin || !selected.descripcion) {
-      alert('Complete los campos obligatorios'); return
+      alert(idi === 'en' ? 'Complete required fields' : 'Complete los campos obligatorios'); return
     }
     const esNueva = !selected.id
-    const tareaFinal = esNueva ? { ...selected, id: crypto.randomUUID() } : selected
+    const tareaFinal = esNueva ? { ...selected, id: crypto.randomUUID(), fecha_registro: todayCO() } : selected
 
     if (esNueva) {
-      addTarea(tareaFinal)
+      addTarea(tareaFinal); logAudit({ ...auditParams(), accion: "CREAR", registro_codigo: tareaFinal.codigo, registro_nombre: tareaFinal.descripcion })
       // Enviar correo al ejecutor
       const ejecutor = vendedores.find(v => `${v.nombre} ${v.apellido}` === selected.persona_ejecuta && v.correo)
       if (ejecutor?.correo) {
@@ -100,7 +114,7 @@ export default function TareasPage() {
         } catch { /* no bloquear si falla el email */ }
       }
     } else {
-      updateTarea(selected.id, selected)
+      const _anterior = tareas.find(x => x.id === selected.id); updateTarea(selected.id, selected); logAudit({ ...auditParams(), accion: "MODIFICAR", registro_codigo: selected.codigo, registro_nombre: selected.descripcion, detalle: computarDiff(_anterior as unknown as Record<string, unknown>, selected as unknown as Record<string, unknown>) })
     }
     setSelected(null)
     setVista('lista')
@@ -128,13 +142,13 @@ export default function TareasPage() {
     return (
       <div>
         <div style={{ display: 'flex', gap: 10, marginBottom: 16 }}>
-          <button onClick={() => { setViewDetail(null); setVista('lista') }} style={{ ...btnStyle, background: '#000', color: '#fff', border: '1px solid #333' }}>← Volver</button>
+          <button onClick={() => { setViewDetail(null); setVista('lista') }} style={{ ...btnStyle, background: '#000', color: '#fff', border: '1px solid #333' }}>{tr('btn.volver')}</button>
           {permisos.editar && viewDetail.situacion !== 'Completada' && viewDetail.situacion !== 'Cancelada' && (
-            <button onClick={() => { setSelected(viewDetail); setVista('form') }} style={{ ...btnStyle, background: 'rgba(59,130,246,0.15)', color: '#60a5fa', border: '1px solid rgba(59,130,246,0.3)' }}>Editar</button>
+            <button onClick={() => { setSelected(viewDetail); setVista('form') }} style={{ ...btnStyle, background: 'rgba(59,130,246,0.15)', color: '#60a5fa', border: '1px solid rgba(59,130,246,0.3)' }}>{tr('btn.editar')}</button>
           )}
           {permisos.eliminar && (
-            <button onClick={() => { if (confirm('¿Eliminar tarea?')) { deleteTarea(viewDetail.id); setViewDetail(null); setVista('lista') } }}
-              style={{ ...btnStyle, background: '#dc2626', color: '#fff', border: '1px solid #ef4444' }}>Eliminar</button>
+            <button onClick={() => { if (confirm(idi === 'en' ? 'Delete task?' : '¿Eliminar tarea?')) { deleteTarea(viewDetail.id); setViewDetail(null); setVista('lista') } }}
+              style={{ ...btnStyle, background: '#dc2626', color: '#fff', border: '1px solid #ef4444' }}>{tr('btn.eliminar')}</button>
           )}
         </div>
         <div style={cardStyle}>
@@ -142,34 +156,35 @@ export default function TareasPage() {
             <div style={{ width: 44, height: 44, borderRadius: 12, background: 'rgba(59,130,246,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 22 }}>✅</div>
             <div style={{ flex: 1 }}>
               <h2 style={{ color: '#fff', fontSize: 18, fontWeight: 700, margin: 0 }}>{viewDetail.codigo}</h2>
-              <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 12, margin: 0 }}>{viewDetail.descripcion.slice(0, 80)}{viewDetail.descripcion.length > 80 ? '...' : ''}</p>
+              <p style={{ color: '#013978', fontSize: 12, margin: 0 }}>{viewDetail.descripcion.slice(0, 80)}{viewDetail.descripcion.length > 80 ? '...' : ''}</p>
             </div>
             <span style={situacionBadge(viewDetail.situacion)}>{viewDetail.situacion}</span>
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 16, marginBottom: 20 }}>
             {fields.map(f => (
               <div key={f.label}>
-                <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 11, marginBottom: 2 }}>{f.label}</p>
+                <p style={{ color: '#013978', fontSize: 16, fontWeight: 900, marginBottom: 4 }}>{f.label}</p>
                 <p style={{ color: '#fff', fontSize: 14 }}>{f.value}</p>
               </div>
             ))}
           </div>
           {viewDetail.descripcion && (
             <div style={{ marginBottom: 20 }}>
-              <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 11, marginBottom: 4 }}>Descripción</p>
+              <p style={{ color: '#013978', fontSize: 11, marginBottom: 4 }}>Descripción</p>
               <p style={{ color: '#fff', fontSize: 14, lineHeight: 1.6, whiteSpace: 'pre-wrap' }}>{viewDetail.descripcion}</p>
             </div>
           )}
         </div>
         <div style={{ marginTop: 16 }}>
           <SeguimientoPanel
-            seguimientos={viewDetail.seguimientos}
+            seguimientos={viewDetail.seguimientos || []}
             usuario={`${user.nombre} ${user.apellido}`}
             situacionActual={viewDetail.situacion}
-            situacionOpciones={situaciones.filter(s => s.nombre !== viewDetail.situacion).map(s => s.nombre)}
-            onAdd={(updated) => {
+            situacionOpciones={situaciones.map(s => s.nombre)}
+            onAdd={(seg: Seguimiento) => {
+              const updated = { ...viewDetail, situacion: seg.situacion, seguimientos: [...(viewDetail.seguimientos || []), seg] }
               updateTarea(viewDetail.id, updated)
-              setViewDetail({ ...viewDetail, ...updated })
+              setViewDetail(updated)
             }}
           />
         </div>
@@ -186,51 +201,55 @@ export default function TareasPage() {
       <div>
         <button onClick={() => { setSelected(null); setVista('lista') }} style={{ ...btnStyle, background: '#000', color: '#fff', border: '1px solid #333', marginBottom: 16 }}>← Cancelar</button>
         <form onSubmit={handleSave} style={cardStyle}>
-          <h2 style={{ color: '#fff', fontSize: 18, fontWeight: 700, marginBottom: 20 }}>{selected.id ? 'Editar' : 'Nueva'} Tarea</h2>
+          <h2 style={{ color: '#fff', fontSize: 18, fontWeight: 700, marginBottom: 20 }}>{selected.id ? tr('fmt.editarTarea') : tr('fmt.nuevaTarea')}</h2>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 16 }}>
             <div>
-              <label style={labelStyle}>Código</label>
+              <label style={labelStyle}>{tr('lbl.codigo')}</label>
               <input value={selected.codigo} readOnly style={{ ...inputStyle, opacity: 0.5 }} />
             </div>
             <div>
-              <label style={labelStyle}>Fecha Asignación *</label>
+              <label style={labelStyle}>{tr('lbl.fechaRegistro')}</label>
+              <input value={fDate(selected.fecha_registro || todayCO())} readOnly style={{ ...inputStyle, opacity: 0.5, cursor: 'not-allowed' }} />
+            </div>
+            <div>
+              <label style={labelStyle}>{tr('lbl.fechaAsignacionTask')} *</label>
               <input type="date" value={selected.fecha_asignacion} onChange={e => setSelected({ ...selected, fecha_asignacion: e.target.value })} required style={inputStyle} />
             </div>
             <div>
-              <label style={labelStyle}>Hora Asignación</label>
+              <label style={labelStyle}>{tr('lbl.horaAsignacion')}</label>
               <input type="time" value={selected.hora_asignacion} onChange={e => setSelected({ ...selected, hora_asignacion: e.target.value })} style={inputStyle} />
             </div>
             <div>
-              <label style={labelStyle}>Persona que Asigna *</label>
+              <label style={labelStyle}>{tr('lbl.personaQueAsigna')} *</label>
               <select value={selected.persona_asigna} onChange={e => setSelected({ ...selected, persona_asigna: e.target.value })} required style={inputStyle}>
                 <option value="">Seleccionar...</option>
                 {personas.map(p => <option key={p} value={p}>{p}</option>)}
               </select>
             </div>
             <div>
-              <label style={labelStyle}>Persona que Ejecuta *</label>
+              <label style={labelStyle}>{tr('lbl.personaQueEjecuta')} *</label>
               <select value={selected.persona_ejecuta} onChange={e => setSelected({ ...selected, persona_ejecuta: e.target.value })} required style={inputStyle}>
                 <option value="">Seleccionar...</option>
                 {personas.map(p => <option key={p} value={p}>{p}</option>)}
               </select>
             </div>
             <div>
-              <label style={labelStyle}>Fecha Requerida Fin *</label>
+              <label style={labelStyle}>{tr('lbl.fechaRequeridaFin')} *</label>
               <input type="date" value={selected.fecha_requerida_fin} onChange={e => setSelected({ ...selected, fecha_requerida_fin: e.target.value })} required style={inputStyle} />
             </div>
             <div>
-              <label style={labelStyle}>Fecha Real Fin</label>
+              <label style={labelStyle}>{tr('lbl.fechaRealFin')}</label>
               <input type="date" value={selected.fecha_real_fin} onChange={e => setSelected({ ...selected, fecha_real_fin: e.target.value })} style={inputStyle} />
             </div>
             <div>
-              <label style={labelStyle}>Situación *</label>
+              <label style={labelStyle}>{tr('lbl.situacion')} *</label>
               <select value={selected.situacion} onChange={e => setSelected({ ...selected, situacion: e.target.value })} required style={inputStyle}>
                 {situaciones.map(s => <option key={s.id} value={s.nombre}>{s.nombre}</option>)}
               </select>
             </div>
             <div />
             <div style={{ gridColumn: 'span 3' }}>
-              <label style={labelStyle}>Descripción *</label>
+              <label style={labelStyle}>{tr('lbl.descripcion')} *</label>
               <textarea value={selected.descripcion} onChange={e => setSelected({ ...selected, descripcion: e.target.value })} required rows={4}
                 placeholder="Describa la tarea con detalle..."
                 style={{ ...inputStyle, resize: 'vertical', minHeight: 100 }} />
@@ -240,11 +259,12 @@ export default function TareasPage() {
             <button type="submit" style={{ ...btnStyle, background: '#22c55e', color: '#fff', border: '1px solid #16a34a' }}>
               {selected.id ? 'Actualizar' : 'Guardar'} Tarea
             </button>
-            <button type="button" onClick={() => { setSelected(null); setVista('lista') }} style={{ ...btnStyle, background: 'rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.7)', border: '1px solid rgba(255,255,255,0.2)' }}>
+            <button type="button" onClick={() => { setSelected(null); setVista('lista') }} style={{ ...btnStyle, background: 'rgba(255,255,255,0.1)', color: '#0f172a', border: '1px solid rgba(255,255,255,0.2)' }}>
               Cancelar
             </button>
           </div>
         </form>
+        {selected.id && <DocumentosPanel modulo="tareas" registroId={selected.id} />}
       </div>
     )
   }
@@ -259,7 +279,7 @@ export default function TareasPage() {
           <div key={sit.id}
             onDragOver={e => e.preventDefault()}
             onDrop={() => handleDrop(sit.nombre)}
-            style={{ background: 'rgba(255,255,255,0.03)', borderRadius: 12, padding: 10, border: `1px solid ${c.border}`, minHeight: 300 }}>
+            style={{ background: '#f1f5f9', borderRadius: 12, padding: 10, border: `1px solid ${c.border}`, minHeight: 300 }}>
             {/* Column header */}
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10, padding: '8px 10px', background: c.bg, borderRadius: 8 }}>
               <span style={{ color: c.color, fontSize: 13, fontWeight: 700 }}>{sit.nombre}</span>
@@ -271,27 +291,32 @@ export default function TareasPage() {
                 <div key={t.id} draggable
                   onDragStart={() => setDragId(t.id)}
                   onClick={() => { setViewDetail(t); setVista('detalle') }}
-                  style={{ background: 'rgba(255,255,255,0.06)', borderRadius: 10, padding: 12, border: '1px solid rgba(255,255,255,0.1)', cursor: 'grab', transition: 'transform 0.15s', }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
-                    <span style={{ color: '#60a5fa', fontSize: 11, fontWeight: 700 }}>{t.codigo}</span>
-                    <span style={{ color: 'rgba(255,255,255,0.3)', fontSize: 10 }}>⋮⋮</span>
+                  style={{ background: '#f1f5f9', borderRadius: 12, padding: 16, border: '1px solid #e2e8f0', cursor: 'grab', transition: 'transform 0.15s', }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
+                    <span style={{ color: '#013978', fontSize: 13, fontWeight: 800 }}>{t.codigo}</span>
+                    <span style={{ color: 'rgba(255,255,255,0.3)', fontSize: 12 }}>⋮⋮</span>
                   </div>
-                  <p style={{ color: '#fff', fontSize: 12, margin: '0 0 8px', lineHeight: 1.4, overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' }}>{t.descripcion}</p>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-                      <span style={{ fontSize: 10 }}>👤</span>
-                      <span style={{ color: 'rgba(255,255,255,0.5)', fontSize: 10 }}>{t.persona_ejecuta}</span>
+                  <div style={{ marginBottom: 12 }}>
+                    <p style={{ color: 'rgba(255,255,255,0.55)', fontSize: 10, fontWeight: 700, letterSpacing: 0.5, marginBottom: 4 }}>DESCRIPCIÓN</p>
+                    <p style={{ color: '#fff', fontSize: 14, margin: 0, lineHeight: 1.5, overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical' }}>{t.descripcion || '—'}</p>
+                  </div>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 10, background: 'rgba(0,0,0,0.22)', padding: 12, borderRadius: 8 }}>
+                    <div>
+                      <p style={{ color: 'rgba(255,255,255,0.55)', fontSize: 10, fontWeight: 700, letterSpacing: 0.5, marginBottom: 2 }}>✍️ ASIGNA</p>
+                      <p style={{ color: '#fff', fontSize: 13, margin: 0, fontWeight: 600 }}>{t.persona_asigna || '—'}</p>
                     </div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-                      <span style={{ fontSize: 10 }}>📅</span>
-                      <span style={{ color: 'rgba(255,255,255,0.5)', fontSize: 10 }}>{fDate(t.fecha_requerida_fin)}</span>
+                    <div>
+                      <p style={{ color: 'rgba(255,255,255,0.55)', fontSize: 10, fontWeight: 700, letterSpacing: 0.5, marginBottom: 2 }}>📆 FECHA ASIGNACIÓN</p>
+                      <p style={{ color: '#fff', fontSize: 13, margin: 0, fontWeight: 600 }}>{t.fecha_asignacion ? fDate(t.fecha_asignacion) : '—'}</p>
                     </div>
-                    {t.fecha_asignacion && (
-                      <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-                        <span style={{ fontSize: 10 }}>🗓</span>
-                        <span style={{ color: 'rgba(255,255,255,0.4)', fontSize: 10 }}>Asig: {fDate(t.fecha_asignacion)}</span>
-                      </div>
-                    )}
+                    <div>
+                      <p style={{ color: 'rgba(255,255,255,0.55)', fontSize: 10, fontWeight: 700, letterSpacing: 0.5, marginBottom: 2 }}>👤 EJECUTA</p>
+                      <p style={{ color: '#fff', fontSize: 13, margin: 0, fontWeight: 600 }}>{t.persona_ejecuta || '—'}</p>
+                    </div>
+                    <div>
+                      <p style={{ color: 'rgba(255,255,255,0.55)', fontSize: 10, fontWeight: 700, letterSpacing: 0.5, marginBottom: 2 }}>🏁 FECHA A FINALIZAR</p>
+                      <p style={{ color: '#013978', fontSize: 13, margin: 0, fontWeight: 700 }}>{t.fecha_requerida_fin ? fDate(t.fecha_requerida_fin) : '—'}</p>
+                    </div>
                   </div>
                 </div>
               ))}
@@ -309,7 +334,7 @@ export default function TareasPage() {
   const stats = [
     { label: 'Total', value: tareas.length, color: '#3b82f6' },
     { label: 'Pendientes', value: tareas.filter(t => t.situacion === 'Pendiente').length, color: '#eab308' },
-    { label: 'En Proceso', value: tareas.filter(t => t.situacion === 'En Proceso').length, color: '#60a5fa' },
+    { label: 'En Proceso', value: tareas.filter(t => t.situacion === 'En Proceso').length, color: '#013978' },
     { label: 'Completadas', value: tareas.filter(t => t.situacion === 'Completada').length, color: '#22c55e' },
   ]
 
@@ -339,25 +364,25 @@ export default function TareasPage() {
         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
           <div style={{ width: 42, height: 42, borderRadius: 12, background: 'rgba(59,130,246,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 22 }}>✅</div>
           <div>
-            <h1 style={{ fontSize: 24, fontWeight: 700, color: '#ffffff', marginBottom: 4 }}>Tareas</h1>
-            <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: 14 }}>Gestión de tareas y asignaciones</p>
+            <h1 style={{ fontSize: 24, fontWeight: 700, color: '#013978', marginBottom: 4 }}>{tr('page.tareas.title')}</h1>
+            <p style={{ color: '#013978', fontSize: 14 }}>{tr('page.tareas.subtitle')}</p>
           </div>
         </div>
         <div style={{ display: 'flex', gap: 8 }}>
           {/* Toggle vista */}
-          <div style={{ display: 'flex', background: 'rgba(255,255,255,0.05)', borderRadius: 8, border: '1px solid rgba(255,255,255,0.1)', overflow: 'hidden' }}>
+          <div style={{ display: 'flex', background: '#ffffff', borderRadius: 8, border: '1px solid #e2e8f0', overflow: 'hidden' }}>
             <button onClick={() => setVistaLista('tabla')}
-              style={{ ...btnStyle, borderRadius: 0, background: vistaLista === 'tabla' ? 'rgba(59,130,246,0.3)' : 'transparent', color: vistaLista === 'tabla' ? '#60a5fa' : 'rgba(255,255,255,0.5)', border: 'none', padding: '8px 14px', fontSize: 12 }}>
+              style={{ ...btnStyle, borderRadius: 0, background: vistaLista === 'tabla' ? 'rgba(59,130,246,0.3)' : 'transparent', color: vistaLista === 'tabla' ? '#60a5fa' : '#475569', border: 'none', padding: '8px 14px', fontSize: 12 }}>
               Tabla
             </button>
             <button onClick={() => setVistaLista('kanban')}
-              style={{ ...btnStyle, borderRadius: 0, background: vistaLista === 'kanban' ? 'rgba(59,130,246,0.3)' : 'transparent', color: vistaLista === 'kanban' ? '#60a5fa' : 'rgba(255,255,255,0.5)', border: 'none', padding: '8px 14px', fontSize: 12 }}>
+              style={{ ...btnStyle, borderRadius: 0, background: vistaLista === 'kanban' ? 'rgba(59,130,246,0.3)' : 'transparent', color: vistaLista === 'kanban' ? '#60a5fa' : '#475569', border: 'none', padding: '8px 14px', fontSize: 12 }}>
               Kanban
             </button>
           </div>
           {permisos.editar && (
             <button onClick={() => { setSelected(emptyTarea(nextConsecutivo('TAR-', tareas.map(t => t.codigo)).codigo)); setVista('form') }}
-              style={{ ...btnStyle, background: '#0f1b3d', color: '#fff' }}>+ Nueva Tarea</button>
+              style={{ ...btnStyle, background: '#1e3a8a', color: '#fff' }}>{tr('page.tareas.btnNuevo')}</button>
           )}
         </div>
       </div>
@@ -366,7 +391,7 @@ export default function TareasPage() {
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12, marginBottom: 20 }}>
         {stats.map(s => (
           <div key={s.label} style={{ ...cardStyle, textAlign: 'center' }}>
-            <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 11, marginBottom: 4 }}>{s.label}</p>
+            <p style={{ color: '#013978', fontSize: 11, marginBottom: 4 }}>{s.label}</p>
             <p style={{ color: s.color, fontSize: 24, fontWeight: 800 }}>{s.value}</p>
           </div>
         ))}
@@ -394,37 +419,37 @@ export default function TareasPage() {
               <p style={{ fontSize: 12, marginTop: 8 }}>Cree una tarea para empezar a gestionar asignaciones</p>
             </div>
           ) : (
-            <div style={{ background: 'rgba(255,255,255,0.05)', borderRadius: 12, border: '1px solid rgba(255,255,255,0.1)', overflow: 'hidden' }}>
+            <div style={{ background: '#ffffff', borderRadius: 12, border: '1px solid #e2e8f0', overflow: 'hidden' }}>
               <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                 <thead>
                   <tr style={{ background: 'rgba(255,255,255,0.08)' }}>
-                    {['Código', 'F. Asignación', 'Asigna', 'Ejecuta', 'F. Requerida', 'F. Real Fin', 'Descripción', 'Situación', 'Acciones'].map(h => (
-                      <th key={h} style={{ padding: '12px 14px', textAlign: 'left', color: 'rgba(255,255,255,0.7)', fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: 0.5, borderBottom: '1px solid rgba(255,255,255,0.1)' }}>{h}</th>
+                    {[tr('lbl.codigo'), idi === 'en' ? 'Assigned' : 'F. Asignación', idi === 'en' ? 'Assigns' : 'Asigna', idi === 'en' ? 'Executes' : 'Ejecuta', idi === 'en' ? 'Required' : 'F. Requerida', idi === 'en' ? 'Actual End' : 'F. Real Fin', tr('lbl.descripcion'), tr('lbl.situacion'), idi === 'en' ? 'Actions' : 'Acciones'].map(h => (
+                      <th key={h} style={{ padding: '12px 14px', textAlign: 'left', color: '#013978', fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: 0.5, borderBottom: '1px solid #e2e8f0' }}>{h}</th>
                     ))}
                   </tr>
                 </thead>
                 <tbody>
                   {filtered.map(t => (
                     <tr key={t.id} style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
-                      <td style={{ padding: '10px 14px', color: '#60a5fa', fontSize: 13, fontWeight: 600 }}>{t.codigo}</td>
+                      <td style={{ padding: '10px 14px', color: '#013978', fontSize: 13, fontWeight: 600 }}>{t.codigo}</td>
                       <td style={{ padding: '10px 14px', color: '#fff', fontSize: 13 }}>{fDate(t.fecha_asignacion)}</td>
-                      <td style={{ padding: '10px 14px', color: 'rgba(255,255,255,0.7)', fontSize: 13 }}>{t.persona_asigna}</td>
+                      <td style={{ padding: '10px 14px', color: '#013978', fontSize: 13 }}>{t.persona_asigna}</td>
                       <td style={{ padding: '10px 14px', color: '#fff', fontSize: 13 }}>{t.persona_ejecuta}</td>
                       <td style={{ padding: '10px 14px', color: '#eab308', fontSize: 13 }}>{fDate(t.fecha_requerida_fin)}</td>
                       <td style={{ padding: '10px 14px', color: t.fecha_real_fin ? '#22c55e' : 'rgba(255,255,255,0.3)', fontSize: 13 }}>{fDate(t.fecha_real_fin)}</td>
-                      <td style={{ padding: '10px 14px', color: 'rgba(255,255,255,0.7)', fontSize: 12, maxWidth: 200, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{t.descripcion}</td>
+                      <td style={{ padding: '10px 14px', color: '#013978', fontSize: 12, maxWidth: 200, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{t.descripcion}</td>
                       <td style={{ padding: '10px 14px' }}><span style={situacionBadge(t.situacion)}>{t.situacion}</span></td>
                       <td style={{ padding: '10px 14px' }}>
-                        <div style={{ display: 'flex', gap: 6 }}>
+                        <div style={{ display: 'flex', gap: 4 }}>
                           <button onClick={() => { setViewDetail(t); setVista('detalle') }}
-                            style={{ ...btnStyle, background: 'rgba(59,130,246,0.15)', color: '#60a5fa', border: '1px solid rgba(59,130,246,0.3)', padding: '4px 12px', fontSize: 11 }}>Ver</button>
+                            style={{ ...btnStyle, background: '#1e40af', color: '#ffffff', border: '1px solid #3b82f6', padding: '3px 10px', fontSize: 10 }}>Ver</button>
                           {permisos.editar && (
                             <button onClick={() => { setSelected(t); setVista('form') }}
-                              style={{ ...btnStyle, background: 'rgba(34,197,94,0.15)', color: '#22c55e', border: '1px solid rgba(34,197,94,0.3)', padding: '4px 12px', fontSize: 11 }}>Editar</button>
+                              style={{ ...btnStyle, background: '#047857', color: '#ffffff', border: '1px solid #10b981', padding: '3px 10px', fontSize: 10 }}>Edit</button>
                           )}
                           {permisos.eliminar && (
-                            <button onClick={() => { if (confirm(`¿Eliminar tarea "${t.codigo}"?`)) deleteTarea(t.id) }}
-                              style={{ ...btnStyle, background: 'rgba(239,68,68,0.15)', color: '#ef4444', border: '1px solid rgba(239,68,68,0.3)', padding: '4px 12px', fontSize: 11 }}>Eliminar</button>
+                            <button onClick={() => { if (confirm(idi === 'en' ? `Delete task "${t.codigo}"?` : `¿Eliminar tarea "${t.codigo}"?`)) deleteTarea(t.id) }}
+                              style={{ ...btnStyle, background: '#7f1d1d', color: '#ffffff', border: '1px solid #dc2626', padding: '3px 10px', fontSize: 10 }}>Elim</button>
                           )}
                         </div>
                       </td>

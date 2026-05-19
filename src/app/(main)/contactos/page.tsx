@@ -1,5 +1,7 @@
 'use client'
+import { logAudit, computarDiff } from '@/shared/lib/audit'
 import { useState, useEffect } from 'react'
+import { useSearchParams, useRouter } from 'next/navigation'
 import { useContactosStore, Contacto } from '@/features/contactos/store/contactos-store'
 import { useClientesStore } from '@/features/clientes/store/clientes-store'
 import { useReferenceStore } from '@/features/referencias/store/reference-store'
@@ -11,7 +13,9 @@ import ReportPanel from '@/shared/components/report-panel'
 import SeguimientoPanel from '@/shared/components/seguimiento-panel'
 import DocumentosPanel from '@/shared/components/documentos-panel'
 import { useAsistenteStore } from '@/shared/stores/asistente-store'
+import { useT, useIdioma, useTStatus } from '@/shared/i18n/use-t'
 import { Seguimiento } from '@/shared/types/seguimiento'
+import { buildWhatsAppLink, isValidPhone } from '@/shared/lib/whatsapp'
 
 const today = todayColombia()
 
@@ -22,6 +26,9 @@ const emptyContacto = (codigo: string): Contacto => ({
 })
 
 export default function ContactosPage() {
+  const t = useT()
+  const ts = useTStatus()
+  const idioma = useIdioma()
   const permisos = usePermisos('contactos')
   const currentUser = useCurrentUserStore(s => s.user)
   const { contactos, addContacto, updateContacto, deleteContacto } = useContactosStore()
@@ -35,11 +42,21 @@ export default function ContactosPage() {
   const [search, setSearch] = useState('')
   const [filterCliente, setFilterCliente] = useState('')
   const { pendingSearch, pendingAction, clearPending } = useAsistenteStore()
+  const searchParams = useSearchParams()
+  const router = useRouter()
   useEffect(() => {
     if (pendingSearch) setSearch(pendingSearch)
     if (pendingAction === 'nuevo') { setSelected(emptyContacto(nextConsecutivo('CON-', contactos.map(c => c.codigo)).codigo)); setIsForm(true) }
     if (pendingSearch || pendingAction) clearPending()
   }, [])
+
+  useEffect(() => {
+    const openId = searchParams.get('open')
+    if (openId) {
+      const c = contactos.find(x => x.id === openId)
+      if (c) setViewDetail(c)
+    }
+  }, [searchParams, contactos])
 
   const filtered = contactos.filter(c => {
     const matchSearch = !search || c.nombre.toLowerCase().includes(search.toLowerCase()) ||
@@ -48,65 +65,71 @@ export default function ContactosPage() {
     return matchSearch && matchCliente
   })
 
+  const auditParams = () => ({
+    usuario: currentUser?.usuario || 'desconocido',
+    usuario_nombre: `${currentUser?.nombre || ''} ${currentUser?.apellido || ''}`.trim(),
+    rol: currentUser?.rol || '',
+    modulo: 'contactos',
+  })
+
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault()
     if (!selected) return
     const cli = clientes.find(c => c.id === selected.cliente_id)
     const toSave = { ...selected, cliente_nombre: cli?.razon_social || selected.cliente_nombre }
     if (toSave.id) {
-      updateContacto(toSave.id, toSave)
+      const _anterior = contactos.find(x => x.id === toSave.id); updateContacto(toSave.id, toSave); logAudit({ ...auditParams(), accion: "MODIFICAR", registro_codigo: toSave.codigo, registro_nombre: `${toSave.nombre} ${toSave.apellido}`, detalle: computarDiff(_anterior as unknown as Record<string, unknown>, toSave as unknown as Record<string, unknown>) })
     } else {
-      addContacto({ ...toSave, id: crypto.randomUUID() })
+      addContacto({ ...toSave, id: crypto.randomUUID(), fecha_registro: today }); logAudit({ ...auditParams(), accion: "CREAR", registro_codigo: toSave.codigo, registro_nombre: `${toSave.nombre} ${toSave.apellido}` })
     }
     setIsForm(false); setSelected(null)
   }
 
   const statusStyle = (s: string): React.CSSProperties => {
     const map: Record<string, React.CSSProperties> = {
-      'Activo': { background: '#1e3a8a', color: '#ffffff', border: '1px solid #2563eb' },
-      'Inactivo': { background: 'rgba(245,158,11,0.2)', color: '#fcd34d', border: '1px solid rgba(245,158,11,0.3)' },
+      'Activo': { background: '#047857', color: '#ffffff', border: '1px solid #10b981' },
+      'Inactivo': { background: '#b45309', color: '#ffffff', border: '1px solid #f59e0b' },
     }
     return map[s] || {}
   }
 
   const inputStyle: React.CSSProperties = { width: '100%', padding: '8px 12px', borderRadius: 8, background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.2)', color: '#ffffff', fontSize: 13, outline: 'none' }
   const btnStyle: React.CSSProperties = { padding: '8px 16px', borderRadius: 8, border: 'none', cursor: 'pointer', fontSize: 13, fontWeight: 600 }
-  const tabBtnStyle = (active: boolean): React.CSSProperties => ({ ...btnStyle, background: active ? '#1e3a8a' : 'rgba(255,255,255,0.15)', color: active ? '#ffffff' : 'rgba(255,255,255,0.7)', border: active ? '1px solid #2563eb' : '1px solid rgba(255,255,255,0.2)' })
+  const tabBtnStyle = (active: boolean): React.CSSProperties => ({ ...btnStyle, background: active ? '#1e3a8a' : 'rgba(255,255,255,0.15)', color: active ? '#ffffff' : '#0f172a', border: active ? '1px solid #3b82f6' : '1px solid rgba(255,255,255,0.2)' })
 
   // View detail
   if (viewDetail) {
     const fields = [
-      { label: 'Código', value: viewDetail.codigo },
-      { label: 'Empresa', value: viewDetail.cliente_nombre },
-      { label: 'Nombre', value: viewDetail.nombre },
-      { label: 'Apellido', value: viewDetail.apellido },
-      { label: 'Cargo', value: viewDetail.cargo },
-      { label: 'Departamento', value: viewDetail.departamento },
-      { label: 'Teléfono', value: viewDetail.telefono },
-      { label: 'Celular', value: viewDetail.celular },
-      { label: 'Email', value: viewDetail.email },
-      { label: 'Fecha Nacimiento', value: viewDetail.fecha_nacimiento ? fDate(viewDetail.fecha_nacimiento) : '' },
-      { label: 'Nivel de Influencia', value: viewDetail.nivel_influencia },
-      { label: 'Contacto Principal', value: viewDetail.es_principal ? 'Sí' : 'No' },
-      { label: 'Situación', value: viewDetail.situacion },
-      { label: 'Fecha Registro', value: fDate(viewDetail.fecha_registro) },
-      { label: 'Observaciones', value: viewDetail.observaciones },
+      { label: t('lbl.codigo'), value: viewDetail.codigo },
+      { label: t('lbl.empresa'), value: viewDetail.cliente_nombre },
+      { label: t('lbl.nombre'), value: viewDetail.nombre },
+      { label: t('lbl.apellido'), value: viewDetail.apellido },
+      { label: t('lbl.cargo'), value: viewDetail.cargo },
+      { label: t('lbl.departamento'), value: viewDetail.departamento },
+      { label: t('lbl.telefono'), value: viewDetail.telefono },
+      { label: t('lbl.celular'), value: viewDetail.celular },
+      { label: t('lbl.email'), value: viewDetail.email },
+      { label: t('lbl.fechaNacimiento'), value: viewDetail.fecha_nacimiento ? fDate(viewDetail.fecha_nacimiento) : '' },
+      { label: t('lbl.nivelInfluencia'), value: viewDetail.nivel_influencia },
+      { label: t('lbl.situacion'), value: viewDetail.situacion },
+      { label: t('lbl.fechaRegistro'), value: fDate(viewDetail.fecha_registro) },
+      { label: t('lbl.observaciones'), value: viewDetail.observaciones },
     ]
     return (
       <div>
-        <button onClick={() => setViewDetail(null)} style={{ ...btnStyle, background: '#000000', color: '#ffffff', border: '1px solid #333333', marginBottom: 16 }}>← Volver</button>
-        <div style={{ background: 'rgba(255,255,255,0.05)', borderRadius: 16, padding: 24, border: '1px solid rgba(255,255,255,0.15)' }}>
-          <h2 style={{ color: '#ffffff', fontSize: 18, fontWeight: 700, marginBottom: 16 }}>{viewDetail.nombre} {viewDetail.apellido}</h2>
+        <button onClick={() => { const back = searchParams.get("back"); if (back) { router.push(back); return } setViewDetail(null) }} style={{ ...btnStyle, background: "#000000", color: "#ffffff", border: "1px solid #333333", marginBottom: 16 }}>{t('btn.volver')}</button>
+        <div style={{ background: '#ffffff', borderRadius: 16, padding: 24, border: '1px solid #cbd5e1' }}>
+          <h2 style={{ color: '#013978', fontSize: 18, fontWeight: 700, marginBottom: 16 }}>{viewDetail.nombre} {viewDetail.apellido}</h2>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 16 }}>
             {fields.map(f => (
               <div key={f.label}>
-                <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 11, marginBottom: 2 }}>{f.label}</p>
-                <p style={{ color: '#ffffff', fontSize: 14 }}>{f.value || '—'}</p>
+                <p style={{ color: '#013978', fontSize: 16, fontWeight: 900, marginBottom: 4 }}>{f.label}</p>
+                <p style={{ color: '#013978', fontSize: 14 }}>{f.value || '—'}</p>
               </div>
             ))}
           </div>
           {permisos.editar && (
-            <button onClick={() => { setSelected(viewDetail); setIsForm(true); setViewDetail(null) }} style={{ ...btnStyle, background: '#15803d', color: '#ffffff', border: '1px solid #16a34a', marginTop: 16 }}>Editar</button>
+            <button onClick={() => { setSelected(viewDetail); setIsForm(true); setViewDetail(null) }} style={{ ...btnStyle, background: '#15803d', color: '#ffffff', border: '1px solid #16a34a', marginTop: 16 }}>{t('btn.editar')}</button>
           )}
           <SeguimientoPanel
             seguimientos={viewDetail.seguimientos || []}
@@ -130,16 +153,20 @@ export default function ContactosPage() {
     const refOptions = (table: string) => (refData[table as keyof typeof refData] || []).filter(r => r.situacion).map(r => r.descripcion)
     return (
       <div>
-        <button onClick={() => { setIsForm(false); setSelected(null) }} style={{ ...btnStyle, background: '#000000', color: '#ffffff', border: '1px solid #333333', marginBottom: 16 }}>← Volver</button>
-        <form onSubmit={handleSave} style={{ background: 'rgba(255,255,255,0.05)', borderRadius: 16, padding: 24, border: '1px solid rgba(255,255,255,0.15)' }}>
-          <h2 style={{ color: '#ffffff', fontSize: 18, fontWeight: 700, marginBottom: 20 }}>{selected.id ? 'Editar' : 'Nuevo'} Contacto</h2>
+        <button onClick={() => { setIsForm(false); setSelected(null) }} style={{ ...btnStyle, background: '#000000', color: '#ffffff', border: '1px solid #333333', marginBottom: 16 }}>{t('btn.volver')}</button>
+        <form onSubmit={handleSave} style={{ background: '#ffffff', borderRadius: 16, padding: 24, border: '1px solid #cbd5e1' }}>
+          <h2 style={{ color: '#013978', fontSize: 18, fontWeight: 700, marginBottom: 20 }}>{selected.id ? t('fmt.editarContacto') : t('fmt.nuevoContacto')}</h2>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 16 }}>
             <div>
-              <label style={{ color: '#ffffff', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>Código</label>
+              <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.codigo')}</label>
               <input value={selected.codigo} readOnly style={{ ...inputStyle, opacity: 0.5 }} />
             </div>
-            <div style={{ gridColumn: 'span 2' }}>
-              <label style={{ color: '#ffffff', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>Empresa *</label>
+            <div>
+              <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.fechaRegistro')}</label>
+              <input value={fDate(selected.fecha_registro || today)} readOnly style={{ ...inputStyle, opacity: 0.5, cursor: 'not-allowed' }} />
+            </div>
+            <div>
+              <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.empresa')} *</label>
               <select value={selected.cliente_id} onChange={e => {
                 const cli = clientes.find(c => c.id === e.target.value)
                 setSelected({ ...selected, cliente_id: e.target.value, cliente_nombre: cli?.razon_social || '' })
@@ -149,64 +176,61 @@ export default function ContactosPage() {
               </select>
             </div>
             <div>
-              <label style={{ color: '#ffffff', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>Nombre *</label>
-              <input value={selected.nombre} onChange={e => setSelected({ ...selected, nombre: e.target.value })} required style={inputStyle} />
+              <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.nombre')} *</label>
+              <input value={selected.nombre} onChange={e => setSelected({ ...selected, nombre: e.target.value.toUpperCase() })} required style={inputStyle} />
             </div>
             <div>
-              <label style={{ color: '#ffffff', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>Apellido *</label>
-              <input value={selected.apellido} onChange={e => setSelected({ ...selected, apellido: e.target.value })} required style={inputStyle} />
+              <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.apellido')} *</label>
+              <input value={selected.apellido} onChange={e => setSelected({ ...selected, apellido: e.target.value.toUpperCase() })} required style={inputStyle} />
             </div>
             <div>
-              <label style={{ color: '#ffffff', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>Cargo</label>
+              <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.cargo')}</label>
               <input value={selected.cargo} onChange={e => setSelected({ ...selected, cargo: e.target.value })} style={inputStyle} />
             </div>
             <div>
-              <label style={{ color: '#ffffff', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>Departamento</label>
+              <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.departamento')}</label>
               <input value={selected.departamento} onChange={e => setSelected({ ...selected, departamento: e.target.value })} style={inputStyle} />
             </div>
             <div>
-              <label style={{ color: '#ffffff', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>Teléfono</label>
+              <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.telefono')}</label>
               <input value={selected.telefono} onChange={e => setSelected({ ...selected, telefono: e.target.value })} style={inputStyle} />
             </div>
             <div>
-              <label style={{ color: '#ffffff', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>Celular</label>
+              <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.celular')}</label>
               <input value={selected.celular} onChange={e => setSelected({ ...selected, celular: e.target.value })} style={inputStyle} />
             </div>
             <div>
-              <label style={{ color: '#ffffff', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>Email</label>
+              <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.email')}</label>
               <input type="email" value={selected.email} onChange={e => setSelected({ ...selected, email: e.target.value })} style={inputStyle} />
             </div>
             <div>
-              <label style={{ color: '#ffffff', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>Fecha Nacimiento</label>
+              <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.fechaNacimiento')}</label>
               <input type="date" value={selected.fecha_nacimiento} onChange={e => setSelected({ ...selected, fecha_nacimiento: e.target.value })} style={inputStyle} />
             </div>
             <div>
-              <label style={{ color: '#ffffff', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>Nivel de Influencia</label>
+              <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.nivelInfluencia')}</label>
               <select value={selected.nivel_influencia} onChange={e => setSelected({ ...selected, nivel_influencia: e.target.value })} style={inputStyle}>
-                <option value="">Seleccionar...</option>
+                <option value="">{t("campo.seleccionar")}</option>
                 {refOptions('nivel_influencia').map(o => <option key={o} value={o}>{o}</option>)}
               </select>
             </div>
             <div>
-              <label style={{ color: '#ffffff', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>Situación</label>
+              <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.situacion')}</label>
               <select value={selected.situacion} onChange={e => setSelected({ ...selected, situacion: e.target.value })} style={inputStyle}>
                 {refOptions('situacion_contacto').map(o => <option key={o} value={o}>{o}</option>)}
               </select>
             </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8, paddingTop: 20 }}>
-              <input type="checkbox" checked={selected.es_principal} onChange={e => setSelected({ ...selected, es_principal: e.target.checked })} style={{ accentColor: '#22c55e' }} />
-              <label style={{ color: 'rgba(255,255,255,0.7)', fontSize: 13 }}>Contacto Principal</label>
-            </div>
             <div style={{ gridColumn: 'span 3' }}>
-              <label style={{ color: '#ffffff', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>Observaciones</label>
+              <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.observaciones')}</label>
               <textarea value={selected.observaciones} onChange={e => setSelected({ ...selected, observaciones: e.target.value })} rows={3} style={{ ...inputStyle, resize: 'vertical' }} />
             </div>
           </div>
           <div style={{ display: 'flex', gap: 10, marginTop: 20 }}>
-            <button type="submit" style={{ ...btnStyle, background: '#0f1b3d', color: '#ffffff' }}>Guardar</button>
-            <button type="button" onClick={() => { setIsForm(false); setSelected(null) }} style={{ ...btnStyle, background: '#64748b', color: '#ffffff' }}>Cancelar</button>
+            <button type="submit" style={{ ...btnStyle, background: '#1e3a8a', color: '#ffffff' }}>{t('btn.guardar')}</button>
+            <button type="button" onClick={() => { setIsForm(false); setSelected(null) }} style={{ ...btnStyle, background: '#64748b', color: '#ffffff' }}>{t('btn.cancelar')}</button>
           </div>
         </form>
+        {selected.id && <DocumentosPanel modulo="contactos" registroId={selected.id} />}
       </div>
     )
   }
@@ -235,63 +259,65 @@ export default function ContactosPage() {
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
         <div>
-          <h1 style={{ fontSize: 24, fontWeight: 700, color: '#ffffff', marginBottom: 4 }}>Contactos</h1>
-          <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: 14 }}>Personas de contacto por empresa</p>
+          <h1 style={{ fontSize: 24, fontWeight: 700, color: '#013978', marginBottom: 4 }}>{t('page.contactos.title')}</h1>
+          <p style={{ color: '#013978', fontSize: 14 }}>{t('page.contactos.subtitle')}</p>
         </div>
         {permisos.editar && tab === 'registros' && (
-          <button onClick={() => { setSelected(emptyContacto(nextConsecutivo('CON-', contactos.map(c => c.codigo)).codigo)); setIsForm(true) }} style={{ ...btnStyle, background: '#0f1b3d', color: '#ffffff' }}>+ Nuevo Contacto</button>
+          <button onClick={() => { setSelected(emptyContacto(nextConsecutivo('CON-', contactos.map(c => c.codigo)).codigo)); setIsForm(true) }} style={{ ...btnStyle, background: '#1e3a8a', color: '#ffffff' }}>{t('page.contactos.btnNuevo')}</button>
         )}
       </div>
 
       <div style={{ display: 'flex', gap: 8, marginBottom: 20 }}>
-        <button onClick={() => setTab('registros')} style={tabBtnStyle(tab === 'registros')}>📋 Registros</button>
-        <button onClick={() => setTab('reportes')} style={tabBtnStyle(tab === 'reportes')}>📊 Reportes</button>
+        <button onClick={() => setTab('registros')} style={tabBtnStyle(tab === 'registros')}>📋 {t('tab.registros')}</button>
+        <button onClick={() => setTab('reportes')} style={tabBtnStyle(tab === 'reportes')}>📊 {t('tab.reportes')}</button>
       </div>
 
       {tab === 'registros' && (
         <>
           <div style={{ display: 'flex', gap: 10, marginBottom: 16 }}>
-            <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Buscar por nombre o código..." style={{ ...inputStyle, maxWidth: 300 }} />
+            <input value={search} onChange={e => setSearch(e.target.value)} placeholder={t('ph.buscarContacto')} style={{ ...inputStyle, maxWidth: 300 }} />
             <select value={filterCliente} onChange={e => setFilterCliente(e.target.value)} style={{ ...inputStyle, maxWidth: 250 }}>
               <option value="">Todas las empresas</option>
               {clientes.map(c => <option key={c.id} value={c.id}>{c.razon_social}</option>)}
             </select>
           </div>
 
-          <div style={{ borderRadius: 12, border: '1px solid rgba(255,255,255,0.15)', overflow: 'hidden' }}>
+          <div style={{ borderRadius: 12, border: '1px solid #cbd5e1', overflow: 'hidden' }}>
             <table style={{ width: '100%', borderCollapse: 'collapse' }}>
               <thead>
                 <tr>
-                  {['Código', 'Nombre', 'Empresa', 'Cargo', 'Teléfono', 'Email', 'Situación', 'Acciones'].map(h => (
-                    <th key={h} style={{ padding: '12px 14px', background: '#1e3a5f', color: '#fff', fontSize: 12, textAlign: 'left' }}>{h}</th>
+                  {[t('lbl.codigo'), t('lbl.nombre'), t('lbl.empresa'), t('lbl.cargo'), t('lbl.telefono'), t('lbl.email'), t('lbl.situacion'), idioma === 'en' ? 'Actions' : 'Acciones'].map(h => (
+                    <th key={h} style={{ padding: '12px 14px', background: '#1e3a8a', color: '#fff', fontSize: 12, textAlign: 'left' }}>{h}</th>
                   ))}
                 </tr>
               </thead>
               <tbody>
                 {filtered.map((c, i) => (
                   <tr key={c.id} style={{ background: i % 2 === 0 ? 'rgba(255,255,255,0.03)' : 'transparent' }}>
-                    <td style={{ padding: '10px 14px', borderBottom: '1px solid rgba(255,255,255,0.1)', color: '#4ade80', fontSize: 13, fontFamily: 'monospace' }}>{c.codigo}</td>
-                    <td style={{ padding: '10px 14px', borderBottom: '1px solid rgba(255,255,255,0.1)', color: '#ffffff', fontSize: 13 }}>
+                    <td style={{ padding: '10px 14px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 13, fontFamily: 'monospace' }}>{c.codigo}</td>
+                    <td style={{ padding: '10px 14px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 13 }}>
                       {c.nombre} {c.apellido}
-                      {c.es_principal && <span style={{ marginLeft: 6, padding: '1px 6px', borderRadius: 8, fontSize: 9, background: 'rgba(251,191,36,0.2)', color: '#fcd34d', border: '1px solid rgba(251,191,36,0.3)' }}>Principal</span>}
                     </td>
-                    <td style={{ padding: '10px 14px', borderBottom: '1px solid rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.7)', fontSize: 13 }}>{c.cliente_nombre}</td>
-                    <td style={{ padding: '10px 14px', borderBottom: '1px solid rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.7)', fontSize: 13 }}>{c.cargo}</td>
-                    <td style={{ padding: '10px 14px', borderBottom: '1px solid rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.7)', fontSize: 13 }}>{c.telefono || c.celular}</td>
-                    <td style={{ padding: '10px 14px', borderBottom: '1px solid rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.7)', fontSize: 13 }}>{c.email}</td>
-                    <td style={{ padding: '10px 14px', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
-                      <span style={{ padding: '3px 10px', borderRadius: 20, fontSize: 11, fontWeight: 600, ...statusStyle(c.situacion) }}>{c.situacion}</span>
+                    <td style={{ padding: '10px 14px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 13 }}>{c.cliente_nombre}</td>
+                    <td style={{ padding: '10px 14px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 13 }}>{c.cargo}</td>
+                    <td style={{ padding: '10px 14px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 13 }}>{c.telefono || c.celular}</td>
+                    <td style={{ padding: '10px 14px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 13 }}>{c.email}</td>
+                    <td style={{ padding: '10px 14px', borderBottom: '1px solid #e2e8f0' }}>
+                      <span style={{ padding: '3px 10px', borderRadius: 20, fontSize: 11, fontWeight: 600, ...statusStyle(c.situacion) }}>{ts(c.situacion)}</span>
                     </td>
-                    <td style={{ padding: '10px 14px', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
-                      <div style={{ display: 'flex', gap: 6 }}>
-                        <button onClick={() => setViewDetail(c)} style={{ ...btnStyle, padding: '4px 12px', fontSize: 11, background: '#ea580c', color: '#ffffff', border: '1px solid #f97316' }}>Ver</button>
-                        {permisos.editar && <button onClick={() => { setSelected(c); setIsForm(true) }} style={{ ...btnStyle, padding: '4px 12px', fontSize: 11, background: '#15803d', color: '#ffffff', border: '1px solid #16a34a' }}>Editar</button>}
-                        {permisos.eliminar && <button onClick={() => { if (confirm(`¿Eliminar contacto "${c.nombre} ${c.apellido}"?`)) deleteContacto(c.id) }} style={{ ...btnStyle, padding: '4px 12px', fontSize: 11, background: '#dc2626', color: '#ffffff', border: '1px solid #ef4444' }}>Eliminar</button>}
+                    <td style={{ padding: '8px 10px', borderBottom: '1px solid #e2e8f0' }}>
+                      <div style={{ display: 'flex', gap: 4 }}>
+                        <button onClick={() => setViewDetail(c)} style={{ ...btnStyle, padding: '3px 10px', fontSize: 10, background: '#ea580c', color: '#ffffff', border: '1px solid #f97316' }}>Ver</button>
+                        {(isValidPhone(c.celular) || isValidPhone(c.telefono)) && (
+                          <a href={buildWhatsAppLink(c.celular || c.telefono, idioma === 'en' ? `Hi ${c.nombre}, this is a quick message from us.` : `Hola ${c.nombre}, te escribimos desde nuestra empresa.`)} target="_blank" rel="noopener noreferrer" style={{ ...btnStyle, padding: '3px 10px', fontSize: 10, background: '#25d366', color: '#ffffff', border: '1px solid #128c7e', textDecoration: 'none', display: 'inline-flex', alignItems: 'center' }}>WA</a>
+                        )}
+                        {permisos.editar && <button onClick={() => { setSelected(c); setIsForm(true) }} style={{ ...btnStyle, padding: '3px 10px', fontSize: 10, background: '#15803d', color: '#ffffff', border: '1px solid #16a34a' }}>Edit</button>}
+                        {permisos.eliminar && <button onClick={() => { if (confirm(idioma === 'en' ? `Delete contact "${c.nombre} ${c.apellido}"?` : `¿Eliminar contacto "${c.nombre} ${c.apellido}"?`)) deleteContacto(c.id); logAudit({ ...auditParams(), accion: "ELIMINAR", registro_codigo: c.codigo, registro_nombre: `${c.nombre} ${c.apellido}` }) }} style={{ ...btnStyle, padding: '3px 10px', fontSize: 10, background: '#dc2626', color: '#ffffff', border: '1px solid #ef4444' }}>Elim</button>}
                       </div>
                     </td>
                   </tr>
                 ))}
-                {filtered.length === 0 && <tr><td colSpan={8} style={{ padding: 32, textAlign: 'center', color: 'rgba(255,255,255,0.5)', fontSize: 14 }}>No hay contactos registrados</td></tr>}
+                {filtered.length === 0 && <tr><td colSpan={8} style={{ padding: 32, textAlign: 'center', color: '#013978', fontSize: 14 }}>No hay contactos registrados</td></tr>}
               </tbody>
             </table>
           </div>

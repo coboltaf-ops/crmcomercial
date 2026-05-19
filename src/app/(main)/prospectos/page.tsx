@@ -1,6 +1,8 @@
 'use client'
+import { logAudit, computarDiff } from '@/shared/lib/audit'
 import { useState, useEffect } from 'react'
 import { useProspectosStore, Prospecto } from '@/features/prospectos/store/prospectos-store'
+import { useClientesStore, generarCodigoAcceso } from '@/features/clientes/store/clientes-store'
 import { useReferenceStore } from '@/features/referencias/store/reference-store'
 import { useCurrentUserStore } from '@/features/usuarios-gestion/store/current-user-store'
 import { usePermisos } from '@/shared/hooks/use-permisos'
@@ -11,6 +13,9 @@ import SeguimientoPanel from '@/shared/components/seguimiento-panel'
 import DocumentosPanel from '@/shared/components/documentos-panel'
 import { useAsistenteStore } from '@/shared/stores/asistente-store'
 import { Seguimiento } from '@/shared/types/seguimiento'
+import { useEmpresaStore } from '@/features/empresa/store/empresa-store'
+import { useT, useIdioma, useTStatus } from '@/shared/i18n/use-t'
+import { buildWhatsAppLink, isValidPhone } from '@/shared/lib/whatsapp'
 
 const today = todayColombia()
 
@@ -27,9 +32,14 @@ const emptyProspecto = (codigo: string): Prospecto => ({
 })
 
 export default function ProspectosPage() {
+  const t = useT()
+  const ts = useTStatus()
+  const idioma = useIdioma()
   const permisos = usePermisos('prospectos')
   const currentUser = useCurrentUserStore(s => s.user)
+  const empresa = useEmpresaStore(s => s.empresas[0])
   const { prospectos, addProspecto, updateProspecto, deleteProspecto } = useProspectosStore()
+  const { clientes, addCliente } = useClientesStore()
   const refData = useReferenceStore(s => s.data)
 
   const [selected, setSelected] = useState<Prospecto | null>(null)
@@ -107,66 +117,142 @@ export default function ProspectosPage() {
       p.empresa.toLowerCase().includes(s) || p.codigo.toLowerCase().includes(s)
   })
 
+  const auditParams = () => ({
+    usuario: currentUser?.usuario || 'desconocido',
+    usuario_nombre: `${currentUser?.nombre || ''} ${currentUser?.apellido || ''}`.trim(),
+    rol: currentUser?.rol || '',
+    modulo: 'prospectos',
+  })
+
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault()
     if (!selected) return
     if (selected.id) {
-      updateProspecto(selected.id, selected)
+      const _anterior = prospectos.find(x => x.id === selected.id); updateProspecto(selected.id, selected); logAudit({ ...auditParams(), accion: "MODIFICAR", registro_codigo: selected.codigo, registro_nombre: `${selected.nombre} ${selected.apellido}`, detalle: computarDiff(_anterior as unknown as Record<string, unknown>, selected as unknown as Record<string, unknown>) })
     } else {
-      addProspecto({ ...selected, id: crypto.randomUUID() })
+      addProspecto({ ...selected, id: crypto.randomUUID(), fecha_registro: today }); logAudit({ ...auditParams(), accion: "CREAR", registro_codigo: selected.codigo, registro_nombre: `${selected.nombre} ${selected.apellido}` })
+      const correo = (selected.correo || '').trim()
+      if (correo) {
+        fetch('/api/send-prospecto-bienvenida', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            to: correo,
+            nombre: selected.nombre,
+            apellido: selected.apellido,
+            codigo: selected.codigo,
+            empresa_nombre: empresa?.nombre || '',
+            empresa_prospecto: selected.empresa || '',
+            detalle_requerimiento: selected.detalle_requerimiento || '',
+            logo_url: empresa?.logo_url || '',
+          }),
+        }).catch(() => { /* no bloquear */ })
+      }
     }
     setIsForm(false); setSelected(null)
   }
 
   const statusStyle = (s: string): React.CSSProperties => {
     const map: Record<string, React.CSSProperties> = {
-      'Nuevo': { background: '#1e3a8a', color: '#ffffff', border: '1px solid #2563eb' },
-      'Contactado': { background: 'rgba(59,130,246,0.2)', color: '#93c5fd', border: '1px solid rgba(59,130,246,0.3)' },
-      'Calificado': { background: 'rgba(34,197,94,0.2)', color: '#86efac', border: '1px solid rgba(34,197,94,0.3)' },
-      'En Negociación': { background: 'rgba(245,158,11,0.2)', color: '#fcd34d', border: '1px solid rgba(245,158,11,0.3)' },
-      'Convertido': { background: '#15803d', color: '#ffffff', border: '1px solid #16a34a' },
-      'Descartado': { background: 'rgba(239,68,68,0.2)', color: '#fca5a5', border: '1px solid rgba(239,68,68,0.3)' },
+      'Nuevo': { background: '#0c2563', color: '#ffffff', border: '1px solid #60a5fa' },
+      'Contactado': { background: '#1e40af', color: '#ffffff', border: '1px solid #3b82f6' },
+      'Calificado': { background: '#15803d', color: '#ffffff', border: '1px solid #22c55e' },
+      'En Negociación': { background: '#b45309', color: '#ffffff', border: '1px solid #f59e0b' },
+      'Convertido': { background: '#065f46', color: '#ffffff', border: '1px solid #10b981' },
+      'Descartado': { background: '#991b1b', color: '#ffffff', border: '1px solid #ef4444' },
     }
     return map[s] || {}
   }
 
   const inputStyle: React.CSSProperties = { width: '100%', padding: '8px 12px', borderRadius: 8, background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.2)', color: '#ffffff', fontSize: 13, outline: 'none' }
   const btnStyle: React.CSSProperties = { padding: '8px 16px', borderRadius: 8, border: 'none', cursor: 'pointer', fontSize: 13, fontWeight: 600 }
-  const tabBtnStyle = (active: boolean): React.CSSProperties => ({ ...btnStyle, background: active ? '#1e3a8a' : 'rgba(255,255,255,0.15)', color: active ? '#ffffff' : 'rgba(255,255,255,0.7)', border: active ? '1px solid #2563eb' : '1px solid rgba(255,255,255,0.2)' })
+  const tabBtnStyle = (active: boolean): React.CSSProperties => ({ ...btnStyle, background: active ? '#1e3a8a' : 'rgba(255,255,255,0.15)', color: active ? '#ffffff' : '#0f172a', border: active ? '1px solid #3b82f6' : '1px solid rgba(255,255,255,0.2)' })
 
   // View detail
   if (viewDetail) {
     const fields = [
-      { label: 'Código', value: viewDetail.codigo },
-      { label: 'Nombre', value: viewDetail.nombre },
-      { label: 'Apellido', value: viewDetail.apellido },
-      { label: 'Empresa', value: viewDetail.empresa },
-      { label: 'Correo', value: viewDetail.correo },
-      { label: 'Nro Móvil', value: viewDetail.nro_movil },
-      { label: 'Origen Prospecto', value: viewDetail.origen_prospecto },
-      { label: 'Actividad', value: viewDetail.actividad },
-      { label: 'Ciudad', value: viewDetail.ciudad },
-      { label: 'País', value: viewDetail.pais },
-      { label: 'Situación', value: viewDetail.situacion },
-      { label: 'Fecha Registro', value: fDate(viewDetail.fecha_registro) },
-      { label: 'Detalle Requerimiento', value: viewDetail.detalle_requerimiento },
+      { label: t('lbl.codigo'), value: viewDetail.codigo },
+      { label: t('lbl.nombre'), value: viewDetail.nombre },
+      { label: t('lbl.apellido'), value: viewDetail.apellido },
+      { label: t('lbl.empresa'), value: viewDetail.empresa },
+      { label: t('lbl.correo'), value: viewDetail.correo },
+      { label: t('lbl.nroMovil'), value: viewDetail.nro_movil },
+      { label: t('lbl.origenProspecto'), value: viewDetail.origen_prospecto },
+      { label: t('lbl.actividad'), value: viewDetail.actividad },
+      { label: t('lbl.ciudad'), value: viewDetail.ciudad },
+      { label: t('lbl.pais'), value: viewDetail.pais },
+      { label: t('lbl.situacion'), value: viewDetail.situacion },
+      { label: t('lbl.fechaRegistro'), value: fDate(viewDetail.fecha_registro) },
+      { label: t('lbl.detalleRequerimiento'), value: viewDetail.detalle_requerimiento },
     ]
     return (
       <div>
-        <button onClick={() => setViewDetail(null)} style={{ ...btnStyle, background: '#000000', color: '#ffffff', border: '1px solid #333333', marginBottom: 16 }}>← Volver</button>
-        <div style={{ background: 'rgba(255,255,255,0.05)', borderRadius: 16, padding: 24, border: '1px solid rgba(255,255,255,0.15)' }}>
-          <h2 style={{ color: '#ffffff', fontSize: 18, fontWeight: 700, marginBottom: 16 }}>{viewDetail.nombre} {viewDetail.apellido}</h2>
+        <button onClick={() => setViewDetail(null)} style={{ ...btnStyle, background: '#000000', color: '#ffffff', border: '1px solid #333333', marginBottom: 16 }}>{t('btn.volver')}</button>
+        <div style={{ background: '#ffffff', borderRadius: 16, padding: 24, border: '1px solid #cbd5e1' }}>
+          <h2 style={{ color: '#013978', fontSize: 18, fontWeight: 700, marginBottom: 16 }}>{viewDetail.nombre} {viewDetail.apellido}</h2>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 16 }}>
             {fields.map(f => (
               <div key={f.label} style={f.label === 'Detalle Requerimiento' ? { gridColumn: 'span 3' } : undefined}>
-                <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 11, marginBottom: 2 }}>{f.label}</p>
-                <p style={{ color: '#ffffff', fontSize: 14 }}>{f.value || '—'}</p>
+                <p style={{ color: '#013978', fontSize: 16, fontWeight: 900, marginBottom: 4 }}>{f.label}</p>
+                <p style={{ color: '#013978', fontSize: 14 }}>{f.value || '—'}</p>
               </div>
             ))}
           </div>
-          {permisos.editar && (
-            <button onClick={() => { setSelected(viewDetail); setIsForm(true); setViewDetail(null) }} style={{ ...btnStyle, background: '#15803d', color: '#ffffff', border: '1px solid #16a34a', marginTop: 16 }}>Editar</button>
-          )}
+          <div style={{ display: 'flex', gap: 10, marginTop: 16, flexWrap: 'wrap' }}>
+            {permisos.editar && (
+              <button onClick={() => { setSelected(viewDetail); setIsForm(true); setViewDetail(null) }} style={{ ...btnStyle, background: '#15803d', color: '#ffffff', border: '1px solid #16a34a' }}>{t('btn.editar')}</button>
+            )}
+            {permisos.editar && viewDetail.situacion !== 'Convertido' && (
+              <button onClick={() => {
+                // Validar que la empresa no exista ya
+                const yaExiste = clientes.find(c =>
+                  c.razon_social.toLowerCase().trim() === viewDetail.empresa.toLowerCase().trim()
+                )
+                if (yaExiste) {
+                  if (!confirm(idioma === 'en' ? `Company "${yaExiste.razon_social}" already exists as client (${yaExiste.codigo}). Mark this prospect as "Converted" anyway?` : `La empresa "${yaExiste.razon_social}" ya existe como cliente (${yaExiste.codigo}). ¿Marcar este prospecto como "Convertido" de todos modos?`)) return
+                  updateProspecto(viewDetail.id, { situacion: 'Convertido' })
+                  setViewDetail({ ...viewDetail, situacion: 'Convertido' })
+                  return
+                }
+                if (!confirm(idioma === 'en' ? `Convert "${viewDetail.empresa}" to Client?\n\nA new client will be created with the prospect's data and marked as Converted.` : `¿Convertir a "${viewDetail.empresa}" en Cliente?\n\nSe creará un nuevo cliente con los datos del prospecto y se marcará como Convertido.`)) return
+
+                const nuevoCodigo = nextConsecutivo('CLI-', clientes.map(c => c.codigo)).codigo
+                addCliente({
+                  id: crypto.randomUUID(),
+                  codigo: nuevoCodigo,
+                  tipo_identificacion: 'NIT',
+                  nro_documento: '',
+                  razon_social: viewDetail.empresa || `${viewDetail.nombre} ${viewDetail.apellido}`.trim(),
+                  nombre_comercial: viewDetail.empresa || '',
+                  actividad: viewDetail.actividad || '',
+                  direccion: '',
+                  ciudad: viewDetail.ciudad || '',
+                  pais: viewDetail.pais || 'Colombia',
+                  codigo_postal: '',
+                  telefono: viewDetail.nro_movil || '',
+                  email: viewDetail.correo || '',
+                  sitio_web: '',
+                  condicion_pago: 'Contado',
+                  tipo_moneda: 'Pesos Colombianos',
+                  observaciones: `Convertido desde prospecto ${viewDetail.codigo}. Requerimiento original: ${viewDetail.detalle_requerimiento || '—'}`,
+                  situacion: 'Activo',
+                  fecha_registro: today,
+                  seguimientos: [{
+                    id: crypto.randomUUID(),
+                    fecha: today,
+                    detalle: `Cliente creado desde conversión del prospecto ${viewDetail.codigo} - ${viewDetail.nombre} ${viewDetail.apellido}`,
+                    persona_actividad: `${currentUser?.nombre || ''} ${currentUser?.apellido || ''}`.trim(),
+                    situacion: 'Activo',
+                    usuario: currentUser?.nombre || 'Sistema',
+                  }],
+                  codigo_acceso: generarCodigoAcceso(),
+                })
+                updateProspecto(viewDetail.id, { situacion: 'Convertido' })
+                setViewDetail({ ...viewDetail, situacion: 'Convertido' })
+                alert(idioma === 'en' ? `Client "${viewDetail.empresa}" created successfully (${nuevoCodigo}). You can now see it in the Clients module.` : `Cliente "${viewDetail.empresa}" creado con éxito (${nuevoCodigo}). Ya puedes verlo en el módulo Clientes.`)
+              }} style={{ ...btnStyle, background: '#1e3a8a', color: '#ffffff', border: '1px solid #3b82f6' }}>🔄 Convertir a Cliente</button>
+            )}
+          </div>
           <SeguimientoPanel
             seguimientos={viewDetail.seguimientos || []}
             usuario={`${currentUser?.nombre} ${currentUser?.apellido}`}
@@ -188,78 +274,83 @@ export default function ProspectosPage() {
   if (isForm && selected) {
     return (
       <div>
-        <button onClick={() => { setIsForm(false); setSelected(null) }} style={{ ...btnStyle, background: '#000000', color: '#ffffff', border: '1px solid #333333', marginBottom: 16 }}>← Volver</button>
-        <form onSubmit={handleSave} style={{ background: 'rgba(255,255,255,0.05)', borderRadius: 16, padding: 24, border: '1px solid rgba(255,255,255,0.15)' }}>
-          <h2 style={{ color: '#ffffff', fontSize: 18, fontWeight: 700, marginBottom: 20 }}>{selected.id ? 'Editar' : 'Nuevo'} Prospecto</h2>
+        <button onClick={() => { setIsForm(false); setSelected(null) }} style={{ ...btnStyle, background: '#000000', color: '#ffffff', border: '1px solid #333333', marginBottom: 16 }}>{t('btn.volver')}</button>
+        <form onSubmit={handleSave} style={{ background: '#ffffff', borderRadius: 16, padding: 24, border: '1px solid #cbd5e1' }}>
+          <h2 style={{ color: '#013978', fontSize: 18, fontWeight: 700, marginBottom: 20 }}>{selected.id ? t('fmt.editarProspecto') : t('fmt.nuevoProspecto')}</h2>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 16 }}>
             <div>
-              <label style={{ color: '#ffffff', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>Código</label>
+              <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.codigo')}</label>
               <input value={selected.codigo} readOnly style={{ ...inputStyle, opacity: 0.5 }} />
             </div>
             <div>
-              <label style={{ color: '#ffffff', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>Nombre *</label>
-              <input value={selected.nombre} onChange={e => setSelected({ ...selected, nombre: e.target.value })} required style={inputStyle} />
+              <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.fechaRegistro')}</label>
+              <input value={fDate(selected.fecha_registro || today)} readOnly style={{ ...inputStyle, opacity: 0.5, cursor: 'not-allowed' }} />
             </div>
             <div>
-              <label style={{ color: '#ffffff', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>Apellido *</label>
-              <input value={selected.apellido} onChange={e => setSelected({ ...selected, apellido: e.target.value })} required style={inputStyle} />
+              <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.nombre')} *</label>
+              <input value={selected.nombre} onChange={e => setSelected({ ...selected, nombre: e.target.value.toUpperCase() })} required style={inputStyle} />
             </div>
             <div>
-              <label style={{ color: '#ffffff', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>Empresa</label>
-              <input value={selected.empresa} onChange={e => setSelected({ ...selected, empresa: e.target.value })} style={inputStyle} />
+              <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.apellido')} *</label>
+              <input value={selected.apellido} onChange={e => setSelected({ ...selected, apellido: e.target.value.toUpperCase() })} required style={inputStyle} />
             </div>
             <div>
-              <label style={{ color: '#ffffff', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>Correo *</label>
+              <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.empresa')}</label>
+              <input value={selected.empresa} onChange={e => setSelected({ ...selected, empresa: e.target.value.toUpperCase() })} style={inputStyle} />
+            </div>
+            <div>
+              <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.correo')} *</label>
               <input type="email" value={selected.correo} onChange={e => setSelected({ ...selected, correo: e.target.value })} required style={inputStyle} />
             </div>
             <div>
-              <label style={{ color: '#ffffff', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>Nro Móvil</label>
+              <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.nroMovil')}</label>
               <input value={selected.nro_movil} onChange={e => setSelected({ ...selected, nro_movil: e.target.value })} style={inputStyle} />
             </div>
             <div>
-              <label style={{ color: '#ffffff', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>Origen Prospecto *</label>
+              <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.origenProspecto')} *</label>
               <select value={selected.origen_prospecto} onChange={e => setSelected({ ...selected, origen_prospecto: e.target.value })} required style={inputStyle}>
-                <option value="">Seleccionar...</option>
+                <option value="">{t("campo.seleccionar")}</option>
                 {refOptions('origen_prospecto').map(o => <option key={o} value={o}>{o}</option>)}
               </select>
             </div>
             <div>
-              <label style={{ color: '#ffffff', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>Actividad</label>
+              <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.actividad')}</label>
               <select value={selected.actividad} onChange={e => setSelected({ ...selected, actividad: e.target.value })} style={inputStyle}>
-                <option value="">Seleccionar...</option>
+                <option value="">{t("campo.seleccionar")}</option>
                 {refOptions('actividad_cliente').map(o => <option key={o} value={o}>{o}</option>)}
               </select>
             </div>
             <div>
-              <label style={{ color: '#ffffff', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>Situación</label>
+              <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.situacion')}</label>
               <select value={selected.situacion} onChange={e => setSelected({ ...selected, situacion: e.target.value })} style={inputStyle}>
                 {refOptions('situacion_prospecto').map(o => <option key={o} value={o}>{o}</option>)}
               </select>
             </div>
             <div>
-              <label style={{ color: '#ffffff', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>Ciudad</label>
+              <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.ciudad')}</label>
               <select value={selected.ciudad} onChange={e => setSelected({ ...selected, ciudad: e.target.value })} style={inputStyle}>
-                <option value="">Seleccionar...</option>
+                <option value="">{t("campo.seleccionar")}</option>
                 {refOptions('ciudad').map(o => <option key={o} value={o}>{o}</option>)}
               </select>
             </div>
             <div>
-              <label style={{ color: '#ffffff', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>País</label>
+              <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.pais')}</label>
               <select value={selected.pais} onChange={e => setSelected({ ...selected, pais: e.target.value })} style={inputStyle}>
-                <option value="">Seleccionar...</option>
+                <option value="">{t("campo.seleccionar")}</option>
                 {refOptions('pais').map(o => <option key={o} value={o}>{o}</option>)}
               </select>
             </div>
             <div style={{ gridColumn: 'span 3' }}>
-              <label style={{ color: '#ffffff', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>Detalle Requerimiento</label>
+              <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.detalleRequerimiento')}</label>
               <textarea value={selected.detalle_requerimiento} onChange={e => setSelected({ ...selected, detalle_requerimiento: e.target.value })} rows={3} style={{ ...inputStyle, resize: 'vertical' }} />
             </div>
           </div>
           <div style={{ display: 'flex', gap: 10, marginTop: 20 }}>
-            <button type="submit" style={{ ...btnStyle, background: '#0f1b3d', color: '#ffffff' }}>Guardar</button>
-            <button type="button" onClick={() => { setIsForm(false); setSelected(null) }} style={{ ...btnStyle, background: '#64748b', color: '#ffffff' }}>Cancelar</button>
+            <button type="submit" style={{ ...btnStyle, background: '#1e3a8a', color: '#ffffff' }}>{t('btn.guardar')}</button>
+            <button type="button" onClick={() => { setIsForm(false); setSelected(null) }} style={{ ...btnStyle, background: '#64748b', color: '#ffffff' }}>{t('btn.cancelar')}</button>
           </div>
         </form>
+        {selected.id && <DocumentosPanel modulo="prospectos" registroId={selected.id} />}
       </div>
     )
   }
@@ -290,8 +381,8 @@ export default function ProspectosPage() {
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
         <div>
-          <h1 style={{ fontSize: 24, fontWeight: 700, color: '#ffffff', marginBottom: 4 }}>Prospectos</h1>
-          <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: 14 }}>Gestión de prospectos comerciales</p>
+          <h1 style={{ fontSize: 24, fontWeight: 700, color: '#013978', marginBottom: 4 }}>{t('page.prospectos.title')}</h1>
+          <p style={{ color: '#013978', fontSize: 14 }}>{t('page.prospectos.subtitle')}</p>
         </div>
         <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
           {tab === 'registros' && externas.length > 0 && (
@@ -302,14 +393,14 @@ export default function ProspectosPage() {
             </button>
           )}
           {permisos.editar && tab === 'registros' && (
-            <button onClick={() => { setSelected(emptyProspecto(nextConsecutivo('PRS-', prospectos.map(p => p.codigo)).codigo)); setIsForm(true) }} style={{ ...btnStyle, background: '#0f1b3d', color: '#ffffff' }}>+ Nuevo Prospecto</button>
+            <button onClick={() => { setSelected(emptyProspecto(nextConsecutivo('PRS-', prospectos.map(p => p.codigo)).codigo)); setIsForm(true) }} style={{ ...btnStyle, background: '#1e3a8a', color: '#ffffff' }}>{t('page.prospectos.btnNuevo')}</button>
           )}
         </div>
       </div>
 
       <div style={{ display: 'flex', gap: 8, marginBottom: 20 }}>
-        <button onClick={() => setTab('registros')} style={tabBtnStyle(tab === 'registros')}>📋 Registros</button>
-        <button onClick={() => setTab('reportes')} style={tabBtnStyle(tab === 'reportes')}>📊 Reportes</button>
+        <button onClick={() => setTab('registros')} style={tabBtnStyle(tab === 'registros')}>📋 {t('tab.registros')}</button>
+        <button onClick={() => setTab('reportes')} style={tabBtnStyle(tab === 'reportes')}>📊 {t('tab.reportes')}</button>
       </div>
 
       {tab === 'registros' && (
@@ -323,14 +414,14 @@ export default function ProspectosPage() {
               </div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
                 {externas.map(ext => (
-                  <div key={ext.id} style={{ background: 'rgba(255,255,255,0.06)', borderRadius: 10, padding: '12px 16px', border: '1px solid rgba(255,255,255,0.1)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <div key={ext.id} style={{ background: '#f1f5f9', borderRadius: 10, padding: '12px 16px', border: '1px solid #e2e8f0', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <div style={{ flex: 1 }}>
-                      <p style={{ color: '#ffffff', fontSize: 14, fontWeight: 600, margin: 0 }}>{ext.nombre} {ext.apellido}</p>
-                      <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: 12, margin: '2px 0' }}>{ext.empresa || 'Sin empresa'} | {ext.correo} | {ext.nro_movil || 'Sin móvil'}</p>
-                      <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 11, margin: 0 }}>{ext.descripcion_requerimiento?.substring(0, 120)}{(ext.descripcion_requerimiento?.length || 0) > 120 ? '...' : ''}</p>
+                      <p style={{ color: '#013978', fontSize: 14, fontWeight: 600, margin: 0 }}>{ext.nombre} {ext.apellido}</p>
+                      <p style={{ color: '#013978', fontSize: 12, margin: '2px 0' }}>{ext.empresa || 'Sin empresa'} | {ext.correo} | {ext.nro_movil || 'Sin móvil'}</p>
+                      <p style={{ color: '#013978', fontSize: 11, margin: 0 }}>{ext.descripcion_requerimiento?.substring(0, 120)}{(ext.descripcion_requerimiento?.length || 0) > 120 ? '...' : ''}</p>
                       <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: 10, margin: '4px 0 0' }}>{ext.fecha_registro} {ext.hora_registro}</p>
                     </div>
-                    <button onClick={() => importarProspecto(ext)} style={{ ...btnStyle, background: '#1e3a8a', color: '#ffffff', border: '1px solid #2563eb', fontSize: 11, marginLeft: 12 }}>Importar al CRM</button>
+                    <button onClick={() => importarProspecto(ext)} style={{ ...btnStyle, background: '#1e3a8a', color: '#ffffff', border: '1px solid #3b82f6', fontSize: 11, marginLeft: 12 }}>Importar al CRM</button>
                   </div>
                 ))}
               </div>
@@ -338,40 +429,43 @@ export default function ProspectosPage() {
           )}
 
           <div style={{ display: 'flex', gap: 10, marginBottom: 16 }}>
-            <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Buscar por nombre, empresa o código..." style={{ ...inputStyle, maxWidth: 400 }} />
+            <input value={search} onChange={e => setSearch(e.target.value)} placeholder={t('ph.buscarProspecto')} style={{ ...inputStyle, maxWidth: 400 }} />
           </div>
 
-          <div style={{ borderRadius: 12, border: '1px solid rgba(255,255,255,0.15)', overflow: 'hidden' }}>
+          <div style={{ borderRadius: 12, border: '1px solid #cbd5e1', overflow: 'hidden' }}>
             <table style={{ width: '100%', borderCollapse: 'collapse' }}>
               <thead>
                 <tr>
-                  {['Código', 'Nombre', 'Empresa', 'Correo', 'Móvil', 'Origen', 'Situación', 'Acciones'].map(h => (
-                    <th key={h} style={{ padding: '12px 14px', background: '#1e3a5f', color: '#fff', fontSize: 12, textAlign: 'left' }}>{h}</th>
+                  {[t('lbl.codigo'), t('lbl.nombre'), t('lbl.empresa'), t('lbl.correo'), t('lbl.movil'), idioma === 'en' ? 'Source' : 'Origen', t('lbl.situacion'), idioma === 'en' ? 'Actions' : 'Acciones'].map(h => (
+                    <th key={h} style={{ padding: '12px 14px', background: '#1e3a8a', color: '#fff', fontSize: 12, textAlign: 'left' }}>{h}</th>
                   ))}
                 </tr>
               </thead>
               <tbody>
                 {filtered.map((p, i) => (
                   <tr key={p.id} style={{ background: i % 2 === 0 ? 'rgba(255,255,255,0.03)' : 'transparent' }}>
-                    <td style={{ padding: '10px 14px', borderBottom: '1px solid rgba(255,255,255,0.1)', color: '#4ade80', fontSize: 13, fontFamily: 'monospace' }}>{p.codigo}</td>
-                    <td style={{ padding: '10px 14px', borderBottom: '1px solid rgba(255,255,255,0.1)', color: '#ffffff', fontSize: 13 }}>{p.nombre} {p.apellido}</td>
-                    <td style={{ padding: '10px 14px', borderBottom: '1px solid rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.7)', fontSize: 13 }}>{p.empresa}</td>
-                    <td style={{ padding: '10px 14px', borderBottom: '1px solid rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.7)', fontSize: 13 }}>{p.correo}</td>
-                    <td style={{ padding: '10px 14px', borderBottom: '1px solid rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.7)', fontSize: 13 }}>{p.nro_movil}</td>
-                    <td style={{ padding: '10px 14px', borderBottom: '1px solid rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.7)', fontSize: 13 }}>{p.origen_prospecto}</td>
-                    <td style={{ padding: '10px 14px', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
-                      <span style={{ padding: '3px 10px', borderRadius: 20, fontSize: 11, fontWeight: 600, ...statusStyle(p.situacion) }}>{p.situacion}</span>
+                    <td style={{ padding: '10px 14px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 13, fontFamily: 'monospace' }}>{p.codigo}</td>
+                    <td style={{ padding: '10px 14px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 13 }}>{p.nombre} {p.apellido}</td>
+                    <td style={{ padding: '10px 14px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 13 }}>{p.empresa}</td>
+                    <td style={{ padding: '10px 14px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 13 }}>{p.correo}</td>
+                    <td style={{ padding: '10px 14px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 13 }}>{p.nro_movil}</td>
+                    <td style={{ padding: '10px 14px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 13 }}>{p.origen_prospecto}</td>
+                    <td style={{ padding: '10px 14px', borderBottom: '1px solid #e2e8f0' }}>
+                      <span style={{ padding: '3px 10px', borderRadius: 20, fontSize: 11, fontWeight: 600, ...statusStyle(p.situacion) }}>{ts(p.situacion)}</span>
                     </td>
-                    <td style={{ padding: '10px 14px', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
+                    <td style={{ padding: '10px 14px', borderBottom: '1px solid #e2e8f0' }}>
                       <div style={{ display: 'flex', gap: 6 }}>
-                        <button onClick={() => setViewDetail(p)} style={{ ...btnStyle, padding: '4px 12px', fontSize: 11, background: '#ea580c', color: '#ffffff', border: '1px solid #f97316' }}>Ver</button>
-                        {permisos.editar && <button onClick={() => { setSelected(p); setIsForm(true) }} style={{ ...btnStyle, padding: '4px 12px', fontSize: 11, background: '#15803d', color: '#ffffff', border: '1px solid #16a34a' }}>Editar</button>}
-                        {permisos.eliminar && <button onClick={() => { if (confirm(`¿Eliminar prospecto "${p.nombre} ${p.apellido}"?`)) deleteProspecto(p.id) }} style={{ ...btnStyle, padding: '4px 12px', fontSize: 11, background: '#dc2626', color: '#ffffff', border: '1px solid #ef4444' }}>Eliminar</button>}
+                        <button onClick={() => setViewDetail(p)} style={{ ...btnStyle, padding: '4px 12px', fontSize: 11, background: '#ea580c', color: '#ffffff', border: '1px solid #f97316' }}>{idioma === 'en' ? 'View' : 'Ver'}</button>
+                        {isValidPhone(p.nro_movil) && (
+                          <a href={buildWhatsAppLink(p.nro_movil, idioma === 'en' ? `Hi ${p.nombre}, thank you for contacting us. We received your inquiry and will get back to you soon.` : `Hola ${p.nombre}, muchas gracias por contactarnos. Recibimos tu solicitud y pronto te contactaremos.`)} target="_blank" rel="noopener noreferrer" style={{ ...btnStyle, padding: '4px 12px', fontSize: 11, background: '#25d366', color: '#ffffff', border: '1px solid #128c7e', textDecoration: 'none', display: 'inline-flex', alignItems: 'center' }}>WhatsApp</a>
+                        )}
+                        {permisos.editar && <button onClick={() => { setSelected(p); setIsForm(true) }} style={{ ...btnStyle, padding: '4px 12px', fontSize: 11, background: '#15803d', color: '#ffffff', border: '1px solid #16a34a' }}>{t('btn.editar')}</button>}
+                        {permisos.eliminar && <button onClick={() => { if (confirm(idioma === 'en' ? `Delete prospect "${p.nombre} ${p.apellido}"?` : `¿Eliminar prospecto "${p.nombre} ${p.apellido}"?`)) deleteProspecto(p.id); logAudit({ ...auditParams(), accion: "ELIMINAR", registro_codigo: p.codigo, registro_nombre: `${p.nombre} ${p.apellido}` }) }} style={{ ...btnStyle, padding: '4px 12px', fontSize: 11, background: '#dc2626', color: '#ffffff', border: '1px solid #ef4444' }}>{t('btn.eliminar')}</button>}
                       </div>
                     </td>
                   </tr>
                 ))}
-                {filtered.length === 0 && <tr><td colSpan={8} style={{ padding: 32, textAlign: 'center', color: 'rgba(255,255,255,0.5)', fontSize: 14 }}>No hay prospectos registrados</td></tr>}
+                {filtered.length === 0 && <tr><td colSpan={8} style={{ padding: 32, textAlign: 'center', color: '#013978', fontSize: 14 }}>No hay prospectos registrados</td></tr>}
               </tbody>
             </table>
           </div>
