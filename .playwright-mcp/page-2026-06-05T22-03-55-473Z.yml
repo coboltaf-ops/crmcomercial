@@ -1,0 +1,20 @@
+- generic [ref=e1]:
+  - generic [ref=e3]:
+    - generic [ref=e5]:
+      - button "Cambiar a Español" [ref=e6] [cursor=pointer]: 🇪🇸 ES
+      - button "Switch to English" [ref=e7] [cursor=pointer]: 🇬🇧 EN
+    - generic [ref=e8]:
+      - img "NORTON" [ref=e9]
+      - heading "NORTON" [level=1] [ref=e10]
+      - paragraph [ref=e11]: CRM COMERCIAL
+      - paragraph [ref=e12]: Inicia sesión en tu cuenta
+    - generic [ref=e13]:
+      - generic [ref=e14]:
+        - generic [ref=e15]: Usuario
+        - textbox "admin" [ref=e16]
+      - generic [ref=e17]:
+        - generic [ref=e18]: Contraseña
+        - textbox "••••••••" [ref=e19]: admin123
+      - paragraph [ref=e22]: Usuario o clave incorrectos
+      - button "Ingresar al Sistema" [active] [ref=e20] [cursor=pointer]
+  - alert [ref=e21]

@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { useUsuariosStore } from '@/features/usuarios-gestion/store/usuarios-store'
 import { useCurrentUserStore } from '@/features/usuarios-gestion/store/current-user-store'
@@ -12,8 +12,13 @@ export default function LoginPage() {
   const [clave, setClave] = useState('')
   const [error, setError] = useState('')
 
+  useEffect(() => {
+    console.log('[DEBUG] Usuarios disponibles:', usuarios)
+  }, [usuarios])
+
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault()
+    console.log('[DEBUG] Intentando login con:', usuario, '- Usuarios:', usuarios.length)
     const found = usuarios.find(u => u.usuario === usuario && u.clave === clave && u.situacion === 'Activo')
     if (!found) { setError('Usuario o clave incorrectos'); return }
     setUser(found)
