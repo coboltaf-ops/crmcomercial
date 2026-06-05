@@ -406,7 +406,7 @@ export default function OportunidadesPage() {
               <input value={fmtMoney(der.parcial_anyo)} readOnly style={inputReadonly} />
             </div>
             <div>
-              <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{idioma === 'en' ? 'Year Partial €' : 'Parcial Año €'}</label>
+              <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>PARCIAL AÑOS EUROS - AUTOMÁTICO</label>
               <input value={fmtMoney(der.parcial_anyo * 0.87)} readOnly style={inputReadonly} />
             </div>
             <div>
