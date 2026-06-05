@@ -1,7 +1,7 @@
 'use client'
 import { useState, useEffect, useRef } from 'react'
 import { useRouter, usePathname } from 'next/navigation'
-import { useCurrentUserStore } from '@/features/usuarios-gestion/store/current-user-store'
+import { useCurrentUserStore, useIsUserStoreHydrated } from '@/features/usuarios-gestion/store/current-user-store'
 import { useModulosStore } from '@/features/modulos/store/modulos-store'
 import { useAsistenteStore } from '@/shared/stores/asistente-store'
 import { useClientesStore } from '@/features/clientes/store/clientes-store'
@@ -28,7 +28,7 @@ const ROUTE_KEYWORDS: { keywords: string[]; href: string; label: string }[] = [
 ]
 
 function resolveRoute(text: string): { href: string; label: string } | null {
-  const t = text.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+  const t = text.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '')
   for (const r of ROUTE_KEYWORDS) {
     if (r.keywords.some(k => t.includes(k))) return r
   }
@@ -42,6 +42,7 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
   const pathname = usePathname()
   const user = useCurrentUserStore(s => s.user)
   const logout = useCurrentUserStore(s => s.logout)
+  const storeHydrated = useIsUserStoreHydrated()
   const modulos = useModulosStore(s => s.modulos)
   const clientes = useClientesStore(s => s.clientes)
   const { setPending } = useAsistenteStore()
@@ -51,12 +52,10 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
   const [hint, setHint] = useState('')
   const [listening, setListening] = useState(false)
   const [configOpen, setConfigOpen] = useState(false)
-  const [hydrated, setHydrated] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
   const recognitionRef = useRef<unknown>(null)
 
-  useEffect(() => { setHydrated(true) }, [])
-  useEffect(() => { if (hydrated && !user) router.push('/login') }, [user, router, hydrated])
+  useEffect(() => { if (storeHydrated && !user) router.push('/login') }, [user, router, storeHydrated])
 
   // Sincronizar códigos de acceso de clientes al servidor para validación en formulario público
   useEffect(() => {
@@ -96,7 +95,7 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
         ...(ROUTE_KEYWORDS.find(r => r.href === match.href)?.keywords ?? []),
       ]
       const words = clean.toLowerCase()
-        .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+        .normalize('NFD').replace(/[̀-ͯ]/g, '')
         .split(/\s+/)
         .filter(w => w.length > 1 && !stopWords.includes(w))
       const searchTerm = words.join(' ').trim()

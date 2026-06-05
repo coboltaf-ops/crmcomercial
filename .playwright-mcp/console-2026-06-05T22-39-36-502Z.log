@@ -1,0 +1,3 @@
+[    2387ms] [ERROR] Failed to load resource: the server responded with a status of 500 () @ https://crmcomercial.vercel.app/api/clientes-acceso:0
+[   92341ms] [ERROR] Failed to load resource: the server responded with a status of 500 () @ https://crmcomercial.vercel.app/api/clientes-acceso:0
+[   92512ms] [ERROR] Failed to load resource: the server responded with a status of 500 () @ https://crmcomercial.vercel.app/api/clientes-acceso:0
