@@ -51,10 +51,12 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
   const [hint, setHint] = useState('')
   const [listening, setListening] = useState(false)
   const [configOpen, setConfigOpen] = useState(false)
+  const [hydrated, setHydrated] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
   const recognitionRef = useRef<unknown>(null)
 
-  useEffect(() => { if (!user) router.push('/login') }, [user, router])
+  useEffect(() => { setHydrated(true) }, [])
+  useEffect(() => { if (hydrated && !user) router.push('/login') }, [user, router, hydrated])
 
   // Sincronizar códigos de acceso de clientes al servidor para validación en formulario público
   useEffect(() => {

@@ -1,0 +1,140 @@
+- generic [active] [ref=e1]:
+  - alert [ref=e2]
+  - generic [ref=e3]:
+    - complementary [ref=e4]:
+      - generic [ref=e5]:
+        - button "✕" [ref=e6] [cursor=pointer]
+        - img "Logo" [ref=e7]
+        - generic [ref=e8]:
+          - paragraph [ref=e9]: NORTON
+          - paragraph [ref=e10]: Sistema de Gestión
+      - navigation [ref=e11]:
+        - button "📊 Dashboard" [ref=e12] [cursor=pointer]:
+          - generic [ref=e13]: 📊
+          - generic [ref=e14]: Dashboard
+        - button "🤖 Agente" [ref=e15] [cursor=pointer]:
+          - generic [ref=e16]: 🤖
+          - generic [ref=e17]: Agente
+        - button "🏢 Empresas (Clientes)" [ref=e18] [cursor=pointer]:
+          - generic [ref=e19]: 🏢
+          - generic [ref=e20]: Empresas (Clientes)
+        - button "👤 Contactos" [ref=e21] [cursor=pointer]:
+          - generic [ref=e22]: 👤
+          - generic [ref=e23]: Contactos
+        - button "💱 Tasas De Cambio" [ref=e24] [cursor=pointer]:
+          - generic [ref=e25]: 💱
+          - generic [ref=e26]: Tasas De Cambio
+        - button "🎯 Oportunidades" [ref=e27] [cursor=pointer]:
+          - generic [ref=e28]: 🎯
+          - generic [ref=e29]: Oportunidades
+        - button "📦 Productos" [ref=e30] [cursor=pointer]:
+          - generic [ref=e31]: 📦
+          - generic [ref=e32]: Productos
+        - button "📋 Cotizaciones" [ref=e33] [cursor=pointer]:
+          - generic [ref=e34]: 📋
+          - generic [ref=e35]: Cotizaciones
+        - button "🧲 Prospectos" [ref=e36] [cursor=pointer]:
+          - generic [ref=e37]: 🧲
+          - generic [ref=e38]: Prospectos
+        - button "📩 PQRS" [ref=e39] [cursor=pointer]:
+          - generic [ref=e40]: 📩
+          - generic [ref=e41]: PQRS
+        - button "📧 Correos Enviados" [ref=e42] [cursor=pointer]:
+          - generic [ref=e43]: 📧
+          - generic [ref=e44]: Correos Enviados
+        - button "✅ Tareas" [ref=e45] [cursor=pointer]:
+          - generic [ref=e46]: ✅
+          - generic [ref=e47]: Tareas
+        - button "🏗️ Proyectos" [ref=e48] [cursor=pointer]:
+          - generic [ref=e49]: 🏗️
+          - generic [ref=e50]: Proyectos
+        - button "💰 Montos Aplicados en Proyectos" [ref=e51] [cursor=pointer]:
+          - generic [ref=e52]: 💰
+          - generic [ref=e53]: Montos Aplicados en Proyectos
+        - button "⚙️ Referencias" [ref=e54] [cursor=pointer]:
+          - generic [ref=e55]: ⚙️
+          - generic [ref=e56]: Referencias
+      - button "🚪 Cerrar Sesión" [ref=e58] [cursor=pointer]:
+        - generic [ref=e59]: 🚪
+        - generic [ref=e60]: Cerrar Sesión
+    - main [ref=e61]:
+      - generic [ref=e62]:
+        - generic [ref=e63]:
+          - img "NORTON" [ref=e64]
+          - generic [ref=e65]:
+            - paragraph [ref=e66]: NORTON
+            - paragraph [ref=e67]: "NIT: 97110976-2"
+        - generic [ref=e68]:
+          - generic [ref=e69]: C0
+          - generic [ref=e70]:
+            - paragraph [ref=e71]: COMERCIAL 01
+            - paragraph [ref=e72]: Ventas
+        - button "Menú Principal" [ref=e74] [cursor=pointer]
+      - generic [ref=e76]:
+        - generic [ref=e77]:
+          - generic [ref=e78]:
+            - heading "Oportunidades" [level=1] [ref=e79]
+            - paragraph [ref=e80]: Licitaciones, ofertas y negocios en curso
+            - paragraph [ref=e81]: COMERCIAL 01
+          - button "+ Nueva Oportunidad" [ref=e82] [cursor=pointer]
+        - generic [ref=e83]:
+          - button "📋 Registros" [ref=e84] [cursor=pointer]
+          - button "📊 Reportes" [ref=e85] [cursor=pointer]
+        - textbox "Buscar por código, proyecto o cliente..." [ref=e86]
+        - table [ref=e88]:
+          - rowgroup [ref=e89]:
+            - row "Código Proyecto Cliente Ciudad País Monto US$ Monto COP Prob % Adjudicación Veredicto Situación Acciones Creado Por" [ref=e90]:
+              - columnheader "Código" [ref=e91]
+              - columnheader "Proyecto" [ref=e92]
+              - columnheader "Cliente" [ref=e93]
+              - columnheader "Ciudad" [ref=e94]
+              - columnheader "País" [ref=e95]
+              - columnheader "Monto US$" [ref=e96]
+              - columnheader "Monto COP" [ref=e97]
+              - columnheader "Prob %" [ref=e98]
+              - columnheader "Adjudicación" [ref=e99]
+              - columnheader "Veredicto" [ref=e100]
+              - columnheader "Situación" [ref=e101]
+              - columnheader "Acciones" [ref=e102]
+              - columnheader "Creado Por" [ref=e103]
+          - rowgroup [ref=e104]:
+            - row "OPP-00001 AMPLIACIÓN BODEGA EXISTENTE - 60 TON - EPC PVC GERFOR S.A.S Barranquilla Colombia $676,401.00 $ 2,570,324,236.00 80% 08/2026 Pendiente Abierta Ver WhatsApp Edit ELim comer01" [ref=e105]:
+              - cell "OPP-00001" [ref=e106]
+              - cell "AMPLIACIÓN BODEGA EXISTENTE - 60 TON - EPC" [ref=e107]
+              - cell "PVC GERFOR S.A.S" [ref=e108]
+              - cell "Barranquilla" [ref=e109]
+              - cell "Colombia" [ref=e110]
+              - cell "$676,401.00" [ref=e111]
+              - cell "$ 2,570,324,236.00" [ref=e112]
+              - cell "80%" [ref=e113]
+              - cell "08/2026" [ref=e114]
+              - cell "Pendiente" [ref=e115]
+              - cell "Abierta" [ref=e116]
+              - cell "Ver WhatsApp Edit ELim" [ref=e117]:
+                - generic [ref=e118]:
+                  - button "Ver" [ref=e119] [cursor=pointer]
+                  - link "WhatsApp" [ref=e120] [cursor=pointer]:
+                    - /url: https://wa.me/573008149458?text=Hola%20PVC%20GERFOR%20S.A.S%2C%20te%20escribimos%20sobre%20la%20oportunidad%20OPP-00001%20-%20AMPLIACI%C3%93N%20BODEGA%20EXISTENTE%20-%2060%20TON%20-%20EPC%20.
+                  - button "Edit" [ref=e121] [cursor=pointer]
+                  - button "ELim" [ref=e122] [cursor=pointer]
+              - cell "comer01" [ref=e123]
+            - row "OPP-00002 TEATRO EL CARMEN - REDISEÑO - EPC MPRESA DE VIVIENDA Y DESARROLLO URBANO Y RURAL DEL MUNICIPIO DE ENVIGADOProspectando Medellín Colombia $2,862,401.00 $ 10,877,124,378.00 50% 12/2026 Pendiente Abierta Ver WhatsApp Edit ELim comer01" [ref=e124]:
+              - cell "OPP-00002" [ref=e125]
+              - cell "TEATRO EL CARMEN - REDISEÑO - EPC" [ref=e126]
+              - cell "MPRESA DE VIVIENDA Y DESARROLLO URBANO Y RURAL DEL MUNICIPIO DE ENVIGADOProspectando" [ref=e127]
+              - cell "Medellín" [ref=e128]
+              - cell "Colombia" [ref=e129]
+              - cell "$2,862,401.00" [ref=e130]
+              - cell "$ 10,877,124,378.00" [ref=e131]
+              - cell "50%" [ref=e132]
+              - cell "12/2026" [ref=e133]
+              - cell "Pendiente" [ref=e134]
+              - cell "Abierta" [ref=e135]
+              - cell "Ver WhatsApp Edit ELim" [ref=e136]:
+                - generic [ref=e137]:
+                  - button "Ver" [ref=e138] [cursor=pointer]
+                  - link "WhatsApp" [ref=e139] [cursor=pointer]:
+                    - /url: https://wa.me/573013119447?text=Hola%20MPRESA%20DE%20VIVIENDA%20Y%20DESARROLLO%20URBANO%20Y%20RURAL%20DEL%20MUNICIPIO%20DE%20ENVIGADO%2C%20te%20escribimos%20sobre%20la%20oportunidad%20OPP-00002%20-%20TEATRO%20EL%20CARMEN%20-%20REDISE%C3%91O%20-%20EPC%20.
+                  - button "Edit" [ref=e140] [cursor=pointer]
+                  - button "ELim" [ref=e141] [cursor=pointer]
+              - cell "comer01" [ref=e142]
