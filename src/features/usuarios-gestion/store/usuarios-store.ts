@@ -1,5 +1,4 @@
 import { create } from 'zustand'
-import { persist } from 'zustand/middleware'
 import { Usuario, PERMISOS_DEFAULT } from '../types'
 
 interface UsuariosState {
@@ -21,27 +20,9 @@ const defaultAdmin: Usuario = {
   permisos: PERMISOS_DEFAULT['Admin'],
 }
 
-export const useUsuariosStore = create<UsuariosState>()(
-  persist(
-    (set) => ({
-      usuarios: [defaultAdmin],
-      addUsuario: (u) => set((s) => ({ usuarios: [...s.usuarios, u] })),
-      updateUsuario: (id, u) => set((s) => ({ usuarios: s.usuarios.map((r) => r.id === id ? { ...r, ...u } : r) })),
-      deleteUsuario: (id) => set((s) => ({ usuarios: s.usuarios.filter((r) => r.id !== id) })),
-    }),
-    {
-      name: 'crm-usuarios-storage',
-      merge: (persisted, current) => {
-        const p = persisted as UsuariosState
-        const usuariosToUse = (p?.usuarios && p.usuarios.length > 0) ? p.usuarios : [defaultAdmin]
-        return {
-          ...current,
-          usuarios: usuariosToUse.map(u => ({
-            ...u,
-            permisos: u.permisos || PERMISOS_DEFAULT[u.rol] || PERMISOS_DEFAULT['Ventas'],
-          })),
-        }
-      },
-    }
-  )
-)
+export const useUsuariosStore = create<UsuariosState>((set) => ({
+  usuarios: [defaultAdmin],
+  addUsuario: (u) => set((s) => ({ usuarios: [...s.usuarios, u] })),
+  updateUsuario: (id, u) => set((s) => ({ usuarios: s.usuarios.map((r) => r.id === id ? { ...r, ...u } : r) })),
+  deleteUsuario: (id) => set((s) => ({ usuarios: s.usuarios.filter((r) => r.id !== id) })),
+}))
