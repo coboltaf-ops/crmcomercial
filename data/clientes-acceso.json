@@ -1,48 +1,48 @@
 [
   {
-    "id": "e98ff8ee-56a4-4f76-bff1-2da34f42a50f",
+    "id": "050a993d-413e-439f-9d91-5b8bca6fddf9",
     "codigo": "CLI-001",
     "razon_social": "Grupo Empresarial Andino S.A.S.",
     "codigo_acceso": "ACC-GRP001"
   },
   {
-    "id": "de469477-0625-4e3b-acee-c118f9e6ef48",
+    "id": "e03b3845-474b-4000-8ec3-692193782313",
     "codigo": "CLI-002",
     "razon_social": "Tecnología Peruana del Pacífico S.A.C.",
     "codigo_acceso": "ACC-TPC002"
   },
   {
-    "id": "85058b3f-5a83-41c1-aa7e-7b614daad1ae",
+    "id": "5b297a28-70f6-4c4d-bd2b-1143d3c5c44e",
     "codigo": "CLI-003",
     "razon_social": "Distribuidora Continental de Alimentos Ltda.",
     "codigo_acceso": "ACC-DCA003"
   },
   {
-    "id": "5a98e96d-f681-4acf-bcbf-da7c0870963b",
+    "id": "b6f938b0-a86e-4233-b54b-d2d0d66e419e",
     "codigo": "CLI-004",
     "razon_social": "Soluciones Industriales Quito Cía. Ltda.",
     "codigo_acceso": "ACC-SIQ004"
   },
   {
-    "id": "a1f3cd90-ba4e-4b18-b2d2-e2bd005dbe34",
+    "id": "86473a40-3dd0-4eef-8d00-8e5d5fc84d77",
     "codigo": "CLI-005",
     "razon_social": "Logística del Caribe S.A.",
     "codigo_acceso": "ACC-LGC005"
   },
   {
-    "id": "b529679e-bedd-4122-962c-625f77ed3272",
+    "id": "6cdba8cc-cbc4-43bb-b8a9-a99ae0d2c04f",
     "codigo": "CLI-006",
     "razon_social": "Minería Verde SpA",
     "codigo_acceso": "ACC-MVD006"
   },
   {
-    "id": "ce095559-a1eb-4ab0-9a0f-24fbc276ea78",
+    "id": "fcfb53a2-5fbf-4177-8d47-501dac18f363",
     "codigo": "CLI-007",
     "razon_social": "Agroindustrias del Llano C.A.",
     "codigo_acceso": "ACC-AGL007"
   },
   {
-    "id": "df30e918-180c-494c-9e4e-f454eeb9f40a",
+    "id": "0dc2a724-0b87-43a3-b73d-4bcaaeea6b9d",
     "codigo": "CLI-008",
     "razon_social": "Consultores Financieros del Valle S.A.S.",
     "codigo_acceso": "ACC-CFV008"
