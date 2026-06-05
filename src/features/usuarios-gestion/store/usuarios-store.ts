@@ -33,9 +33,10 @@ export const useUsuariosStore = create<UsuariosState>()(
       name: 'crm-usuarios-storage',
       merge: (persisted, current) => {
         const p = persisted as UsuariosState
+        const usuariosToUse = (p?.usuarios && p.usuarios.length > 0) ? p.usuarios : [defaultAdmin]
         return {
           ...current,
-          usuarios: (p?.usuarios || [defaultAdmin]).map(u => ({
+          usuarios: usuariosToUse.map(u => ({
             ...u,
             permisos: u.permisos || PERMISOS_DEFAULT[u.rol] || PERMISOS_DEFAULT['Ventas'],
           })),
