@@ -1,0 +1,287 @@
+- generic [active] [ref=e1]:
+  - alert [ref=e21]
+  - generic [ref=e22]:
+    - complementary [ref=e23]:
+      - generic [ref=e24]:
+        - button "✕" [ref=e25] [cursor=pointer]
+        - img "Logo" [ref=e26]
+        - generic [ref=e27]:
+          - paragraph [ref=e28]: NORTON
+          - paragraph [ref=e29]: Sistema de Gestión
+      - navigation [ref=e30]:
+        - button "📊 Dashboard" [ref=e31] [cursor=pointer]:
+          - generic [ref=e32]: 📊
+          - generic [ref=e33]: Dashboard
+        - button "🤖 Agente" [ref=e34] [cursor=pointer]:
+          - generic [ref=e35]: 🤖
+          - generic [ref=e36]: Agente
+        - button "🏢 Empresas (Clientes)" [ref=e37] [cursor=pointer]:
+          - generic [ref=e38]: 🏢
+          - generic [ref=e39]: Empresas (Clientes)
+        - button "👤 Contactos" [ref=e40] [cursor=pointer]:
+          - generic [ref=e41]: 👤
+          - generic [ref=e42]: Contactos
+        - button "💱 Tasas De Cambio" [ref=e43] [cursor=pointer]:
+          - generic [ref=e44]: 💱
+          - generic [ref=e45]: Tasas De Cambio
+        - button "🎯 Oportunidades" [ref=e46] [cursor=pointer]:
+          - generic [ref=e47]: 🎯
+          - generic [ref=e48]: Oportunidades
+        - button "📦 Productos" [ref=e49] [cursor=pointer]:
+          - generic [ref=e50]: 📦
+          - generic [ref=e51]: Productos
+        - button "📋 Cotizaciones" [ref=e52] [cursor=pointer]:
+          - generic [ref=e53]: 📋
+          - generic [ref=e54]: Cotizaciones
+        - button "🧲 Prospectos" [ref=e55] [cursor=pointer]:
+          - generic [ref=e56]: 🧲
+          - generic [ref=e57]: Prospectos
+        - button "📩 PQRS" [ref=e58] [cursor=pointer]:
+          - generic [ref=e59]: 📩
+          - generic [ref=e60]: PQRS
+        - button "📧 Correos Enviados" [ref=e61] [cursor=pointer]:
+          - generic [ref=e62]: 📧
+          - generic [ref=e63]: Correos Enviados
+        - button "✅ Tareas" [ref=e64] [cursor=pointer]:
+          - generic [ref=e65]: ✅
+          - generic [ref=e66]: Tareas
+        - button "🏗️ Proyectos" [ref=e67] [cursor=pointer]:
+          - generic [ref=e68]: 🏗️
+          - generic [ref=e69]: Proyectos
+        - button "💰 Montos Aplicados en Proyectos" [ref=e70] [cursor=pointer]:
+          - generic [ref=e71]: 💰
+          - generic [ref=e72]: Montos Aplicados en Proyectos
+        - button "⚙️ Referencias" [ref=e73] [cursor=pointer]:
+          - generic [ref=e74]: ⚙️
+          - generic [ref=e75]: Referencias
+      - button "🚪 Cerrar Sesión" [ref=e77] [cursor=pointer]:
+        - generic [ref=e78]: 🚪
+        - generic [ref=e79]: Cerrar Sesión
+    - main [ref=e80]:
+      - generic [ref=e81]:
+        - generic [ref=e82]:
+          - img "NORTON" [ref=e83]
+          - generic [ref=e84]:
+            - paragraph [ref=e85]: NORTON
+            - paragraph [ref=e86]: "NIT: 97110976-2"
+        - generic [ref=e87]:
+          - generic [ref=e88]: C0
+          - generic [ref=e89]:
+            - paragraph [ref=e90]: COMERCIAL 01
+            - paragraph [ref=e91]: Ventas
+      - generic [ref=e93]:
+        - generic [ref=e94]:
+          - generic [ref=e95]:
+            - paragraph [ref=e96]: DASHBOARD
+            - paragraph [ref=e97]: 05/06/2026
+          - generic [ref=e99]:
+            - button "Cambiar a Español" [ref=e100] [cursor=pointer]: 🇪🇸 ES
+            - button "Switch to English" [ref=e101] [cursor=pointer]: 🇬🇧 EN
+        - generic [ref=e102]:
+          - generic [ref=e103] [cursor=pointer]:
+            - generic [ref=e104]:
+              - generic [ref=e105]: 🏢
+              - generic [ref=e106]: "16"
+            - paragraph [ref=e107]: Empresas (Clientes)
+          - generic [ref=e108] [cursor=pointer]:
+            - generic [ref=e109]:
+              - generic [ref=e110]: 👤
+              - generic [ref=e111]: "10"
+            - paragraph [ref=e112]: Contactos
+          - generic [ref=e113] [cursor=pointer]:
+            - generic [ref=e114]:
+              - generic [ref=e115]: 🎯
+              - generic [ref=e116]: "2"
+            - paragraph [ref=e117]: Oportunidades
+          - generic [ref=e118] [cursor=pointer]:
+            - generic [ref=e119]:
+              - generic [ref=e120]: 📋
+              - generic [ref=e121]: "3"
+            - paragraph [ref=e122]: Cotizaciones
+          - generic [ref=e123] [cursor=pointer]:
+            - generic [ref=e124]:
+              - generic [ref=e125]: 📩
+              - generic [ref=e126]: "4"
+            - paragraph [ref=e127]: PQRS Abiertas
+          - generic [ref=e128] [cursor=pointer]:
+            - generic [ref=e129]:
+              - generic [ref=e130]: 📦
+              - generic [ref=e131]: "9"
+            - paragraph [ref=e132]: Productos
+          - generic [ref=e133] [cursor=pointer]:
+            - generic [ref=e134]:
+              - generic [ref=e135]: 🏗️
+              - generic [ref=e136]: "5"
+            - paragraph [ref=e137]: Proyectos
+        - generic [ref=e138]:
+          - generic [ref=e139] [cursor=pointer]:
+            - heading "Embudo de Ventas" [level=2] [ref=e140]
+            - generic [ref=e141]:
+              - generic [ref=e142]:
+                - paragraph [ref=e143]: Oportunidades
+                - paragraph [ref=e144]: "2"
+              - generic [ref=e145]:
+                - paragraph [ref=e146]: Valor Total
+                - paragraph [ref=e147]: $3,538,802.00
+            - paragraph [ref=e149]: Sin oportunidades abiertas
+          - generic [ref=e150] [cursor=pointer]:
+            - heading "Cotizaciones" [level=2] [ref=e151]
+            - generic [ref=e152]:
+              - generic [ref=e153]:
+                - paragraph [ref=e154]: Total
+                - paragraph [ref=e155]: "3"
+              - generic [ref=e156]:
+                - paragraph [ref=e157]: Valor Total
+                - paragraph [ref=e158]: $7,087,224,479.00
+            - generic [ref=e159]:
+              - generic [ref=e160]:
+                - generic [ref=e161]: Enviada
+                - generic [ref=e162]:
+                  - generic [ref=e163]: $7,083,024,479.00
+                  - generic [ref=e164]: "2"
+              - generic [ref=e165]:
+                - generic [ref=e166]: Anulada
+                - generic [ref=e167]:
+                  - generic [ref=e168]: $4,200,000.00
+                  - generic [ref=e169]: "1"
+          - generic [ref=e170] [cursor=pointer]:
+            - heading "PQRS por Tipo" [level=2] [ref=e171]
+            - generic [ref=e172]:
+              - generic [ref=e173]:
+                - text: 📝
+                - paragraph [ref=e174]: "1"
+                - paragraph [ref=e175]: Petición
+                - paragraph [ref=e176]: 1 abiertas
+              - generic [ref=e177]:
+                - text: 😤
+                - paragraph [ref=e178]: "1"
+                - paragraph [ref=e179]: Queja
+                - paragraph [ref=e180]: 1 abiertas
+              - generic [ref=e181]:
+                - text: ⚠️
+                - paragraph [ref=e182]: "2"
+                - paragraph [ref=e183]: Reclamo
+                - paragraph [ref=e184]: 2 abiertas
+              - generic [ref=e185]:
+                - text: 💡
+                - paragraph [ref=e186]: "0"
+                - paragraph [ref=e187]: Sugerencia
+          - generic [ref=e188] [cursor=pointer]:
+            - heading "Prospectos por Situación" [level=2] [ref=e189]
+            - generic [ref=e190]:
+              - img [ref=e191]:
+                - generic [ref=e197]: "6"
+                - generic [ref=e198]: Total
+              - generic [ref=e199]:
+                - generic [ref=e200]:
+                  - generic [ref=e202]: Contactado
+                  - generic [ref=e203]: "2"
+                  - generic [ref=e204]: 33%
+                - generic [ref=e205]:
+                  - generic [ref=e207]: Calificado
+                  - generic [ref=e208]: "1"
+                  - generic [ref=e209]: 17%
+                - generic [ref=e210]:
+                  - generic [ref=e212]: Nuevo
+                  - generic [ref=e213]: "1"
+                  - generic [ref=e214]: 17%
+                - generic [ref=e215]:
+                  - generic [ref=e217]: En Negociación
+                  - generic [ref=e218]: "1"
+                  - generic [ref=e219]: 17%
+                - generic [ref=e220]:
+                  - generic [ref=e222]: Sin Contactar
+                  - generic [ref=e223]: "1"
+                  - generic [ref=e224]: 17%
+          - generic [ref=e225] [cursor=pointer]:
+            - heading "SITUACIÓN TAREAS" [level=2] [ref=e226]
+            - generic [ref=e227]:
+              - img [ref=e228]:
+                - generic [ref=e232]: "3"
+                - generic [ref=e233]: Total
+              - generic [ref=e234]:
+                - generic [ref=e235]:
+                  - generic [ref=e237]: Completada
+                  - generic [ref=e238]: "1"
+                  - generic [ref=e239]: 33%
+                - generic [ref=e240]:
+                  - generic [ref=e242]: Pendiente
+                  - generic [ref=e243]: "1"
+                  - generic [ref=e244]: 33%
+                - generic [ref=e245]:
+                  - generic [ref=e247]: En Proceso
+                  - generic [ref=e248]: "1"
+                  - generic [ref=e249]: 33%
+          - generic [ref=e250] [cursor=pointer]:
+            - heading "PROYECTOS EN EJECUCIÓN" [level=2] [ref=e251]
+            - generic [ref=e252]:
+              - generic [ref=e254]:
+                - generic [ref=e255]: Monto Aprobado
+                - generic [ref=e256]: $2,932,495,731.00
+              - generic [ref=e260]:
+                - generic [ref=e261]: Monto Aplicado
+                - generic [ref=e262]: $1,576,000.00
+              - generic [ref=e266]:
+                - generic [ref=e267]: Diferencia a Cobrar
+                - generic [ref=e268]: $2,930,919,731.00
+              - generic [ref=e271]:
+                - generic [ref=e272]: 5 proyectos
+                - generic [ref=e273]:
+                  - text: "Cobertura:"
+                  - strong [ref=e274]: 0.1%
+          - generic [ref=e275] [cursor=pointer]:
+            - heading "Clientes por Ciudad" [level=2] [ref=e276]
+            - generic [ref=e277]:
+              - generic [ref=e278]:
+                - generic [ref=e280]:
+                  - generic [ref=e281]: Bogotá
+                  - generic [ref=e282]: "9"
+                - generic [ref=e286]:
+                  - generic [ref=e287]: Medellín
+                  - generic [ref=e288]: "4"
+                - generic [ref=e292]:
+                  - generic [ref=e293]: Sin definir
+                  - generic [ref=e294]: "2"
+                - generic [ref=e298]:
+                  - generic [ref=e299]: Barranquilla
+                  - generic [ref=e300]: "1"
+              - generic [ref=e303]:
+                - paragraph [ref=e304]: Total de Clientes
+                - paragraph [ref=e305]: "16"
+                - paragraph [ref=e306]: 4 ciudades
+          - generic [ref=e309] [cursor=pointer]:
+            - heading "Prospectos por Procedencia" [level=2] [ref=e310]
+            - generic [ref=e311]:
+              - generic [ref=e312]:
+                - generic [ref=e313]: "2"
+                - generic [ref=e315]: Llamada
+              - generic [ref=e316]:
+                - generic [ref=e317]: "1"
+                - generic [ref=e319]: Web
+              - generic [ref=e320]:
+                - generic [ref=e321]: "1"
+                - generic [ref=e323]: Referido
+              - generic [ref=e324]:
+                - generic [ref=e325]: "1"
+                - generic [ref=e327]: Evento
+              - generic [ref=e328]:
+                - generic [ref=e329]: "1"
+                - generic [ref=e331]: Redes Sociales
+          - generic [ref=e332]:
+            - heading "Resumen General" [level=2] [ref=e333]
+            - generic [ref=e334]:
+              - generic [ref=e335] [cursor=pointer]:
+                - generic [ref=e336]: Clientes Activos
+                - generic [ref=e337]: "8"
+              - generic [ref=e338] [cursor=pointer]:
+                - generic [ref=e339]: Contactos Principales
+                - generic [ref=e340]: "8"
+              - generic [ref=e341] [cursor=pointer]:
+                - generic [ref=e342]: Productos Activos
+                - generic [ref=e343]: "9"
+              - generic [ref=e344] [cursor=pointer]:
+                - generic [ref=e345]: Oportunidades Ganadas
+                - generic [ref=e346]: "0"
+              - generic [ref=e347] [cursor=pointer]:
+                - generic [ref=e348]: PQRS Urgentes
+                - generic [ref=e349]: "1"

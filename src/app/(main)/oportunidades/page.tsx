@@ -338,7 +338,7 @@ export default function OportunidadesPage() {
               <input type="date" value={selected.fecha_presupuesto} onChange={e => setSelected({ ...selected, fecha_presupuesto: e.target.value })} required style={inputStyle} />
             </div>
             <div>
-              <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.montoEstimado')} *</label>
+              <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>Estimado US$ *</label>
               <input type="number" step="0.01" min="0" value={selected.monto_estimado || ''} onChange={e => setSelected({ ...selected, monto_estimado: parseFloat(e.target.value) || 0 })} required style={inputStyle} />
             </div>
             <div>
@@ -406,8 +406,8 @@ export default function OportunidadesPage() {
               <input value={fmtMoney(der.parcial_anyo)} readOnly style={inputReadonly} />
             </div>
             <div>
-              <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{idioma === 'en' ? 'Year Partial €' : 'Parcial Año €'} *</label>
-              <input type="number" step="0.01" min="0" value={selected.parcial_euros_anyo} onChange={e => setSelected({ ...selected, parcial_euros_anyo: parseFloat(e.target.value) || 0 })} required style={inputStyle} />
+              <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{idioma === 'en' ? 'Year Partial €' : 'Parcial Año €'}</label>
+              <input value={fmtMoney(der.parcial_anyo * 0.87)} readOnly style={inputReadonly} />
             </div>
             <div>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{idioma === 'en' ? 'MG Year Partial $' : 'MG Parcial Año $'}</label>
