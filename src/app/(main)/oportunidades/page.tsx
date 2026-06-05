@@ -15,7 +15,6 @@ import { nextConsecutivo } from '@/shared/lib/consecutivo'
 import ReportPanel from '@/shared/components/report-panel'
 import SeguimientoPanel from '@/shared/components/seguimiento-panel'
 import DocumentosPanel from '@/shared/components/documentos-panel'
-import MoneyInput from '@/shared/components/money-input'
 import { Seguimiento } from '@/shared/types/seguimiento'
 import { useT, useIdioma, useTStatus } from '@/shared/i18n/use-t'
 
@@ -340,7 +339,7 @@ export default function OportunidadesPage() {
             </div>
             <div>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.montoEstimado')} *</label>
-              <MoneyInput value={selected.monto_estimado} onChange={n => setSelected({ ...selected, monto_estimado: n })} required style={inputStyle} />
+              <input type="number" step="0.01" min="0" value={selected.monto_estimado || ''} onChange={e => setSelected({ ...selected, monto_estimado: parseFloat(e.target.value) || 0 })} required style={inputStyle} />
             </div>
             <div>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.situacion')} *</label>
