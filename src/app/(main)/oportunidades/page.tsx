@@ -339,7 +339,7 @@ export default function OportunidadesPage() {
             </div>
             <div>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>Estimado US$ *</label>
-              <input type="number" step="0.01" min="0" value={selected.monto_estimado || ''} onChange={e => setSelected({ ...selected, monto_estimado: parseFloat(e.target.value) || 0 })} required style={inputStyle} />
+              <input type="number" step="0.01" min="0" value={selected.monto_estimado} onChange={e => setSelected({ ...selected, monto_estimado: e.target.value === '' ? 0 : parseFloat(e.target.value) })} required style={inputStyle} />
             </div>
             <div>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.situacion')} *</label>
