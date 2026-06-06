@@ -221,12 +221,12 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
         display: 'flex', flexDirection: 'column', overflow: 'hidden',
       }}>
         {/* Header */}
-        <div style={{ padding: collapsed ? '16px 8px' : '20px 16px', borderBottom: '1px solid rgba(255,255,255,0.15)', display: 'flex', alignItems: 'center', gap: 10, minHeight: 64 }}>
+        <div style={{ padding: collapsed ? '16px 8px' : '14px 6px', borderBottom: '1px solid rgba(255,255,255,0.15)', display: 'flex', alignItems: 'center', gap: 4, minHeight: 64 }}>
           <button onClick={() => setCollapsed(!collapsed)} style={{ background: 'none', border: 'none', color: '#ffffff', cursor: 'pointer', fontSize: 18, padding: 4, borderRadius: 6, flexShrink: 0 }}>
             {collapsed ? '☰' : '✕'}
           </button>
           {!collapsed && (
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
               {empresa?.logo_url ? (
                 <img src={empresa.logo_url} alt="Logo" style={{ width: 120, height: 120, borderRadius: 14, objectFit: 'contain', background: 'rgba(255,255,255,0.1)', padding: 8 }} />
               ) : (
