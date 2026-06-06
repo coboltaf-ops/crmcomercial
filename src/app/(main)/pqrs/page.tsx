@@ -1,6 +1,7 @@
 'use client'
 import { useState, useEffect } from 'react'
 import { usePQRSStore, PQRS } from '@/features/pqrs/store/pqrs-store'
+import { useEmpresaStore } from '@/features/empresa/store/empresa-store'
 import SeguimientoPanel from '@/shared/components/seguimiento-panel'
 import DocumentosPanel from '@/shared/components/documentos-panel'
 import { useAsistenteStore } from '@/shared/stores/asistente-store'
@@ -37,6 +38,7 @@ export default function PQRSPage() {
   const permisos = usePermisos('pqrs')
   const currentUser = useCurrentUserStore(s => s.user)
   const { pqrs, addPQRS, updatePQRS, deletePQRS } = usePQRSStore()
+  const empresa = useEmpresaStore(s => s.empresas[0])
   const clientes = useClientesStore(s => s.clientes).filter(c => c.situacion === 'Activo')
   const allContactos = useContactosStore(s => s.contactos).filter(c => c.situacion === 'Activo')
   const refData = useReferenceStore(s => s.data)
@@ -342,9 +344,12 @@ export default function PQRSPage() {
   return (
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
-        <div>
-          <h1 style={{ fontSize: 24, fontWeight: 700, color: '#ffffff', marginBottom: 4 }}>PQRS</h1>
-          <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: 14 }}>Peticiones, Quejas, Reclamos y Sugerencias</p>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+          {empresa?.logo_url && <img src={empresa.logo_url} alt="Logo" style={{ width: 64, height: 64, borderRadius: 12, objectFit: 'contain', background: '#f3f4f6', padding: 6, flexShrink: 0 }} />}
+          <div>
+            <h1 style={{ fontSize: 24, fontWeight: 700, color: '#ffffff', marginBottom: 4 }}>PQRS</h1>
+            <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: 14 }}>Peticiones, Quejas, Reclamos y Sugerencias</p>
+          </div>
         </div>
         <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
           {permisos.editar && externas.length > 0 && (
