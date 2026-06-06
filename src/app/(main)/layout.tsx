@@ -8,6 +8,7 @@ import { useClientesStore } from '@/features/clientes/store/clientes-store'
 import { useEmpresaStore } from '@/features/empresa/store/empresa-store'
 import { useFlujoListener } from '@/features/flujos/lib/useFlujoListener'
 import { useAutoSeed } from '@/shared/hooks/use-auto-seed'
+import { useI18nStore } from '@/shared/i18n/use-t'
 
 const ROUTE_KEYWORDS: { keywords: string[]; href: string; label: string }[] = [
   { keywords: ['empresa', 'empresas', 'cliente', 'clientes'], href: '/clientes', label: 'Empresas' },
@@ -48,6 +49,8 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
   const empresas = useEmpresaStore(s => s.empresas)
   const loadEmpresas = useEmpresaStore(s => s.loadEmpresas)
   const empresa = empresas[0]
+  const idioma = useI18nStore(s => s.idioma)
+  const setIdioma = useI18nStore(s => s.setIdioma)
 
   // Cargar datos de empresa (logo, etc.) desde KV para toda la app
   useEffect(() => {
@@ -265,7 +268,7 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
             <>
               <div style={{ height: 1, background: 'rgba(255,255,255,0.1)', margin: '8px 4px' }} />
               <button onClick={() => setConfigOpen(!configOpen)}
-                title={collapsed ? 'Configuración' : undefined}
+                title={collapsed ? (idioma === 'en' ? 'Settings' : 'Configuración') : undefined}
                 style={{
                   display: 'flex', alignItems: 'center', gap: 12,
                   padding: collapsed ? '10px 0' : '10px 12px',
@@ -280,7 +283,7 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
                 <span style={{ fontSize: 18, flexShrink: 0 }}>⚙️</span>
                 {!collapsed && (
                   <>
-                    <span style={{ flex: 1 }}>Configuración</span>
+                    <span style={{ flex: 1 }}>{idioma === 'en' ? 'Settings' : 'Configuración'}</span>
                     <span style={{ fontSize: 10, transition: 'transform 0.2s', transform: configOpen ? 'rotate(180deg)' : 'rotate(0deg)' }}>▼</span>
                   </>
                 )}
@@ -327,6 +330,23 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
             </div>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            {/* Selector de idioma */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: 4, background: 'rgba(255,255,255,0.12)', borderRadius: 8, padding: 4 }}>
+              <button onClick={() => setIdioma('es')} title="Español"
+                style={{
+                  padding: '4px 8px', borderRadius: 6, cursor: 'pointer', fontSize: 18, lineHeight: 1,
+                  border: idioma === 'es' ? '2px solid #ffffff' : '2px solid transparent',
+                  background: idioma === 'es' ? 'rgba(255,255,255,0.25)' : 'transparent',
+                  opacity: idioma === 'es' ? 1 : 0.55,
+                }}>🇪🇸</button>
+              <button onClick={() => setIdioma('en')} title="English"
+                style={{
+                  padding: '4px 8px', borderRadius: 6, cursor: 'pointer', fontSize: 18, lineHeight: 1,
+                  border: idioma === 'en' ? '2px solid #ffffff' : '2px solid transparent',
+                  background: idioma === 'en' ? 'rgba(255,255,255,0.25)' : 'transparent',
+                  opacity: idioma === 'en' ? 1 : 0.55,
+                }}>🇺🇸</button>
+            </div>
             {pathname !== '/dashboard' && (
               <button onClick={() => router.push('/dashboard')}
                 style={{
@@ -334,18 +354,18 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
                   background: '#1d4ed8', border: '1px solid #2563eb',
                   color: '#fff', fontSize: 13, fontWeight: 700, cursor: 'pointer',
                 }}>
-                Menú Principal
+                {idioma === 'en' ? 'Main Menu' : 'Menú Principal'}
               </button>
             )}
             <button onClick={() => {
-              if (confirm('¿Cerrar sesión?')) { logout(); router.push('/login') }
+              if (confirm(idioma === 'en' ? 'Log out?' : '¿Cerrar sesión?')) { logout(); router.push('/login') }
             }}
               style={{
                 padding: '8px 20px', borderRadius: 8,
                 background: '#b91c1c', border: '1px solid #dc2626',
                 color: '#fff', fontSize: 13, fontWeight: 700, cursor: 'pointer',
               }}>
-              Cerrar Sesión
+              {idioma === 'en' ? 'Log Out' : 'Cerrar Sesión'}
             </button>
           </div>
         </div>

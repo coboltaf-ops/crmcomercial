@@ -1,14 +1,20 @@
 import { create } from 'zustand'
+import { persist } from 'zustand/middleware'
 
 interface I18nState {
   idioma: 'es' | 'en'
   setIdioma: (idioma: 'es' | 'en') => void
 }
 
-const useI18nStore = create<I18nState>(set => ({
-  idioma: 'es',
-  setIdioma: (idioma) => set({ idioma }),
-}))
+export const useI18nStore = create<I18nState>()(
+  persist(
+    set => ({
+      idioma: 'es',
+      setIdioma: (idioma) => set({ idioma }),
+    }),
+    { name: 'crm-idioma-storage' }
+  )
+)
 
 const translations: Record<string, Record<string, string>> = {
   es: {
@@ -136,6 +142,72 @@ const translations: Record<string, Record<string, string>> = {
     'ph.buscarOportunidad': 'Buscar por proyecto, código o cliente...',
   },
   en: {
+    'lbl.actividad': 'Activity',
+    'lbl.adjudicacion': 'Award',
+    'lbl.apellido': 'Last Name',
+    'lbl.asunto': 'Subject',
+    'lbl.cargo': 'Position',
+    'lbl.categoria': 'Category',
+    'lbl.celular': 'Mobile',
+    'lbl.codigoPostal': 'Postal Code',
+    'lbl.condicionPago': 'Payment Terms',
+    'lbl.condicionPagoCorta': 'Pay. Terms',
+    'lbl.contacto': 'Contact',
+    'lbl.correo': 'Email',
+    'lbl.correoEmpresa': 'Company Email',
+    'lbl.departamento': 'Department',
+    'lbl.descripcion': 'Description',
+    'lbl.detalleRequerimiento': 'Requirement Detail',
+    'lbl.direccion': 'Address',
+    'lbl.email': 'Email',
+    'lbl.empresa': 'Company',
+    'lbl.fechaAsignacionTask': 'Assignment Date',
+    'lbl.fechaEmision': 'Issue Date',
+    'lbl.fechaEsperadaVeredicto': 'Expected Verdict Date',
+    'lbl.fechaFinalConsultas': 'Final Inquiry Date',
+    'lbl.fechaInicioConsultas': 'Inquiry Start Date',
+    'lbl.fechaNacimiento': 'Date of Birth',
+    'lbl.fechaPresentarOferta': 'Bid Submission Date',
+    'lbl.fechaRealFin': 'Actual End Date',
+    'lbl.fechaRealPresentacion': 'Actual Submission Date',
+    'lbl.fechaRequeridaFin': 'Required End Date',
+    'lbl.fechaVencimiento': 'Due Date',
+    'lbl.horaAsignacion': 'Assignment Time',
+    'lbl.logoEmpresa': 'Company Logo',
+    'lbl.mensaje': 'Message',
+    'lbl.moneda': 'Currency',
+    'lbl.montoEstimado': 'Estimated Amount',
+    'lbl.montoRealOferta': 'Actual Bid Amount',
+    'lbl.movil': 'Mobile',
+    'lbl.nivelInfluencia': 'Influence Level',
+    'lbl.nombre': 'Name',
+    'lbl.nombreComercial': 'Trade Name',
+    'lbl.nombreEmpresa': 'Company Name',
+    'lbl.nroDocumento': 'Document No.',
+    'lbl.nroMovil': 'Mobile No.',
+    'lbl.oportunidad': 'Opportunity',
+    'lbl.origenProspecto': 'Prospect Source',
+    'lbl.paginaWeb': 'Website',
+    'lbl.para': 'To',
+    'lbl.parcialEuros': 'Partial €',
+    'lbl.personaQueAsigna': 'Assigned By',
+    'lbl.personaQueEjecuta': 'Performed By',
+    'lbl.precioUnitario': 'Unit Price',
+    'lbl.prioridad': 'Priority',
+    'lbl.razonSocial': 'Legal Name',
+    'lbl.representanteLegal': 'Legal Representative',
+    'lbl.rol': 'Role',
+    'lbl.sinLogo': 'No Logo',
+    'lbl.sitioWeb': 'Website',
+    'lbl.subtotal': 'Subtotal',
+    'lbl.telefono': 'Phone',
+    'lbl.telefonoEmpresa': 'Company Phone',
+    'lbl.tipo': 'Type',
+    'lbl.tipoIdentificacion': 'ID Type',
+    'lbl.total': 'Total',
+    'lbl.ubicacion': 'Location',
+    'lbl.unidadMedida': 'Unit of Measure',
+    'lbl.vendedor': 'Salesperson',
     'lbl.nroOportunidad': 'Opportunity #',
     'lbl.fechaRegistro': 'Registration Date',
     'lbl.codigo': 'Code',
