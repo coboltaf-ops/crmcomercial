@@ -58,7 +58,7 @@ export default function TareasPage() {
 
   // Styles
   const btnStyle: React.CSSProperties = { padding: '8px 16px', borderRadius: 8, border: 'none', cursor: 'pointer', fontSize: 13, fontWeight: 600 }
-  const inputStyle: React.CSSProperties = { padding: '8px 12px', borderRadius: 8, background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.2)', color: '#ffffff', fontSize: 13, outline: 'none', width: '100%' }
+  const inputStyle: React.CSSProperties = { padding: '8px 12px', borderRadius: 8, background: '#ffffff', border: '1px solid #1e3a8a', color: '#1e3a8a', fontWeight: 600, fontSize: 13, outline: 'none', width: '100%' }
   const labelStyle: React.CSSProperties = { color: '#013978', fontSize: 11, marginBottom: 4, display: 'block' }
   const cardStyle: React.CSSProperties = { background: '#ffffff', borderRadius: 12, padding: 16, border: '1px solid #1e3a8a' }
 
