@@ -13,14 +13,14 @@
 }
 
 body, html {
-  background: #1e3a8a !important;
-  color: #FFFFFF !important;
+  background: #FFFFFF !important;
+  color: #013978 !important;
   font-family: Arial, Helvetica, sans-serif;
 }
 
-/* Textos por defecto en blanco */
+/* Textos por defecto en azul oscuro (fondo blanco) */
 p, span, a, li {
-  color: #FFFFFF !important;
+  color: #013978 !important;
 }
 
 /* Menú lateral: items con fondo azul oscuro y texto blanco */
@@ -50,10 +50,10 @@ label {
   margin-bottom: 6px !important;
 }
 
-/* Tablas con texto blanco */
+/* Tablas con texto azul oscuro */
 table, tr, td, th {
-  color: #FFFFFF !important;
-  border-color: rgba(255,255,255,0.2) !important;
+  color: #013978 !important;
+  border-color: rgba(0,0,0,0.2) !important;
 }
 
 /* Inputs/formularios: texto OSCURO sobre fondo claro */
