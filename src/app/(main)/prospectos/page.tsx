@@ -381,7 +381,7 @@ export default function ProspectosPage() {
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-          {empresa?.logo_url && <img src={empresa.logo_url} alt="Logo" style={{ width: 64, height: 64, borderRadius: 12, objectFit: 'contain', background: '#f3f4f6', padding: 6, flexShrink: 0 }} />}
+          {empresa?.logo_url && <img src={empresa.logo_url} alt="Logo" style={{ width: 100, height: 100, borderRadius: 12, objectFit: 'contain', background: '#f3f4f6', padding: 8, flexShrink: 0 }} />}
           <div>
             <h1 style={{ fontSize: 24, fontWeight: 700, color: '#013978', marginBottom: 4 }}>{t('page.prospectos.title')}</h1>
             <p style={{ color: '#013978', fontSize: 14 }}>{t('page.prospectos.subtitle')}</p>

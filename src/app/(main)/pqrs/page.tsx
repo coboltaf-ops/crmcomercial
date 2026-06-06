@@ -345,7 +345,7 @@ export default function PQRSPage() {
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-          {empresa?.logo_url && <img src={empresa.logo_url} alt="Logo" style={{ width: 64, height: 64, borderRadius: 12, objectFit: 'contain', background: '#f3f4f6', padding: 6, flexShrink: 0 }} />}
+          {empresa?.logo_url && <img src={empresa.logo_url} alt="Logo" style={{ width: 100, height: 100, borderRadius: 12, objectFit: 'contain', background: '#f3f4f6', padding: 8, flexShrink: 0 }} />}
           <div>
             <h1 style={{ fontSize: 24, fontWeight: 700, color: '#ffffff', marginBottom: 4 }}>PQRS</h1>
             <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: 14 }}>Peticiones, Quejas, Reclamos y Sugerencias</p>
