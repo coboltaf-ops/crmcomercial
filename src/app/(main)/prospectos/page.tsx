@@ -154,12 +154,12 @@ export default function ProspectosPage() {
 
   const statusStyle = (s: string): React.CSSProperties => {
     const map: Record<string, React.CSSProperties> = {
-      'Nuevo': { background: '#0c2563', color: '#ffffff', border: '1px solid #60a5fa' },
-      'Contactado': { background: '#1e40af', color: '#ffffff', border: '1px solid #3b82f6' },
-      'Calificado': { background: '#15803d', color: '#ffffff', border: '1px solid #22c55e' },
-      'En Negociación': { background: '#b45309', color: '#ffffff', border: '1px solid #f59e0b' },
-      'Convertido': { background: '#065f46', color: '#ffffff', border: '1px solid #10b981' },
-      'Descartado': { background: '#991b1b', color: '#ffffff', border: '1px solid #ef4444' },
+      'Nuevo': { background: 'transparent', color: '#60a5fa', border: '1px solid #60a5fa' },
+      'Contactado': { background: 'transparent', color: '#3b82f6', border: '1px solid #3b82f6' },
+      'Calificado': { background: 'transparent', color: '#22c55e', border: '1px solid #22c55e' },
+      'En Negociación': { background: 'transparent', color: '#f59e0b', border: '1px solid #f59e0b' },
+      'Convertido': { background: 'transparent', color: '#10b981', border: '1px solid #10b981' },
+      'Descartado': { background: 'transparent', color: '#ef4444', border: '1px solid #ef4444' },
     }
     return map[s] || {}
   }

@@ -110,10 +110,10 @@ export default function OportunidadesPage() {
 
   const statusStyle = (s: string): React.CSSProperties => {
     const map: Record<string, React.CSSProperties> = {
-      'Abierta': { background: '#047857', color: '#ffffff', border: '1px solid #10b981' },
-      'En Negociación': { background: '#b45309', color: '#ffffff', border: '1px solid #f59e0b' },
-      'Ganada': { background: '#065f46', color: '#ffffff', border: '1px solid #059669' },
-      'Perdida': { background: '#7f1d1d', color: '#ffffff', border: '1px solid #dc2626' },
+      'Abierta': { background: 'transparent', color: '#10b981', border: '1px solid #10b981' },
+      'En Negociación': { background: 'transparent', color: '#f59e0b', border: '1px solid #f59e0b' },
+      'Ganada': { background: 'transparent', color: '#059669', border: '1px solid #059669' },
+      'Perdida': { background: 'transparent', color: '#dc2626', border: '1px solid #dc2626' },
     }
     return map[s] || {}
   }

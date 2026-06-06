@@ -126,10 +126,10 @@ export default function PQRSPage() {
 
   const statusStyle = (s: string): React.CSSProperties => {
     const map: Record<string, React.CSSProperties> = {
-      'Abierta': { background: '#15803d', color: '#ffffff', border: '1px solid #16a34a' },
+      'Abierta': { background: 'transparent', color: '#16a34a', border: '1px solid #16a34a' },
       'En Proceso': { background: 'rgba(245,158,11,0.2)', color: '#fcd34d', border: '1px solid rgba(245,158,11,0.3)' },
-      'Cerrada': { background: '#15803d', color: '#ffffff', border: '1px solid #16a34a' },
-      'Escalada': { background: '#dc2626', color: '#ffffff', border: '1px solid #ef4444' },
+      'Cerrada': { background: 'transparent', color: '#16a34a', border: '1px solid #16a34a' },
+      'Escalada': { background: 'transparent', color: '#ef4444', border: '1px solid #ef4444' },
     }
     return map[s] || {}
   }

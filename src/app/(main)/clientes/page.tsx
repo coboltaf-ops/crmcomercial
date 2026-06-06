@@ -109,10 +109,10 @@ export default function ClientesPage() {
 
   const statusStyle = (s: string): React.CSSProperties => {
     const map: Record<string, React.CSSProperties> = {
-      'activo': { background: '#0c2563', color: '#ffffff', border: '1px solid #60a5fa' },
-      'inactivo': { background: '#b45309', color: '#ffffff', border: '1px solid #f59e0b' },
-      'prospecto': { background: '#ca8a04', color: '#ffffff', border: '1px solid #facc15' },
-      'prospectando': { background: '#ca8a04', color: '#ffffff', border: '1px solid #facc15' },
+      'activo': { background: 'transparent', color: '#60a5fa', border: '1px solid #60a5fa' },
+      'inactivo': { background: 'transparent', color: '#f59e0b', border: '1px solid #f59e0b' },
+      'prospecto': { background: 'transparent', color: '#facc15', border: '1px solid #facc15' },
+      'prospectando': { background: 'transparent', color: '#facc15', border: '1px solid #facc15' },
     }
     return map[(s || '').trim().toLowerCase()] || {}
   }

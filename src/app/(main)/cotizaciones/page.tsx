@@ -246,13 +246,13 @@ export default function CotizacionesPage() {
 
   const statusStyle = (s: string): React.CSSProperties => {
     const map: Record<string, React.CSSProperties> = {
-      'Borrador': { background: '#6b7280', color: '#ffffff', border: '1px solid #9ca3af' },
-      'En Construcción': { background: '#1e40af', color: '#ffffff', border: '1px solid #3b82f6' },
-      'Anulada': { background: '#78350f', color: '#ffffff', border: '1px solid #b45309', textDecoration: 'line-through' },
-      'Enviada': { background: '#047857', color: '#ffffff', border: '1px solid #10b981' },
-      'Aprobada': { background: '#065f46', color: '#ffffff', border: '1px solid #059669' },
-      'Rechazada': { background: '#7f1d1d', color: '#ffffff', border: '1px solid #dc2626' },
-      'Vencida': { background: '#b45309', color: '#ffffff', border: '1px solid #f59e0b' },
+      'Borrador': { background: 'transparent', color: '#9ca3af', border: '1px solid #9ca3af' },
+      'En Construcción': { background: 'transparent', color: '#3b82f6', border: '1px solid #3b82f6' },
+      'Anulada': { background: 'transparent', color: '#b45309', border: '1px solid #b45309', textDecoration: 'line-through' },
+      'Enviada': { background: 'transparent', color: '#10b981', border: '1px solid #10b981' },
+      'Aprobada': { background: 'transparent', color: '#059669', border: '1px solid #059669' },
+      'Rechazada': { background: 'transparent', color: '#dc2626', border: '1px solid #dc2626' },
+      'Vencida': { background: 'transparent', color: '#f59e0b', border: '1px solid #f59e0b' },
     }
     return map[s] || {}
   }
