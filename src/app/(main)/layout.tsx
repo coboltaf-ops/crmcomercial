@@ -228,9 +228,9 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
           {!collapsed && (
             <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
               {empresa?.logo_url ? (
-                <img src={empresa.logo_url} alt="Logo" style={{ width: 88, height: 88, borderRadius: 12, objectFit: 'contain', background: 'rgba(255,255,255,0.1)', padding: 6 }} />
+                <img src={empresa.logo_url} alt="Logo" style={{ width: 120, height: 120, borderRadius: 14, objectFit: 'contain', background: 'rgba(255,255,255,0.1)', padding: 8 }} />
               ) : (
-                <div style={{ width: 88, height: 88, borderRadius: 12, background: 'rgba(255,255,255,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#ffffff', fontWeight: 700, fontSize: 26 }}>C</div>
+                <div style={{ width: 120, height: 120, borderRadius: 14, background: 'rgba(255,255,255,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#ffffff', fontWeight: 700, fontSize: 34 }}>C</div>
               )}
               <div>
                 <p style={{ color: '#ffffff', fontWeight: 800, fontSize: 16, lineHeight: 1.2, margin: 0 }}>GESTION COMERCIAL</p>
