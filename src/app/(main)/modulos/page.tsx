@@ -44,8 +44,20 @@ export default function ModulosPage() {
             }}>
               <span style={{ fontSize: 24, marginRight: 16 }}>{m.icon}</span>
               <div style={{ flex: 1 }}>
-                <p style={{ color: '#ffffff', fontSize: 15, fontWeight: 600 }}>{m.label}</p>
-                <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 12 }}>{m.href}</p>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                  <p style={{ color: '#ffffff', fontSize: 15, fontWeight: 600, margin: 0 }}>{m.label}</p>
+                  <button
+                    onClick={() => { if (!isProtected) toggleModulo(m.id) }}
+                    style={{
+                      padding: '4px 14px', borderRadius: 12, fontSize: 11, fontWeight: 700,
+                      color: '#ffffff', border: 'none',
+                      cursor: isProtected ? 'default' : 'pointer',
+                      background: m.activo ? '#16a34a' : '#dc2626',
+                    }}>
+                    {m.activo ? 'Activo' : 'Desactivo'}
+                  </button>
+                </div>
+                <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 12, margin: '4px 0 0' }}>{m.href}</p>
               </div>
               {isProtected ? (
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
