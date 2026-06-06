@@ -44,19 +44,7 @@ export default function ModulosPage() {
             }}>
               <span style={{ fontSize: 24, marginRight: 16 }}>{m.icon}</span>
               <div style={{ flex: 1 }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                  <p style={{ color: '#ffffff', fontSize: 15, fontWeight: 600, margin: 0 }}>{m.label}</p>
-                  <button
-                    onClick={() => { if (!isProtected) toggleModulo(m.id) }}
-                    style={{
-                      padding: '4px 14px', borderRadius: 12, fontSize: 11, fontWeight: 700,
-                      color: '#ffffff', border: 'none',
-                      cursor: isProtected ? 'default' : 'pointer',
-                      background: m.activo ? '#16a34a' : '#dc2626',
-                    }}>
-                    {m.activo ? 'Activo' : 'Desactivo'}
-                  </button>
-                </div>
+                <p style={{ color: '#ffffff', fontSize: 15, fontWeight: 600, margin: 0 }}>{m.label}</p>
                 <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 12, margin: '4px 0 0' }}>{m.href}</p>
               </div>
               {isProtected ? (
@@ -67,19 +55,14 @@ export default function ModulosPage() {
                   </div>
                 </div>
               ) : (
-                <button onClick={() => toggleModulo(m.id)} style={{ ...btnStyle, background: 'none', padding: 0, display: 'flex', alignItems: 'center', gap: 8 }}>
-                  <span style={{ color: m.activo ? '#ffffff' : '#fca5a5', fontSize: 13, fontWeight: 600 }}>
-                    {m.activo ? 'Activo' : 'Inactivo'}
-                  </span>
-                  <div style={{
-                    width: 48, height: 26, borderRadius: 13,
-                    background: m.activo ? '#0f1b3d' : '#b91c1c',
-                    display: 'flex', alignItems: 'center',
-                    justifyContent: m.activo ? 'flex-end' : 'flex-start',
-                    padding: '0 3px', transition: 'all 0.3s',
+                <button
+                  onClick={() => toggleModulo(m.id)}
+                  style={{
+                    padding: '6px 18px', borderRadius: 10, fontSize: 13, fontWeight: 700,
+                    color: '#ffffff', border: 'none', cursor: 'pointer',
+                    background: m.activo ? '#16a34a' : '#dc2626',
                   }}>
-                    <div style={{ width: 20, height: 20, borderRadius: '50%', background: '#fff', transition: 'all 0.3s' }} />
-                  </div>
+                  {m.activo ? 'Activo' : 'Desactivo'}
                 </button>
               )}
             </div>
