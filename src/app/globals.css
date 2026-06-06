@@ -95,11 +95,11 @@ input::placeholder {
   color: rgba(1,57,120,0.5) !important;
 }
 
-/* Tarjetas del dashboard: fondo blanco + texto azul oscuro */
+/* Tarjetas del dashboard: fondo blanco + texto azul oscuro + bordes azul oscuro */
 div[style*="borderRadius: 16"],
 div[style*="border-radius: 16px"] {
   background: #FFFFFF !important;
-  border-color: rgba(0,0,0,0.1) !important;
+  border: 2px solid #1e3a8a !important;
 }
 
 div[style*="borderRadius: 16"] p,
