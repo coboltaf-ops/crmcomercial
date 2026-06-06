@@ -65,9 +65,9 @@ label {
   margin-bottom: 6px !important;
 }
 
-/* Tablas con texto azul oscuro */
+/* Tablas (despliegues) con texto negro intenso */
 table, tr, td {
-  color: #013978 !important;
+  color: #000000 !important;
   border-color: rgba(0,0,0,0.2) !important;
 }
 
@@ -78,9 +78,9 @@ th {
   border-color: rgba(0,0,0,0.2) !important;
 }
 
-/* Inputs/formularios: texto OSCURO sobre fondo claro + bordes azul oscuro */
+/* Inputs/formularios: texto NEGRO intenso sobre fondo claro + bordes azul oscuro */
 input, textarea, select {
-  color: #013978 !important;
+  color: #000000 !important;
   background: rgba(255,255,255,0.9) !important;
   border: 2px solid #1e3a8a !important;
 }
