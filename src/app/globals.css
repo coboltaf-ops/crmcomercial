@@ -60,8 +60,15 @@ label {
 }
 
 /* Tablas con texto azul oscuro */
-table, tr, td, th {
+table, tr, td {
   color: #013978 !important;
+  border-color: rgba(0,0,0,0.2) !important;
+}
+
+/* Encabezados de tablas: texto blanco con fondo azul oscuro */
+th {
+  color: #FFFFFF !important;
+  background: #1e3a8a !important;
   border-color: rgba(0,0,0,0.2) !important;
 }
 
