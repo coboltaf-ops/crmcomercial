@@ -2,6 +2,7 @@
 import { logAudit, computarDiff } from '@/shared/lib/audit'
 import { useState, useEffect } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
+import ModuleHeader from '@/shared/components/module-header'
 import { useOportunidadesStore, Oportunidad, DocumentoExigido } from '@/features/oportunidades/store/oportunidades-store'
 import { useClientesStore } from '@/features/clientes/store/clientes-store'
 import { useContactosStore } from '@/features/contactos/store/contactos-store'
@@ -599,15 +600,13 @@ export default function OportunidadesPage() {
   // ── MAIN VIEW ──
   return (
     <div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
-        <div>
-          <h1 style={{ fontSize: 24, fontWeight: 700, color: '#013978', marginBottom: 4 }}>{t('page.oportunidades.title')}</h1>
-          <p style={{ color: '#013978', fontSize: 14 }}>{t('page.oportunidades.subtitle')}</p>
-        </div>
-        {permisos.editar && tab === 'registros' && (
+      <ModuleHeader title={t('page.oportunidades.title')} subtitle={t('page.oportunidades.subtitle')} />
+
+      {permisos.editar && tab === 'registros' && (
+        <div style={{ marginBottom: 20 }}>
           <button onClick={() => { setSelected(emptyOportunidad(nextConsecutivo('OPP-', oportunidades.map(o => o.codigo)).codigo, `${currentUser?.nombre || ''} ${currentUser?.apellido || ''}`.trim())); setIsForm(true) }} style={{ ...btnStyle, background: '#0f1b3d', color: '#ffffff' }}>{t('page.oportunidades.btnNuevo')}</button>
-        )}
-      </div>
+        </div>
+      )}
 
       <div style={{ display: 'flex', gap: 8, marginBottom: 20 }}>
         <button onClick={() => setTab('registros')} style={tabBtnStyle(tab === 'registros')}>📋 {t('tab.registros')}</button>
