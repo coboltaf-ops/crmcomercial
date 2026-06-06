@@ -16,7 +16,6 @@ export default function DashboardPage() {
   const pqrs = usePQRSStore(s => s.pqrs)
 
   const opoAbiertas = oportunidades.filter(o => o.situacion === 'Abierta' || o.situacion === 'En Negociación')
-  const totalPipeline = opoAbiertas.reduce((s, o) => s + (o.valor_estimado || o.monto_estimado || 0), 0)
   const pqrsAbiertas = pqrs.filter(p => p.situacion !== 'Cerrada')
   const cotPendientes = cotizaciones.filter(c => c.situacion === 'Borrador' || c.situacion === 'Enviada')
 
@@ -41,14 +40,6 @@ export default function DashboardPage() {
   }))
   const tipoIcons: Record<string, string> = { 'Petición': '📝', 'Queja': '😤', 'Reclamo': '⚠️', 'Sugerencia': '💡' }
 
-  // Oportunidades por etapa
-  const etapas = ['Prospección', 'Calificación', 'Propuesta', 'Negociación', 'Cierre']
-  const opoPorEtapa = etapas.map(e => ({
-    etapa: e,
-    count: oportunidades.filter(o => o.etapa === e && (o.situacion === 'Abierta' || o.situacion === 'En Negociación')).length,
-    valor: oportunidades.filter(o => o.etapa === e && (o.situacion === 'Abierta' || o.situacion === 'En Negociación')).reduce((s, o) => s + (o.valor_estimado || o.monto_estimado || 0), 0),
-  }))
-
   // Clientes por ciudad (gráfico de barras)
   const ciudadCount: Record<string, number> = {}
   clientes.forEach(c => {
@@ -60,6 +51,21 @@ export default function DashboardPage() {
     .sort((a, b) => b.count - a.count)
     .slice(0, 12)
   const maxCiudad = Math.max(1, ...clientesPorCiudad.map(c => c.count))
+
+  // Pipeline por situación (gráfico de torta)
+  const sitColors: Record<string, string> = { 'Abierta': '#2563eb', 'En Negociación': '#f59e0b', 'Ganada': '#16a34a', 'Perdida': '#dc2626' }
+  const sitMap: Record<string, { count: number; monto: number }> = {}
+  oportunidades.forEach(o => {
+    const s = o.situacion || 'Otra'
+    if (!sitMap[s]) sitMap[s] = { count: 0, monto: 0 }
+    sitMap[s].count++
+    sitMap[s].monto += (o.valor_estimado || o.monto_estimado || 0)
+  })
+  const opoPorSituacion = Object.entries(sitMap)
+    .map(([situacion, v]) => ({ situacion, count: v.count, monto: v.monto, color: sitColors[situacion] || '#6b7280' }))
+    .sort((a, b) => b.count - a.count)
+  const totalOpoCount = oportunidades.length
+  const totalOpoMonto = opoPorSituacion.reduce((s, x) => s + x.monto, 0)
 
   return (
     <div>
@@ -79,30 +85,59 @@ export default function DashboardPage() {
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 24 }}>
-        {/* Pipeline */}
+        {/* Pipeline de Ventas — torta por situación */}
         <div className="dash-card" style={cardStyle}>
           <h2 style={{ color: '#1e3a8a', fontSize: 16, fontWeight: 600, marginBottom: 16 }}>Pipeline de Ventas</h2>
-          <div style={{ display: 'flex', gap: 16, marginBottom: 16 }}>
+          {/* Totales arriba */}
+          <div style={{ display: 'flex', gap: 24, marginBottom: 18 }}>
             <div>
-              <p style={{ color: '#1e3a8a', fontSize: 12 }}>Oportunidades</p>
-              <p style={{ color: '#1e3a8a', fontSize: 28, fontWeight: 800 }}>{opoAbiertas.length}</p>
+              <p style={{ color: '#1e3a8a', fontSize: 12 }}>Cantidad</p>
+              <p style={{ color: '#1e3a8a', fontSize: 28, fontWeight: 800 }}>{totalOpoCount}</p>
             </div>
             <div>
-              <p style={{ color: '#1e3a8a', fontSize: 12 }}>Valor Total</p>
-              <p style={{ color: '#1e3a8a', fontSize: 28, fontWeight: 800 }}>${fmtMoney(totalPipeline)}</p>
+              <p style={{ color: '#1e3a8a', fontSize: 12 }}>Monto Total</p>
+              <p style={{ color: '#1e3a8a', fontSize: 28, fontWeight: 800 }}>${fmtMoney(totalOpoMonto)}</p>
             </div>
           </div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-            {opoPorEtapa.map(e => (
-              <div key={e.etapa} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                <span style={{ color: '#1e3a8a', fontSize: 12, width: 100 }}>{e.etapa}</span>
-                <div style={{ flex: 1, height: 8, background: '#e5e7eb', borderRadius: 4, overflow: 'hidden' }}>
-                  <div style={{ height: '100%', width: `${opoAbiertas.length ? (e.count / opoAbiertas.length) * 100 : 0}%`, background: '#1e3a8a', borderRadius: 4, transition: 'width 0.3s' }} />
-                </div>
-                <span style={{ color: '#1e3a8a', fontSize: 12, fontWeight: 600, width: 24, textAlign: 'right' }}>{e.count}</span>
+          {totalOpoCount === 0 ? (
+            <p style={{ color: '#1e3a8a', fontSize: 13 }}>No hay oportunidades registradas</p>
+          ) : (
+            <div style={{ display: 'flex', alignItems: 'center', gap: 20, flexWrap: 'wrap' }}>
+              {/* Torta (donut) en SVG */}
+              <svg width="150" height="150" viewBox="0 0 150 150" style={{ flexShrink: 0 }}>
+                <g transform="rotate(-90 75 75)">
+                  {(() => {
+                    const C = 2 * Math.PI * 55
+                    let acc = 0
+                    return opoPorSituacion.filter(s => s.count > 0).map(s => {
+                      const frac = s.count / (totalOpoCount || 1)
+                      const dash = frac * C
+                      const el = (
+                        <circle key={s.situacion} cx="75" cy="75" r="55" fill="none"
+                          stroke={s.color} strokeWidth="30"
+                          strokeDasharray={`${dash} ${C - dash}`} strokeDashoffset={-acc} />
+                      )
+                      acc += dash
+                      return el
+                    })
+                  })()}
+                </g>
+                <text x="75" y="70" textAnchor="middle" fontSize="22" fontWeight="800" fill="#1e3a8a">{totalOpoCount}</text>
+                <text x="75" y="90" textAnchor="middle" fontSize="10" fill="#1e3a8a">oportunidades</text>
+              </svg>
+              {/* Leyenda */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 8, flex: 1, minWidth: 160 }}>
+                {opoPorSituacion.map(s => (
+                  <div key={s.situacion} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                    <svg width="12" height="12" style={{ flexShrink: 0 }}><circle cx="6" cy="6" r="6" fill={s.color} /></svg>
+                    <span style={{ color: '#1e3a8a', fontSize: 12, fontWeight: 600, flex: 1 }}>{s.situacion}</span>
+                    <span style={{ color: '#1e3a8a', fontSize: 12, fontWeight: 800 }}>{s.count}</span>
+                    <span style={{ color: '#1e3a8a', fontSize: 11, fontWeight: 600, minWidth: 70, textAlign: 'right' }}>${fmtMoney(s.monto)}</span>
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
+            </div>
+          )}
         </div>
 
         {/* Cotizaciones resumen */}
