@@ -19,8 +19,24 @@ body, html {
 }
 
 /* Textos por defecto en blanco */
-p, span, label, a, li {
+p, span, a, li {
   color: #FFFFFF !important;
+}
+
+/* Textos del Dashboard: azul oscuro */
+h1, h2, h3, h4, h5, h6 {
+  color: #013978 !important;
+}
+
+/* Labels/títulos de formularios: fondo azul oscuro + texto blanco */
+label {
+  color: #FFFFFF !important;
+  background: #1e3a8a !important;
+  padding: 6px 10px !important;
+  border-radius: 4px !important;
+  display: inline-block !important;
+  font-weight: 600 !important;
+  margin-bottom: 6px !important;
 }
 
 /* Tablas con texto blanco */
