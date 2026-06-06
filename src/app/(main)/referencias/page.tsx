@@ -75,7 +75,7 @@ export default function ReferenciasPage() {
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 20 }}>
         {REFERENCE_TABLES.map(t => (
           <button key={t.id} onClick={() => { setSelectedTable(t.id); setEditId(null); setDesc(''); setVNombre(''); setVApellido(''); setVCorreo(''); setVMovil('') }}
-            style={{ ...btnStyle, background: selectedTable === t.id ? '#1e3a8a' : 'rgba(255,255,255,0.15)', color: selectedTable === t.id ? '#ffffff' : 'rgba(255,255,255,0.7)', border: selectedTable === t.id ? '1px solid #2563eb' : '1px solid rgba(255,255,255,0.2)' }}>
+            style={{ ...btnStyle, background: '#1e3a8a', color: '#ffffff', border: selectedTable === t.id ? '2px solid #60a5fa' : '1px solid #1e3a8a' }}>
             {t.label}
           </button>
         ))}
