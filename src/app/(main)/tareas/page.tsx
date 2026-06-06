@@ -60,7 +60,7 @@ export default function TareasPage() {
   const btnStyle: React.CSSProperties = { padding: '8px 16px', borderRadius: 8, border: 'none', cursor: 'pointer', fontSize: 13, fontWeight: 600 }
   const inputStyle: React.CSSProperties = { padding: '8px 12px', borderRadius: 8, background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.2)', color: '#ffffff', fontSize: 13, outline: 'none', width: '100%' }
   const labelStyle: React.CSSProperties = { color: '#013978', fontSize: 11, marginBottom: 4, display: 'block' }
-  const cardStyle: React.CSSProperties = { background: '#ffffff', borderRadius: 12, padding: 16, border: '1px solid #e2e8f0' }
+  const cardStyle: React.CSSProperties = { background: '#ffffff', borderRadius: 12, padding: 16, border: '1px solid #1e3a8a' }
 
   const situacionBadge = (sit: string): React.CSSProperties => {
     const s = situaciones.find(s => s.nombre === sit)
@@ -291,7 +291,7 @@ export default function TareasPage() {
                 <div key={t.id} draggable
                   onDragStart={() => setDragId(t.id)}
                   onClick={() => { setViewDetail(t); setVista('detalle') }}
-                  style={{ background: '#f1f5f9', borderRadius: 12, padding: 16, border: '1px solid #e2e8f0', cursor: 'grab', transition: 'transform 0.15s', }}>
+                  style={{ background: '#f1f5f9', borderRadius: 12, padding: 16, border: '1px solid #1e3a8a', cursor: 'grab', transition: 'transform 0.15s', }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
                     <span style={{ color: '#013978', fontSize: 13, fontWeight: 800 }}>{t.codigo}</span>
                     <span style={{ color: 'rgba(255,255,255,0.3)', fontSize: 12 }}>⋮⋮</span>
@@ -370,7 +370,7 @@ export default function TareasPage() {
         </div>
         <div style={{ display: 'flex', gap: 8 }}>
           {/* Toggle vista */}
-          <div style={{ display: 'flex', background: '#ffffff', borderRadius: 8, border: '1px solid #e2e8f0', overflow: 'hidden' }}>
+          <div style={{ display: 'flex', background: '#ffffff', borderRadius: 8, border: '1px solid #1e3a8a', overflow: 'hidden' }}>
             <button onClick={() => setVistaLista('tabla')}
               style={{ ...btnStyle, borderRadius: 0, background: vistaLista === 'tabla' ? 'rgba(59,130,246,0.3)' : 'transparent', color: vistaLista === 'tabla' ? '#60a5fa' : '#475569', border: 'none', padding: '8px 14px', fontSize: 12 }}>
               Tabla
@@ -419,7 +419,7 @@ export default function TareasPage() {
               <p style={{ fontSize: 12, marginTop: 8 }}>Cree una tarea para empezar a gestionar asignaciones</p>
             </div>
           ) : (
-            <div style={{ background: '#ffffff', borderRadius: 12, border: '1px solid #e2e8f0', overflow: 'hidden' }}>
+            <div style={{ background: '#ffffff', borderRadius: 12, border: '1px solid #1e3a8a', overflow: 'hidden' }}>
               <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                 <thead>
                   <tr style={{ background: 'rgba(255,255,255,0.08)' }}>

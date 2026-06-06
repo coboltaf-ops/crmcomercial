@@ -149,7 +149,7 @@ export default function UsuariosPage() {
 
       {/* ═══ TAB: USUARIOS ═══ */}
       {tab === 'usuarios' && !isForm && (
-        <div style={{ borderRadius: 12, border: '1px solid #cbd5e1', overflow: 'hidden' }}>
+        <div style={{ borderRadius: 12, border: '1px solid #1e3a8a', overflow: 'hidden' }}>
           <table style={{ width: '100%', borderCollapse: 'collapse' }}>
             <thead>
               <tr>
@@ -187,7 +187,7 @@ export default function UsuariosPage() {
 
       {/* ═══ TAB: FORM USUARIO ═══ */}
       {tab === 'usuarios' && isForm && selected && (
-        <form onSubmit={handleSave} style={{ background: '#ffffff', borderRadius: 16, padding: 24, border: '1px solid #cbd5e1' }}>
+        <form onSubmit={handleSave} style={{ background: '#ffffff', borderRadius: 16, padding: 24, border: '1px solid #1e3a8a' }}>
           <h3 style={{ color: '#013978', fontSize: 16, fontWeight: 600, marginBottom: 16 }}>{selected.id ? 'Editar' : 'Nuevo'} Usuario</h3>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
             {[
@@ -253,7 +253,7 @@ export default function UsuariosPage() {
 
           {/* Permisos del rol seleccionado */}
           {selectedRolObj && (
-            <div style={{ background: '#ffffff', borderRadius: 16, padding: 24, border: '1px solid #cbd5e1' }}>
+            <div style={{ background: '#ffffff', borderRadius: 16, padding: 24, border: '1px solid #1e3a8a' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
                 <div>
                   <h3 style={{ color: '#013978', fontSize: 18, fontWeight: 700 }}>Permisos: {selectedRolObj.nombre}</h3>
@@ -276,7 +276,7 @@ export default function UsuariosPage() {
                   const perms = selectedRolObj.permisos.find(p => p.modulo === m.id)
                   const isAdmin = selectedRolObj.nombre === 'Admin'
                   return (
-                    <div key={m.id} style={{ display: 'flex', alignItems: 'center', padding: '12px 16px', background: i % 2 === 0 ? 'rgba(255,255,255,0.03)' : 'transparent', borderRadius: 10, border: '1px solid #e2e8f0' }}>
+                    <div key={m.id} style={{ display: 'flex', alignItems: 'center', padding: '12px 16px', background: i % 2 === 0 ? 'rgba(255,255,255,0.03)' : 'transparent', borderRadius: 10, border: '1px solid #1e3a8a' }}>
                       <div style={{ flex: 1 }}>
                         <p style={{ color: '#013978', fontSize: 14, fontWeight: 600 }}>{m.label}</p>
                       </div>
@@ -311,7 +311,7 @@ export default function UsuariosPage() {
 
           {/* Usuarios con este rol */}
           {selectedRolObj && usuarios.filter(u => u.rol === selectedRolObj.nombre).length > 0 && (
-            <div style={{ marginTop: 16, background: '#f1f5f9', borderRadius: 12, padding: 16, border: '1px solid #cbd5e1' }}>
+            <div style={{ marginTop: 16, background: '#f1f5f9', borderRadius: 12, padding: 16, border: '1px solid #1e3a8a' }}>
               <p style={{ color: '#013978', fontSize: 13, fontWeight: 600, marginBottom: 8 }}>Usuarios con rol {selectedRolObj.nombre}:</p>
               <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
                 {usuarios.filter(u => u.rol === selectedRolObj.nombre).map(u => (

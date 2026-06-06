@@ -119,7 +119,7 @@ export default function ContactosPage() {
     return (
       <div>
         <button onClick={() => { const back = searchParams.get("back"); if (back) { router.push(back); return } setViewDetail(null) }} style={{ ...btnStyle, background: "#000000", color: "#ffffff", border: "1px solid #333333", marginBottom: 16 }}>{t('btn.volver')}</button>
-        <div style={{ background: '#ffffff', borderRadius: 16, padding: 24, border: '1px solid #cbd5e1' }}>
+        <div style={{ background: '#ffffff', borderRadius: 16, padding: 24, border: '1px solid #1e3a8a' }}>
           <h2 style={{ color: '#013978', fontSize: 18, fontWeight: 700, marginBottom: 16 }}>{viewDetail.nombre} {viewDetail.apellido}</h2>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 16 }}>
             {fields.map(f => (
@@ -155,7 +155,7 @@ export default function ContactosPage() {
     return (
       <div>
         <button onClick={() => { setIsForm(false); setSelected(null) }} style={{ ...btnStyle, background: '#000000', color: '#ffffff', border: '1px solid #333333', marginBottom: 16 }}>{t('btn.volver')}</button>
-        <form onSubmit={handleSave} style={{ background: '#ffffff', borderRadius: 16, padding: 24, border: '1px solid #cbd5e1' }}>
+        <form onSubmit={handleSave} style={{ background: '#ffffff', borderRadius: 16, padding: 24, border: '1px solid #1e3a8a' }}>
           <h2 style={{ color: '#013978', fontSize: 18, fontWeight: 700, marginBottom: 20 }}>{selected.id ? t('fmt.editarContacto') : t('fmt.nuevoContacto')}</h2>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 16 }}>
             <div>
@@ -281,7 +281,7 @@ export default function ContactosPage() {
             </select>
           </div>
 
-          <div style={{ borderRadius: 12, border: '1px solid #cbd5e1', overflow: 'hidden' }}>
+          <div style={{ borderRadius: 12, border: '1px solid #1e3a8a', overflow: 'hidden' }}>
             <table style={{ width: '100%', borderCollapse: 'collapse' }}>
               <thead>
                 <tr>

@@ -131,7 +131,7 @@ export default function OportunidadesPage() {
     return (
       <div>
         <button onClick={() => { const back = searchParams.get('back'); if (back) { router.push(back); return } setViewDetail(null) }} style={{ ...btnStyle, background: '#000000', color: '#ffffff', border: '1px solid #333333', marginBottom: 16 }}>{t('btn.volver')}</button>
-        <div style={{ background: '#ffffff', borderRadius: 16, padding: 24, border: '1px solid #cbd5e1' }}>
+        <div style={{ background: '#ffffff', borderRadius: 16, padding: 24, border: '1px solid #1e3a8a' }}>
           <h2 style={{ color: '#013978', fontSize: 18, fontWeight: 700, marginBottom: 16 }}>{viewDetail.codigo} — {viewDetail.proyecto}</h2>
 
           <h3 style={sectionTitle('#1e3a8a')}>{t('lbl.datosPrincipales')}</h3>
@@ -210,14 +210,14 @@ export default function OportunidadesPage() {
           </div>
 
           {viewDetail.observaciones && (
-            <div style={{ marginTop: 4, padding: 14, background: '#ffffff', borderRadius: 10, border: '1px solid #e2e8f0' }}>
+            <div style={{ marginTop: 4, padding: 14, background: '#ffffff', borderRadius: 10, border: '1px solid #1e3a8a' }}>
               <p style={{ color: '#013978', fontSize: 11, marginBottom: 4 }}>Observaciones</p>
               <p style={{ color: '#013978', fontSize: 13 }}>{viewDetail.observaciones}</p>
             </div>
           )}
 
           {(viewDetail.documentos_exigidos || []).length > 0 && (
-            <div style={{ marginTop: 16, borderRadius: 10, border: '1px solid #cbd5e1', overflow: 'hidden' }}>
+            <div style={{ marginTop: 16, borderRadius: 10, border: '1px solid #1e3a8a', overflow: 'hidden' }}>
               <div style={{ background: '#1e3a8a', padding: '8px 12px', color: '#fff', fontSize: 12, fontWeight: 700, letterSpacing: 0.5 }}>
                 DOCUMENTOS EXIGIDOS EN OFERTA ({(viewDetail.documentos_exigidos || []).length})
               </div>
@@ -272,7 +272,7 @@ export default function OportunidadesPage() {
     return (
       <div>
         <button onClick={() => { setIsForm(false); setSelected(null) }} style={{ ...btnStyle, background: '#000000', color: '#ffffff', border: '1px solid #333333', marginBottom: 16 }}>{t('btn.volver')}</button>
-        <form onSubmit={handleSave} style={{ background: '#ffffff', borderRadius: 16, padding: 24, border: '1px solid #cbd5e1' }}>
+        <form onSubmit={handleSave} style={{ background: '#ffffff', borderRadius: 16, padding: 24, border: '1px solid #1e3a8a' }}>
           <h2 style={{ color: '#013978', fontSize: 18, fontWeight: 700, marginBottom: 20 }}>{selected.id ? t('fmt.editarOportunidad') : t('fmt.nuevaOportunidad')}</h2>
 
           {/* DATOS PRINCIPALES */}
@@ -463,7 +463,7 @@ export default function OportunidadesPage() {
           <h3 style={{ color: '#ffffff', fontSize: 12, fontWeight: 700, background: '#1e3a8a', padding: '6px 10px', borderRadius: 6, marginBottom: 14, letterSpacing: 0.5, textAlign: 'center' }}>
             DOCUMENTOS EXIGIDOS EN OFERTA ({(selected.documentos_exigidos || []).length}/20)
           </h3>
-          <div style={{ borderRadius: 10, border: '1px solid #cbd5e1', overflow: 'hidden', marginBottom: 14 }}>
+          <div style={{ borderRadius: 10, border: '1px solid #1e3a8a', overflow: 'hidden', marginBottom: 14 }}>
             <table style={{ width: '100%', borderCollapse: 'collapse' }}>
               <thead>
                 <tr>
@@ -617,7 +617,7 @@ export default function OportunidadesPage() {
         <>
           <input value={search} onChange={e => setSearch(e.target.value)} placeholder={t('ph.buscarOportunidad')}
             style={{ ...inputStyle, maxWidth: 500, marginBottom: 16 }} />
-          <div style={{ borderRadius: 12, border: '1px solid #cbd5e1', overflow: 'hidden', overflowX: 'auto' }}>
+          <div style={{ borderRadius: 12, border: '1px solid #1e3a8a', overflow: 'hidden', overflowX: 'auto' }}>
             <table style={{ width: '100%', borderCollapse: 'collapse' }}>
               <thead><tr>
                 {[t('lbl.codigo'), t('lbl.proyecto'), t('lbl.cliente'), t('lbl.ciudad'), t('lbl.pais'), t('lbl.montoEstimado'), idioma === 'en' ? 'Prob %' : 'Prob %', t('lbl.adjudicacion'), t('lbl.veredicto'), t('lbl.situacion'), idioma === 'en' ? 'Actions' : 'Acciones'].map(h => (

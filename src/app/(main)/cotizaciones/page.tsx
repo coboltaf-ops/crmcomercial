@@ -295,7 +295,7 @@ export default function CotizacionesPage() {
     return (
       <div>
         <button onClick={() => setEmailModal(null)} style={{ ...btnStyle, background: '#000000', color: '#ffffff', border: '1px solid #333333', marginBottom: 16 }}>{t('btn.volver')}</button>
-        <div style={{ background: '#ffffff', borderRadius: 16, padding: 24, border: '1px solid #cbd5e1', maxWidth: 500 }}>
+        <div style={{ background: '#ffffff', borderRadius: 16, padding: 24, border: '1px solid #1e3a8a', maxWidth: 500 }}>
           <h2 style={{ color: '#013978', fontSize: 18, fontWeight: 700, marginBottom: 16 }}>Enviar {emailModal.codigo} por Email</h2>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
             <div>
@@ -326,7 +326,7 @@ export default function CotizacionesPage() {
     return (
       <div>
         <button onClick={() => { const back = searchParams.get("back"); if (back) { router.push(back); return } setViewDetail(null) }} style={{ ...btnStyle, background: "#000000", color: "#ffffff", border: "1px solid #333333", marginBottom: 16 }}>{t('btn.volver')}</button>
-        <div style={{ background: '#ffffff', borderRadius: 16, padding: 24, border: '1px solid #cbd5e1' }}>
+        <div style={{ background: '#ffffff', borderRadius: 16, padding: 24, border: '1px solid #1e3a8a' }}>
           {empresa && (
             <div style={{ marginBottom: 16, paddingBottom: 12, borderBottom: '1px solid rgba(255,255,255,0.15)' }}>
               <p style={{ color: '#013978', fontSize: 16, fontWeight: 800 }}>{empresa.nombre}</p>
@@ -344,7 +344,7 @@ export default function CotizacionesPage() {
           {(() => {
             const cli = clientes.find(c => c.id === viewDetail.cliente_id)
             return (
-              <div style={{ background: '#ffffff', borderRadius: 10, padding: 14, marginBottom: 16, border: '1px solid #e2e8f0' }}>
+              <div style={{ background: '#ffffff', borderRadius: 10, padding: 14, marginBottom: 16, border: '1px solid #1e3a8a' }}>
                 <p style={{ color: '#013978', fontSize: 11, fontWeight: 700, marginBottom: 10, letterSpacing: 0.5 }}>DATOS DEL CLIENTE</p>
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: 14 }}>
                   {[
@@ -374,7 +374,7 @@ export default function CotizacionesPage() {
           </div>
 
           {/* Detalles table */}
-          <div style={{ borderRadius: 10, border: '1px solid #cbd5e1', overflow: 'hidden', marginBottom: 16 }}>
+          <div style={{ borderRadius: 10, border: '1px solid #1e3a8a', overflow: 'hidden', marginBottom: 16 }}>
             <table style={{ width: '100%', borderCollapse: 'collapse' }}>
               <thead><tr>
                 {[t('lbl.codigo'), t('lbl.descripcion'), idioma === 'en' ? 'Qty.' : 'Cant.', t('lbl.unidadMedida'), idioma === 'en' ? 'Unit Price' : 'Precio Unit.', idioma === 'en' ? 'Disc.%' : 'Desc.%', t('lbl.subtotal')].map(h => (
@@ -438,7 +438,7 @@ export default function CotizacionesPage() {
     return (
       <div>
         <button onClick={() => { setIsForm(false); setSelected(null) }} style={{ ...btnStyle, background: '#000000', color: '#ffffff', border: '1px solid #333333', marginBottom: 16 }}>{t('btn.volver')}</button>
-        <form onSubmit={handleSave} style={{ background: '#ffffff', borderRadius: 16, padding: 24, border: '1px solid #cbd5e1' }}>
+        <form onSubmit={handleSave} style={{ background: '#ffffff', borderRadius: 16, padding: 24, border: '1px solid #1e3a8a' }}>
           <h2 style={{ color: '#013978', fontSize: 18, fontWeight: 700, marginBottom: 20, textAlign: 'center' }}>{selected.id ? t('fmt.editarCotizacion') : t('fmt.nuevaCotizacion')} Nro {selected.codigo}</h2>
 
           {/* Header fields */}
@@ -578,7 +578,7 @@ export default function CotizacionesPage() {
 
           {/* Tabla de items */}
           {selected.detalles.filter(d => d.producto_id).length > 0 && (
-            <div style={{ borderRadius: 10, border: '1px solid #cbd5e1', overflow: 'hidden', marginBottom: 12 }}>
+            <div style={{ borderRadius: 10, border: '1px solid #1e3a8a', overflow: 'hidden', marginBottom: 12 }}>
               <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                 <thead><tr>
                   {[t('lbl.codigo'), t('lbl.descripcion'), idioma === 'en' ? 'Qty.' : 'Cant.', t('lbl.unidadMedida'), idioma === 'en' ? 'Unit Price' : 'Precio Unit.', idioma === 'en' ? 'Disc.%' : 'Desc.%', t('lbl.subtotal'), ''].map(h => (
@@ -675,7 +675,7 @@ export default function CotizacionesPage() {
         <>
           <input value={search} onChange={e => setSearch(e.target.value)} placeholder={t('ph.buscarCotizacion')}
             style={{ ...inputStyle, maxWidth: 400, marginBottom: 16 }} />
-          <div style={{ borderRadius: 12, border: '1px solid #cbd5e1', overflow: 'hidden' }}>
+          <div style={{ borderRadius: 12, border: '1px solid #1e3a8a', overflow: 'hidden' }}>
             <table style={{ width: '100%', borderCollapse: 'collapse' }}>
               <thead><tr>
                 {[t('lbl.codigo'), t('lbl.empresa'), t('lbl.tipoIdentificacion'), t('lbl.nroDocumento'), t('lbl.direccion'), t('lbl.ciudad'), t('lbl.pais'), t('lbl.fechaEmision'), idioma === 'en' ? 'Expires' : 'Vence', idioma === 'en' ? 'Items' : 'Items', t('lbl.total'), t('lbl.situacion'), idioma === 'en' ? 'Actions' : 'Acciones'].map(h => (

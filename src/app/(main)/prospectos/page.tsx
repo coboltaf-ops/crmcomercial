@@ -188,7 +188,7 @@ export default function ProspectosPage() {
     return (
       <div>
         <button onClick={() => setViewDetail(null)} style={{ ...btnStyle, background: '#000000', color: '#ffffff', border: '1px solid #333333', marginBottom: 16 }}>{t('btn.volver')}</button>
-        <div style={{ background: '#ffffff', borderRadius: 16, padding: 24, border: '1px solid #cbd5e1' }}>
+        <div style={{ background: '#ffffff', borderRadius: 16, padding: 24, border: '1px solid #1e3a8a' }}>
           <h2 style={{ color: '#013978', fontSize: 18, fontWeight: 700, marginBottom: 16 }}>{viewDetail.nombre} {viewDetail.apellido}</h2>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 16 }}>
             {fields.map(f => (
@@ -275,7 +275,7 @@ export default function ProspectosPage() {
     return (
       <div>
         <button onClick={() => { setIsForm(false); setSelected(null) }} style={{ ...btnStyle, background: '#000000', color: '#ffffff', border: '1px solid #333333', marginBottom: 16 }}>{t('btn.volver')}</button>
-        <form onSubmit={handleSave} style={{ background: '#ffffff', borderRadius: 16, padding: 24, border: '1px solid #cbd5e1' }}>
+        <form onSubmit={handleSave} style={{ background: '#ffffff', borderRadius: 16, padding: 24, border: '1px solid #1e3a8a' }}>
           <h2 style={{ color: '#013978', fontSize: 18, fontWeight: 700, marginBottom: 20 }}>{selected.id ? t('fmt.editarProspecto') : t('fmt.nuevoProspecto')}</h2>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 16 }}>
             <div>
@@ -414,7 +414,7 @@ export default function ProspectosPage() {
               </div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
                 {externas.map(ext => (
-                  <div key={ext.id} style={{ background: '#f1f5f9', borderRadius: 10, padding: '12px 16px', border: '1px solid #e2e8f0', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <div key={ext.id} style={{ background: '#f1f5f9', borderRadius: 10, padding: '12px 16px', border: '1px solid #1e3a8a', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <div style={{ flex: 1 }}>
                       <p style={{ color: '#013978', fontSize: 14, fontWeight: 600, margin: 0 }}>{ext.nombre} {ext.apellido}</p>
                       <p style={{ color: '#013978', fontSize: 12, margin: '2px 0' }}>{ext.empresa || 'Sin empresa'} | {ext.correo} | {ext.nro_movil || 'Sin móvil'}</p>
@@ -432,7 +432,7 @@ export default function ProspectosPage() {
             <input value={search} onChange={e => setSearch(e.target.value)} placeholder={t('ph.buscarProspecto')} style={{ ...inputStyle, maxWidth: 400 }} />
           </div>
 
-          <div style={{ borderRadius: 12, border: '1px solid #cbd5e1', overflow: 'hidden' }}>
+          <div style={{ borderRadius: 12, border: '1px solid #1e3a8a', overflow: 'hidden' }}>
             <table style={{ width: '100%', borderCollapse: 'collapse' }}>
               <thead>
                 <tr>

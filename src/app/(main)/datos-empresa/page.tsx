@@ -90,7 +90,7 @@ export default function DatosEmpresaPage() {
     return (
       <div>
         <button onClick={() => setViewDetail(null)} style={{ ...btnStyle, background: '#000000', color: '#ffffff', border: '1px solid #333333', marginBottom: 16 }}>{t('btn.volver')}</button>
-        <div style={{ background: '#ffffff', borderRadius: 16, padding: 24, border: '1px solid #cbd5e1' }}>
+        <div style={{ background: '#ffffff', borderRadius: 16, padding: 24, border: '1px solid #1e3a8a' }}>
           <div style={{ display: 'flex', gap: 20, alignItems: 'center', marginBottom: 20 }}>
             {viewDetail.logo_url ? (
               <img src={viewDetail.logo_url} alt="Logo" style={{ width: 80, height: 80, borderRadius: 12, objectFit: 'contain', background: 'rgba(255,255,255,0.1)', padding: 8 }} />
@@ -122,7 +122,7 @@ export default function DatosEmpresaPage() {
           </div>
 
           {/* Ubicación */}
-          <div style={{ marginTop: 16, padding: 16, background: '#f1f5f9', borderRadius: 12, border: '1px solid #cbd5e1' }}>
+          <div style={{ marginTop: 16, padding: 16, background: '#f1f5f9', borderRadius: 12, border: '1px solid #1e3a8a' }}>
             <h3 style={{ color: '#013978', fontSize: 14, fontWeight: 700, marginBottom: 12 }}>{t('lbl.ubicacion')}</h3>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: 16 }}>
               {[
@@ -162,7 +162,7 @@ export default function DatosEmpresaPage() {
     return (
       <div>
         <button onClick={() => { setIsForm(false); setSelected(null) }} style={{ ...btnStyle, background: '#000000', color: '#ffffff', border: '1px solid #333333', marginBottom: 16 }}>{t('btn.volver')}</button>
-        <form onSubmit={handleSave} style={{ background: '#ffffff', borderRadius: 16, padding: 24, border: '1px solid #cbd5e1' }}>
+        <form onSubmit={handleSave} style={{ background: '#ffffff', borderRadius: 16, padding: 24, border: '1px solid #1e3a8a' }}>
           <h2 style={{ color: '#013978', fontSize: 18, fontWeight: 700, marginBottom: 20 }}>{selected.id ? 'Editar' : 'Nueva'} Empresa</h2>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 16 }}>
             <div>
@@ -223,7 +223,7 @@ export default function DatosEmpresaPage() {
           </div>
 
           {/* Ubicación */}
-          <div style={{ marginTop: 20, padding: 16, background: '#f1f5f9', borderRadius: 12, border: '1px solid #cbd5e1' }}>
+          <div style={{ marginTop: 20, padding: 16, background: '#f1f5f9', borderRadius: 12, border: '1px solid #1e3a8a' }}>
             <h3 style={{ color: '#013978', fontSize: 14, fontWeight: 700, marginBottom: 12 }}>{t('lbl.ubicacion')}</h3>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 16 }}>
               <div style={{ gridColumn: 'span 3' }}>
@@ -272,7 +272,7 @@ export default function DatosEmpresaPage() {
         <button onClick={() => { setSelected(emptyEmpresa()); setIsForm(true) }} style={{ ...btnStyle, background: '#1e3a8a', color: '#ffffff' }}>+ {t('btn.nuevo')}</button>
       </div>
 
-      <div style={{ borderRadius: 12, border: '1px solid #cbd5e1', overflow: 'hidden' }}>
+      <div style={{ borderRadius: 12, border: '1px solid #1e3a8a', overflow: 'hidden' }}>
         <table style={{ width: '100%', borderCollapse: 'collapse' }}>
           <thead>
             <tr>
