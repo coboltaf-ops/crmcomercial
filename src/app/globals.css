@@ -85,7 +85,13 @@ input, textarea, select {
   border: 2px solid #1e3a8a !important;
 }
 
-/* Los botones usan sus colores de estilo en línea (no se fuerzan globalmente) */
+/* Botones: color propio (en línea) si lo tienen; si no, azul oscuro por defecto.
+   SIN !important para que el estilo en línea de cada botón siempre mande. */
+button {
+  background: #1e3a8a;
+  color: #ffffff;
+  cursor: pointer;
+}
 
 /* Divs blancos (formularios): texto oscuro + bordes azul oscuro */
 div[style*="background: #ffffff"],
