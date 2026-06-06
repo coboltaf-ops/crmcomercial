@@ -151,33 +151,34 @@ div[style*="rgba(255,255,255,0.05)"] * {
   background: #1e3a8a !important;
 }
 .login-screen .login-card {
-  background: #0f1b3d !important;
+  background: #ffffff !important;
+  border-color: #1e3a8a !important;
 }
 .login-screen h1 {
-  color: #ffffff !important;
+  color: #000000 !important;
   background: transparent !important;
 }
 .login-screen p,
 .login-screen label,
 .login-screen span {
-  color: rgba(255,255,255,0.85) !important;
+  color: #111111 !important;
   background: transparent !important;
   padding: 0 !important;
   border-radius: 0 !important;
   display: block !important;
 }
 .login-screen input {
-  background: rgba(255,255,255,0.1) !important;
-  color: #ffffff !important;
-  border: 1px solid rgba(255,255,255,0.3) !important;
+  background: #ffffff !important;
+  color: #000000 !important;
+  border: 1px solid #1e3a8a !important;
 }
 .login-screen input::placeholder {
-  color: rgba(255,255,255,0.4) !important;
+  color: rgba(0,0,0,0.4) !important;
 }
 .login-screen button[type="submit"] {
-  background: #2563eb !important;
+  background: #1e3a8a !important;
   color: #ffffff !important;
 }
 .login-screen img {
-  background: rgba(255,255,255,0.1) !important;
+  background: #f3f4f6 !important;
 }
