@@ -27,6 +27,7 @@ export interface Oportunidad {
   pais?: string
   fecha_presupuesto?: string
   monto_estimado?: number
+  estimado_cop?: number
   valor_estimado?: number
   tipo_moneda: string
   probabilidad?: number

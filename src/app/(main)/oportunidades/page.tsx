@@ -25,7 +25,7 @@ const emptyOportunidad = (codigo: string, responsable: string): Oportunidad => (
   id: '', codigo,
   proyecto: '', cliente_id: '', cliente_nombre: '',
   contacto_id: '', contacto_nombre: '',
-  ciudad: '', pais: '', fecha_presupuesto: today, monto_estimado: 0,
+  ciudad: '', pais: '', fecha_presupuesto: today, monto_estimado: 0, estimado_cop: 0,
   tipo_moneda: 'Pesos Colombianos', situacion: 'Abierta',
   probable_pct: 0, adjudicacion: '', mgc: 0,
   ejecucion_anyo_pct: 0, parcial_euros_anyo: 0,
@@ -153,8 +153,8 @@ export default function OportunidadesPage() {
               { l: t('lbl.cliente'), v: clienteNode },
               { l: t('lbl.ciudad'), v: viewDetail.ciudad || '-' },
               { l: t('lbl.pais'), v: viewDetail.pais || '-' },
-              { l: t('lbl.fechaPresupuesto'), v: viewDetail.fecha_presupuesto ? fDate(viewDetail.fecha_presupuesto) : '-' },
-              { l: t('lbl.montoEstimado'), v: `${monedaSimbolo(viewDetail.tipo_moneda)}${fmtMoney(viewDetail.monto_estimado || 0)}` },
+              { l: 'Estimado COP', v: `$${fmtMoney(viewDetail.estimado_cop || 0)}` },
+              { l: 'Estimado USA', v: `$${fmtMoney(viewDetail.monto_estimado || 0)}` },
               { l: t('lbl.situacion'), v: viewDetail.situacion },
               { l: t('lbl.responsable'), v: viewDetail.responsable },
             ]
@@ -335,11 +335,11 @@ export default function OportunidadesPage() {
               </select>
             </div>
             <div>
-              <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.fechaPresupuesto')} *</label>
-              <input type="date" value={selected.fecha_presupuesto} onChange={e => setSelected({ ...selected, fecha_presupuesto: e.target.value })} required style={inputStyle} />
+              <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>Estimado COP *</label>
+              <input type="number" step="0.01" min="0" value={selected.estimado_cop || ''} onChange={e => setSelected({ ...selected, estimado_cop: parseFloat(e.target.value) || 0 })} required style={inputStyle} />
             </div>
             <div>
-              <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.montoEstimado')} *</label>
+              <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>Estimado USA *</label>
               <input type="number" step="0.01" min="0" value={selected.monto_estimado || ''} onChange={e => setSelected({ ...selected, monto_estimado: parseFloat(e.target.value) || 0 })} required style={inputStyle} />
             </div>
             <div>
@@ -620,7 +620,7 @@ export default function OportunidadesPage() {
           <div style={{ borderRadius: 12, border: '1px solid #1e3a8a', overflow: 'hidden', overflowX: 'auto' }}>
             <table style={{ width: '100%', borderCollapse: 'collapse' }}>
               <thead><tr>
-                {[t('lbl.codigo'), t('lbl.proyecto'), t('lbl.cliente'), t('lbl.ciudad'), t('lbl.pais'), t('lbl.montoEstimado'), idioma === 'en' ? 'Prob %' : 'Prob %', t('lbl.adjudicacion'), t('lbl.veredicto'), t('lbl.situacion'), idioma === 'en' ? 'Actions' : 'Acciones'].map(h => (
+                {[t('lbl.codigo'), t('lbl.proyecto'), t('lbl.cliente'), t('lbl.ciudad'), t('lbl.pais'), 'Estimado USA', idioma === 'en' ? 'Prob %' : 'Prob %', t('lbl.adjudicacion'), t('lbl.veredicto'), t('lbl.situacion'), idioma === 'en' ? 'Actions' : 'Acciones'].map(h => (
                   <th key={h} style={{ padding: '12px 14px', background: '#1e3a5f', color: '#fff', fontSize: 12, textAlign: 'left', whiteSpace: 'nowrap' }}>{h}</th>
                 ))}
               </tr></thead>
