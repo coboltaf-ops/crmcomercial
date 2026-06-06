@@ -122,7 +122,7 @@ div[style*="border-radius: 16px"] {
 
 div[style*="borderRadius: 16"] p,
 div[style*="borderRadius: 16"] span {
-  color: #013978 !important;
+  color: #000000 !important;
 }
 
 /* Marco ROJO en tarjetas del Dashboard + texto azul oscuro intenso
