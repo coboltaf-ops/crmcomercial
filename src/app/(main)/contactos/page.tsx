@@ -3,6 +3,7 @@ import { logAudit, computarDiff } from '@/shared/lib/audit'
 import { useState, useEffect } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import ModuleHeader from '@/shared/components/module-header'
+import EnviarCorreoModal from '@/shared/components/enviar-correo-modal'
 import { useContactosStore, Contacto } from '@/features/contactos/store/contactos-store'
 import { useClientesStore } from '@/features/clientes/store/clientes-store'
 import { useReferenceStore } from '@/features/referencias/store/reference-store'
@@ -39,6 +40,7 @@ export default function ContactosPage() {
   const [selected, setSelected] = useState<Contacto | null>(null)
   const [isForm, setIsForm] = useState(false)
   const [viewDetail, setViewDetail] = useState<Contacto | null>(null)
+  const [correoModal, setCorreoModal] = useState<{ to: string; ref: string } | null>(null)
   const [tab, setTab] = useState<'registros' | 'reportes'>('registros')
   const [search, setSearch] = useState('')
   const [filterCliente, setFilterCliente] = useState('')
@@ -307,6 +309,7 @@ export default function ContactosPage() {
                     <td style={{ padding: '8px 10px', borderBottom: '1px solid #e2e8f0' }}>
                       <div style={{ display: 'flex', gap: 4 }}>
                         <button onClick={() => setViewDetail(c)} style={{ ...btnStyle, padding: '3px 10px', fontSize: 10, background: '#ea580c', color: '#ffffff', border: '1px solid #f97316' }}>Ver</button>
+                        <button onClick={() => setCorreoModal({ to: c.email || '', ref: c.codigo })} title="Enviar correo" style={{ ...btnStyle, padding: '3px 10px', fontSize: 10, background: '#0ea5e9', color: '#ffffff', border: '1px solid #38bdf8' }}>✉</button>
                         {(isValidPhone(c.celular) || isValidPhone(c.telefono)) && (
                           <a href={buildWhatsAppLink(c.celular || c.telefono, idioma === 'en' ? `Hi ${c.nombre}, this is a quick message from us.` : `Hola ${c.nombre}, te escribimos desde nuestra empresa.`)} target="_blank" rel="noopener noreferrer" style={{ ...btnStyle, padding: '3px 10px', fontSize: 10, background: '#25d366', color: '#ffffff', border: '1px solid #128c7e', textDecoration: 'none', display: 'inline-flex', alignItems: 'center' }}>WA</a>
                         )}
@@ -325,6 +328,10 @@ export default function ContactosPage() {
 
       {tab === 'reportes' && (
         <ReportPanel title="Reporte de Contactos" columns={reportColumns} rows={reportRows} filters={reportFilters} />
+      )}
+
+      {correoModal && (
+        <EnviarCorreoModal destinatario={correoModal.to} modulo="contactos" referencia={correoModal.ref} onClose={() => setCorreoModal(null)} />
       )}
     </div>
   )

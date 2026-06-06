@@ -3,6 +3,7 @@ import { logAudit, computarDiff } from '@/shared/lib/audit'
 import { useState, useEffect } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import ModuleHeader from '@/shared/components/module-header'
+import EnviarCorreoModal from '@/shared/components/enviar-correo-modal'
 import { useOportunidadesStore, Oportunidad, DocumentoExigido } from '@/features/oportunidades/store/oportunidades-store'
 import { useClientesStore } from '@/features/clientes/store/clientes-store'
 import { useContactosStore } from '@/features/contactos/store/contactos-store'
@@ -56,6 +57,7 @@ export default function OportunidadesPage() {
   const [selected, setSelected] = useState<Oportunidad | null>(null)
   const [isForm, setIsForm] = useState(false)
   const [viewDetail, setViewDetail] = useState<Oportunidad | null>(null)
+  const [correoModal, setCorreoModal] = useState<{ to: string; ref: string } | null>(null)
   const [tab, setTab] = useState<'registros' | 'reportes'>('registros')
   const [search, setSearch] = useState('')
   const [nuevoDocTexto, setNuevoDocTexto] = useState('')
@@ -653,6 +655,7 @@ export default function OportunidadesPage() {
                     <td style={{ padding: '10px 14px', borderBottom: '1px solid #e2e8f0' }}>
                       <div style={{ display: 'flex', gap: 6 }}>
                         <button onClick={() => setViewDetail(o)} style={{ ...btnStyle, padding: '4px 12px', fontSize: 11, background: '#ea580c', color: '#fff', border: '1px solid #f97316' }}>{idioma === 'en' ? 'View' : 'Ver'}</button>
+                        <button onClick={() => { const con = allContactos.find(c => c.id === o.contacto_id); setCorreoModal({ to: con?.email || '', ref: o.codigo }) }} title="Enviar correo" style={{ ...btnStyle, padding: '4px 12px', fontSize: 11, background: '#0ea5e9', color: '#fff', border: '1px solid #38bdf8' }}>✉</button>
                         {(() => {
                           const con = allContactos.find(x => x.id === o.contacto_id)
                           const cli = allClientes.find(x => x.id === o.cliente_id)
@@ -700,6 +703,10 @@ export default function OportunidadesPage() {
               { label: 'Cliente', key: 'cliente_nombre', options: [...new Set(oportunidades.map(o => o.cliente_nombre).filter(v => !!v))] as string[] },
             ]} />
         </>
+      )}
+
+      {correoModal && (
+        <EnviarCorreoModal destinatario={correoModal.to} modulo="oportunidades" referencia={correoModal.ref} onClose={() => setCorreoModal(null)} />
       )}
     </div>
   )

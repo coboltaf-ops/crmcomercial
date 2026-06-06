@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import ModuleHeader from '@/shared/components/module-header'
+import EnviarCorreoModal from '@/shared/components/enviar-correo-modal'
 import { useClientesStore, Cliente, generarCodigoAcceso } from '@/features/clientes/store/clientes-store'
 import { useContactosStore } from '@/features/contactos/store/contactos-store'
 import { useCotizacionesStore } from '@/features/cotizaciones/store/cotizaciones-store'
@@ -49,6 +50,7 @@ export default function ClientesPage() {
   const [selected, setSelected] = useState<Cliente | null>(null)
   const [isForm, setIsForm] = useState(false)
   const [viewDetail, setViewDetail] = useState<Cliente | null>(null)
+  const [correoModal, setCorreoModal] = useState<{ to: string; ref: string } | null>(null)
   const [tab, setTab] = useState<'registros' | 'reportes'>('registros')
   const [detailTab, setDetailTab] = useState<'info' | 'contactos' | 'cotizaciones' | 'oportunidades' | 'tickets'>('info')
   const [search, setSearch] = useState('')
@@ -624,6 +626,7 @@ export default function ClientesPage() {
                     <td style={{ padding: '8px 10px', borderBottom: '1px solid #e2e8f0' }}>
                       <div style={{ display: 'flex', gap: 4 }}>
                         <button onClick={() => setViewDetail(c)} style={{ ...btnStyle, padding: '3px 10px', fontSize: 10, background: '#ea580c', color: '#ffffff', border: '1px solid #f97316' }}>Ver</button>
+                        <button onClick={() => setCorreoModal({ to: c.email || '', ref: c.codigo })} title="Enviar correo" style={{ ...btnStyle, padding: '3px 10px', fontSize: 10, background: '#0ea5e9', color: '#ffffff', border: '1px solid #38bdf8' }}>✉</button>
                         {isValidPhone(c.telefono) && (
                           <a href={buildWhatsAppLink(c.telefono, idioma === 'en' ? `Hi ${c.razon_social}, this is a quick message from us.` : `Hola ${c.razon_social}, te escribimos desde nuestra empresa.`)} target="_blank" rel="noopener noreferrer" style={{ ...btnStyle, padding: '3px 10px', fontSize: 10, background: '#25d366', color: '#ffffff', border: '1px solid #128c7e', textDecoration: 'none', display: 'inline-flex', alignItems: 'center' }}>WA</a>
                         )}
@@ -646,6 +649,10 @@ export default function ClientesPage() {
 
       {tab === 'reportes' && (
         <ReportPanel title="Reporte de Clientes" columns={reportColumns} rows={reportRows} filters={reportFilters} />
+      )}
+
+      {correoModal && (
+        <EnviarCorreoModal destinatario={correoModal.to} modulo="clientes" referencia={correoModal.ref} onClose={() => setCorreoModal(null)} />
       )}
     </div>
   )
