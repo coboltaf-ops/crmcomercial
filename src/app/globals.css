@@ -131,6 +131,21 @@ div[style*="rgba(255,255,255,0.05)"] * {
   color: #013978 !important;
 }
 
+/* ═══ Tarjetas Kanban de Tareas: fondo según situación (colores intensos) ═══ */
+.kanban-card-completada { background: #16a34a !important; border-color: #15803d !important; }
+.kanban-card-cancelada  { background: #dc2626 !important; border-color: #b91c1c !important; }
+.kanban-card-proceso    { background: #2563eb !important; border-color: #1d4ed8 !important; }
+.kanban-card-pendiente  { background: #ea580c !important; border-color: #c2410c !important; }
+
+/* Texto blanco legible y panel interno translúcido sobre el color intenso */
+.kanban-card p,
+.kanban-card span {
+  color: #ffffff !important;
+}
+.kanban-card .kanban-card-inner {
+  background: rgba(0,0,0,0.22) !important;
+}
+
 /* ═══ Pantalla de Login: tema azul oscuro (sobrescribe los forzados globales) ═══ */
 .login-screen {
   background: #1e3a8a !important;

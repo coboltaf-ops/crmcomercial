@@ -68,6 +68,17 @@ export default function TareasPage() {
     return { padding: '4px 12px', borderRadius: 20, fontSize: 11, fontWeight: 700, background: c.bg, color: c.color, border: `1px solid ${c.border}`, display: 'inline-block' }
   }
 
+  // Clase de color de la tarjeta Kanban según su situación (colores intensos)
+  const kanbanClase = (sit: string): string => {
+    const m: Record<string, string> = {
+      'Completada': 'kanban-card-completada',
+      'Cancelada': 'kanban-card-cancelada',
+      'En Proceso': 'kanban-card-proceso',
+      'Pendiente': 'kanban-card-pendiente',
+    }
+    return m[sit] || ''
+  }
+
   const filtered = tareas.filter(t => {
     if (filtroSituacion && t.situacion !== filtroSituacion) return false
     if (search) {
@@ -289,6 +300,7 @@ export default function TareasPage() {
             <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
               {tareasCol.map(t => (
                 <div key={t.id} draggable
+                  className={`kanban-card ${kanbanClase(t.situacion)}`}
                   onDragStart={() => setDragId(t.id)}
                   onClick={() => { setViewDetail(t); setVista('detalle') }}
                   style={{ background: '#f1f5f9', borderRadius: 12, padding: 16, border: '1px solid #1e3a8a', cursor: 'grab', transition: 'transform 0.15s', }}>
@@ -300,7 +312,7 @@ export default function TareasPage() {
                     <p style={{ color: 'rgba(255,255,255,0.55)', fontSize: 10, fontWeight: 700, letterSpacing: 0.5, marginBottom: 4 }}>DESCRIPCIÓN</p>
                     <p style={{ color: '#fff', fontSize: 14, margin: 0, lineHeight: 1.5, overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical' }}>{t.descripcion || '—'}</p>
                   </div>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: 10, background: 'rgba(0,0,0,0.22)', padding: 12, borderRadius: 8 }}>
+                  <div className="kanban-card-inner" style={{ display: 'flex', flexDirection: 'column', gap: 10, background: 'rgba(0,0,0,0.22)', padding: 12, borderRadius: 8 }}>
                     <div>
                       <p style={{ color: 'rgba(255,255,255,0.55)', fontSize: 10, fontWeight: 700, letterSpacing: 0.5, marginBottom: 2 }}>✍️ ASIGNA</p>
                       <p style={{ color: '#fff', fontSize: 13, margin: 0, fontWeight: 600 }}>{t.persona_asigna || '—'}</p>
