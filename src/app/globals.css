@@ -73,3 +73,26 @@ div[style*="background:#ffffff"] {
 input::placeholder {
   color: rgba(1,57,120,0.5) !important;
 }
+
+/* Tarjetas del dashboard: fondo blanco + texto azul oscuro */
+div[style*="borderRadius: 16"],
+div[style*="border-radius: 16px"] {
+  background: #FFFFFF !important;
+  border-color: rgba(0,0,0,0.1) !important;
+}
+
+div[style*="borderRadius: 16"] p,
+div[style*="borderRadius: 16"] span {
+  color: #013978 !important;
+}
+
+/* Gráficos y contenedores con fondo semi-transparente */
+div[style*="rgba(255,255,255,0.05)"] {
+  background: #FFFFFF !important;
+  border-color: rgba(0,0,0,0.1) !important;
+  color: #013978 !important;
+}
+
+div[style*="rgba(255,255,255,0.05)"] * {
+  color: #013978 !important;
+}
