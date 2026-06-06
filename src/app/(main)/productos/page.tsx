@@ -1,6 +1,7 @@
 'use client'
 import { logAudit, computarDiff } from '@/shared/lib/audit'
 import { useState, useEffect } from 'react'
+import ModuleHeader from '@/shared/components/module-header'
 import { useProductosStore, Producto } from '@/features/productos/store/productos-store'
 import { useReferenceStore } from '@/features/referencias/store/reference-store'
 import { useCurrentUserStore } from '@/features/usuarios-gestion/store/current-user-store'
@@ -205,15 +206,13 @@ export default function ProductosPage() {
 
   return (
     <div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
-        <div>
-          <h1 style={{ fontSize: 24, fontWeight: 700, color: '#013978', marginBottom: 4 }}>{t('page.productos.title')}</h1>
-          <p style={{ color: '#013978', fontSize: 14 }}>{t('page.productos.subtitle')}</p>
-        </div>
-        {permisos.editar && tab === 'registros' && (
+      <ModuleHeader title={t('page.productos.title')} subtitle={t('page.productos.subtitle')} />
+
+      {permisos.editar && tab === 'registros' && (
+        <div style={{ marginBottom: 20 }}>
           <button onClick={() => { setSelected(emptyProducto(nextConsecutivo('PROD-', productos.map(p => p.codigo)).codigo)); setIsForm(true) }} style={{ ...btnStyle, background: '#1e3a8a', color: '#ffffff' }}>{t('page.productos.btnNuevo')}</button>
-        )}
-      </div>
+        </div>
+      )}
 
       <div style={{ display: 'flex', gap: 8, marginBottom: 20 }}>
         <button onClick={() => setTab('registros')} style={tabBtnStyle(tab === 'registros')}>📋 {t('tab.registros')}</button>

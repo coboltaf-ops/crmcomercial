@@ -2,6 +2,7 @@
 import { logAudit, computarDiff } from '@/shared/lib/audit'
 import { useState, useEffect } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
+import ModuleHeader from '@/shared/components/module-header'
 import { useCotizacionesStore, Cotizacion, DetalleCotizacion } from '@/features/cotizaciones/store/cotizaciones-store'
 import { useClientesStore } from '@/features/clientes/store/clientes-store'
 import { useContactosStore } from '@/features/contactos/store/contactos-store'
@@ -657,15 +658,13 @@ export default function CotizacionesPage() {
   // ── MAIN VIEW ──
   return (
     <div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
-        <div>
-          <h1 style={{ fontSize: 24, fontWeight: 700, color: '#013978', marginBottom: 4 }}>{t('page.cotizaciones.title')}</h1>
-          <p style={{ color: '#013978', fontSize: 14 }}>{t('page.cotizaciones.subtitle')}</p>
-        </div>
-        {permisos.editar && tab === 'registros' && (
+      <ModuleHeader title={t('page.cotizaciones.title')} subtitle={t('page.cotizaciones.subtitle')} />
+
+      {permisos.editar && tab === 'registros' && (
+        <div style={{ marginBottom: 20 }}>
           <button onClick={() => { { const nc = nextConsecutivo('COT-', cotizaciones.map(c => c.codigo)); setSelected(emptyCotizacion(nc.codigo, nc.nro, `${currentUser?.nombre || ''} ${currentUser?.apellido || ''}`)) }; setIsForm(true) }} style={{ ...btnStyle, background: '#1e3a8a', color: '#ffffff' }}>{t('page.cotizaciones.btnNuevo')}</button>
-        )}
-      </div>
+        </div>
+      )}
 
       <div style={{ display: 'flex', gap: 8, marginBottom: 20 }}>
         <button onClick={() => setTab('registros')} style={tabBtnStyle(tab === 'registros')}>📋 {t('tab.registros')}</button>
