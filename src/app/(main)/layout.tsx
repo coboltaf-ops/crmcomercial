@@ -224,13 +224,13 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
           {!collapsed && (
             <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
               {empresa?.logo_url ? (
-                <img src={empresa.logo_url} alt="Logo" style={{ width: 40, height: 40, borderRadius: 8, objectFit: 'contain', background: 'rgba(255,255,255,0.1)', padding: 4 }} />
+                <img src={empresa.logo_url} alt="Logo" style={{ width: 64, height: 64, borderRadius: 10, objectFit: 'contain', background: 'rgba(255,255,255,0.1)', padding: 4 }} />
               ) : (
-                <div style={{ width: 40, height: 40, borderRadius: 8, background: 'rgba(255,255,255,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#ffffff', fontWeight: 700, fontSize: 14 }}>C</div>
+                <div style={{ width: 64, height: 64, borderRadius: 10, background: 'rgba(255,255,255,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#ffffff', fontWeight: 700, fontSize: 20 }}>C</div>
               )}
               <div>
-                <p style={{ color: '#ffffff', fontWeight: 800, fontSize: 16, lineHeight: 1.2, margin: 0 }}>{empresa?.nombre || 'CRM Comercial'}</p>
-                <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: 11, margin: 0 }}>Sistema de Gestión</p>
+                <p style={{ color: '#ffffff', fontWeight: 800, fontSize: 16, lineHeight: 1.2, margin: 0 }}>GESTION COMERCIAL</p>
+                <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: 11, margin: 0 }}>{empresa?.nombre || 'Sistema de Gestión'}</p>
               </div>
             </div>
           )}
