@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { useUsuariosStore } from '@/features/usuarios-gestion/store/usuarios-store'
 import { useCurrentUserStore } from '@/features/usuarios-gestion/store/current-user-store'
@@ -10,10 +10,16 @@ export default function LoginPage() {
   const usuarios = useUsuariosStore(s => s.usuarios)
   const setUser = useCurrentUserStore(s => s.setUser)
   const empresas = useEmpresaStore(s => s.empresas)
+  const loadEmpresas = useEmpresaStore(s => s.loadEmpresas)
   const empresa = empresas[0]
   const [usuario, setUsuario] = useState('')
   const [clave, setClave] = useState('')
   const [error, setError] = useState('')
+
+  // Cargar logo/datos de empresa desde KV para mostrarlos en el login
+  useEffect(() => {
+    loadEmpresas()
+  }, [loadEmpresas])
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault()

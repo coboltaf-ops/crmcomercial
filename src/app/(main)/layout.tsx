@@ -46,7 +46,13 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
   const modulos = useModulosStore(s => s.modulos)
   const clientes = useClientesStore(s => s.clientes)
   const empresas = useEmpresaStore(s => s.empresas)
+  const loadEmpresas = useEmpresaStore(s => s.loadEmpresas)
   const empresa = empresas[0]
+
+  // Cargar datos de empresa (logo, etc.) desde KV para toda la app
+  useEffect(() => {
+    loadEmpresas()
+  }, [loadEmpresas])
   const { setPending } = useAsistenteStore()
   const [collapsed, setCollapsed] = useState(false)
   const [showAsistente, setShowAsistente] = useState(false)
