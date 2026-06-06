@@ -1,0 +1,9 @@
+# Artefactos de pruebas
+.playwright-mcp/
+
+# Datos locales de desarrollo (en producción se usa Vercel KV)
+data/
+
+# Misc
+.DS_Store
+*.tsbuildinfo
