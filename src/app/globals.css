@@ -72,11 +72,16 @@ th {
   border-color: rgba(0,0,0,0.2) !important;
 }
 
-/* Inputs/formularios: texto OSCURO sobre fondo claro */
-input, textarea, select, button {
+/* Inputs/formularios: texto OSCURO sobre fondo claro + bordes azul oscuro */
+input, textarea, select {
   color: #013978 !important;
   background: rgba(255,255,255,0.9) !important;
-  border-color: rgba(0,0,0,0.2) !important;
+  border: 2px solid #1e3a8a !important;
+}
+
+button {
+  color: #013978 !important;
+  background: rgba(255,255,255,0.9) !important;
 }
 
 /* Divs blancos (formularios): texto oscuro */
