@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
     asunto = body.asunto
     modulo = body.modulo || 'general'
     referencia = body.referencia || ''
-    const { mensaje, url, attachments } = body
+    const { mensaje, url, attachments, emisorNombre } = body
 
     if (!to || !asunto) {
       return NextResponse.json({ error: 'Faltan destinatario o asunto' }, { status: 400 })
@@ -74,8 +74,12 @@ export async function POST(req: NextRequest) {
       auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS },
     })
 
+    // Nombre del emisor (display name); la dirección sigue siendo la del SMTP
+    const fromName = String(emisorNombre || empresa.nombre || '').replace(/"/g, '').trim()
+    const from = fromName ? `"${fromName}" <${process.env.SMTP_USER}>` : process.env.SMTP_USER
+
     await transporter.sendMail({
-      from: process.env.SMTP_USER,
+      from,
       to,
       subject: asunto,
       html,

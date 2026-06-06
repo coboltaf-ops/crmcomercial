@@ -14,6 +14,7 @@ interface Adjunto { filename: string; content: string }
 // Modal reutilizable para enviar correos desde cualquier módulo (con adjuntos y enlace).
 export default function EnviarCorreoModal({ destinatario = '', asuntoInicial = '', modulo, referencia, onClose }: Props) {
   const [to, setTo] = useState(destinatario)
+  const [emisorNombre, setEmisorNombre] = useState('')
   const [asunto, setAsunto] = useState(asuntoInicial)
   const [mensaje, setMensaje] = useState('')
   const [url, setUrl] = useState('')
@@ -39,7 +40,7 @@ export default function EnviarCorreoModal({ destinatario = '', asuntoInicial = '
       const res = await fetch('/api/send-email', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ to, asunto, mensaje, url, modulo, referencia, attachments: archivos }),
+        body: JSON.stringify({ to, asunto, mensaje, url, modulo, referencia, emisorNombre, attachments: archivos }),
       })
       const data = await res.json()
       if (res.ok) setResult({ ok: true, msg: 'Correo enviado correctamente ✅' })
@@ -61,6 +62,10 @@ export default function EnviarCorreoModal({ destinatario = '', asuntoInicial = '
         </div>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+          <div>
+            <label style={labelStyle}>Nombre del emisor (cómo aparece quien envía)</label>
+            <input value={emisorNombre} onChange={e => setEmisorNombre(e.target.value)} placeholder="Ej: Norton Ventas (deja vacío para usar la empresa)" style={inputStyle} />
+          </div>
           <div>
             <label style={labelStyle}>Para *</label>
             <input value={to} onChange={e => setTo(e.target.value)} placeholder="correo@ejemplo.com" style={inputStyle} />
