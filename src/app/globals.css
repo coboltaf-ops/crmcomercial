@@ -18,17 +18,31 @@ body, html {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-* {
+/* Textos por defecto en blanco */
+p, span, label, a, li {
   color: #FFFFFF !important;
 }
 
+/* Tablas con texto blanco */
 table, tr, td, th {
   color: #FFFFFF !important;
   border-color: rgba(255,255,255,0.2) !important;
 }
 
-input, textarea, select {
-  color: #FFFFFF !important;
-  background: rgba(255,255,255,0.1) !important;
-  border-color: rgba(255,255,255,0.2) !important;
+/* Inputs/formularios: texto OSCURO sobre fondo claro */
+input, textarea, select, button {
+  color: #013978 !important;
+  background: rgba(255,255,255,0.9) !important;
+  border-color: rgba(0,0,0,0.2) !important;
+}
+
+/* Divs blancos (formularios): texto oscuro */
+div[style*="background: #ffffff"],
+div[style*="background:#ffffff"] {
+  color: #013978 !important;
+}
+
+/* Campos específicos del formulario */
+input::placeholder {
+  color: rgba(1,57,120,0.5) !important;
 }
