@@ -148,6 +148,16 @@ div[style*="rgba(255,255,255,0.05)"] * {
   color: #013978 !important;
 }
 
+/* ═══ Barras del gráfico de Clientes por Ciudad (azules y rojos alternados) ═══ */
+.bar-c0 { background: #1e3a8a !important; }
+.bar-c1 { background: #dc2626 !important; }
+.bar-c2 { background: #2563eb !important; }
+.bar-c3 { background: #b91c1c !important; }
+.bar-c4 { background: #3b82f6 !important; }
+.bar-c5 { background: #ef4444 !important; }
+.bar-c6 { background: #1d4ed8 !important; }
+.bar-c7 { background: #f87171 !important; }
+
 /* ═══ Franjas de sección (títulos con fondo azul): texto blanco ═══ */
 .seccion-franja, .seccion-franja * {
   color: #ffffff !important;

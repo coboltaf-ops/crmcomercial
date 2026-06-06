@@ -49,6 +49,18 @@ export default function DashboardPage() {
     valor: oportunidades.filter(o => o.etapa === e && (o.situacion === 'Abierta' || o.situacion === 'En Negociación')).reduce((s, o) => s + (o.valor_estimado || o.monto_estimado || 0), 0),
   }))
 
+  // Clientes por ciudad (gráfico de barras)
+  const ciudadCount: Record<string, number> = {}
+  clientes.forEach(c => {
+    const ciu = (c.ciudad || '').trim() || 'Sin ciudad'
+    ciudadCount[ciu] = (ciudadCount[ciu] || 0) + 1
+  })
+  const clientesPorCiudad = Object.entries(ciudadCount)
+    .map(([ciudad, count]) => ({ ciudad, count }))
+    .sort((a, b) => b.count - a.count)
+    .slice(0, 12)
+  const maxCiudad = Math.max(1, ...clientesPorCiudad.map(c => c.count))
+
   return (
     <div>
       <h1 style={{ fontSize: 24, fontWeight: 700, color: '#ffffff', marginBottom: 24 }}>Dashboard</h1>
@@ -161,6 +173,24 @@ export default function DashboardPage() {
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Gráfico: Clientes por Ciudad (barras verticales) */}
+      <div className="dash-card" style={{ ...cardStyle, marginBottom: 24 }}>
+        <h2 style={{ color: '#1e3a8a', fontSize: 16, fontWeight: 600, marginBottom: 20 }}>Clientes por Ciudad</h2>
+        {clientesPorCiudad.length === 0 ? (
+          <p style={{ color: '#1e3a8a', fontSize: 13 }}>No hay clientes registrados</p>
+        ) : (
+          <div style={{ display: 'flex', alignItems: 'flex-end', gap: 14, height: 240, paddingTop: 20, overflowX: 'auto' }}>
+            {clientesPorCiudad.map((c, i) => (
+              <div key={c.ciudad} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-end', flex: '1 0 56px', minWidth: 56, height: '100%' }}>
+                <span style={{ color: '#1e3a8a', fontSize: 15, fontWeight: 800, marginBottom: 4 }}>{c.count}</span>
+                <div className={`bar-c${i % 8}`} style={{ width: '100%', maxWidth: 46, height: `${(c.count / maxCiudad) * 100}%`, minHeight: 6, borderRadius: '6px 6px 0 0' }} />
+                <span style={{ color: '#1e3a8a', fontSize: 11, fontWeight: 600, marginTop: 6, textAlign: 'center', wordBreak: 'break-word' }}>{c.ciudad}</span>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   )
