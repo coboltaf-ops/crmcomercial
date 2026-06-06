@@ -50,20 +50,22 @@ export default function ModulosPage() {
               {isProtected ? (
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                   <span style={{ color: 'rgba(255,255,255,0.5)', fontSize: 12 }}>Siempre activo</span>
-                  <div style={{ width: 48, height: 26, borderRadius: 13, background: '#22c55e', display: 'flex', alignItems: 'center', justifyContent: 'flex-end', padding: '0 3px', opacity: 0.5 }}>
-                    <div style={{ width: 20, height: 20, borderRadius: '50%', background: '#fff' }} />
+                  <div className="switch-on" style={{ width: 52, height: 28, borderRadius: 14, display: 'flex', alignItems: 'center', justifyContent: 'flex-end', padding: '0 3px', opacity: 0.6 }}>
+                    <div style={{ width: 22, height: 22, borderRadius: '50%', background: '#fff' }} />
                   </div>
                 </div>
               ) : (
-                <button
+                <div
                   onClick={() => toggleModulo(m.id)}
+                  className={m.activo ? 'switch-on' : 'switch-off'}
                   style={{
-                    padding: '6px 18px', borderRadius: 10, fontSize: 13, fontWeight: 700,
-                    color: '#ffffff', border: 'none', cursor: 'pointer',
-                    background: m.activo ? '#16a34a' : '#dc2626',
+                    width: 52, height: 28, borderRadius: 14,
+                    display: 'flex', alignItems: 'center',
+                    justifyContent: m.activo ? 'flex-end' : 'flex-start',
+                    padding: '0 3px', cursor: 'pointer', transition: 'all 0.3s',
                   }}>
-                  {m.activo ? 'Activo' : 'Desactivo'}
-                </button>
+                  <div style={{ width: 22, height: 22, borderRadius: '50%', background: '#fff', transition: 'all 0.3s' }} />
+                </div>
               )}
             </div>
           )

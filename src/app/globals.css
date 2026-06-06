@@ -148,6 +148,10 @@ div[style*="rgba(255,255,255,0.05)"] * {
   color: #013978 !important;
 }
 
+/* ═══ Switch de Módulos: verde (Activo) / rojo (Desactivo) ═══ */
+.switch-on { background: #16a34a !important; }
+.switch-off { background: #dc2626 !important; }
+
 /* ═══ Barras del gráfico de Clientes por Ciudad (azules y rojos alternados) ═══ */
 .bar-c0 { background: #1e3a8a !important; }
 .bar-c1 { background: #dc2626 !important; }
