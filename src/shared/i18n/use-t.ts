@@ -12,6 +12,72 @@ const useI18nStore = create<I18nState>(set => ({
 
 const translations: Record<string, Record<string, string>> = {
   es: {
+    'lbl.actividad': 'Actividad',
+    'lbl.adjudicacion': 'Adjudicación',
+    'lbl.apellido': 'Apellido',
+    'lbl.asunto': 'Asunto',
+    'lbl.cargo': 'Cargo',
+    'lbl.categoria': 'Categoría',
+    'lbl.celular': 'Celular',
+    'lbl.codigoPostal': 'Código Postal',
+    'lbl.condicionPago': 'Condición de Pago',
+    'lbl.condicionPagoCorta': 'Cond. Pago',
+    'lbl.contacto': 'Contacto',
+    'lbl.correo': 'Correo',
+    'lbl.correoEmpresa': 'Correo Empresa',
+    'lbl.departamento': 'Departamento',
+    'lbl.descripcion': 'Descripción',
+    'lbl.detalleRequerimiento': 'Detalle del Requerimiento',
+    'lbl.direccion': 'Dirección',
+    'lbl.email': 'Correo Electrónico',
+    'lbl.empresa': 'Empresa',
+    'lbl.fechaAsignacionTask': 'Fecha de Asignación',
+    'lbl.fechaEmision': 'Fecha de Emisión',
+    'lbl.fechaEsperadaVeredicto': 'Fecha Esperada de Veredicto',
+    'lbl.fechaFinalConsultas': 'Fecha Final de Consultas',
+    'lbl.fechaInicioConsultas': 'Fecha Inicio de Consultas',
+    'lbl.fechaNacimiento': 'Fecha de Nacimiento',
+    'lbl.fechaPresentarOferta': 'Fecha para Presentar Oferta',
+    'lbl.fechaRealFin': 'Fecha Real de Fin',
+    'lbl.fechaRealPresentacion': 'Fecha Real de Presentación',
+    'lbl.fechaRequeridaFin': 'Fecha Requerida de Fin',
+    'lbl.fechaVencimiento': 'Fecha de Vencimiento',
+    'lbl.horaAsignacion': 'Hora de Asignación',
+    'lbl.logoEmpresa': 'Logo de la Empresa',
+    'lbl.mensaje': 'Mensaje',
+    'lbl.moneda': 'Moneda',
+    'lbl.montoEstimado': 'Monto Estimado',
+    'lbl.montoRealOferta': 'Monto Real de la Oferta',
+    'lbl.movil': 'Móvil',
+    'lbl.nivelInfluencia': 'Nivel de Influencia',
+    'lbl.nombre': 'Nombre',
+    'lbl.nombreComercial': 'Nombre Comercial',
+    'lbl.nombreEmpresa': 'Nombre de la Empresa',
+    'lbl.nroDocumento': 'Nro de Documento',
+    'lbl.nroMovil': 'Nro Móvil',
+    'lbl.oportunidad': 'Oportunidad',
+    'lbl.origenProspecto': 'Origen del Prospecto',
+    'lbl.paginaWeb': 'Página Web',
+    'lbl.para': 'Para',
+    'lbl.parcialEuros': 'Parcial €',
+    'lbl.personaQueAsigna': 'Persona que Asigna',
+    'lbl.personaQueEjecuta': 'Persona que Ejecuta',
+    'lbl.precioUnitario': 'Precio Unitario',
+    'lbl.prioridad': 'Prioridad',
+    'lbl.razonSocial': 'Razón Social',
+    'lbl.representanteLegal': 'Representante Legal',
+    'lbl.rol': 'Rol',
+    'lbl.sinLogo': 'Sin Logo',
+    'lbl.sitioWeb': 'Sitio Web',
+    'lbl.subtotal': 'Subtotal',
+    'lbl.telefono': 'Teléfono',
+    'lbl.telefonoEmpresa': 'Teléfono Empresa',
+    'lbl.tipo': 'Tipo',
+    'lbl.tipoIdentificacion': 'Tipo de Identificación',
+    'lbl.total': 'Total',
+    'lbl.ubicacion': 'Ubicación',
+    'lbl.unidadMedida': 'Unidad de Medida',
+    'lbl.vendedor': 'Vendedor',
     'lbl.nroOportunidad': 'Nro Oportunidad',
     'lbl.fechaRegistro': 'Fecha Registro',
     'lbl.codigo': 'Código',
@@ -148,10 +214,21 @@ const statusTranslations: Record<string, Record<string, string>> = {
   },
 }
 
+// Convierte una clave sin traducción (ej. 'lbl.nombreComercial') en texto
+// legible ('Nombre Comercial') en vez de mostrar la clave cruda en pantalla.
+function humanizeKey(key: string): string {
+  const last = key.includes('.') ? key.slice(key.lastIndexOf('.') + 1) : key
+  const words = last
+    .replace(/([a-z0-9])([A-Z])/g, '$1 $2')
+    .replace(/[_-]+/g, ' ')
+    .trim()
+  return words.charAt(0).toUpperCase() + words.slice(1)
+}
+
 export function useT() {
   const idioma = useI18nStore(s => s.idioma)
   return (key: string, defaultValue?: string) => {
-    return translations[idioma]?.[key] || translations['es']?.[key] || defaultValue || key
+    return translations[idioma]?.[key] || translations['es']?.[key] || defaultValue || humanizeKey(key)
   }
 }
 
