@@ -56,7 +56,7 @@ export default function DashboardPage() {
       {/* Summary cards */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: 16, marginBottom: 24 }}>
         {cards.map(c => (
-          <div key={c.label} style={cardStyle}>
+          <div key={c.label} className="dash-card" style={cardStyle}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
               <span style={{ fontSize: 28 }}>{c.icon}</span>
               <span style={{ fontSize: 32, fontWeight: 800, color: c.color }}>{c.value}</span>
@@ -68,7 +68,7 @@ export default function DashboardPage() {
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 24 }}>
         {/* Pipeline */}
-        <div style={cardStyle}>
+        <div className="dash-card" style={cardStyle}>
           <h2 style={{ color: '#1e3a8a', fontSize: 16, fontWeight: 600, marginBottom: 16 }}>Pipeline de Ventas</h2>
           <div style={{ display: 'flex', gap: 16, marginBottom: 16 }}>
             <div>
@@ -94,7 +94,7 @@ export default function DashboardPage() {
         </div>
 
         {/* Cotizaciones resumen */}
-        <div style={cardStyle}>
+        <div className="dash-card" style={cardStyle}>
           <h2 style={{ color: '#1e3a8a', fontSize: 16, fontWeight: 600, marginBottom: 16 }}>Cotizaciones</h2>
           <div style={{ display: 'flex', gap: 16, marginBottom: 16 }}>
             <div>
@@ -121,7 +121,7 @@ export default function DashboardPage() {
         </div>
 
         {/* PQRS por tipo */}
-        <div style={cardStyle}>
+        <div className="dash-card" style={cardStyle}>
           <h2 style={{ color: '#1e3a8a', fontSize: 16, fontWeight: 600, marginBottom: 16 }}>PQRS por Tipo</h2>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
             {pqrsPorTipo.map(t => (
@@ -136,7 +136,7 @@ export default function DashboardPage() {
         </div>
 
         {/* Actividad reciente */}
-        <div style={cardStyle}>
+        <div className="dash-card" style={cardStyle}>
           <h2 style={{ color: '#1e3a8a', fontSize: 16, fontWeight: 600, marginBottom: 16 }}>Resumen General</h2>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', borderBottom: '1px solid #e5e7eb' }}>
