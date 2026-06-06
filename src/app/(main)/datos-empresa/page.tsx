@@ -1,5 +1,5 @@
 'use client'
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import DocumentosPanel from '@/shared/components/documentos-panel'
 import { useEmpresaStore, Empresa } from '@/features/empresa/store/empresa-store'
 import { useReferenceStore } from '@/features/referencias/store/reference-store'
@@ -16,13 +16,18 @@ export default function DatosEmpresaPage() {
   const idioma = useIdioma()
   const permisos = usePermisos('datos-empresa')
   const currentUser = useCurrentUserStore(s => s.user)
-  const { empresas, addEmpresa, updateEmpresa, deleteEmpresa } = useEmpresaStore()
+  const { empresas, addEmpresa, updateEmpresa, deleteEmpresa, loadEmpresas } = useEmpresaStore()
   const refData = useReferenceStore(s => s.data)
   const fileRef = useRef<HTMLInputElement>(null)
 
   const [selected, setSelected] = useState<Empresa | null>(null)
   const [isForm, setIsForm] = useState(false)
   const [viewDetail, setViewDetail] = useState<Empresa | null>(null)
+
+  // Cargar datos de empresa desde KV al abrir la página
+  useEffect(() => {
+    loadEmpresas()
+  }, [loadEmpresas])
 
   if (currentUser?.rol.toLowerCase() !== 'admin') {
     return <div style={{ color: '#013978', padding: 40, textAlign: 'center' }}>{idioma === 'en' ? 'You do not have access to this section' : 'No tienes acceso a esta sección'}</div>
@@ -54,7 +59,22 @@ export default function DatosEmpresaPage() {
     if (!file || !selected) return
     const reader = new FileReader()
     reader.onload = (ev) => {
-      setSelected({ ...selected, logo_url: ev.target?.result as string })
+      // Redimensionar el logo a máx. 300px para que sea ligero y quepa en KV
+      const img = new Image()
+      img.onload = () => {
+        const MAX = 300
+        let { width, height } = img
+        if (width > height && width > MAX) { height = (height * MAX) / width; width = MAX }
+        else if (height > MAX) { width = (width * MAX) / height; height = MAX }
+        const canvas = document.createElement('canvas')
+        canvas.width = width
+        canvas.height = height
+        const ctx = canvas.getContext('2d')
+        if (!ctx) { setSelected({ ...selected, logo_url: ev.target?.result as string }); return }
+        ctx.drawImage(img, 0, 0, width, height)
+        setSelected({ ...selected, logo_url: canvas.toDataURL('image/png') })
+      }
+      img.src = ev.target?.result as string
     }
     reader.readAsDataURL(file)
   }
