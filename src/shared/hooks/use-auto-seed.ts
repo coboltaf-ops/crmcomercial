@@ -9,9 +9,14 @@ import { useProspectosStore } from '@/features/prospectos/store/prospectos-store
 
 export function useAutoSeed() {
   const clientesCount = useClientesStore(s => s.clientes.length)
+  const contactosCount = useContactosStore(s => s.contactos.length)
+  const productosCount = useProductosStore(s => s.productos.length)
+  const oportunidadesCount = useOportunidadesStore(s => s.oportunidades.length)
 
   useEffect(() => {
-    if (clientesCount > 0) return
+    // Preservar datos existentes: Si ALGÚN store tiene datos, no cargar seed
+    // Esto protege los datos que el usuario ya tiene en localStorage
+    if (clientesCount > 0 || contactosCount > 0 || productosCount > 0 || oportunidadesCount > 0) return
 
     // ========== CLIENTES ==========
     const clientes = [
@@ -368,5 +373,5 @@ export function useAutoSeed() {
     useProductosStore.setState({ productos })
     useOportunidadesStore.setState({ oportunidades })
     useProspectosStore.setState({ prospectos })
-  }, [clientesCount])
+  }, [clientesCount, contactosCount, productosCount, oportunidadesCount])
 }
