@@ -137,13 +137,13 @@ div[style*="rgba(255,255,255,0.05)"] * {
 .kanban-card-proceso    { background: #2563eb !important; border-color: #1d4ed8 !important; }
 .kanban-card-pendiente  { background: #ea580c !important; border-color: #c2410c !important; }
 
-/* Texto blanco legible y panel interno translúcido sobre el color intenso */
+/* Texto negro intenso y panel interno claro para máxima legibilidad */
 .kanban-card p,
 .kanban-card span {
-  color: #ffffff !important;
+  color: #000000 !important;
 }
 .kanban-card .kanban-card-inner {
-  background: rgba(0,0,0,0.22) !important;
+  background: rgba(255,255,255,0.35) !important;
 }
 
 /* ═══ Pantalla de Login: tema azul oscuro (sobrescribe los forzados globales) ═══ */
