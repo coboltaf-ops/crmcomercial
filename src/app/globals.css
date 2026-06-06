@@ -13,11 +13,22 @@
 }
 
 body, html {
-  background: #FFFFFF !important;
-  color: #000000 !important;
+  background: #1e3a8a !important;
+  color: #FFFFFF !important;
   font-family: Arial, Helvetica, sans-serif;
 }
 
 * {
-  background-color: inherit;
+  color: #FFFFFF !important;
+}
+
+table, tr, td, th {
+  color: #FFFFFF !important;
+  border-color: rgba(255,255,255,0.2) !important;
+}
+
+input, textarea, select {
+  color: #FFFFFF !important;
+  background: rgba(255,255,255,0.1) !important;
+  border-color: rgba(255,255,255,0.2) !important;
 }
