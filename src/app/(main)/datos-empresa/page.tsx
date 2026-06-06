@@ -139,7 +139,7 @@ export default function DatosEmpresaPage() {
             </div>
           </div>
 
-          <button onClick={() => { setSelected(viewDetail); setIsForm(true); setViewDetail(null) }} style={{ ...btnStyle, background: '#15803d', color: '#ffffff', border: '1px solid #16a34a', marginTop: 16 }}>{t('btn.editar')}</button>
+          <button onClick={() => { setSelected(viewDetail); setIsForm(true); setViewDetail(null) }} style={{ ...btnStyle, background: '#2563eb', color: '#ffffff', border: '1px solid #3b82f6', marginTop: 16 }}>{t('btn.editar')}</button>
           <SeguimientoPanel
             seguimientos={viewDetail.seguimientos || []}
             usuario={`${currentUser?.nombre} ${currentUser?.apellido}`}
@@ -300,7 +300,7 @@ export default function DatosEmpresaPage() {
                 <td style={{ padding: '8px 10px', borderBottom: '1px solid #e2e8f0' }}>
                   <div style={{ display: 'flex', gap: 4 }}>
                     <button onClick={() => setViewDetail(emp)} style={{ ...btnStyle, padding: '3px 10px', fontSize: 10, background: '#ea580c', color: '#ffffff', border: '1px solid #f97316' }}>{idioma === 'en' ? 'View' : 'Ver'}</button>
-                    <button onClick={() => { setSelected(emp); setIsForm(true) }} style={{ ...btnStyle, padding: '3px 10px', fontSize: 10, background: '#15803d', color: '#ffffff', border: '1px solid #16a34a' }}>{t('btn.editar')}</button>
+                    <button onClick={() => { setSelected(emp); setIsForm(true) }} style={{ ...btnStyle, padding: '3px 10px', fontSize: 10, background: '#2563eb', color: '#ffffff', border: '1px solid #3b82f6' }}>{t('btn.editar')}</button>
                     <button onClick={() => { if (confirm(idioma === 'en' ? `Delete "${emp.nombre}"?` : `¿Eliminar "${emp.nombre}"?`)) deleteEmpresa(emp.id) }} style={{ ...btnStyle, padding: '3px 10px', fontSize: 10, background: '#dc2626', color: '#ffffff', border: '1px solid #ef4444' }}>{t('btn.eliminar')}</button>
                   </div>
                 </td>

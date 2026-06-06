@@ -131,6 +131,11 @@ div[style*="rgba(255,255,255,0.05)"] * {
   color: #013978 !important;
 }
 
+/* ═══ Botones de acción: color por función + texto blanco (en todos los módulos) ═══ */
+button[style*="#ea580c"] { background: #ea580c !important; color: #ffffff !important; }  /* Ver — naranja */
+button[style*="#2563eb"] { background: #2563eb !important; color: #ffffff !important; }  /* Editar — azul */
+button[style*="#dc2626"] { background: #dc2626 !important; color: #ffffff !important; }  /* Eliminar — rojo */
+
 /* ═══ Tarjetas Kanban de Tareas: fondo según situación (colores intensos) ═══ */
 .kanban-card-completada { background: #16a34a !important; border-color: #15803d !important; }
 .kanban-card-cancelada  { background: #dc2626 !important; border-color: #b91c1c !important; }

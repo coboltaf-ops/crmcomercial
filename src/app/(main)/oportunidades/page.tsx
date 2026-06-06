@@ -245,7 +245,7 @@ export default function OportunidadesPage() {
           )}
 
           {permisos.editar && (
-            <button onClick={() => { setSelected(viewDetail); setIsForm(true); setViewDetail(null) }} style={{ ...btnStyle, background: '#15803d', color: '#ffffff', border: '1px solid #16a34a', marginTop: 16 }}>{t('btn.editar')}</button>
+            <button onClick={() => { setSelected(viewDetail); setIsForm(true); setViewDetail(null) }} style={{ ...btnStyle, background: '#2563eb', color: '#ffffff', border: '1px solid #3b82f6', marginTop: 16 }}>{t('btn.editar')}</button>
           )}
 
           <SeguimientoPanel
@@ -666,7 +666,7 @@ export default function OportunidadesPage() {
                             <a href={buildWhatsAppLink(phone, msg)} target="_blank" rel="noopener noreferrer" style={{ ...btnStyle, padding: '4px 12px', fontSize: 11, background: '#25d366', color: '#ffffff', border: '1px solid #128c7e', textDecoration: 'none', display: 'inline-flex', alignItems: 'center' }}>WhatsApp</a>
                           )
                         })()}
-                        {permisos.editar && <button onClick={() => { setSelected(o); setIsForm(true) }} style={{ ...btnStyle, padding: '4px 12px', fontSize: 11, background: '#15803d', color: '#fff', border: '1px solid #16a34a' }}>{t('btn.editar')}</button>}
+                        {permisos.editar && <button onClick={() => { setSelected(o); setIsForm(true) }} style={{ ...btnStyle, padding: '4px 12px', fontSize: 11, background: '#2563eb', color: '#fff', border: '1px solid #3b82f6' }}>{t('btn.editar')}</button>}
                         {permisos.eliminar && <button onClick={() => {
                           if (!confirm(`¿Eliminar oportunidad "${o.codigo}"?`)) return
                           deleteOportunidad(o.id)

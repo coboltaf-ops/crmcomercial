@@ -130,7 +130,7 @@ export default function ContactosPage() {
             ))}
           </div>
           {permisos.editar && (
-            <button onClick={() => { setSelected(viewDetail); setIsForm(true); setViewDetail(null) }} style={{ ...btnStyle, background: '#15803d', color: '#ffffff', border: '1px solid #16a34a', marginTop: 16 }}>{t('btn.editar')}</button>
+            <button onClick={() => { setSelected(viewDetail); setIsForm(true); setViewDetail(null) }} style={{ ...btnStyle, background: '#2563eb', color: '#ffffff', border: '1px solid #3b82f6', marginTop: 16 }}>{t('btn.editar')}</button>
           )}
           <SeguimientoPanel
             seguimientos={viewDetail.seguimientos || []}

@@ -200,7 +200,7 @@ export default function ProspectosPage() {
           </div>
           <div style={{ display: 'flex', gap: 10, marginTop: 16, flexWrap: 'wrap' }}>
             {permisos.editar && (
-              <button onClick={() => { setSelected(viewDetail); setIsForm(true); setViewDetail(null) }} style={{ ...btnStyle, background: '#15803d', color: '#ffffff', border: '1px solid #16a34a' }}>{t('btn.editar')}</button>
+              <button onClick={() => { setSelected(viewDetail); setIsForm(true); setViewDetail(null) }} style={{ ...btnStyle, background: '#2563eb', color: '#ffffff', border: '1px solid #3b82f6' }}>{t('btn.editar')}</button>
             )}
             {permisos.editar && viewDetail.situacion !== 'Convertido' && (
               <button onClick={() => {
@@ -462,7 +462,7 @@ export default function ProspectosPage() {
                         {isValidPhone(p.nro_movil) && (
                           <a href={buildWhatsAppLink(p.nro_movil, idioma === 'en' ? `Hi ${p.nombre}, thank you for contacting us. We received your inquiry and will get back to you soon.` : `Hola ${p.nombre}, muchas gracias por contactarnos. Recibimos tu solicitud y pronto te contactaremos.`)} target="_blank" rel="noopener noreferrer" style={{ ...btnStyle, padding: '4px 12px', fontSize: 11, background: '#25d366', color: '#ffffff', border: '1px solid #128c7e', textDecoration: 'none', display: 'inline-flex', alignItems: 'center' }}>WhatsApp</a>
                         )}
-                        {permisos.editar && <button onClick={() => { setSelected(p); setIsForm(true) }} style={{ ...btnStyle, padding: '4px 12px', fontSize: 11, background: '#15803d', color: '#ffffff', border: '1px solid #16a34a' }}>{t('btn.editar')}</button>}
+                        {permisos.editar && <button onClick={() => { setSelected(p); setIsForm(true) }} style={{ ...btnStyle, padding: '4px 12px', fontSize: 11, background: '#2563eb', color: '#ffffff', border: '1px solid #3b82f6' }}>{t('btn.editar')}</button>}
                         {permisos.eliminar && <button onClick={() => { if (confirm(idioma === 'en' ? `Delete prospect "${p.nombre} ${p.apellido}"?` : `¿Eliminar prospecto "${p.nombre} ${p.apellido}"?`)) deleteProspecto(p.id); logAudit({ ...auditParams(), accion: "ELIMINAR", registro_codigo: p.codigo, registro_nombre: `${p.nombre} ${p.apellido}` }) }} style={{ ...btnStyle, padding: '4px 12px', fontSize: 11, background: '#dc2626', color: '#ffffff', border: '1px solid #ef4444' }}>{t('btn.eliminar')}</button>}
                       </div>
                     </td>
