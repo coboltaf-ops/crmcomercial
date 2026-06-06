@@ -3,11 +3,14 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useUsuariosStore } from '@/features/usuarios-gestion/store/usuarios-store'
 import { useCurrentUserStore } from '@/features/usuarios-gestion/store/current-user-store'
+import { useEmpresaStore } from '@/features/empresa/store/empresa-store'
 
 export default function LoginPage() {
   const router = useRouter()
   const usuarios = useUsuariosStore(s => s.usuarios)
   const setUser = useCurrentUserStore(s => s.setUser)
+  const empresas = useEmpresaStore(s => s.empresas)
+  const empresa = empresas[0]
   const [usuario, setUsuario] = useState('')
   const [clave, setClave] = useState('')
   const [error, setError] = useState('')
@@ -24,7 +27,15 @@ export default function LoginPage() {
     <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#1e3a8a' }}>
       <div style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.2)', borderRadius: 20, padding: 40, width: 400 }}>
         <div style={{ textAlign: 'center', marginBottom: 32 }}>
-          <h1 style={{ fontSize: 28, fontWeight: 800, color: '#ffffff', marginBottom: 4 }}>CRM Comercial</h1>
+          {/* Logo Empresarial */}
+          <div style={{ marginBottom: 20 }}>
+            {empresa?.logo_url ? (
+              <img src={empresa.logo_url} alt="Logo" style={{ width: 80, height: 80, borderRadius: 12, objectFit: 'contain', background: 'rgba(255,255,255,0.1)', padding: 8, margin: '0 auto' }} />
+            ) : (
+              <div style={{ width: 80, height: 80, borderRadius: 12, background: 'rgba(255,255,255,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#ffffff', fontSize: 24, fontWeight: 700, margin: '0 auto' }}>C</div>
+            )}
+          </div>
+          <h1 style={{ fontSize: 28, fontWeight: 800, color: '#ffffff', marginBottom: 4 }}>{empresa?.nombre || 'CRM Comercial'}</h1>
           <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: 14 }}>Inicia sesión en tu cuenta</p>
         </div>
         <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
