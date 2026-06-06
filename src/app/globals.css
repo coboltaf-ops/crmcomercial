@@ -23,6 +23,17 @@ p, span, a, li {
   color: #FFFFFF !important;
 }
 
+/* Menú lateral: items con fondo azul oscuro y texto blanco */
+nav, nav * {
+  background: #1e3a8a !important;
+  color: #FFFFFF !important;
+}
+
+nav li, nav a, nav button {
+  background: #1e3a8a !important;
+  color: #FFFFFF !important;
+}
+
 /* Textos del Dashboard: azul oscuro */
 h1, h2, h3, h4, h5, h6 {
   color: #013978 !important;
