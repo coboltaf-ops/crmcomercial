@@ -12,7 +12,13 @@
   --font-mono: var(--font-geist-mono);
 }
 
-body, html, main, section, article {
+body, html {
+  background: #1e3a8a !important;
+  color: #013978 !important;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+main, section, article {
   background: #FFFFFF !important;
   color: #013978 !important;
   font-family: Arial, Helvetica, sans-serif;
@@ -123,4 +129,40 @@ div[style*="rgba(255,255,255,0.05)"] {
 
 div[style*="rgba(255,255,255,0.05)"] * {
   color: #013978 !important;
+}
+
+/* ═══ Pantalla de Login: tema azul oscuro (sobrescribe los forzados globales) ═══ */
+.login-screen {
+  background: #1e3a8a !important;
+}
+.login-screen .login-card {
+  background: #0f1b3d !important;
+}
+.login-screen h1 {
+  color: #ffffff !important;
+  background: transparent !important;
+}
+.login-screen p,
+.login-screen label,
+.login-screen span {
+  color: rgba(255,255,255,0.85) !important;
+  background: transparent !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+  display: block !important;
+}
+.login-screen input {
+  background: rgba(255,255,255,0.1) !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255,255,255,0.3) !important;
+}
+.login-screen input::placeholder {
+  color: rgba(255,255,255,0.4) !important;
+}
+.login-screen button[type="submit"] {
+  background: #2563eb !important;
+  color: #ffffff !important;
+}
+.login-screen img {
+  background: rgba(255,255,255,0.1) !important;
 }
