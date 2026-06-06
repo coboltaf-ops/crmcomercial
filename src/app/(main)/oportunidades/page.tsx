@@ -134,7 +134,7 @@ export default function OportunidadesPage() {
         <div style={{ background: '#ffffff', borderRadius: 16, padding: 24, border: '1px solid #1e3a8a' }}>
           <h2 style={{ color: '#013978', fontSize: 18, fontWeight: 700, marginBottom: 16 }}>{viewDetail.codigo} — {viewDetail.proyecto}</h2>
 
-          <h3 style={sectionTitle('#1e3a8a')}>{t('lbl.datosPrincipales')}</h3>
+          <h3 className="seccion-franja" style={sectionTitle('#1e3a8a')}>{t('lbl.datosPrincipales')}</h3>
           {(() => {
             const cli = allClientes.find(x => x.id === viewDetail.cliente_id)
               || allClientes.find(x => (x.razon_social || '').trim().toUpperCase() === (viewDetail.cliente_nombre || '').trim().toUpperCase())
@@ -170,7 +170,7 @@ export default function OportunidadesPage() {
             )
           })()}
 
-          <h3 style={sectionTitle()}>{idioma === 'en' ? 'PROBABILITY AND AWARD' : 'PROBABILIDAD Y ADJUDICACIÓN'}</h3>
+          <h3 className="seccion-franja" style={sectionTitle()}>{idioma === 'en' ? 'PROBABILITY AND AWARD' : 'PROBABILIDAD Y ADJUDICACIÓN'}</h3>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: 14, marginBottom: 20 }}>
             {[
               { l: t('lbl.probabilidad'), v: `${viewDetail.probable_pct || 0}%` },
@@ -190,7 +190,7 @@ export default function OportunidadesPage() {
             ))}
           </div>
 
-          <h3 style={sectionTitle()}>{t('lbl.controlOferta')}</h3>
+          <h3 className="seccion-franja" style={sectionTitle()}>{t('lbl.controlOferta')}</h3>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: 14, marginBottom: 20 }}>
             {[
               { l: t('lbl.fechaInicioConsultas'), v: viewDetail.fecha_inicio_consultas ? fDate(viewDetail.fecha_inicio_consultas) : '-' },
@@ -218,7 +218,7 @@ export default function OportunidadesPage() {
 
           {(viewDetail.documentos_exigidos || []).length > 0 && (
             <div style={{ marginTop: 16, borderRadius: 10, border: '1px solid #1e3a8a', overflow: 'hidden' }}>
-              <div style={{ background: '#1e3a8a', padding: '8px 12px', color: '#fff', fontSize: 12, fontWeight: 700, letterSpacing: 0.5 }}>
+              <div className="seccion-franja" style={{ background: '#1e3a8a', padding: '8px 12px', color: '#fff', fontSize: 12, fontWeight: 700, letterSpacing: 0.5 }}>
                 DOCUMENTOS EXIGIDOS EN OFERTA ({(viewDetail.documentos_exigidos || []).length})
               </div>
               <table style={{ width: '100%', borderCollapse: 'collapse' }}>
@@ -276,7 +276,7 @@ export default function OportunidadesPage() {
           <h2 style={{ color: '#013978', fontSize: 18, fontWeight: 700, marginBottom: 20 }}>{selected.id ? t('fmt.editarOportunidad') : t('fmt.nuevaOportunidad')}</h2>
 
           {/* DATOS PRINCIPALES */}
-          <h3 style={sectionTitle('#1e3a8a')}>{t('lbl.datosPrincipales')}</h3>
+          <h3 className="seccion-franja" style={sectionTitle('#1e3a8a')}>{t('lbl.datosPrincipales')}</h3>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: 14, marginBottom: 20 }}>
             <div>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.nroOportunidad')} *</label>
@@ -355,7 +355,7 @@ export default function OportunidadesPage() {
           </div>
 
           {/* PROBABILIDAD Y ADJUDICACIÓN */}
-          <h3 style={sectionTitle()}>{idioma === 'en' ? 'PROBABILITY AND AWARD' : 'PROBABILIDAD Y ADJUDICACIÓN'}</h3>
+          <h3 className="seccion-franja" style={sectionTitle()}>{idioma === 'en' ? 'PROBABILITY AND AWARD' : 'PROBABILIDAD Y ADJUDICACIÓN'}</h3>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: 14, marginBottom: 20 }}>
             <div>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.probabilidad')} *</label>
@@ -421,7 +421,7 @@ export default function OportunidadesPage() {
           </div>
 
           {/* CONTROL DE OFERTA */}
-          <h3 style={sectionTitle()}>{t('lbl.controlOferta')}</h3>
+          <h3 className="seccion-franja" style={sectionTitle()}>{t('lbl.controlOferta')}</h3>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: 14, marginBottom: 20 }}>
             <div>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.fechaInicioConsultas')}</label>
@@ -460,7 +460,7 @@ export default function OportunidadesPage() {
           </div>
 
           {/* Sección Documentos Exigidos en Oferta */}
-          <h3 style={{ color: '#ffffff', fontSize: 12, fontWeight: 700, background: '#1e3a8a', padding: '6px 10px', borderRadius: 6, marginBottom: 14, letterSpacing: 0.5, textAlign: 'center' }}>
+          <h3 className="seccion-franja" style={{ color: '#ffffff', fontSize: 12, fontWeight: 700, background: '#1e3a8a', padding: '6px 10px', borderRadius: 6, marginBottom: 14, letterSpacing: 0.5, textAlign: 'center' }}>
             DOCUMENTOS EXIGIDOS EN OFERTA ({(selected.documentos_exigidos || []).length}/20)
           </h3>
           <div style={{ borderRadius: 10, border: '1px solid #1e3a8a', overflow: 'hidden', marginBottom: 14 }}>
