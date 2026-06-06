@@ -5,6 +5,7 @@ import { useCurrentUserStore } from '@/features/usuarios-gestion/store/current-u
 import { useModulosStore } from '@/features/modulos/store/modulos-store'
 import { useAsistenteStore } from '@/shared/stores/asistente-store'
 import { useClientesStore } from '@/features/clientes/store/clientes-store'
+import { useEmpresaStore } from '@/features/empresa/store/empresa-store'
 import { useFlujoListener } from '@/features/flujos/lib/useFlujoListener'
 import { useAutoSeed } from '@/shared/hooks/use-auto-seed'
 
@@ -44,6 +45,8 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
   const logout = useCurrentUserStore(s => s.logout)
   const modulos = useModulosStore(s => s.modulos)
   const clientes = useClientesStore(s => s.clientes)
+  const empresas = useEmpresaStore(s => s.empresas)
+  const empresa = empresas[0]
   const { setPending } = useAsistenteStore()
   const [collapsed, setCollapsed] = useState(false)
   const [showAsistente, setShowAsistente] = useState(false)
@@ -213,9 +216,16 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
             {collapsed ? '☰' : '✕'}
           </button>
           {!collapsed && (
-            <div>
-              <p style={{ color: '#ffffff', fontWeight: 800, fontSize: 16, lineHeight: 1.2 }}>CRM Comercial</p>
-              <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: 11 }}>Sistema de Gestión</p>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+              {empresa?.logo_url ? (
+                <img src={empresa.logo_url} alt="Logo" style={{ width: 40, height: 40, borderRadius: 8, objectFit: 'contain', background: 'rgba(255,255,255,0.1)', padding: 4 }} />
+              ) : (
+                <div style={{ width: 40, height: 40, borderRadius: 8, background: 'rgba(255,255,255,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#ffffff', fontWeight: 700, fontSize: 14 }}>C</div>
+              )}
+              <div>
+                <p style={{ color: '#ffffff', fontWeight: 800, fontSize: 16, lineHeight: 1.2, margin: 0 }}>{empresa?.nombre || 'CRM Comercial'}</p>
+                <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: 11, margin: 0 }}>Sistema de Gestión</p>
+              </div>
             </div>
           )}
         </div>
