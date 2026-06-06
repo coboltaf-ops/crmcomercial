@@ -16,7 +16,7 @@ export default function DashboardPage() {
   const pqrs = usePQRSStore(s => s.pqrs)
 
   const opoAbiertas = oportunidades.filter(o => o.situacion === 'Abierta' || o.situacion === 'En Negociación')
-  const totalPipeline = opoAbiertas.reduce((s, o) => s + o.valor_estimado, 0)
+  const totalPipeline = opoAbiertas.reduce((s, o) => s + (o.valor_estimado || o.monto_estimado || 0), 0)
   const pqrsAbiertas = pqrs.filter(p => p.situacion !== 'Cerrada')
   const cotPendientes = cotizaciones.filter(c => c.situacion === 'Borrador' || c.situacion === 'Enviada')
 
@@ -46,7 +46,7 @@ export default function DashboardPage() {
   const opoPorEtapa = etapas.map(e => ({
     etapa: e,
     count: oportunidades.filter(o => o.etapa === e && (o.situacion === 'Abierta' || o.situacion === 'En Negociación')).length,
-    valor: oportunidades.filter(o => o.etapa === e && (o.situacion === 'Abierta' || o.situacion === 'En Negociación')).reduce((s, o) => s + o.valor_estimado, 0),
+    valor: oportunidades.filter(o => o.etapa === e && (o.situacion === 'Abierta' || o.situacion === 'En Negociación')).reduce((s, o) => s + (o.valor_estimado || o.monto_estimado || 0), 0),
   }))
 
   return (

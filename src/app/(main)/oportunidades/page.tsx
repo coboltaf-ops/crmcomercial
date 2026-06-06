@@ -152,8 +152,8 @@ export default function OportunidadesPage() {
               { l: t('lbl.cliente'), v: clienteNode },
               { l: t('lbl.ciudad'), v: viewDetail.ciudad },
               { l: t('lbl.pais'), v: viewDetail.pais },
-              { l: t('lbl.fechaPresupuesto'), v: fDate(viewDetail.fecha_presupuesto) },
-              { l: t('lbl.montoEstimado'), v: `${monedaSimbolo(viewDetail.tipo_moneda)}${fmtMoney(viewDetail.monto_estimado)}` },
+              { l: t('lbl.fechaPresupuesto'), v: viewDetail.fecha_presupuesto ? fDate(viewDetail.fecha_presupuesto) : '-' },
+              { l: t('lbl.montoEstimado'), v: `${monedaSimbolo(viewDetail.tipo_moneda)}${fmtMoney(viewDetail.monto_estimado || 0)}` },
               { l: t('lbl.situacion'), v: viewDetail.situacion },
               { l: t('lbl.responsable'), v: viewDetail.responsable },
             ]
@@ -172,13 +172,13 @@ export default function OportunidadesPage() {
           <h3 style={sectionTitle()}>{idioma === 'en' ? 'PROBABILITY AND AWARD' : 'PROBABILIDAD Y ADJUDICACIÓN'}</h3>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: 14, marginBottom: 20 }}>
             {[
-              { l: t('lbl.probabilidad'), v: `${viewDetail.probable_pct}%` },
+              { l: t('lbl.probabilidad'), v: `${viewDetail.probable_pct || 0}%` },
               { l: idioma === 'en' ? 'Probable Partial' : 'Parcial Probable', v: `${monedaSimbolo(viewDetail.tipo_moneda)}${fmtMoney(der.parcial_probable)}` },
-              { l: t('lbl.adjudicacion'), v: viewDetail.adjudicacion },
+              { l: t('lbl.adjudicacion'), v: viewDetail.adjudicacion || '-' },
               { l: t('lbl.mgc'), v: `${(viewDetail.mgc || 0).toFixed(2)}%` },
-              { l: t('lbl.ejecucionAnyo'), v: `${viewDetail.ejecucion_anyo_pct}%` },
+              { l: t('lbl.ejecucionAnyo'), v: `${viewDetail.ejecucion_anyo_pct || 0}%` },
               { l: idioma === 'en' ? 'Year Partial' : 'Parcial Año', v: `${monedaSimbolo(viewDetail.tipo_moneda)}${fmtMoney(der.parcial_anyo)}` },
-              { l: t('lbl.parcialEuros'), v: `€${fmtMoney(viewDetail.parcial_euros_anyo)}` },
+              { l: t('lbl.parcialEuros'), v: `€${fmtMoney(viewDetail.parcial_euros_anyo || 0)}` },
               { l: idioma === 'en' ? 'MG Year Partial' : 'MG Parcial Año', v: `${monedaSimbolo(viewDetail.tipo_moneda)}${fmtMoney(der.mg_parcial_anyo)}` },
               { l: idioma === 'en' ? 'MG EUR Partial' : 'MG Parcial EUR', v: `€${fmtMoney(der.mg_parcial_euros_anyo)}` },
             ].map(f => (
@@ -192,12 +192,12 @@ export default function OportunidadesPage() {
           <h3 style={sectionTitle()}>{t('lbl.controlOferta')}</h3>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: 14, marginBottom: 20 }}>
             {[
-              { l: t('lbl.fechaInicioConsultas'), v: fDate(viewDetail.fecha_inicio_consultas) },
-              { l: t('lbl.fechaFinalConsultas'), v: fDate(viewDetail.fecha_final_consultas) },
-              { l: t('lbl.fechaPresentarOferta'), v: fDate(viewDetail.fecha_presentar_oferta) },
-              { l: t('lbl.fechaRealPresentacion'), v: fDate(viewDetail.fecha_real_presentacion_oferta) },
-              { l: t('lbl.montoRealOferta'), v: `${monedaSimbolo(viewDetail.tipo_moneda)}${fmtMoney(viewDetail.monto_real_oferta)}` },
-              { l: t('lbl.fechaEsperadaVeredicto'), v: fDate(viewDetail.fecha_esperada_veredicto) },
+              { l: t('lbl.fechaInicioConsultas'), v: viewDetail.fecha_inicio_consultas ? fDate(viewDetail.fecha_inicio_consultas) : '-' },
+              { l: t('lbl.fechaFinalConsultas'), v: viewDetail.fecha_final_consultas ? fDate(viewDetail.fecha_final_consultas) : '-' },
+              { l: t('lbl.fechaPresentarOferta'), v: viewDetail.fecha_presentar_oferta ? fDate(viewDetail.fecha_presentar_oferta) : '-' },
+              { l: t('lbl.fechaRealPresentacion'), v: viewDetail.fecha_real_presentacion_oferta ? fDate(viewDetail.fecha_real_presentacion_oferta) : '-' },
+              { l: t('lbl.montoRealOferta'), v: `${monedaSimbolo(viewDetail.tipo_moneda)}${fmtMoney(viewDetail.monto_real_oferta || 0)}` },
+              { l: t('lbl.fechaEsperadaVeredicto'), v: viewDetail.fecha_esperada_veredicto ? fDate(viewDetail.fecha_esperada_veredicto) : '-' },
               { l: t('lbl.veredicto'), v: viewDetail.veredicto },
               { l: t('lbl.empresaGanadora'), v: viewDetail.empresa_ganadora },
             ].map(f => (
@@ -592,8 +592,8 @@ export default function OportunidadesPage() {
   ]
   const reportRows = filtered.map(o => ({
     codigo: o.codigo, proyecto: o.proyecto, cliente_nombre: o.cliente_nombre,
-    ciudad: o.ciudad, monto: `${monedaSimbolo(o.tipo_moneda)}${fmtMoney(o.monto_estimado)}`,
-    prob: `${o.probable_pct}%`, adj: o.adjudicacion, veredicto: o.veredicto, situacion: o.situacion,
+    ciudad: o.ciudad || '-', monto: `${monedaSimbolo(o.tipo_moneda)}${fmtMoney(o.monto_estimado || 0)}`,
+    prob: `${o.probable_pct || 0}%`, adj: o.adjudicacion || '-', veredicto: o.veredicto || '-', situacion: o.situacion,
   }))
 
   // ── MAIN VIEW ──
@@ -644,10 +644,10 @@ export default function OportunidadesPage() {
                     </td>
                     <td style={{ padding: '10px 14px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 13 }}>{o.ciudad}</td>
                     <td style={{ padding: '10px 14px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 13 }}>{o.pais}</td>
-                    <td style={{ padding: '10px 14px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 13, fontWeight: 600, textAlign: 'right' }}>{monedaSimbolo(o.tipo_moneda)}{fmtMoney(o.monto_estimado)}</td>
-                    <td style={{ padding: '10px 14px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 13, textAlign: 'center' }}>{o.probable_pct}%</td>
-                    <td style={{ padding: '10px 14px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 13 }}>{o.adjudicacion}</td>
-                    <td style={{ padding: '10px 14px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 12 }}>{o.veredicto}</td>
+                    <td style={{ padding: '10px 14px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 13, fontWeight: 600, textAlign: 'right' }}>{monedaSimbolo(o.tipo_moneda)}{fmtMoney(o.monto_estimado || 0)}</td>
+                    <td style={{ padding: '10px 14px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 13, textAlign: 'center' }}>{o.probable_pct || 0}%</td>
+                    <td style={{ padding: '10px 14px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 13 }}>{o.adjudicacion || '-'}</td>
+                    <td style={{ padding: '10px 14px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 12 }}>{o.veredicto || '-'}</td>
                     <td style={{ padding: '10px 14px', borderBottom: '1px solid #e2e8f0' }}>
                       <span style={{ padding: '3px 10px', borderRadius: 20, fontSize: 11, fontWeight: 600, ...statusStyle(o.situacion) }}>{ts(o.situacion)}</span>
                     </td>
@@ -696,9 +696,9 @@ export default function OportunidadesPage() {
           <ReportPanel title="Reporte de Oportunidades" columns={reportColumns} rows={reportRows}
             summableKeys={['monto']}
             filters={[
-              { label: 'Situación', key: 'situacion', options: [...new Set(oportunidades.map(o => o.situacion).filter(Boolean))] },
-              { label: 'Veredicto', key: 'veredicto', options: [...new Set(oportunidades.map(o => o.veredicto).filter(Boolean))] },
-              { label: 'Cliente', key: 'cliente_nombre', options: [...new Set(oportunidades.map(o => o.cliente_nombre).filter(Boolean))] },
+              { label: 'Situación', key: 'situacion', options: [...new Set(oportunidades.map(o => o.situacion).filter(v => !!v))] as string[] },
+              { label: 'Veredicto', key: 'veredicto', options: [...new Set(oportunidades.map(o => o.veredicto).filter(v => !!v))] as string[] },
+              { label: 'Cliente', key: 'cliente_nombre', options: [...new Set(oportunidades.map(o => o.cliente_nombre).filter(v => !!v))] as string[] },
             ]} />
         </>
       )}

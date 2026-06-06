@@ -262,7 +262,7 @@ export function useAutoSeed() {
     // ========== OPORTUNIDADES ==========
     const oportunidades = [
       {
-        id: crypto.randomUUID(), codigo: 'OPR-001', nombre: 'Modernización Data Center Grupo Andino',
+        id: crypto.randomUUID(), codigo: 'OPR-001', proyecto: 'Modernización Data Center Grupo Andino',
         cliente_id: cid[0], cliente_nombre: 'Grupo Andino',
         contacto_id: conId[0], contacto_nombre: 'Carlos Mendoza Ríos',
         valor_estimado: 285000000, tipo_moneda: 'Pesos Colombianos', probabilidad: 70,
@@ -272,7 +272,7 @@ export function useAutoSeed() {
         situacion: 'Abierta', fecha_registro: '2025-04-10', seguimientos: []
       },
       {
-        id: crypto.randomUUID(), codigo: 'OPR-002', nombre: 'Implementación ERP TecPac',
+        id: crypto.randomUUID(), codigo: 'OPR-002', proyecto: 'Implementación ERP TecPac',
         cliente_id: cid[1], cliente_nombre: 'TecPac',
         contacto_id: conId[2], contacto_nombre: 'Roberto Huamán Castillo',
         valor_estimado: 95000, tipo_moneda: 'Dólares', probabilidad: 50,
@@ -282,7 +282,7 @@ export function useAutoSeed() {
         situacion: 'Abierta', fecha_registro: '2025-05-20', seguimientos: []
       },
       {
-        id: crypto.randomUUID(), codigo: 'OPR-003', nombre: 'SOC Gestionado LogiCaribe 12 meses',
+        id: crypto.randomUUID(), codigo: 'OPR-003', proyecto: 'SOC Gestionado LogiCaribe 12 meses',
         cliente_id: cid[4], cliente_nombre: 'LogiCaribe',
         contacto_id: conId[5], contacto_nombre: 'Patricia Herrera Díaz',
         valor_estimado: 106800000, tipo_moneda: 'Pesos Colombianos', probabilidad: 85,
@@ -292,7 +292,7 @@ export function useAutoSeed() {
         situacion: 'En Negociación', fecha_registro: '2025-06-01', seguimientos: []
       },
       {
-        id: crypto.randomUUID(), codigo: 'OPR-004', nombre: 'App Móvil Pedidos DisConAl',
+        id: crypto.randomUUID(), codigo: 'OPR-004', proyecto: 'App Móvil Pedidos DisConAl',
         cliente_id: cid[2], cliente_nombre: 'DisConAl',
         contacto_id: conId[3], contacto_nombre: 'Juliana Ospina Gómez',
         valor_estimado: 68000000, tipo_moneda: 'Pesos Colombianos', probabilidad: 40,
@@ -302,7 +302,7 @@ export function useAutoSeed() {
         situacion: 'Abierta', fecha_registro: '2025-07-15', seguimientos: []
       },
       {
-        id: crypto.randomUUID(), codigo: 'OPR-005', nombre: 'Infraestructura de Red MinVerde Atacama',
+        id: crypto.randomUUID(), codigo: 'OPR-005', proyecto: 'Infraestructura de Red MinVerde Atacama',
         cliente_id: cid[5], cliente_nombre: 'MinVerde',
         contacto_id: conId[6], contacto_nombre: 'Sebastián Muñoz Arriagada',
         valor_estimado: 142000, tipo_moneda: 'Dólares', probabilidad: 60,
@@ -312,7 +312,7 @@ export function useAutoSeed() {
         situacion: 'Abierta', fecha_registro: '2025-08-05', seguimientos: []
       },
       {
-        id: crypto.randomUUID(), codigo: 'OPR-006', nombre: 'Capacitación M365 y Ciberseguridad AgroLlano',
+        id: crypto.randomUUID(), codigo: 'OPR-006', proyecto: 'Capacitación M365 y Ciberseguridad AgroLlano',
         cliente_id: cid[6], cliente_nombre: 'AgroLlano',
         contacto_id: conId[7], contacto_nombre: 'Fernando Restrepo Marín',
         valor_estimado: 18500000, tipo_moneda: 'Pesos Colombianos', probabilidad: 90,

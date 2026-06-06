@@ -10,14 +10,7 @@ import { useT, useIdioma } from '@/shared/i18n/use-t'
 export default function UsuariosPage() {
   const t = useT()
   const idioma = useIdioma()
-  const { usuarios, addUsuario, updateUsuario, deleteUsuario, syncFromKV } = useUsuariosStore()
-
-  // Sincronizar desde Vercel KV al entrar y cada 30 segundos
-  useEffect(() => {
-    syncFromKV()
-    const id = setInterval(syncFromKV, 30000)
-    return () => clearInterval(id)
-  }, [syncFromKV])
+  const { usuarios, addUsuario, updateUsuario, deleteUsuario } = useUsuariosStore()
   const currentUser = useCurrentUserStore(s => s.user)
   const { roles, addRol, updateRol, deleteRol } = useRolesStore()
 

@@ -4,25 +4,55 @@ import { Seguimiento } from '@/shared/types/seguimiento'
 
 export type { Seguimiento }
 
+export interface DocumentoExigido {
+  id: string
+  documento?: string
+  nombre?: string
+  fecha_procesado?: string
+  listo?: boolean
+  creado_en?: string
+  creado_por?: string
+  observaciones?: string
+}
+
 export interface Oportunidad {
   id: string
   codigo: string
-  nombre: string
+  proyecto: string
   cliente_id: string
   cliente_nombre: string
   contacto_id: string
   contacto_nombre: string
-  valor_estimado: number
+  ciudad?: string
+  pais?: string
+  fecha_presupuesto?: string
+  monto_estimado?: number
+  valor_estimado?: number
   tipo_moneda: string
-  probabilidad: number
-  etapa: string
-  origen: string
-  fecha_cierre_estimada: string
+  probabilidad?: number
+  probable_pct?: number
+  etapa?: string
+  origen?: string
+  fecha_cierre_estimada?: string
+  adjudicacion?: string
+  mgc?: number
+  ejecucion_anyo_pct?: number
+  parcial_euros_anyo?: number
+  fecha_inicio_consultas?: string
+  fecha_final_consultas?: string
+  fecha_presentar_oferta?: string
+  fecha_real_presentacion_oferta?: string
+  monto_real_oferta?: number
+  fecha_esperada_veredicto?: string
+  veredicto?: string
+  empresa_ganadora?: string
   responsable: string
   observaciones: string
   situacion: string
   fecha_registro: string
+  codigo_interno?: string
   seguimientos: Seguimiento[]
+  documentos_exigidos?: any[]
 }
 
 interface OportunidadesState {
