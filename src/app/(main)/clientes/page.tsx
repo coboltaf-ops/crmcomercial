@@ -1,6 +1,7 @@
 'use client'
 import { useState, useEffect } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
+import ModuleHeader from '@/shared/components/module-header'
 import { useClientesStore, Cliente, generarCodigoAcceso } from '@/features/clientes/store/clientes-store'
 import { useContactosStore } from '@/features/contactos/store/contactos-store'
 import { useCotizacionesStore } from '@/features/cotizaciones/store/cotizaciones-store'
@@ -579,15 +580,13 @@ export default function ClientesPage() {
 
   return (
     <div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
-        <div>
-          <h1 style={{ fontSize: 24, fontWeight: 700, color: '#013978', marginBottom: 4 }}>{t('page.clientes.title')}</h1>
-          <p style={{ color: '#013978', fontSize: 14 }}>{t('page.clientes.subtitle')}</p>
-        </div>
-        {permisos.editar && tab === 'registros' && (
+      <ModuleHeader title={t('page.clientes.title')} subtitle={t('page.clientes.subtitle')} />
+
+      {permisos.editar && tab === 'registros' && (
+        <div style={{ marginBottom: 20 }}>
           <button onClick={() => { setSelected(emptyCliente(nextConsecutivo('CLI-', clientes.map(c => c.codigo)).codigo)); setIsForm(true) }} style={{ ...btnStyle, background: '#1e3a8a', color: '#ffffff' }}>{t('page.clientes.btnNuevo')}</button>
-        )}
-      </div>
+        </div>
+      )}
 
       <div style={{ display: 'flex', gap: 8, marginBottom: 20 }}>
         <button onClick={() => setTab('registros')} style={tabBtnStyle(tab === 'registros')}>📋 {t('tab.registros')}</button>
