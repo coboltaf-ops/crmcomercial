@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 type ClienteInfo = { cliente_id: string; cliente_codigo: string; cliente_nombre: string }
 
@@ -46,6 +46,15 @@ export default function PQRSPublicoPage() {
   const [sending, setSending] = useState(false)
   const [result, setResult] = useState<{ ok: boolean; mensaje: string; radicado?: string } | null>(null)
   const [salir, setSalir] = useState(false)
+  const [logoUrl, setLogoUrl] = useState('')
+
+  // Cargar el logo de la empresa desde KV para mostrarlo en el formulario público
+  useEffect(() => {
+    fetch('/api/empresa')
+      .then(r => r.json())
+      .then(d => { if (Array.isArray(d) && d[0]?.logo_url) setLogoUrl(d[0].logo_url) })
+      .catch(() => {})
+  }, [])
 
   const [tiposRef, setTiposRef] = useState<{ id: string; icon: string }[]>(tipos)
 
@@ -172,7 +181,11 @@ export default function PQRSPublicoPage() {
         {/* Header */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 20 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <div style={{ width: 36, height: 36, borderRadius: 10, background: 'rgba(59,130,246,0.2)', border: '1px solid rgba(59,130,246,0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18 }}>📩</div>
+            {logoUrl ? (
+              <img src={logoUrl} alt="Logo" style={{ width: 48, height: 48, borderRadius: 10, objectFit: 'contain', background: 'rgba(255,255,255,0.1)', padding: 4 }} />
+            ) : (
+              <div style={{ width: 36, height: 36, borderRadius: 10, background: 'rgba(59,130,246,0.2)', border: '1px solid rgba(59,130,246,0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18 }}>📩</div>
+            )}
             <div>
               <h1 style={{ color: '#ffffff', fontSize: 17, fontWeight: 800, margin: 0 }}>Radicar PQRS</h1>
               <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 11, margin: 0 }}>Peticiones, Quejas, Reclamos y Sugerencias</p>
