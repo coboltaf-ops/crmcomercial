@@ -28,11 +28,11 @@ export default function LoginPage() {
       <div style={{ background: '#0f1b3d', border: '1px solid rgba(255,255,255,0.2)', borderRadius: 20, padding: 40, width: 400 }}>
         <div style={{ textAlign: 'center', marginBottom: 32 }}>
           {/* Logo Empresarial */}
-          <div style={{ marginBottom: 20 }}>
+          <div style={{ marginBottom: 24 }}>
             {empresa?.logo_url ? (
-              <img src={empresa.logo_url} alt="Logo" style={{ width: 80, height: 80, borderRadius: 12, objectFit: 'contain', background: 'rgba(255,255,255,0.1)', padding: 8, margin: '0 auto' }} />
+              <img src={empresa.logo_url} alt="Logo" style={{ width: 140, height: 140, borderRadius: 16, objectFit: 'contain', background: 'rgba(255,255,255,0.1)', padding: 12, margin: '0 auto' }} />
             ) : (
-              <div style={{ width: 80, height: 80, borderRadius: 12, background: 'rgba(255,255,255,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#ffffff', fontSize: 24, fontWeight: 700, margin: '0 auto' }}>C</div>
+              <div style={{ width: 140, height: 140, borderRadius: 16, background: 'rgba(255,255,255,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#ffffff', fontSize: 48, fontWeight: 700, margin: '0 auto' }}>C</div>
             )}
           </div>
           <h1 style={{ fontSize: 28, fontWeight: 800, color: '#ffffff', marginBottom: 4 }}>{empresa?.nombre || 'CRM Comercial'}</h1>
