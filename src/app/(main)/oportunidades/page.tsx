@@ -148,10 +148,10 @@ export default function OportunidadesPage() {
             const fields: { l: string; v: React.ReactNode }[] = [
               { l: t('lbl.nroOportunidad'), v: viewDetail.codigo },
               { l: t('lbl.fechaRegistro'), v: fDate(viewDetail.fecha_registro) },
-              { l: t('lbl.codigo'), v: viewDetail.codigo_interno },
+              { l: t('lbl.codigo'), v: viewDetail.codigo_interno || '-' },
               { l: t('lbl.cliente'), v: clienteNode },
-              { l: t('lbl.ciudad'), v: viewDetail.ciudad },
-              { l: t('lbl.pais'), v: viewDetail.pais },
+              { l: t('lbl.ciudad'), v: viewDetail.ciudad || '-' },
+              { l: t('lbl.pais'), v: viewDetail.pais || '-' },
               { l: t('lbl.fechaPresupuesto'), v: viewDetail.fecha_presupuesto ? fDate(viewDetail.fecha_presupuesto) : '-' },
               { l: t('lbl.montoEstimado'), v: `${monedaSimbolo(viewDetail.tipo_moneda)}${fmtMoney(viewDetail.monto_estimado || 0)}` },
               { l: t('lbl.situacion'), v: viewDetail.situacion },
@@ -198,8 +198,8 @@ export default function OportunidadesPage() {
               { l: t('lbl.fechaRealPresentacion'), v: viewDetail.fecha_real_presentacion_oferta ? fDate(viewDetail.fecha_real_presentacion_oferta) : '-' },
               { l: t('lbl.montoRealOferta'), v: `${monedaSimbolo(viewDetail.tipo_moneda)}${fmtMoney(viewDetail.monto_real_oferta || 0)}` },
               { l: t('lbl.fechaEsperadaVeredicto'), v: viewDetail.fecha_esperada_veredicto ? fDate(viewDetail.fecha_esperada_veredicto) : '-' },
-              { l: t('lbl.veredicto'), v: viewDetail.veredicto },
-              { l: t('lbl.empresaGanadora'), v: viewDetail.empresa_ganadora },
+              { l: t('lbl.veredicto'), v: viewDetail.veredicto || '-' },
+              { l: t('lbl.empresaGanadora'), v: viewDetail.empresa_ganadora || '-' },
             ].map(f => (
               <div key={f.l}>
                 <p style={{ color: '#013978', fontSize: 16, fontWeight: 900, marginBottom: 4 }}>{f.l}</p>
@@ -618,15 +618,6 @@ export default function OportunidadesPage() {
         <>
           <input value={search} onChange={e => setSearch(e.target.value)} placeholder={t('ph.buscarOportunidad')}
             style={{ ...inputStyle, maxWidth: 500, marginBottom: 16 }} />
-          {filtered.length === 0 && !isForm && (
-            <div style={{ padding: 32, textAlign: 'center', background: 'rgba(255,255,255,0.05)', borderRadius: 12, marginBottom: 20 }}>
-              <p style={{ color: '#013978', fontSize: 16, fontWeight: 600, marginBottom: 16 }}>No hay oportunidades registradas</p>
-              {permisos.editar && (
-                <button onClick={() => { setSelected(emptyOportunidad(nextConsecutivo('OPP-', oportunidades.map(o => o.codigo)).codigo, `${currentUser?.nombre || ''} ${currentUser?.apellido || ''}`.trim())); setIsForm(true) }} style={{ ...btnStyle, background: '#0f1b3d', color: '#ffffff' }}>+ {t('page.oportunidades.btnNuevo')}</button>
-              )}
-            </div>
-          )}
-          {filtered.length > 0 && (
           <div style={{ borderRadius: 12, border: '1px solid #cbd5e1', overflow: 'hidden', overflowX: 'auto' }}>
             <table style={{ width: '100%', borderCollapse: 'collapse' }}>
               <thead><tr>
@@ -651,8 +642,8 @@ export default function OportunidadesPage() {
                         return null
                       })()}
                     </td>
-                    <td style={{ padding: '10px 14px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 13 }}>{o.ciudad}</td>
-                    <td style={{ padding: '10px 14px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 13 }}>{o.pais}</td>
+                    <td style={{ padding: '10px 14px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 13 }}>{o.ciudad || '-'}</td>
+                    <td style={{ padding: '10px 14px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 13 }}>{o.pais || '-'}</td>
                     <td style={{ padding: '10px 14px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 13, fontWeight: 600, textAlign: 'right' }}>{monedaSimbolo(o.tipo_moneda)}{fmtMoney(o.monto_estimado || 0)}</td>
                     <td style={{ padding: '10px 14px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 13, textAlign: 'center' }}>{o.probable_pct || 0}%</td>
                     <td style={{ padding: '10px 14px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 13 }}>{o.adjudicacion || '-'}</td>
@@ -686,10 +677,10 @@ export default function OportunidadesPage() {
                     </td>
                   </tr>
                 ))}
+                {filtered.length === 0 && <tr><td colSpan={10} style={{ padding: 32, textAlign: 'center', color: '#013978', fontSize: 14 }}>No hay oportunidades registradas</td></tr>}
               </tbody>
             </table>
           </div>
-          )}
         </>
       )}
 
