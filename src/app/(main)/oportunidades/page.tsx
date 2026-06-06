@@ -618,6 +618,15 @@ export default function OportunidadesPage() {
         <>
           <input value={search} onChange={e => setSearch(e.target.value)} placeholder={t('ph.buscarOportunidad')}
             style={{ ...inputStyle, maxWidth: 500, marginBottom: 16 }} />
+          {filtered.length === 0 && !isForm && (
+            <div style={{ padding: 32, textAlign: 'center', background: 'rgba(255,255,255,0.05)', borderRadius: 12, marginBottom: 20 }}>
+              <p style={{ color: '#013978', fontSize: 16, fontWeight: 600, marginBottom: 16 }}>No hay oportunidades registradas</p>
+              {permisos.editar && (
+                <button onClick={() => { setSelected(emptyOportunidad(nextConsecutivo('OPP-', oportunidades.map(o => o.codigo)).codigo, `${currentUser?.nombre || ''} ${currentUser?.apellido || ''}`.trim())); setIsForm(true) }} style={{ ...btnStyle, background: '#0f1b3d', color: '#ffffff' }}>+ {t('page.oportunidades.btnNuevo')}</button>
+              )}
+            </div>
+          )}
+          {filtered.length > 0 && (
           <div style={{ borderRadius: 12, border: '1px solid #cbd5e1', overflow: 'hidden', overflowX: 'auto' }}>
             <table style={{ width: '100%', borderCollapse: 'collapse' }}>
               <thead><tr>
@@ -677,10 +686,10 @@ export default function OportunidadesPage() {
                     </td>
                   </tr>
                 ))}
-                {filtered.length === 0 && <tr><td colSpan={10} style={{ padding: 32, textAlign: 'center', color: '#013978', fontSize: 14 }}>No hay oportunidades registradas</td></tr>}
               </tbody>
             </table>
           </div>
+          )}
         </>
       )}
 
