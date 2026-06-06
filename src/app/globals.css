@@ -84,10 +84,17 @@ button {
   background: rgba(255,255,255,0.9) !important;
 }
 
-/* Divs blancos (formularios): texto oscuro */
+/* Divs blancos (formularios): texto oscuro + bordes azul oscuro */
 div[style*="background: #ffffff"],
 div[style*="background:#ffffff"] {
   color: #013978 !important;
+  border-color: #1e3a8a !important;
+}
+
+/* Todos los bordes con colores claros → azul oscuro intenso */
+[style*="border"],
+[style*="border:"] {
+  border-color: #1e3a8a !important;
 }
 
 /* Campos específicos del formulario */
