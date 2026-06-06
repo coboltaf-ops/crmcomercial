@@ -25,7 +25,7 @@ export default function LoginPage() {
 
   return (
     <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#1e3a8a' }}>
-      <div style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.2)', borderRadius: 20, padding: 40, width: 400 }}>
+      <div style={{ background: '#0f1b3d', border: '1px solid rgba(255,255,255,0.2)', borderRadius: 20, padding: 40, width: 400 }}>
         <div style={{ textAlign: 'center', marginBottom: 32 }}>
           {/* Logo Empresarial */}
           <div style={{ marginBottom: 20 }}>
