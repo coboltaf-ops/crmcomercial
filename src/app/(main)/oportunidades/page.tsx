@@ -79,7 +79,11 @@ export default function OportunidadesPage() {
     modulo: 'oportunidades',
   })
 
-  const filtered = oportunidades.filter(o =>
+  // Visibilidad: el admin ve todas; los no-admin NO ven las creadas por admin
+  const esAdmin = (currentUser?.rol || '').toLowerCase() === 'admin'
+  const visibles = oportunidades.filter(o => esAdmin || (o.creado_por_rol || '').toLowerCase() !== 'admin')
+
+  const filtered = visibles.filter(o =>
     !search || o.proyecto.toLowerCase().includes(search.toLowerCase()) ||
     o.codigo.toLowerCase().includes(search.toLowerCase()) ||
     o.cliente_nombre.toLowerCase().includes(search.toLowerCase())
@@ -104,7 +108,7 @@ export default function OportunidadesPage() {
       updateOportunidad(toSave.id, toSave)
       logAudit({ ...auditParams(), accion: 'MODIFICAR', registro_codigo: toSave.codigo, registro_nombre: toSave.proyecto, detalle: computarDiff(_anterior as unknown as Record<string, unknown>, toSave as unknown as Record<string, unknown>) })
     } else {
-      addOportunidad({ ...toSave, id: crypto.randomUUID(), fecha_registro: today, creado_por: `${currentUser?.nombre || ''} ${currentUser?.apellido || ''}`.trim() || (currentUser?.usuario || 'desconocido'), creado_en: today })
+      addOportunidad({ ...toSave, id: crypto.randomUUID(), fecha_registro: today, creado_por: `${currentUser?.nombre || ''} ${currentUser?.apellido || ''}`.trim() || (currentUser?.usuario || 'desconocido'), creado_por_rol: currentUser?.rol || '', creado_en: today })
       logAudit({ ...auditParams(), accion: 'CREAR', registro_codigo: toSave.codigo, registro_nombre: toSave.proyecto })
     }
     setIsForm(false); setSelected(null)
@@ -699,9 +703,9 @@ export default function OportunidadesPage() {
           <ReportPanel title="Reporte de Oportunidades" columns={reportColumns} rows={reportRows}
             summableKeys={['monto']}
             filters={[
-              { label: 'Situación', key: 'situacion', options: [...new Set(oportunidades.map(o => o.situacion).filter(v => !!v))] as string[] },
-              { label: 'Veredicto', key: 'veredicto', options: [...new Set(oportunidades.map(o => o.veredicto).filter(v => !!v))] as string[] },
-              { label: 'Cliente', key: 'cliente_nombre', options: [...new Set(oportunidades.map(o => o.cliente_nombre).filter(v => !!v))] as string[] },
+              { label: 'Situación', key: 'situacion', options: [...new Set(visibles.map(o => o.situacion).filter(v => !!v))] as string[] },
+              { label: 'Veredicto', key: 'veredicto', options: [...new Set(visibles.map(o => o.veredicto).filter(v => !!v))] as string[] },
+              { label: 'Cliente', key: 'cliente_nombre', options: [...new Set(visibles.map(o => o.cliente_nombre).filter(v => !!v))] as string[] },
             ]} />
         </>
       )}
