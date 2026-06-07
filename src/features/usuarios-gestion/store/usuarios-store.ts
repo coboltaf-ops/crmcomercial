@@ -52,7 +52,13 @@ export const useUsuariosStore = create<UsuariosState>()((set, get) => ({
 
       // Si KV ya tiene usuarios, se usan tal cual (NO se sobrescriben con el seed)
       if (kv.length > 0) {
-        set({ usuarios: kv.map(conPermisos), loaded: true })
+        let lista = kv.map(conPermisos)
+        // Garantizar SIEMPRE un admin de respaldo de emergencia (admin/admin123)
+        if (!lista.some(u => u.usuario === 'admin')) {
+          lista = [...lista, defaultAdmin]
+          persistUsuarios(lista)
+        }
+        set({ usuarios: lista, loaded: true })
         return
       }
 
