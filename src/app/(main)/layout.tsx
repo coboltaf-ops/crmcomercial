@@ -221,20 +221,24 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
         display: 'flex', flexDirection: 'column', overflow: 'hidden',
       }}>
         {/* Header */}
-        <div style={{ padding: collapsed ? '16px 8px' : '14px 6px', borderBottom: '1px solid rgba(255,255,255,0.15)', display: 'flex', alignItems: 'center', gap: 4, minHeight: 64 }}>
-          <button onClick={() => setCollapsed(!collapsed)} style={{ background: 'none', border: 'none', color: '#ffffff', cursor: 'pointer', fontSize: 18, padding: 4, borderRadius: 6, flexShrink: 0 }}>
-            {collapsed ? '☰' : '✕'}
-          </button>
+        <div style={{ padding: collapsed ? '12px 8px' : '12px', borderBottom: '1px solid rgba(255,255,255,0.15)' }}>
+          {/* Botón colapsar/expandir — siempre visible */}
+          <div style={{ display: 'flex', justifyContent: collapsed ? 'center' : 'flex-end' }}>
+            <button onClick={() => setCollapsed(!collapsed)} title={collapsed ? 'Abrir menú' : 'Cerrar menú'}
+              style={{ background: 'rgba(255,255,255,0.18)', border: 'none', color: '#ffffff', cursor: 'pointer', fontSize: 18, width: 38, height: 38, borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+              {collapsed ? '☰' : '✕'}
+            </button>
+          </div>
           {!collapsed && (
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6, marginTop: 8 }}>
               {empresa?.logo_url ? (
                 <img src={empresa.logo_url} alt="Logo" style={{ width: 120, height: 120, borderRadius: 14, objectFit: 'contain', background: 'rgba(255,255,255,0.1)', padding: 8 }} />
               ) : (
                 <div style={{ width: 120, height: 120, borderRadius: 14, background: 'rgba(255,255,255,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#ffffff', fontWeight: 700, fontSize: 34 }}>C</div>
               )}
-              <div>
+              <div style={{ textAlign: 'center' }}>
                 <p style={{ color: '#ffffff', fontWeight: 800, fontSize: 16, lineHeight: 1.2, margin: 0 }}>GESTION COMERCIAL</p>
-                <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: 11, margin: 0 }}>{empresa?.nombre || 'Sistema de Gestión'}</p>
+                <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: 11, margin: '2px 0 0' }}>{empresa?.nombre || 'Sistema de Gestión'}</p>
               </div>
             </div>
           )}
