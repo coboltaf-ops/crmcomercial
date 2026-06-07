@@ -8,6 +8,7 @@ import { useEmpresaStore } from '@/features/empresa/store/empresa-store'
 export default function LoginPage() {
   const router = useRouter()
   const usuarios = useUsuariosStore(s => s.usuarios)
+  const loadUsuarios = useUsuariosStore(s => s.loadUsuarios)
   const setUser = useCurrentUserStore(s => s.setUser)
   const empresas = useEmpresaStore(s => s.empresas)
   const loadEmpresas = useEmpresaStore(s => s.loadEmpresas)
@@ -16,10 +17,11 @@ export default function LoginPage() {
   const [clave, setClave] = useState('')
   const [error, setError] = useState('')
 
-  // Cargar logo/datos de empresa desde KV para mostrarlos en el login
+  // Cargar usuarios y datos de empresa desde KV (servidor)
   useEffect(() => {
+    loadUsuarios()
     loadEmpresas()
-  }, [loadEmpresas])
+  }, [loadUsuarios, loadEmpresas])
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault()
