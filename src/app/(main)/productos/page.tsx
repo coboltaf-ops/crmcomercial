@@ -61,7 +61,7 @@ export default function ProductosPage() {
     e.preventDefault()
     if (!selected) return
     if (selected.id) { const _anterior = productos.find(x => x.id === selected.id); updateProducto(selected.id, selected); logAudit({ ...auditParams(), accion: "MODIFICAR", registro_codigo: selected.codigo, registro_nombre: selected.descripcion, detalle: computarDiff(_anterior as unknown as Record<string, unknown>, selected as unknown as Record<string, unknown>) }) }
-    else { addProducto({ ...selected, id: crypto.randomUUID(), fecha_registro: today }); logAudit({ ...auditParams(), accion: "CREAR", registro_codigo: selected.codigo, registro_nombre: selected.descripcion }) }
+    else { addProducto({ ...selected, id: crypto.randomUUID(), fecha_registro: today, creado_por: `${currentUser?.nombre || ''} ${currentUser?.apellido || ''}`.trim() || (currentUser?.usuario || 'desconocido'), creado_en: today }); logAudit({ ...auditParams(), accion: "CREAR", registro_codigo: selected.codigo, registro_nombre: selected.descripcion }) }
     setIsForm(false); setSelected(null)
   }
 
@@ -101,6 +101,7 @@ export default function ProductosPage() {
               </div>
             ))}
           </div>
+          <p style={{ color: '#64748b', fontSize: 12, marginTop: 12 }}>Creado por: <strong style={{ color: '#013978' }}>{viewDetail.creado_por || '—'}</strong>{viewDetail.creado_en ? ` · ${viewDetail.creado_en}` : ''}</p>
           {permisos.editar && (
             <button onClick={() => { setSelected(viewDetail); setIsForm(true); setViewDetail(null) }} style={{ ...btnStyle, background: '#2563eb', color: '#ffffff', border: '1px solid #3b82f6', marginTop: 16 }}>{t('btn.editar')}</button>
           )}

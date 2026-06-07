@@ -14,6 +14,8 @@ export interface Producto {
   tipo_moneda: string
   observaciones: string
   situacion: string
+  creado_por?: string
+  creado_en?: string
   fecha_registro: string
   seguimientos: Seguimiento[]
 }

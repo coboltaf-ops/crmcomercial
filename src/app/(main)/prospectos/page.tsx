@@ -130,7 +130,7 @@ export default function ProspectosPage() {
     if (selected.id) {
       const _anterior = prospectos.find(x => x.id === selected.id); updateProspecto(selected.id, selected); logAudit({ ...auditParams(), accion: "MODIFICAR", registro_codigo: selected.codigo, registro_nombre: `${selected.nombre} ${selected.apellido}`, detalle: computarDiff(_anterior as unknown as Record<string, unknown>, selected as unknown as Record<string, unknown>) })
     } else {
-      addProspecto({ ...selected, id: crypto.randomUUID(), fecha_registro: today }); logAudit({ ...auditParams(), accion: "CREAR", registro_codigo: selected.codigo, registro_nombre: `${selected.nombre} ${selected.apellido}` })
+      addProspecto({ ...selected, id: crypto.randomUUID(), fecha_registro: today, creado_por: `${currentUser?.nombre || ''} ${currentUser?.apellido || ''}`.trim() || (currentUser?.usuario || 'desconocido'), creado_en: today }); logAudit({ ...auditParams(), accion: "CREAR", registro_codigo: selected.codigo, registro_nombre: `${selected.nombre} ${selected.apellido}` })
       const correo = (selected.correo || '').trim()
       if (correo) {
         fetch('/api/send-prospecto-bienvenida', {
@@ -199,6 +199,7 @@ export default function ProspectosPage() {
             ))}
           </div>
           <div style={{ display: 'flex', gap: 10, marginTop: 16, flexWrap: 'wrap' }}>
+            <p style={{ color: '#64748b', fontSize: 12, marginTop: 12 }}>Creado por: <strong style={{ color: '#013978' }}>{viewDetail.creado_por || '—'}</strong>{viewDetail.creado_en ? ` · ${viewDetail.creado_en}` : ''}</p>
             {permisos.editar && (
               <button onClick={() => { setSelected(viewDetail); setIsForm(true); setViewDetail(null) }} style={{ ...btnStyle, background: '#2563eb', color: '#ffffff', border: '1px solid #3b82f6' }}>{t('btn.editar')}</button>
             )}

@@ -51,6 +51,8 @@ export interface Oportunidad {
   observaciones: string
   situacion: string
   fecha_registro: string
+  creado_por?: string
+  creado_en?: string
   codigo_interno?: string
   seguimientos: Seguimiento[]
   documentos_exigidos?: any[]

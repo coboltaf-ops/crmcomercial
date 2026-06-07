@@ -21,6 +21,8 @@ export interface Contacto {
   es_principal: boolean
   observaciones: string
   situacion: string
+  creado_por?: string
+  creado_en?: string
   fecha_registro: string
   seguimientos: Seguimiento[]
 }

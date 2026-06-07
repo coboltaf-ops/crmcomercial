@@ -134,7 +134,7 @@ export default function CotizacionesPage() {
       oportunidad_nombre: opo?.proyecto || selected.oportunidad_nombre,
     }
     if (toSave.id) { const _anterior = cotizaciones.find(x => x.id === toSave.id); updateCotizacion(toSave.id, toSave); logAudit({ ...auditParams(), accion: "MODIFICAR", registro_codigo: toSave.codigo, registro_nombre: toSave.cliente_nombre, detalle: computarDiff(_anterior as unknown as Record<string, unknown>, toSave as unknown as Record<string, unknown>) }) }
-    else { addCotizacion({ ...toSave, id: crypto.randomUUID(), fecha_registro: today }); logAudit({ ...auditParams(), accion: "CREAR", registro_codigo: toSave.codigo, registro_nombre: toSave.cliente_nombre }) }
+    else { addCotizacion({ ...toSave, id: crypto.randomUUID(), fecha_registro: today, creado_por: `${currentUser?.nombre || ''} ${currentUser?.apellido || ''}`.trim() || (currentUser?.usuario || 'desconocido'), creado_en: today }); logAudit({ ...auditParams(), accion: "CREAR", registro_codigo: toSave.codigo, registro_nombre: toSave.cliente_nombre }) }
     setIsForm(false); setSelected(null)
   }
 
@@ -411,6 +411,7 @@ export default function CotizacionesPage() {
             <button onClick={() => generatePDF(viewDetail)} style={{ ...btnStyle, background: '#b91c1c', color: '#ffffff', border: '1px solid #dc2626' }}>PDF</button>
             <button onClick={() => { setEmailTo(''); setEmailAsunto(''); setEmailMsg(''); setEmailModal(viewDetail) }} style={{ ...btnStyle, background: '#1e3a8a', color: '#ffffff', border: '1px solid #3b82f6' }}>{t('btn.enviarEmail')}</button>
             <button onClick={() => sendWhatsApp(viewDetail)} style={{ ...btnStyle, background: '#25d366', color: '#ffffff', border: '1px solid #22c55e' }}>WhatsApp</button>
+            <p style={{ color: '#64748b', fontSize: 12, marginTop: 12 }}>Creado por: <strong style={{ color: '#013978' }}>{viewDetail.creado_por || '—'}</strong>{viewDetail.creado_en ? ` · ${viewDetail.creado_en}` : ''}</p>
             {permisos.editar && !['Aprobada', 'Rechazada'].includes(viewDetail.situacion) && (
               <button onClick={() => { setSelected(viewDetail); setIsForm(true); setViewDetail(null) }} style={{ ...btnStyle, background: '#2563eb', color: '#ffffff', border: '1px solid #3b82f6' }}>{t('btn.editar')}</button>
             )}

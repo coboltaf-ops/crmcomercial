@@ -11,11 +11,17 @@ export interface AuditLog {
 }
 
 export function logAudit(log: AuditLog): void {
-  // Log to console in development
   if (process.env.NODE_ENV === 'development') {
     console.log('[AUDIT]', log)
   }
-  // TODO: Implement server-side audit logging
+  // Persistir en el servidor (fire-and-forget, no bloquea la UI)
+  try {
+    fetch('/api/auditoria', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(log),
+    }).catch(() => {})
+  } catch { /* ignore */ }
 }
 
 export function computarDiff(anterior: Record<string, unknown>, actual: Record<string, unknown>): string {

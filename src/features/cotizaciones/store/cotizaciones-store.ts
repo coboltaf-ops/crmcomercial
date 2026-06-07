@@ -34,6 +34,8 @@ export interface Cotizacion {
   observaciones: string
   detalles: DetalleCotizacion[]
   situacion: string
+  creado_por?: string
+  creado_en?: string
   responsable: string
   vendedor: string
   fecha_registro: string

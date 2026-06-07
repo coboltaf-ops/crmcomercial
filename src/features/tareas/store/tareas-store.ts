@@ -21,6 +21,8 @@ export interface Tarea {
   fecha_real_fin: string
   descripcion: string
   situacion: string
+  creado_por?: string
+  creado_en?: string
   fecha_registro: string
   seguimientos: Seguimiento[]
 }

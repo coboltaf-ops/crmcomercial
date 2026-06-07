@@ -19,6 +19,8 @@ export interface Prospecto {
   ciudad: string
   pais: string
   situacion: string
+  creado_por?: string
+  creado_en?: string
   fecha_registro: string
   seguimientos: Seguimiento[]
 }

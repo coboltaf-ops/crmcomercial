@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react'
 import { usePQRSStore, PQRS } from '@/features/pqrs/store/pqrs-store'
 import { useEmpresaStore } from '@/features/empresa/store/empresa-store'
+import { logAudit, computarDiff } from '@/shared/lib/audit'
 import SeguimientoPanel from '@/shared/components/seguimiento-panel'
 import DocumentosPanel from '@/shared/components/documentos-panel'
 import { useAsistenteStore } from '@/shared/stores/asistente-store'
@@ -111,14 +112,27 @@ export default function PQRSPage() {
     p.cliente_nombre.toLowerCase().includes(search.toLowerCase())
   )
 
+  const auditParams = () => ({
+    usuario: currentUser?.usuario || 'desconocido',
+    usuario_nombre: `${currentUser?.nombre || ''} ${currentUser?.apellido || ''}`.trim(),
+    rol: currentUser?.rol || '',
+    modulo: 'pqrs',
+  })
+
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault()
     if (!selected) return
     const cli = clientes.find(c => c.id === selected.cliente_id)
     const con = allContactos.find(c => c.id === selected.contacto_id)
     const toSave = { ...selected, cliente_nombre: cli?.razon_social || selected.cliente_nombre, contacto_nombre: con ? `${con.nombre} ${con.apellido}` : selected.contacto_nombre }
-    if (toSave.id) { updatePQRS(toSave.id, toSave) }
-    else { addPQRS({ ...toSave, id: crypto.randomUUID() }) }
+    if (toSave.id) {
+      const _anterior = pqrs.find(x => x.id === toSave.id)
+      updatePQRS(toSave.id, toSave)
+      logAudit({ ...auditParams(), accion: 'MODIFICAR', registro_codigo: toSave.codigo, registro_nombre: toSave.asunto, detalle: computarDiff(_anterior as unknown as Record<string, unknown>, toSave as unknown as Record<string, unknown>) })
+    } else {
+      addPQRS({ ...toSave, id: crypto.randomUUID(), creado_por: `${currentUser?.nombre || ''} ${currentUser?.apellido || ''}`.trim() || (currentUser?.usuario || 'desconocido'), creado_en: today })
+      logAudit({ ...auditParams(), accion: 'CREAR', registro_codigo: toSave.codigo, registro_nombre: toSave.asunto })
+    }
     setIsForm(false); setSelected(null)
   }
 
@@ -200,6 +214,7 @@ export default function PQRSPage() {
             )}
 
             <div style={{ display: 'flex', gap: 8 }}>
+              <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: 12, marginTop: 12 }}>Creado por: <strong style={{ color: '#ffffff' }}>{viewDetail.creado_por || '—'}</strong>{viewDetail.creado_en ? ` · ${viewDetail.creado_en}` : ''}</p>
               {permisos.editar && viewDetail.situacion !== 'Cerrada' && (
                 <button onClick={() => { setSelected(viewDetail); setIsForm(true); setViewDetail(null) }} style={{ ...btnStyle, background: '#15803d', color: '#ffffff', border: '1px solid #16a34a' }}>Editar</button>
               )}
@@ -443,7 +458,7 @@ export default function PQRSPage() {
                       <div style={{ display: 'flex', gap: 6 }}>
                         <button onClick={() => setViewDetail(p)} style={{ ...btnStyle, padding: '4px 12px', fontSize: 11, background: '#ea580c', color: '#ffffff', border: '1px solid #f97316' }}>Ver</button>
                         {permisos.editar && p.situacion !== 'Cerrada' && <button onClick={() => { setSelected(p); setIsForm(true) }} style={{ ...btnStyle, padding: '4px 12px', fontSize: 11, background: '#15803d', color: '#ffffff', border: '1px solid #16a34a' }}>Editar</button>}
-                        {permisos.eliminar && <button onClick={() => { if (confirm(`¿Eliminar ${p.codigo}?`)) deletePQRS(p.id) }} style={{ ...btnStyle, padding: '4px 12px', fontSize: 11, background: '#dc2626', color: '#ffffff', border: '1px solid #ef4444' }}>Eliminar</button>}
+                        {permisos.eliminar && <button onClick={() => { if (confirm(`¿Eliminar ${p.codigo}?`)) { deletePQRS(p.id); logAudit({ ...auditParams(), accion: 'ELIMINAR', registro_codigo: p.codigo, registro_nombre: p.asunto }) } }} style={{ ...btnStyle, padding: '4px 12px', fontSize: 11, background: '#dc2626', color: '#ffffff', border: '1px solid #ef4444' }}>Eliminar</button>}
                       </div>
                     </td>
                   </tr>
