@@ -225,7 +225,7 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
           {/* Botón colapsar/expandir — siempre visible */}
           <div style={{ display: 'flex', justifyContent: collapsed ? 'center' : 'flex-end' }}>
             <button onClick={() => setCollapsed(!collapsed)} title={collapsed ? 'Abrir menú' : 'Cerrar menú'}
-              style={{ background: 'rgba(255,255,255,0.18)', border: 'none', color: '#ffffff', cursor: 'pointer', fontSize: 18, width: 38, height: 38, borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+              style={{ background: '#1e3a8a', border: '2px solid #1e3a8a', color: '#ffffff', cursor: 'pointer', fontSize: 18, fontWeight: 800, width: 40, height: 40, borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, boxShadow: '0 2px 6px rgba(0,0,0,0.2)' }}>
               {collapsed ? '☰' : '✕'}
             </button>
           </div>
