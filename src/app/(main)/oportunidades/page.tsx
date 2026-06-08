@@ -366,7 +366,7 @@ export default function OportunidadesPage() {
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: 14, marginBottom: 20 }}>
             <div>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.probabilidad')} *</label>
-              <input type="number" step="0.01" min="0" max="100" value={selected.probable_pct} onChange={e => setSelected({ ...selected, probable_pct: parseFloat(e.target.value) || 0 })} required style={inputStyle} />
+              <input type="number" step="0.01" min="0" max="100" value={selected.probable_pct || ''} onChange={e => setSelected({ ...selected, probable_pct: parseFloat(e.target.value) || 0 })} required style={inputStyle} />
             </div>
             <div>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.parcialDolarProbable')}</label>
@@ -394,7 +394,7 @@ export default function OportunidadesPage() {
                 step="0.01"
                 min="0"
                 max="999.99"
-                value={selected.mgc}
+                value={selected.mgc || ''}
                 onChange={e => setSelected({ ...selected, mgc: parseFloat(e.target.value) || 0 })}
                 onBlur={e => {
                   const n = parseFloat(e.target.value) || 0
@@ -407,7 +407,7 @@ export default function OportunidadesPage() {
             </div>
             <div>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.ejecucionAnyo')} *</label>
-              <input type="number" step="1" min="0" max="100" value={selected.ejecucion_anyo_pct} onChange={e => setSelected({ ...selected, ejecucion_anyo_pct: parseFloat(e.target.value) || 0 })} required style={inputStyle} />
+              <input type="number" step="1" min="0" max="100" value={selected.ejecucion_anyo_pct || ''} onChange={e => setSelected({ ...selected, ejecucion_anyo_pct: parseFloat(e.target.value) || 0 })} required style={inputStyle} />
             </div>
             <div>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{idioma === 'en' ? 'Year Partial $' : 'Parcial Año $'}</label>
@@ -415,7 +415,7 @@ export default function OportunidadesPage() {
             </div>
             <div>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{idioma === 'en' ? 'Year Partial €' : 'Parcial Año €'} *</label>
-              <input type="number" step="0.01" min="0" value={selected.parcial_euros_anyo} onChange={e => setSelected({ ...selected, parcial_euros_anyo: parseFloat(e.target.value) || 0 })} required style={inputStyle} />
+              <input type="number" step="0.01" min="0" value={selected.parcial_euros_anyo || ''} onChange={e => setSelected({ ...selected, parcial_euros_anyo: parseFloat(e.target.value) || 0 })} required style={inputStyle} />
             </div>
             <div>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{idioma === 'en' ? 'MG Year Partial $' : 'MG Parcial Año $'}</label>
@@ -448,7 +448,7 @@ export default function OportunidadesPage() {
             </div>
             <div>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.montoRealOferta')}</label>
-              <input type="number" step="0.01" min="0" value={selected.monto_real_oferta} onChange={e => setSelected({ ...selected, monto_real_oferta: parseFloat(e.target.value) || 0 })} style={inputStyle} />
+              <input type="number" step="0.01" min="0" value={selected.monto_real_oferta || ''} onChange={e => setSelected({ ...selected, monto_real_oferta: parseFloat(e.target.value) || 0 })} style={inputStyle} />
             </div>
             <div>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.fechaEsperadaVeredicto')}</label>
