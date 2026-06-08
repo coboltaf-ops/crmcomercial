@@ -153,8 +153,8 @@ export default function OportunidadesPage() {
               </span>
             )
             const fields: { l: string; v: React.ReactNode }[] = [
-              { l: t('lbl.nroOportunidad'), v: viewDetail.codigo },
               { l: t('lbl.fechaRegistro'), v: fDate(viewDetail.fecha_registro) },
+              { l: t('lbl.codigo'), v: viewDetail.codigo },
               { l: t('lbl.cliente'), v: clienteNode },
               { l: t('lbl.ciudad'), v: viewDetail.ciudad || '-' },
               { l: t('lbl.pais'), v: viewDetail.pais || '-' },
@@ -285,12 +285,12 @@ export default function OportunidadesPage() {
           <h3 className="seccion-franja" style={sectionTitle('#1e3a8a')}>{t('lbl.datosPrincipales')}</h3>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: 14, marginBottom: 20 }}>
             <div style={{ gridColumn: 'span 2' }}>
-              <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.nroOportunidad')} *</label>
-              <input value={selected.codigo} readOnly style={{ ...inputStyle, opacity: 0.5 }} />
-            </div>
-            <div style={{ gridColumn: 'span 2' }}>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.fechaRegistro')}</label>
               <input value={fDate(selected.fecha_registro || today)} readOnly style={{ ...inputStyle, opacity: 0.5, cursor: 'not-allowed' }} />
+            </div>
+            <div style={{ gridColumn: 'span 2' }}>
+              <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.codigo')} *</label>
+              <input value={selected.codigo} readOnly style={{ ...inputStyle, opacity: 0.5 }} />
             </div>
             <div style={{ gridColumn: 'span 4' }}>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.cliente')} *</label>
