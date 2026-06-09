@@ -279,6 +279,9 @@ export default function PQRSPage() {
                 setSelected({ ...selected, cliente_id: e.target.value, cliente_nombre: cli?.razon_social || '', contacto_id: '', contacto_nombre: '' })
               }} required style={inputStyle}>
                 <option value="">Seleccionar empresa...</option>
+                {selected.cliente_id && !clientes.some(c => c.id === selected.cliente_id) && (
+                  <option value={selected.cliente_id}>{selected.cliente_nombre || '(empresa del registro)'}</option>
+                )}
                 {clientes.map(c => <option key={c.id} value={c.id}>{c.razon_social}</option>)}
               </select>
             </div>
@@ -289,8 +292,15 @@ export default function PQRSPage() {
                 setSelected({ ...selected, contacto_id: e.target.value, contacto_nombre: con ? `${con.nombre} ${con.apellido}` : '' })
               }} style={inputStyle}>
                 <option value="">Seleccionar...</option>
+                {selected.contacto_id && !contactosDelCliente.some(c => c.id === selected.contacto_id) && (
+                  <option value={selected.contacto_id}>{selected.contacto_nombre || '(contacto del registro)'}</option>
+                )}
                 {contactosDelCliente.map(c => <option key={c.id} value={c.id}>{c.nombre} {c.apellido}</option>)}
               </select>
+            </div>
+            <div style={{ gridColumn: 'span 3' }}>
+              <label style={{ color: '#ffffff', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>Asunto</label>
+              <input value={selected.asunto} onChange={e => setSelected({ ...selected, asunto: e.target.value })} placeholder="Asunto del PQRS..." style={inputStyle} />
             </div>
             <div>
               <label style={{ color: '#ffffff', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>Fecha Aviso Empresa</label>
@@ -315,6 +325,10 @@ export default function PQRSPage() {
             <div>
               <label style={{ color: '#ffffff', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>Móvil Recibe</label>
               <input value={selected.movil_caso} onChange={e => setSelected({ ...selected, movil_caso: e.target.value })} placeholder="Teléfono móvil..." style={inputStyle} />
+            </div>
+            <div>
+              <label style={{ color: '#ffffff', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>Responsable</label>
+              <input value={selected.responsable} onChange={e => setSelected({ ...selected, responsable: e.target.value })} placeholder="Responsable del caso..." style={inputStyle} />
             </div>
             <div style={{ gridColumn: 'span 3' }}>
               <label style={{ color: '#ffffff', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>Detalle de la Incidencia</label>
