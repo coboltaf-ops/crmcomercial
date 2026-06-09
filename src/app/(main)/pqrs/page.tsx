@@ -46,6 +46,7 @@ export default function PQRSPage() {
 
   const [selected, setSelected] = useState<PQRS | null>(null)
   const [isForm, setIsForm] = useState(false)
+  const [verLectura, setVerLectura] = useState(false)
   const [viewDetail, setViewDetail] = useState<PQRS | null>(null)
   const [tab, setTab] = useState<'registros' | 'reportes'>('registros')
   const [search, setSearch] = useState('')
@@ -252,9 +253,10 @@ export default function PQRSPage() {
   if (isForm && selected) {
     return (
       <div>
-        <button onClick={() => { setIsForm(false); setSelected(null) }} style={{ ...btnStyle, background: '#000000', color: '#ffffff', border: '1px solid #333333', marginBottom: 16 }}>← Volver</button>
+        <button onClick={() => { setIsForm(false); setSelected(null); setVerLectura(false) }} style={{ ...btnStyle, background: '#000000', color: '#ffffff', border: '1px solid #333333', marginBottom: 16 }}>← Volver</button>
         <form onSubmit={handleSave} style={{ background: 'rgba(255,255,255,0.05)', borderRadius: 16, padding: 24, border: '1px solid rgba(255,255,255,0.15)' }}>
-          <h2 style={{ color: '#ffffff', fontSize: 18, fontWeight: 700, marginBottom: 20 }}>{selected.id ? 'Editar' : 'Nueva'} PQRS</h2>
+          <h2 style={{ color: '#ffffff', fontSize: 18, fontWeight: 700, marginBottom: 20 }}>{verLectura ? 'Ver' : selected.id ? 'Editar' : 'Nueva'} PQRS</h2>
+          <fieldset disabled={verLectura} style={{ border: 'none', padding: 0, margin: 0, minInlineSize: 'auto' }}>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 16 }}>
             <div>
               <label style={{ color: '#ffffff', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>Código</label>
@@ -331,9 +333,10 @@ export default function PQRSPage() {
               </select>
             </div>
           </div>
+          </fieldset>
           <div style={{ display: 'flex', gap: 10, marginTop: 20 }}>
-            <button type="submit" style={{ ...btnStyle, background: '#0f1b3d', color: '#ffffff' }}>Guardar</button>
-            <button type="button" onClick={() => { setIsForm(false); setSelected(null) }} style={{ ...btnStyle, background: '#64748b', color: '#ffffff' }}>Cancelar</button>
+            {!verLectura && <button type="submit" style={{ ...btnStyle, background: '#0f1b3d', color: '#ffffff' }}>Guardar</button>}
+            <button type="button" onClick={() => { setIsForm(false); setSelected(null); setVerLectura(false) }} style={{ ...btnStyle, background: '#64748b', color: '#ffffff' }}>{verLectura ? 'Cerrar' : 'Cancelar'}</button>
           </div>
         </form>
       </div>
@@ -456,7 +459,7 @@ export default function PQRSPage() {
                     </td>
                     <td style={{ padding: '10px 14px', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
                       <div style={{ display: 'flex', gap: 6 }}>
-                        <button onClick={() => setViewDetail(p)} style={{ ...btnStyle, padding: '4px 12px', fontSize: 11, background: '#ea580c', color: '#ffffff', border: '1px solid #f97316' }}>Ver</button>
+                        <button onClick={() => { setSelected(p); setVerLectura(true); setIsForm(true) }} style={{ ...btnStyle, padding: '4px 12px', fontSize: 11, background: '#ea580c', color: '#ffffff', border: '1px solid #f97316' }}>Ver</button>
                         {permisos.editar && p.situacion !== 'Cerrada' && <button onClick={() => { setSelected(p); setIsForm(true) }} style={{ ...btnStyle, padding: '4px 12px', fontSize: 11, background: '#15803d', color: '#ffffff', border: '1px solid #16a34a' }}>Editar</button>}
                         {permisos.eliminar && <button onClick={() => { if (confirm(`¿Eliminar ${p.codigo}?`)) { deletePQRS(p.id); logAudit({ ...auditParams(), accion: 'ELIMINAR', registro_codigo: p.codigo, registro_nombre: p.asunto }) } }} style={{ ...btnStyle, padding: '4px 12px', fontSize: 11, background: '#dc2626', color: '#ffffff', border: '1px solid #ef4444' }}>Eliminar</button>}
                       </div>

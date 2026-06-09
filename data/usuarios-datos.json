@@ -1,0 +1,254 @@
+[
+  {
+    "id": "admin-1",
+    "nombre": "ADMIN",
+    "apellido": "CRM",
+    "usuario": "admin",
+    "clave": "admin123",
+    "correo": "admin@crmcomercial.com",
+    "rol": "Admin",
+    "situacion": "Activo",
+    "permisos": [
+      {
+        "modulo": "dashboard",
+        "leer": true,
+        "editar": true,
+        "eliminar": true
+      },
+      {
+        "modulo": "clientes",
+        "leer": true,
+        "editar": true,
+        "eliminar": true
+      },
+      {
+        "modulo": "contactos",
+        "leer": true,
+        "editar": true,
+        "eliminar": true
+      },
+      {
+        "modulo": "oportunidades",
+        "leer": true,
+        "editar": true,
+        "eliminar": true
+      },
+      {
+        "modulo": "productos",
+        "leer": true,
+        "editar": true,
+        "eliminar": true
+      },
+      {
+        "modulo": "cotizaciones",
+        "leer": true,
+        "editar": true,
+        "eliminar": true
+      },
+      {
+        "modulo": "prospectos",
+        "leer": true,
+        "editar": true,
+        "eliminar": true
+      },
+      {
+        "modulo": "pqrs",
+        "leer": true,
+        "editar": true,
+        "eliminar": true
+      },
+      {
+        "modulo": "tareas",
+        "leer": true,
+        "editar": true,
+        "eliminar": true
+      },
+      {
+        "modulo": "proyectos",
+        "leer": true,
+        "editar": true,
+        "eliminar": true
+      },
+      {
+        "modulo": "pagos",
+        "leer": true,
+        "editar": true,
+        "eliminar": true
+      },
+      {
+        "modulo": "referencias",
+        "leer": true,
+        "editar": true,
+        "eliminar": true
+      }
+    ]
+  },
+  {
+    "id": "comer01-1",
+    "nombre": "COMERCIAL",
+    "apellido": "01",
+    "usuario": "comer01",
+    "clave": "Comer01*",
+    "correo": "comer01@crmcomercial.com",
+    "rol": "Ventas",
+    "situacion": "Activo",
+    "permisos": [
+      {
+        "modulo": "dashboard",
+        "leer": true,
+        "editar": false,
+        "eliminar": false
+      },
+      {
+        "modulo": "clientes",
+        "leer": true,
+        "editar": true,
+        "eliminar": true
+      },
+      {
+        "modulo": "contactos",
+        "leer": true,
+        "editar": true,
+        "eliminar": true
+      },
+      {
+        "modulo": "oportunidades",
+        "leer": true,
+        "editar": true,
+        "eliminar": true
+      },
+      {
+        "modulo": "productos",
+        "leer": true,
+        "editar": true,
+        "eliminar": false
+      },
+      {
+        "modulo": "cotizaciones",
+        "leer": true,
+        "editar": true,
+        "eliminar": true
+      },
+      {
+        "modulo": "prospectos",
+        "leer": true,
+        "editar": true,
+        "eliminar": true
+      },
+      {
+        "modulo": "pqrs",
+        "leer": true,
+        "editar": true,
+        "eliminar": true
+      },
+      {
+        "modulo": "tareas",
+        "leer": true,
+        "editar": true,
+        "eliminar": true
+      },
+      {
+        "modulo": "proyectos",
+        "leer": true,
+        "editar": true,
+        "eliminar": true
+      },
+      {
+        "modulo": "pagos",
+        "leer": true,
+        "editar": true,
+        "eliminar": true
+      },
+      {
+        "modulo": "referencias",
+        "leer": true,
+        "editar": false,
+        "eliminar": false
+      }
+    ]
+  },
+  {
+    "id": "admin-1",
+    "nombre": "JOSE DAVID",
+    "apellido": "PALOMARES VELASQUEZ",
+    "usuario": "directorlatam",
+    "clave": "Directorlatam*",
+    "correo": "admin@crmcomercial.com",
+    "rol": "Admin",
+    "situacion": "Activo",
+    "permisos": [
+      {
+        "modulo": "dashboard",
+        "leer": true,
+        "editar": true,
+        "eliminar": true
+      },
+      {
+        "modulo": "clientes",
+        "leer": true,
+        "editar": true,
+        "eliminar": true
+      },
+      {
+        "modulo": "contactos",
+        "leer": true,
+        "editar": true,
+        "eliminar": true
+      },
+      {
+        "modulo": "oportunidades",
+        "leer": true,
+        "editar": true,
+        "eliminar": true
+      },
+      {
+        "modulo": "productos",
+        "leer": true,
+        "editar": true,
+        "eliminar": true
+      },
+      {
+        "modulo": "cotizaciones",
+        "leer": true,
+        "editar": true,
+        "eliminar": true
+      },
+      {
+        "modulo": "prospectos",
+        "leer": true,
+        "editar": true,
+        "eliminar": true
+      },
+      {
+        "modulo": "pqrs",
+        "leer": true,
+        "editar": true,
+        "eliminar": true
+      },
+      {
+        "modulo": "tareas",
+        "leer": true,
+        "editar": true,
+        "eliminar": true
+      },
+      {
+        "modulo": "proyectos",
+        "leer": true,
+        "editar": true,
+        "eliminar": true
+      },
+      {
+        "modulo": "pagos",
+        "leer": true,
+        "editar": true,
+        "eliminar": true
+      },
+      {
+        "modulo": "referencias",
+        "leer": true,
+        "editar": true,
+        "eliminar": true
+      }
+    ]
+  }
+]
