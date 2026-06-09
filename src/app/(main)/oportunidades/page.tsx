@@ -94,16 +94,17 @@ export default function OportunidadesPage() {
   const calcDerivados = (o: Pick<Oportunidad, 'monto_estimado' | 'probable_pct' | 'ejecucion_anyo_pct' | 'mgc' | 'parcial_euros_anyo'>) => {
     const parcial_probable = (o.monto_estimado || 0) * (o.probable_pct || 0) / 100
     const parcial_anyo = parcial_probable * (o.ejecucion_anyo_pct || 0) / 100
+    const parcial_euros_anyo = parcial_anyo / 1.15  // Parcial Año € = Parcial Año $ / 1.15
     const mg_parcial_anyo = parcial_anyo * (o.mgc || 0) / 100
-    const mg_parcial_euros_anyo = (o.parcial_euros_anyo || 0) * (o.mgc || 0) / 100
-    return { parcial_probable, parcial_anyo, mg_parcial_anyo, mg_parcial_euros_anyo }
+    const mg_parcial_euros_anyo = parcial_euros_anyo * (o.mgc || 0) / 100
+    return { parcial_probable, parcial_anyo, parcial_euros_anyo, mg_parcial_anyo, mg_parcial_euros_anyo }
   }
 
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault()
     if (!selected) return
     const cli = allClientes.find(c => c.id === selected.cliente_id)
-    const toSave = { ...selected, cliente_nombre: cli?.razon_social || selected.cliente_nombre }
+    const toSave = { ...selected, cliente_nombre: cli?.razon_social || selected.cliente_nombre, parcial_euros_anyo: calcDerivados(selected).parcial_euros_anyo }
     if (toSave.id) {
       const _anterior = oportunidades.find(x => x.id === toSave.id)
       updateOportunidad(toSave.id, toSave)
@@ -187,7 +188,7 @@ export default function OportunidadesPage() {
               { l: t('lbl.mgc'), v: `${(viewDetail.mgc || 0).toFixed(2)}%` },
               { l: t('lbl.ejecucionAnyo'), v: `${viewDetail.ejecucion_anyo_pct || 0}%` },
               { l: idioma === 'en' ? 'Year Partial' : 'Parcial Año', v: `${monedaSimbolo(viewDetail.tipo_moneda)}${fmtMoney(der.parcial_anyo)}` },
-              { l: t('lbl.parcialEuros'), v: `€${fmtMoney(viewDetail.parcial_euros_anyo || 0)}` },
+              { l: t('lbl.parcialEuros'), v: `€${fmtMoney(der.parcial_euros_anyo)}` },
               { l: idioma === 'en' ? 'MG Year Partial' : 'MG Parcial Año', v: `${monedaSimbolo(viewDetail.tipo_moneda)}${fmtMoney(der.mg_parcial_anyo)}` },
               { l: idioma === 'en' ? 'MG EUR Partial' : 'MG Parcial EUR', v: `€${fmtMoney(der.mg_parcial_euros_anyo)}` },
             ].map(f => (
@@ -416,8 +417,8 @@ export default function OportunidadesPage() {
               <input value={fmtMoney(der.parcial_anyo)} readOnly style={inputReadonly} />
             </div>
             <div>
-              <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{idioma === 'en' ? 'Year Partial €' : 'Parcial Año €'} *</label>
-              <input type="number" step="0.01" min="0" value={selected.parcial_euros_anyo || ''} onChange={e => setSelected({ ...selected, parcial_euros_anyo: parseFloat(e.target.value) || 0 })} required style={inputStyle} />
+              <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{idioma === 'en' ? 'Year Partial €' : 'Parcial Año €'}</label>
+              <input value={fmtMoney(der.parcial_euros_anyo)} readOnly style={inputReadonly} />
             </div>
             <div>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{idioma === 'en' ? 'MG Year Partial $' : 'MG Parcial Año $'}</label>
