@@ -14,9 +14,15 @@ export function useAutoSeed() {
   const oportunidadesCount = useOportunidadesStore(s => s.oportunidades.length)
 
   useEffect(() => {
-    // Preservar datos existentes: Si ALGÚN store tiene datos, no cargar seed
-    // Esto protege los datos que el usuario ya tiene en localStorage
-    if (clientesCount > 0 || contactosCount > 0 || productosCount > 0 || oportunidadesCount > 0) return
+    // El seed de ejemplo se carga UNA SOLA VEZ en la vida del navegador.
+    // Una vez sembrado (o si el usuario ya tiene/borró datos), NUNCA se vuelve a sembrar.
+    // Esto evita que al borrar registros reaparezcan los datos de ejemplo.
+    if (typeof window === 'undefined') return
+    if (localStorage.getItem('crm-seeded')) return
+    if (clientesCount > 0 || contactosCount > 0 || productosCount > 0 || oportunidadesCount > 0) {
+      localStorage.setItem('crm-seeded', '1')
+      return
+    }
 
     // ========== CLIENTES ==========
     const clientes = [
@@ -373,5 +379,7 @@ export function useAutoSeed() {
     useProductosStore.setState({ productos })
     useOportunidadesStore.setState({ oportunidades })
     useProspectosStore.setState({ prospectos })
-  }, [clientesCount, contactosCount, productosCount, oportunidadesCount])
+    localStorage.setItem('crm-seeded', '1')
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 }
