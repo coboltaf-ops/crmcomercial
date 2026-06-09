@@ -735,6 +735,14 @@ export default function CotizacionesPage() {
                               updateCotizacion(c.id, { situacion: 'Anulada', observaciones: (c.observaciones || '') + nota })
                             }} style={{ ...btnStyle, padding: '3px 8px', fontSize: 9, background: '#78350f', color: '#ffffff', border: '1px solid #b45309' }}>Anul</button>
                           )}
+                          {permisos.eliminar && (
+                            <button onClick={() => {
+                              if (confirm(`¿Eliminar definitivamente la cotización ${c.codigo}? Esta acción no se puede deshacer.`)) {
+                                deleteCotizacion(c.id)
+                                logAudit({ ...auditParams(), accion: 'ELIMINAR', registro_codigo: c.codigo, registro_nombre: c.cliente_nombre })
+                              }
+                            }} style={{ ...btnStyle, padding: '3px 8px', fontSize: 9, background: '#dc2626', color: '#ffffff', border: '1px solid #ef4444' }}>{idioma === 'en' ? 'Del' : 'Elim'}</button>
+                          )}
                         </div>
                       </td>
                     </tr>
