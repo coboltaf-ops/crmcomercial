@@ -22,6 +22,7 @@ export const MODULOS_CRM = [
   { id: 'clientes', label: 'Empresas' },
   { id: 'contactos', label: 'Contactos' },
   { id: 'oportunidades', label: 'Oportunidades' },
+  { id: 'proyectos', label: 'Proyectos' },
   { id: 'productos', label: 'Lista de Productos' },
   { id: 'cotizaciones', label: 'Cotizaciones' },
   { id: 'prospectos', label: 'Prospectos' },

@@ -151,6 +151,13 @@ const initialData: RefData = {
     { id: '5', descripcion: 'Convertido', situacion: true },
     { id: '6', descripcion: 'Descartado', situacion: true },
   ],
+  situacion_proyecto: [
+    { id: '1', descripcion: 'En Planeación', situacion: true },
+    { id: '2', descripcion: 'En Ejecución', situacion: true },
+    { id: '3', descripcion: 'Suspendido', situacion: true },
+    { id: '4', descripcion: 'Finalizado', situacion: true },
+    { id: '5', descripcion: 'Cancelado', situacion: true },
+  ],
   origen_prospecto: [
     { id: '1', descripcion: 'Web', situacion: true },
     { id: '2', descripcion: 'Referido', situacion: true },
