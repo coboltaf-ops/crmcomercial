@@ -1,6 +1,6 @@
 'use client'
 import { logAudit, computarDiff } from '@/shared/lib/audit'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import ModuleHeader from '@/shared/components/module-header'
 import { useProyectosStore, Proyecto } from '@/features/proyectos/store/proyectos-store'
 import { useClientesStore } from '@/features/clientes/store/clientes-store'
@@ -32,6 +32,8 @@ export default function ProyectosPage() {
   const currentUser = useCurrentUserStore(s => s.user)
   const permisos = usePermisos('proyectos')
   const { proyectos, addProyecto, updateProyecto, deleteProyecto } = useProyectosStore()
+  const loadProyectos = useProyectosStore(s => s.loadProyectos)
+  useEffect(() => { loadProyectos() }, [loadProyectos])
   const clientes = useClientesStore(s => s.clientes).filter(c => (c.situacion || '').toLowerCase() === 'activo')
   const allClientes = useClientesStore(s => s.clientes)
   const refData = useReferenceStore(s => s.data)

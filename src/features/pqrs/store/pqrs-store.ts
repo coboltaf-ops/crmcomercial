@@ -1,5 +1,4 @@
 import { create } from 'zustand'
-import { persist } from 'zustand/middleware'
 import { Seguimiento } from '@/shared/types/seguimiento'
 
 export type { Seguimiento }
@@ -34,19 +33,71 @@ export interface PQRS {
 
 interface PQRSState {
   pqrs: PQRS[]
+  loaded: boolean
+  loadPQRS: () => Promise<void>
   addPQRS: (p: PQRS) => void
   updatePQRS: (id: string, p: Partial<PQRS>) => void
   deletePQRS: (id: string) => void
 }
 
-export const usePQRSStore = create<PQRSState>()(
-  persist(
-    (set) => ({
-      pqrs: [],
-      addPQRS: (p) => set((s) => ({ pqrs: [...s.pqrs, p] })),
-      updatePQRS: (id, p) => set((s) => ({ pqrs: s.pqrs.map((r) => r.id === id ? { ...r, ...p } : r) })),
-      deletePQRS: (id) => set((s) => ({ pqrs: s.pqrs.filter((r) => r.id !== id) })),
-    }),
-    { name: 'crm-pqrs-storage' }
-  )
-)
+// Persiste la lista completa en Vercel KV vía /api/pqrs.
+// Así los datos sobreviven a cualquier navegador o despliegue.
+async function persistPQRS(pqrs: PQRS[]) {
+  try {
+    await fetch('/api/pqrs', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(pqrs),
+    })
+  } catch (err) {
+    console.error('[pqrs-store] persist error:', err)
+  }
+}
+
+export const usePQRSStore = create<PQRSState>()((set, get) => ({
+  pqrs: [],
+  loaded: false,
+  loadPQRS: async () => {
+    try {
+      const res = await fetch('/api/pqrs')
+      const data = await res.json()
+      const kvPQRS: PQRS[] = Array.isArray(data) ? data : []
+
+      // Migración suave: si KV está vacío pero el navegador tiene datos del
+      // localStorage antiguo ('crm-pqrs-storage'), súbelos a KV una sola vez.
+      if (kvPQRS.length === 0 && typeof window !== 'undefined') {
+        try {
+          const raw = window.localStorage.getItem('crm-pqrs-storage')
+          const legacy: PQRS[] = raw ? (JSON.parse(raw)?.state?.pqrs || []) : []
+          if (legacy.length > 0) {
+            set({ pqrs: legacy, loaded: true })
+            await persistPQRS(legacy)
+            return
+          }
+        } catch (e) {
+          console.error('[pqrs-store] migración localStorage error:', e)
+        }
+      }
+
+      set({ pqrs: kvPQRS, loaded: true })
+    } catch (err) {
+      console.error('[pqrs-store] load error:', err)
+      set({ loaded: true })
+    }
+  },
+  addPQRS: (p) => {
+    const pqrs = [...get().pqrs, p]
+    set({ pqrs })
+    persistPQRS(pqrs)
+  },
+  updatePQRS: (id, p) => {
+    const pqrs = get().pqrs.map((r) => (r.id === id ? { ...r, ...p } : r))
+    set({ pqrs })
+    persistPQRS(pqrs)
+  },
+  deletePQRS: (id) => {
+    const pqrs = get().pqrs.filter((r) => r.id !== id)
+    set({ pqrs })
+    persistPQRS(pqrs)
+  },
+}))

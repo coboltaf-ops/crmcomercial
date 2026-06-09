@@ -1,5 +1,4 @@
 import { create } from 'zustand'
-import { persist } from 'zustand/middleware'
 import { Seguimiento } from '@/shared/types/seguimiento'
 
 export type { Seguimiento }
@@ -29,19 +28,71 @@ export interface Contacto {
 
 interface ContactosState {
   contactos: Contacto[]
+  loaded: boolean
+  loadContactos: () => Promise<void>
   addContacto: (c: Contacto) => void
   updateContacto: (id: string, c: Partial<Contacto>) => void
   deleteContacto: (id: string) => void
 }
 
-export const useContactosStore = create<ContactosState>()(
-  persist(
-    (set) => ({
-      contactos: [],
-      addContacto: (c) => set((s) => ({ contactos: [...s.contactos, c] })),
-      updateContacto: (id, c) => set((s) => ({ contactos: s.contactos.map((r) => r.id === id ? { ...r, ...c } : r) })),
-      deleteContacto: (id) => set((s) => ({ contactos: s.contactos.filter((r) => r.id !== id) })),
-    }),
-    { name: 'crm-contactos-storage' }
-  )
-)
+// Persiste la lista completa en Vercel KV vía /api/contactos.
+// Así los datos sobreviven a cualquier navegador o despliegue.
+async function persistContactos(contactos: Contacto[]) {
+  try {
+    await fetch('/api/contactos', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(contactos),
+    })
+  } catch (err) {
+    console.error('[contactos-store] persist error:', err)
+  }
+}
+
+export const useContactosStore = create<ContactosState>()((set, get) => ({
+  contactos: [],
+  loaded: false,
+  loadContactos: async () => {
+    try {
+      const res = await fetch('/api/contactos')
+      const data = await res.json()
+      const kvContactos: Contacto[] = Array.isArray(data) ? data : []
+
+      // Migración suave: si KV está vacío pero el navegador tiene datos del
+      // localStorage antiguo ('crm-contactos-storage'), súbelos a KV una sola vez.
+      if (kvContactos.length === 0 && typeof window !== 'undefined') {
+        try {
+          const raw = window.localStorage.getItem('crm-contactos-storage')
+          const legacy: Contacto[] = raw ? (JSON.parse(raw)?.state?.contactos || []) : []
+          if (legacy.length > 0) {
+            set({ contactos: legacy, loaded: true })
+            await persistContactos(legacy)
+            return
+          }
+        } catch (e) {
+          console.error('[contactos-store] migración localStorage error:', e)
+        }
+      }
+
+      set({ contactos: kvContactos, loaded: true })
+    } catch (err) {
+      console.error('[contactos-store] load error:', err)
+      set({ loaded: true })
+    }
+  },
+  addContacto: (c) => {
+    const contactos = [...get().contactos, c]
+    set({ contactos })
+    persistContactos(contactos)
+  },
+  updateContacto: (id, c) => {
+    const contactos = get().contactos.map((r) => (r.id === id ? { ...r, ...c } : r))
+    set({ contactos })
+    persistContactos(contactos)
+  },
+  deleteContacto: (id) => {
+    const contactos = get().contactos.filter((r) => r.id !== id)
+    set({ contactos })
+    persistContactos(contactos)
+  },
+}))

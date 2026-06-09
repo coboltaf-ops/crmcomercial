@@ -31,7 +31,10 @@ export default function ProductosPage() {
   const permisos = usePermisos('productos')
   const currentUser = useCurrentUserStore(s => s.user)
   const { productos, addProducto, updateProducto, deleteProducto } = useProductosStore()
+  const loadProductos = useProductosStore(s => s.loadProductos)
   const refData = useReferenceStore(s => s.data)
+
+  useEffect(() => { loadProductos() }, [loadProductos])
 
   const [selected, setSelected] = useState<Producto | null>(null)
   const [isForm, setIsForm] = useState(false)

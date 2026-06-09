@@ -39,6 +39,7 @@ export default function ProspectosPage() {
   const currentUser = useCurrentUserStore(s => s.user)
   const empresa = useEmpresaStore(s => s.empresas[0])
   const { prospectos, addProspecto, updateProspecto, deleteProspecto } = useProspectosStore()
+  const loadProspectos = useProspectosStore(s => s.loadProspectos)
   const { clientes, addCliente } = useClientesStore()
   const refData = useReferenceStore(s => s.data)
 
@@ -65,6 +66,8 @@ export default function ProspectosPage() {
       console.error('[prospectos] Error cargando externos:', err)
     }
   }
+
+  useEffect(() => { loadProspectos() }, [loadProspectos])
 
   useEffect(() => {
     if (pendingSearch) setSearch(pendingSearch)

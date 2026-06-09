@@ -1,5 +1,4 @@
 import { create } from 'zustand'
-import { persist } from 'zustand/middleware'
 import { Seguimiento } from '@/shared/types/seguimiento'
 
 export type { Seguimiento }
@@ -27,19 +26,71 @@ export interface Prospecto {
 
 interface ProspectosState {
   prospectos: Prospecto[]
+  loaded: boolean
+  loadProspectos: () => Promise<void>
   addProspecto: (p: Prospecto) => void
   updateProspecto: (id: string, p: Partial<Prospecto>) => void
   deleteProspecto: (id: string) => void
 }
 
-export const useProspectosStore = create<ProspectosState>()(
-  persist(
-    (set) => ({
-      prospectos: [],
-      addProspecto: (p) => set((s) => ({ prospectos: [...s.prospectos, p] })),
-      updateProspecto: (id, p) => set((s) => ({ prospectos: s.prospectos.map((r) => r.id === id ? { ...r, ...p } : r) })),
-      deleteProspecto: (id) => set((s) => ({ prospectos: s.prospectos.filter((r) => r.id !== id) })),
-    }),
-    { name: 'crm-prospectos-storage' }
-  )
-)
+// Persiste la lista completa en Vercel KV vía /api/prospectos.
+// Así los datos sobreviven a cualquier navegador o despliegue.
+async function persistProspectos(prospectos: Prospecto[]) {
+  try {
+    await fetch('/api/prospectos', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(prospectos),
+    })
+  } catch (err) {
+    console.error('[prospectos-store] persist error:', err)
+  }
+}
+
+export const useProspectosStore = create<ProspectosState>()((set, get) => ({
+  prospectos: [],
+  loaded: false,
+  loadProspectos: async () => {
+    try {
+      const res = await fetch('/api/prospectos')
+      const data = await res.json()
+      const kvProspectos: Prospecto[] = Array.isArray(data) ? data : []
+
+      // Migración suave: si KV está vacío pero el navegador tiene datos del
+      // localStorage antiguo ('crm-prospectos-storage'), súbelos a KV una sola vez.
+      if (kvProspectos.length === 0 && typeof window !== 'undefined') {
+        try {
+          const raw = window.localStorage.getItem('crm-prospectos-storage')
+          const legacy: Prospecto[] = raw ? (JSON.parse(raw)?.state?.prospectos || []) : []
+          if (legacy.length > 0) {
+            set({ prospectos: legacy, loaded: true })
+            await persistProspectos(legacy)
+            return
+          }
+        } catch (e) {
+          console.error('[prospectos-store] migración localStorage error:', e)
+        }
+      }
+
+      set({ prospectos: kvProspectos, loaded: true })
+    } catch (err) {
+      console.error('[prospectos-store] load error:', err)
+      set({ loaded: true })
+    }
+  },
+  addProspecto: (p) => {
+    const prospectos = [...get().prospectos, p]
+    set({ prospectos })
+    persistProspectos(prospectos)
+  },
+  updateProspecto: (id, p) => {
+    const prospectos = get().prospectos.map((r) => (r.id === id ? { ...r, ...p } : r))
+    set({ prospectos })
+    persistProspectos(prospectos)
+  },
+  deleteProspecto: (id) => {
+    const prospectos = get().prospectos.filter((r) => r.id !== id)
+    set({ prospectos })
+    persistProspectos(prospectos)
+  },
+}))

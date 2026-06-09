@@ -41,6 +41,7 @@ export default function ClientesPage() {
   const currentUser = useCurrentUserStore(s => s.user)
   const router = useRouter()
   const { clientes, addCliente, updateCliente, deleteCliente } = useClientesStore()
+  const loadClientes = useClientesStore(s => s.loadClientes)
   const contactos = useContactosStore(s => s.contactos)
   const cotizaciones = useCotizacionesStore(s => s.cotizaciones)
   const oportunidades = useOportunidadesStore(s => s.oportunidades)
@@ -62,6 +63,8 @@ export default function ClientesPage() {
     if (pendingAction === 'nuevo') { setSelected(emptyCliente(nextConsecutivo('CLI-', clientes.map(c => c.codigo)).codigo)); setIsForm(true) }
     if (pendingSearch || pendingAction) clearPending()
   }, [])
+
+  useEffect(() => { loadClientes() }, [loadClientes])
 
   useEffect(() => {
     const viewId = searchParams.get('view')

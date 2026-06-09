@@ -1,6 +1,6 @@
 'use client'
 import { logAudit, computarDiff } from '@/shared/lib/audit'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useTareasStore, Tarea } from '@/features/tareas/store/tareas-store'
 import { useCurrentUserStore } from '@/features/usuarios-gestion/store/current-user-store'
 import { useReferenceStore } from '@/features/referencias/store/reference-store'
@@ -40,7 +40,10 @@ export default function TareasPage() {
   const user = useCurrentUserStore(s => s.user)
   const permisos = usePermisos('tareas')
   const { tareas, situaciones, addTarea, updateTarea, deleteTarea } = useTareasStore()
+  const loadTareas = useTareasStore(s => s.loadTareas)
   const vendedores = useReferenceStore(s => s.vendedores)
+
+  useEffect(() => { loadTareas() }, [loadTareas])
 
   const [vista, setVista] = useState<Vista>('lista')
   const [vistaLista, setVistaLista] = useState<VistaLista>('tabla')

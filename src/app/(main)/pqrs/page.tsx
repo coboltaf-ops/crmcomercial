@@ -39,6 +39,7 @@ export default function PQRSPage() {
   const permisos = usePermisos('pqrs')
   const currentUser = useCurrentUserStore(s => s.user)
   const { pqrs, addPQRS, updatePQRS, deletePQRS } = usePQRSStore()
+  const loadPQRS = usePQRSStore(s => s.loadPQRS)
   const empresa = useEmpresaStore(s => s.empresas[0])
   const clientes = useClientesStore(s => s.clientes).filter(c => c.situacion === 'Activo')
   const allContactos = useContactosStore(s => s.contactos).filter(c => c.situacion === 'Activo')
@@ -72,6 +73,7 @@ export default function PQRSPage() {
   }
 
   useEffect(() => { fetchExternas() }, [])
+  useEffect(() => { loadPQRS() }, [loadPQRS])
 
   // Importar una PQRS externa al store interno
   const importarExterna = async (ext: PQRSExterna) => {

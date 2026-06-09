@@ -51,6 +51,7 @@ export default function CotizacionesPage() {
   const permisos = usePermisos('cotizaciones')
   const currentUser = useCurrentUserStore(s => s.user)
   const { cotizaciones, addCotizacion, updateCotizacion, deleteCotizacion } = useCotizacionesStore()
+  const loadCotizaciones = useCotizacionesStore(s => s.loadCotizaciones)
   const allClientes = useClientesStore(s => s.clientes)
   const clientes = allClientes.filter(c => c.situacion === 'Activo')
   const allContactos = useContactosStore(s => s.contactos).filter(c => c.situacion === 'Activo')
@@ -72,6 +73,7 @@ export default function CotizacionesPage() {
   const { pendingSearch, pendingAction, clearPending } = useAsistenteStore()
   const searchParams = useSearchParams()
   const router = useRouter()
+  useEffect(() => { loadCotizaciones() }, [loadCotizaciones])
   useEffect(() => {
     if (pendingSearch) setSearch(pendingSearch)
     if (pendingAction === 'nuevo') { const nc = nextConsecutivo('COT-', cotizaciones.map(c => c.codigo)); setSelected(emptyCotizacion(nc.codigo, nc.nro, `${currentUser?.nombre} ${currentUser?.apellido}`)); setIsForm(true) }

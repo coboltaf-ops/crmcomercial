@@ -1,5 +1,4 @@
 import { create } from 'zustand'
-import { persist } from 'zustand/middleware'
 import { Seguimiento } from '@/shared/types/seguimiento'
 
 export type { Seguimiento }
@@ -37,6 +36,8 @@ const defaultSituaciones: SituacionTarea[] = [
 interface TareasState {
   tareas: Tarea[]
   situaciones: SituacionTarea[]
+  loaded: boolean
+  loadTareas: () => Promise<void>
   addTarea: (t: Tarea) => void
   updateTarea: (id: string, t: Partial<Tarea>) => void
   deleteTarea: (id: string) => void
@@ -45,28 +46,68 @@ interface TareasState {
   deleteSituacion: (id: string) => void
 }
 
-export const useTareasStore = create<TareasState>()(
-  persist(
-    (set) => ({
-      tareas: [],
-      situaciones: defaultSituaciones,
-      addTarea: (t) => set((s) => ({ tareas: [...s.tareas, t] })),
-      updateTarea: (id, t) => set((s) => ({ tareas: s.tareas.map((r) => r.id === id ? { ...r, ...t } : r) })),
-      deleteTarea: (id) => set((s) => ({ tareas: s.tareas.filter((r) => r.id !== id) })),
-      addSituacion: (sit) => set((s) => ({ situaciones: [...s.situaciones, sit] })),
-      updateSituacion: (id, sit) => set((s) => ({ situaciones: s.situaciones.map((r) => r.id === id ? { ...r, ...sit } : r) })),
-      deleteSituacion: (id) => set((s) => ({ situaciones: s.situaciones.filter((r) => r.id !== id) })),
-    }),
-    {
-      name: 'crm-tareas-storage',
-      merge: (persisted, current) => {
-        const p = persisted as Partial<TareasState>
-        const saved = { ...current, ...p }
-        if (!saved.situaciones || saved.situaciones.length === 0) {
-          saved.situaciones = defaultSituaciones
+// Persiste la lista completa de tareas en Vercel KV vía /api/tareas.
+// Así los datos sobreviven a cualquier navegador o despliegue.
+async function persistTareas(tareas: Tarea[]) {
+  try {
+    await fetch('/api/tareas', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(tareas),
+    })
+  } catch (err) {
+    console.error('[tareas-store] persist error:', err)
+  }
+}
+
+export const useTareasStore = create<TareasState>()((set, get) => ({
+  tareas: [],
+  situaciones: defaultSituaciones,
+  loaded: false,
+  loadTareas: async () => {
+    try {
+      const res = await fetch('/api/tareas')
+      const data = await res.json()
+      const kvTareas: Tarea[] = Array.isArray(data) ? data : []
+
+      // Migración suave: si KV está vacío pero el navegador tiene datos del
+      // localStorage antiguo ('crm-tareas-storage'), súbelos a KV una sola vez.
+      if (kvTareas.length === 0 && typeof window !== 'undefined') {
+        try {
+          const raw = window.localStorage.getItem('crm-tareas-storage')
+          const legacy: Tarea[] = raw ? (JSON.parse(raw)?.state?.tareas || []) : []
+          if (legacy.length > 0) {
+            set({ tareas: legacy, loaded: true })
+            await persistTareas(legacy)
+            return
+          }
+        } catch (e) {
+          console.error('[tareas-store] migración localStorage error:', e)
         }
-        return saved
-      },
+      }
+
+      set({ tareas: kvTareas, loaded: true })
+    } catch (err) {
+      console.error('[tareas-store] load error:', err)
+      set({ loaded: true })
     }
-  )
-)
+  },
+  addTarea: (t) => {
+    const tareas = [...get().tareas, t]
+    set({ tareas })
+    persistTareas(tareas)
+  },
+  updateTarea: (id, t) => {
+    const tareas = get().tareas.map((r) => (r.id === id ? { ...r, ...t } : r))
+    set({ tareas })
+    persistTareas(tareas)
+  },
+  deleteTarea: (id) => {
+    const tareas = get().tareas.filter((r) => r.id !== id)
+    set({ tareas })
+    persistTareas(tareas)
+  },
+  addSituacion: (sit) => set((s) => ({ situaciones: [...s.situaciones, sit] })),
+  updateSituacion: (id, sit) => set((s) => ({ situaciones: s.situaciones.map((r) => r.id === id ? { ...r, ...sit } : r) })),
+  deleteSituacion: (id) => set((s) => ({ situaciones: s.situaciones.filter((r) => r.id !== id) })),
+}))

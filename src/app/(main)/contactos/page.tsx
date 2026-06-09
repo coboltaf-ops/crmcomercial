@@ -34,6 +34,7 @@ export default function ContactosPage() {
   const permisos = usePermisos('contactos')
   const currentUser = useCurrentUserStore(s => s.user)
   const { contactos, addContacto, updateContacto, deleteContacto } = useContactosStore()
+  const loadContactos = useContactosStore(s => s.loadContactos)
   const clientes = useClientesStore(s => s.clientes).filter(c => c.situacion === 'Activo')
   const refData = useReferenceStore(s => s.data)
 
@@ -48,6 +49,7 @@ export default function ContactosPage() {
   const { pendingSearch, pendingAction, clearPending } = useAsistenteStore()
   const searchParams = useSearchParams()
   const router = useRouter()
+  useEffect(() => { loadContactos() }, [loadContactos])
   useEffect(() => {
     if (pendingSearch) setSearch(pendingSearch)
     if (pendingAction === 'nuevo') { setSelected(emptyContacto(nextConsecutivo('CON-', contactos.map(c => c.codigo)).codigo)); setIsForm(true) }

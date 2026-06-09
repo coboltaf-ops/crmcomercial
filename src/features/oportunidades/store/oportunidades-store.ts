@@ -1,5 +1,4 @@
 import { create } from 'zustand'
-import { persist } from 'zustand/middleware'
 import { Seguimiento } from '@/shared/types/seguimiento'
 
 export type { Seguimiento }
@@ -61,19 +60,71 @@ export interface Oportunidad {
 
 interface OportunidadesState {
   oportunidades: Oportunidad[]
+  loaded: boolean
+  loadOportunidades: () => Promise<void>
   addOportunidad: (o: Oportunidad) => void
   updateOportunidad: (id: string, o: Partial<Oportunidad>) => void
   deleteOportunidad: (id: string) => void
 }
 
-export const useOportunidadesStore = create<OportunidadesState>()(
-  persist(
-    (set) => ({
-      oportunidades: [],
-      addOportunidad: (o) => set((s) => ({ oportunidades: [...s.oportunidades, o] })),
-      updateOportunidad: (id, o) => set((s) => ({ oportunidades: s.oportunidades.map((r) => r.id === id ? { ...r, ...o } : r) })),
-      deleteOportunidad: (id) => set((s) => ({ oportunidades: s.oportunidades.filter((r) => r.id !== id) })),
-    }),
-    { name: 'crm-oportunidades-storage' }
-  )
-)
+// Persiste la lista completa en Vercel KV vía /api/oportunidades.
+// Así los datos sobreviven a cualquier navegador o despliegue.
+async function persistOportunidades(oportunidades: Oportunidad[]) {
+  try {
+    await fetch('/api/oportunidades', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(oportunidades),
+    })
+  } catch (err) {
+    console.error('[oportunidades-store] persist error:', err)
+  }
+}
+
+export const useOportunidadesStore = create<OportunidadesState>()((set, get) => ({
+  oportunidades: [],
+  loaded: false,
+  loadOportunidades: async () => {
+    try {
+      const res = await fetch('/api/oportunidades')
+      const data = await res.json()
+      const kvOportunidades: Oportunidad[] = Array.isArray(data) ? data : []
+
+      // Migración suave: si KV está vacío pero el navegador tiene datos del
+      // localStorage antiguo ('crm-oportunidades-storage'), súbelos a KV una sola vez.
+      if (kvOportunidades.length === 0 && typeof window !== 'undefined') {
+        try {
+          const raw = window.localStorage.getItem('crm-oportunidades-storage')
+          const legacy: Oportunidad[] = raw ? (JSON.parse(raw)?.state?.oportunidades || []) : []
+          if (legacy.length > 0) {
+            set({ oportunidades: legacy, loaded: true })
+            await persistOportunidades(legacy)
+            return
+          }
+        } catch (e) {
+          console.error('[oportunidades-store] migración localStorage error:', e)
+        }
+      }
+
+      set({ oportunidades: kvOportunidades, loaded: true })
+    } catch (err) {
+      console.error('[oportunidades-store] load error:', err)
+      set({ loaded: true })
+    }
+  },
+  addOportunidad: (o) => {
+    const oportunidades = [...get().oportunidades, o]
+    set({ oportunidades })
+    persistOportunidades(oportunidades)
+  },
+  updateOportunidad: (id, o) => {
+    const oportunidades = get().oportunidades.map((r) => (r.id === id ? { ...r, ...o } : r))
+    set({ oportunidades })
+    persistOportunidades(oportunidades)
+  },
+  deleteOportunidad: (id) => {
+    const oportunidades = get().oportunidades.filter((r) => r.id !== id)
+    set({ oportunidades })
+    persistOportunidades(oportunidades)
+  },
+}))

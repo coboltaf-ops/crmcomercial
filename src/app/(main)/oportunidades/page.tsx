@@ -46,6 +46,7 @@ export default function OportunidadesPage() {
   const permisos = usePermisos('oportunidades')
   const currentUser = useCurrentUserStore(s => s.user)
   const { oportunidades, addOportunidad, updateOportunidad, deleteOportunidad } = useOportunidadesStore()
+  const loadOportunidades = useOportunidadesStore(s => s.loadOportunidades)
   const clientes = useClientesStore(s => s.clientes).filter(c => {
     const sit = (c.situacion || '').trim().toLowerCase()
     return sit === 'activo' || sit === 'prospectando' || sit === 'prospecto'
@@ -64,6 +65,8 @@ export default function OportunidadesPage() {
   const [nuevoDocTexto, setNuevoDocTexto] = useState('')
   const searchParams = useSearchParams()
   const router = useRouter()
+
+  useEffect(() => { loadOportunidades() }, [loadOportunidades])
 
   useEffect(() => {
     const openId = searchParams.get('open')
