@@ -64,6 +64,7 @@ export default function CotizacionesPage() {
   const [selected, setSelected] = useState<Cotizacion | null>(null)
   const [isForm, setIsForm] = useState(false)
   const [viewDetail, setViewDetail] = useState<Cotizacion | null>(null)
+  const [verLectura, setVerLectura] = useState(false)
   const [tab, setTab] = useState<'registros' | 'reportes'>('registros')
   const [search, setSearch] = useState('')
   const [searchProd, setSearchProd] = useState('')
@@ -438,10 +439,11 @@ export default function CotizacionesPage() {
     const { subtotal, impuesto, total } = calcTotals(selected.detalles, selected.pct_impuesto)
     return (
       <div>
-        <button onClick={() => { setIsForm(false); setSelected(null) }} style={{ ...btnStyle, background: '#000000', color: '#ffffff', border: '1px solid #333333', marginBottom: 16 }}>{t('btn.volver')}</button>
+        <button onClick={() => { setIsForm(false); setSelected(null); setVerLectura(false) }} style={{ ...btnStyle, background: '#000000', color: '#ffffff', border: '1px solid #333333', marginBottom: 16 }}>{t('btn.volver')}</button>
         <form onSubmit={handleSave} style={{ background: '#ffffff', borderRadius: 16, padding: 24, border: '1px solid #1e3a8a' }}>
-          <h2 style={{ color: '#013978', fontSize: 18, fontWeight: 700, marginBottom: 20, textAlign: 'center' }}>{selected.id ? t('fmt.editarCotizacion') : t('fmt.nuevaCotizacion')} Nro {selected.codigo}</h2>
+          <h2 style={{ color: '#013978', fontSize: 18, fontWeight: 700, marginBottom: 20, textAlign: 'center' }}>{verLectura ? 'Ver Cotización' : `${selected.id ? t('fmt.editarCotizacion') : t('fmt.nuevaCotizacion')} Nro ${selected.codigo}`}</h2>
 
+          <fieldset disabled={verLectura} style={{ border: 'none', padding: 0, margin: 0, minInlineSize: 'auto' }}>
           {/* Header fields */}
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 16, marginBottom: 20 }}>
             <div style={{ gridColumn: 'span 3' }}>
@@ -627,9 +629,10 @@ export default function CotizacionesPage() {
             <textarea value={selected.observaciones} onChange={e => setSelected({ ...selected, observaciones: e.target.value })} rows={3} style={{ ...inputStyle, resize: 'vertical' }} />
           </div>
 
+          </fieldset>
           <div style={{ display: 'flex', gap: 10 }}>
-            <button type="submit" style={{ ...btnStyle, background: '#1e3a8a', color: '#ffffff' }}>{t('btn.guardar')}</button>
-            <button type="button" onClick={() => { setIsForm(false); setSelected(null) }} style={{ ...btnStyle, background: '#64748b', color: '#ffffff' }}>{t('btn.cancelar')}</button>
+            {!verLectura && <button type="submit" style={{ ...btnStyle, background: '#1e3a8a', color: '#ffffff' }}>{t('btn.guardar')}</button>}
+            <button type="button" onClick={() => { setIsForm(false); setSelected(null); setVerLectura(false) }} style={{ ...btnStyle, background: '#64748b', color: '#ffffff' }}>{verLectura ? t('btn.volver') : t('btn.cancelar')}</button>
           </div>
         </form>
         {selected.id && <DocumentosPanel modulo="cotizaciones" registroId={selected.id} />}
@@ -705,7 +708,7 @@ export default function CotizacionesPage() {
                       </td>
                       <td style={{ padding: '8px 10px', borderBottom: '1px solid #e2e8f0' }}>
                         <div style={{ display: 'flex', gap: 3, flexWrap: 'wrap' }}>
-                          <button onClick={() => setViewDetail(c)} style={{ ...btnStyle, padding: '3px 8px', fontSize: 9, background: '#ea580c', color: '#ffffff', border: '1px solid #f97316' }}>Ver</button>
+                          <button onClick={() => { setSelected(c); setVerLectura(true); setIsForm(true) }} style={{ ...btnStyle, padding: '3px 8px', fontSize: 9, background: '#ea580c', color: '#ffffff', border: '1px solid #f97316' }}>Ver</button>
                           <button onClick={() => generatePDF(c)} style={{ ...btnStyle, padding: '3px 8px', fontSize: 9, background: '#b91c1c', color: '#ffffff', border: '1px solid #dc2626' }}>PDF</button>
                           <button onClick={() => { setEmailTo(''); setEmailAsunto(''); setEmailMsg(''); setEmailModal(c) }} style={{ ...btnStyle, padding: '3px 8px', fontSize: 9, background: '#1e3a8a', color: '#ffffff', border: '1px solid #3b82f6' }}>Mail</button>
                           {(() => {

@@ -50,6 +50,7 @@ export default function ClientesPage() {
   const [selected, setSelected] = useState<Cliente | null>(null)
   const [isForm, setIsForm] = useState(false)
   const [viewDetail, setViewDetail] = useState<Cliente | null>(null)
+  const [verLectura, setVerLectura] = useState(false)
   const [correoModal, setCorreoModal] = useState<{ to: string; ref: string } | null>(null)
   const [tab, setTab] = useState<'registros' | 'reportes'>('registros')
   const [detailTab, setDetailTab] = useState<'info' | 'contactos' | 'cotizaciones' | 'oportunidades' | 'tickets'>('info')
@@ -334,9 +335,9 @@ export default function ClientesPage() {
 
     return (
       <div>
-        <button onClick={() => { setIsForm(false); setSelected(null); setDetailTab('info') }} style={{ ...btnStyle, background: '#000000', color: '#ffffff', border: '1px solid #333333', marginBottom: 16 }}>{t('btn.volver')}</button>
+        <button onClick={() => { setIsForm(false); setSelected(null); setVerLectura(false); setDetailTab('info') }} style={{ ...btnStyle, background: '#000000', color: '#ffffff', border: '1px solid #333333', marginBottom: 16 }}>{t('btn.volver')}</button>
         <div style={{ background: '#ffffff', borderRadius: 16, padding: 24, border: '1px solid #1e3a8a' }}>
-          <h2 style={{ color: '#013978', fontSize: 18, fontWeight: 700, marginBottom: 12 }}>{selected.id ? t('fmt.editarCliente') : t('fmt.nuevoCliente')} {selected.razon_social ? `— ${selected.razon_social}` : ''}</h2>
+          <h2 style={{ color: '#013978', fontSize: 18, fontWeight: 700, marginBottom: 12 }}>{verLectura ? (idioma === 'en' ? 'View Company' : 'Ver Empresa') : (selected.id ? t('fmt.editarCliente') : t('fmt.nuevoCliente'))} {selected.razon_social ? `— ${selected.razon_social}` : ''}</h2>
 
           {/* Sub-tabs en modo edición (solo si ya existe el cliente) */}
           {cId && (
@@ -434,6 +435,7 @@ export default function ClientesPage() {
 
           {(detailTab === 'info' || !cId) && (
         <form onSubmit={handleSave}>
+          <fieldset disabled={verLectura} style={{ border: 'none', padding: 0, margin: 0, minInlineSize: 'auto' }}>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 16 }}>
             <div>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.codigo')}</label>
@@ -548,9 +550,10 @@ export default function ClientesPage() {
               <textarea value={selected.observaciones} onChange={e => setSelected({ ...selected, observaciones: e.target.value })} rows={3} style={{ ...inputStyle, resize: 'vertical' }} />
             </div>
           </div>
+          </fieldset>
           <div style={{ display: 'flex', gap: 10, marginTop: 20 }}>
-            <button type="submit" style={{ ...btnStyle, background: '#1e3a8a', color: '#ffffff' }}>{t('btn.guardar')}</button>
-            <button type="button" onClick={() => { setIsForm(false); setSelected(null) }} style={{ ...btnStyle, background: '#64748b', color: '#ffffff' }}>{t('btn.cancelar')}</button>
+            {!verLectura && <button type="submit" style={{ ...btnStyle, background: '#1e3a8a', color: '#ffffff' }}>{t('btn.guardar')}</button>}
+            <button type="button" onClick={() => { setIsForm(false); setSelected(null); setVerLectura(false) }} style={{ ...btnStyle, background: '#64748b', color: '#ffffff' }}>{verLectura ? t('btn.volver') : t('btn.cancelar')}</button>
           </div>
         </form>
           )}
@@ -626,7 +629,7 @@ export default function ClientesPage() {
                     </td>
                     <td style={{ padding: '8px 10px', borderBottom: '1px solid #e2e8f0' }}>
                       <div style={{ display: 'flex', gap: 4 }}>
-                        <button onClick={() => setViewDetail(c)} style={{ ...btnStyle, padding: '3px 10px', fontSize: 10, background: '#ea580c', color: '#ffffff', border: '1px solid #f97316' }}>Ver</button>
+                        <button onClick={() => { setSelected(c); setVerLectura(true); setIsForm(true) }} style={{ ...btnStyle, padding: '3px 10px', fontSize: 10, background: '#ea580c', color: '#ffffff', border: '1px solid #f97316' }}>Ver</button>
                         <button onClick={() => setCorreoModal({ to: c.email || '', ref: c.codigo })} title="Enviar correo" style={{ ...btnStyle, padding: '3px 10px', fontSize: 10, background: '#0ea5e9', color: '#ffffff', border: '1px solid #38bdf8' }}>✉</button>
                         {isValidPhone(c.telefono) && (
                           <a href={buildWhatsAppLink(c.telefono, idioma === 'en' ? `Hi ${c.razon_social}, this is a quick message from us.` : `Hola ${c.razon_social}, te escribimos desde nuestra empresa.`)} target="_blank" rel="noopener noreferrer" style={{ ...btnStyle, padding: '3px 10px', fontSize: 10, background: '#25d366', color: '#ffffff', border: '1px solid #128c7e', textDecoration: 'none', display: 'inline-flex', alignItems: 'center' }}>WA</a>

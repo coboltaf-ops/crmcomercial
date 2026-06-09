@@ -57,6 +57,7 @@ export default function OportunidadesPage() {
   const [selected, setSelected] = useState<Oportunidad | null>(null)
   const [isForm, setIsForm] = useState(false)
   const [viewDetail, setViewDetail] = useState<Oportunidad | null>(null)
+  const [verLectura, setVerLectura] = useState(false)
   const [correoModal, setCorreoModal] = useState<{ to: string; ref: string } | null>(null)
   const [tab, setTab] = useState<'registros' | 'reportes'>('registros')
   const [search, setSearch] = useState('')
@@ -278,9 +279,10 @@ export default function OportunidadesPage() {
     const der = calcDerivados(selected)
     return (
       <div>
-        <button onClick={() => { setIsForm(false); setSelected(null) }} style={{ ...btnStyle, background: '#000000', color: '#ffffff', border: '1px solid #333333', marginBottom: 16 }}>{t('btn.volver')}</button>
+        <button onClick={() => { setIsForm(false); setSelected(null); setVerLectura(false) }} style={{ ...btnStyle, background: '#000000', color: '#ffffff', border: '1px solid #333333', marginBottom: 16 }}>{t('btn.volver')}</button>
         <form onSubmit={handleSave} style={{ background: '#ffffff', borderRadius: 16, padding: 24, border: '1px solid #1e3a8a' }}>
-          <h2 style={{ color: '#013978', fontSize: 18, fontWeight: 700, marginBottom: 20 }}>{selected.id ? t('fmt.editarOportunidad') : t('fmt.nuevaOportunidad')}</h2>
+          <h2 style={{ color: '#013978', fontSize: 18, fontWeight: 700, marginBottom: 20 }}>{verLectura ? 'Ver Oportunidad' : (selected.id ? t('fmt.editarOportunidad') : t('fmt.nuevaOportunidad'))}</h2>
+          <fieldset disabled={verLectura} style={{ border: 'none', padding: 0, margin: 0, minInlineSize: 'auto' }}>
 
           {/* DATOS PRINCIPALES */}
           <h3 className="seccion-franja" style={sectionTitle('#1e3a8a')}>{t('lbl.datosPrincipales')}</h3>
@@ -575,10 +577,11 @@ export default function OportunidadesPage() {
             <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.observaciones')}</label>
             <textarea value={selected.observaciones} onChange={e => setSelected({ ...selected, observaciones: e.target.value })} rows={3} style={{ ...inputStyle, resize: 'vertical' }} />
           </div>
+          </fieldset>
 
           <div style={{ display: 'flex', gap: 10, marginTop: 20 }}>
-            <button type="submit" style={{ ...btnStyle, background: '#0f1b3d', color: '#ffffff' }}>{selected.id ? 'Actualizar' : 'Crear'} Oportunidad</button>
-            <button type="button" onClick={() => { setIsForm(false); setSelected(null) }} style={{ ...btnStyle, background: '#64748b', color: '#ffffff' }}>{t('btn.cancelar')}</button>
+            {!verLectura && <button type="submit" style={{ ...btnStyle, background: '#0f1b3d', color: '#ffffff' }}>{selected.id ? 'Actualizar' : 'Crear'} Oportunidad</button>}
+            <button type="button" onClick={() => { setIsForm(false); setSelected(null); setVerLectura(false) }} style={{ ...btnStyle, background: '#64748b', color: '#ffffff' }}>{verLectura ? t('btn.volver') : t('btn.cancelar')}</button>
           </div>
         </form>
         {selected.id && <DocumentosPanel modulo="oportunidades" registroId={selected.id} />}
@@ -659,7 +662,7 @@ export default function OportunidadesPage() {
                     </td>
                     <td style={{ padding: '10px 14px', borderBottom: '1px solid #e2e8f0' }}>
                       <div style={{ display: 'flex', gap: 6 }}>
-                        <button onClick={() => setViewDetail(o)} style={{ ...btnStyle, padding: '4px 12px', fontSize: 11, background: '#ea580c', color: '#fff', border: '1px solid #f97316' }}>{idioma === 'en' ? 'View' : 'Ver'}</button>
+                        <button onClick={() => { setSelected(o); setVerLectura(true); setIsForm(true) }} style={{ ...btnStyle, padding: '4px 12px', fontSize: 11, background: '#ea580c', color: '#fff', border: '1px solid #f97316' }}>{idioma === 'en' ? 'View' : 'Ver'}</button>
                         <button onClick={() => { const con = allContactos.find(c => c.id === o.contacto_id); setCorreoModal({ to: con?.email || '', ref: o.codigo }) }} title="Enviar correo" style={{ ...btnStyle, padding: '4px 12px', fontSize: 11, background: '#0ea5e9', color: '#fff', border: '1px solid #38bdf8' }}>✉</button>
                         {(() => {
                           const con = allContactos.find(x => x.id === o.contacto_id)

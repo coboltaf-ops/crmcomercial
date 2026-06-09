@@ -40,6 +40,7 @@ export default function ContactosPage() {
   const [selected, setSelected] = useState<Contacto | null>(null)
   const [isForm, setIsForm] = useState(false)
   const [viewDetail, setViewDetail] = useState<Contacto | null>(null)
+  const [verLectura, setVerLectura] = useState(false)
   const [correoModal, setCorreoModal] = useState<{ to: string; ref: string } | null>(null)
   const [tab, setTab] = useState<'registros' | 'reportes'>('registros')
   const [search, setSearch] = useState('')
@@ -157,9 +158,10 @@ export default function ContactosPage() {
     const refOptions = (table: string) => (refData[table as keyof typeof refData] || []).filter(r => r.situacion).map(r => r.descripcion)
     return (
       <div>
-        <button onClick={() => { setIsForm(false); setSelected(null) }} style={{ ...btnStyle, background: '#000000', color: '#ffffff', border: '1px solid #333333', marginBottom: 16 }}>{t('btn.volver')}</button>
+        <button onClick={() => { setIsForm(false); setSelected(null); setVerLectura(false) }} style={{ ...btnStyle, background: '#000000', color: '#ffffff', border: '1px solid #333333', marginBottom: 16 }}>{t('btn.volver')}</button>
         <form onSubmit={handleSave} style={{ background: '#ffffff', borderRadius: 16, padding: 24, border: '1px solid #1e3a8a' }}>
-          <h2 style={{ color: '#013978', fontSize: 18, fontWeight: 700, marginBottom: 20 }}>{selected.id ? t('fmt.editarContacto') : t('fmt.nuevoContacto')}</h2>
+          <h2 style={{ color: '#013978', fontSize: 18, fontWeight: 700, marginBottom: 20 }}>{verLectura ? 'Ver Contacto' : (selected.id ? t('fmt.editarContacto') : t('fmt.nuevoContacto'))}</h2>
+          <fieldset disabled={verLectura} style={{ border: 'none', padding: 0, margin: 0, minInlineSize: 'auto' }}>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 16 }}>
             <div>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.codigo')}</label>
@@ -229,9 +231,10 @@ export default function ContactosPage() {
               <textarea value={selected.observaciones} onChange={e => setSelected({ ...selected, observaciones: e.target.value })} rows={3} style={{ ...inputStyle, resize: 'vertical' }} />
             </div>
           </div>
+          </fieldset>
           <div style={{ display: 'flex', gap: 10, marginTop: 20 }}>
-            <button type="submit" style={{ ...btnStyle, background: '#1e3a8a', color: '#ffffff' }}>{t('btn.guardar')}</button>
-            <button type="button" onClick={() => { setIsForm(false); setSelected(null) }} style={{ ...btnStyle, background: '#64748b', color: '#ffffff' }}>{t('btn.cancelar')}</button>
+            {!verLectura && <button type="submit" style={{ ...btnStyle, background: '#1e3a8a', color: '#ffffff' }}>{t('btn.guardar')}</button>}
+            <button type="button" onClick={() => { setIsForm(false); setSelected(null); setVerLectura(false) }} style={{ ...btnStyle, background: '#64748b', color: '#ffffff' }}>{verLectura ? t('btn.volver') : t('btn.cancelar')}</button>
           </div>
         </form>
         {selected.id && <DocumentosPanel modulo="contactos" registroId={selected.id} />}
@@ -309,7 +312,7 @@ export default function ContactosPage() {
                     </td>
                     <td style={{ padding: '8px 10px', borderBottom: '1px solid #e2e8f0' }}>
                       <div style={{ display: 'flex', gap: 4 }}>
-                        <button onClick={() => setViewDetail(c)} style={{ ...btnStyle, padding: '3px 10px', fontSize: 10, background: '#ea580c', color: '#ffffff', border: '1px solid #f97316' }}>Ver</button>
+                        <button onClick={() => { setSelected(c); setVerLectura(true); setIsForm(true) }} style={{ ...btnStyle, padding: '3px 10px', fontSize: 10, background: '#ea580c', color: '#ffffff', border: '1px solid #f97316' }}>Ver</button>
                         <button onClick={() => setCorreoModal({ to: c.email || '', ref: c.codigo })} title="Enviar correo" style={{ ...btnStyle, padding: '3px 10px', fontSize: 10, background: '#0ea5e9', color: '#ffffff', border: '1px solid #38bdf8' }}>✉</button>
                         {(isValidPhone(c.celular) || isValidPhone(c.telefono)) && (
                           <a href={buildWhatsAppLink(c.celular || c.telefono, idioma === 'en' ? `Hi ${c.nombre}, this is a quick message from us.` : `Hola ${c.nombre}, te escribimos desde nuestra empresa.`)} target="_blank" rel="noopener noreferrer" style={{ ...btnStyle, padding: '3px 10px', fontSize: 10, background: '#25d366', color: '#ffffff', border: '1px solid #128c7e', textDecoration: 'none', display: 'inline-flex', alignItems: 'center' }}>WA</a>

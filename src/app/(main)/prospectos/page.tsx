@@ -45,6 +45,7 @@ export default function ProspectosPage() {
   const [selected, setSelected] = useState<Prospecto | null>(null)
   const [isForm, setIsForm] = useState(false)
   const [viewDetail, setViewDetail] = useState<Prospecto | null>(null)
+  const [verLectura, setVerLectura] = useState(false)
   const [tab, setTab] = useState<'registros' | 'reportes'>('registros')
   const [search, setSearch] = useState('')
   const { pendingSearch, pendingAction, clearPending } = useAsistenteStore()
@@ -275,9 +276,10 @@ export default function ProspectosPage() {
   if (isForm && selected) {
     return (
       <div>
-        <button onClick={() => { setIsForm(false); setSelected(null) }} style={{ ...btnStyle, background: '#000000', color: '#ffffff', border: '1px solid #333333', marginBottom: 16 }}>{t('btn.volver')}</button>
+        <button onClick={() => { setIsForm(false); setSelected(null); setVerLectura(false) }} style={{ ...btnStyle, background: '#000000', color: '#ffffff', border: '1px solid #333333', marginBottom: 16 }}>{t('btn.volver')}</button>
         <form onSubmit={handleSave} style={{ background: '#ffffff', borderRadius: 16, padding: 24, border: '1px solid #1e3a8a' }}>
-          <h2 style={{ color: '#013978', fontSize: 18, fontWeight: 700, marginBottom: 20 }}>{selected.id ? t('fmt.editarProspecto') : t('fmt.nuevoProspecto')}</h2>
+          <h2 style={{ color: '#013978', fontSize: 18, fontWeight: 700, marginBottom: 20 }}>{verLectura ? (idioma === 'en' ? 'View Prospect' : 'Ver Prospecto') : (selected.id ? t('fmt.editarProspecto') : t('fmt.nuevoProspecto'))}</h2>
+          <fieldset disabled={verLectura} style={{ border: 'none', padding: 0, margin: 0, minInlineSize: 'auto' }}>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 16 }}>
             <div>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.codigo')}</label>
@@ -346,9 +348,10 @@ export default function ProspectosPage() {
               <textarea value={selected.detalle_requerimiento} onChange={e => setSelected({ ...selected, detalle_requerimiento: e.target.value })} rows={3} style={{ ...inputStyle, resize: 'vertical' }} />
             </div>
           </div>
+          </fieldset>
           <div style={{ display: 'flex', gap: 10, marginTop: 20 }}>
-            <button type="submit" style={{ ...btnStyle, background: '#1e3a8a', color: '#ffffff' }}>{t('btn.guardar')}</button>
-            <button type="button" onClick={() => { setIsForm(false); setSelected(null) }} style={{ ...btnStyle, background: '#64748b', color: '#ffffff' }}>{t('btn.cancelar')}</button>
+            {!verLectura && <button type="submit" style={{ ...btnStyle, background: '#1e3a8a', color: '#ffffff' }}>{t('btn.guardar')}</button>}
+            <button type="button" onClick={() => { setIsForm(false); setSelected(null); setVerLectura(false) }} style={{ ...btnStyle, background: '#64748b', color: '#ffffff' }}>{verLectura ? t('btn.volver') : t('btn.cancelar')}</button>
           </div>
         </form>
         {selected.id && <DocumentosPanel modulo="prospectos" registroId={selected.id} />}
@@ -459,7 +462,7 @@ export default function ProspectosPage() {
                     </td>
                     <td style={{ padding: '10px 14px', borderBottom: '1px solid #e2e8f0' }}>
                       <div style={{ display: 'flex', gap: 6 }}>
-                        <button onClick={() => setViewDetail(p)} style={{ ...btnStyle, padding: '4px 12px', fontSize: 11, background: '#ea580c', color: '#ffffff', border: '1px solid #f97316' }}>{idioma === 'en' ? 'View' : 'Ver'}</button>
+                        <button onClick={() => { setSelected(p); setVerLectura(true); setIsForm(true) }} style={{ ...btnStyle, padding: '4px 12px', fontSize: 11, background: '#ea580c', color: '#ffffff', border: '1px solid #f97316' }}>{idioma === 'en' ? 'View' : 'Ver'}</button>
                         {isValidPhone(p.nro_movil) && (
                           <a href={buildWhatsAppLink(p.nro_movil, idioma === 'en' ? `Hi ${p.nombre}, thank you for contacting us. We received your inquiry and will get back to you soon.` : `Hola ${p.nombre}, muchas gracias por contactarnos. Recibimos tu solicitud y pronto te contactaremos.`)} target="_blank" rel="noopener noreferrer" style={{ ...btnStyle, padding: '4px 12px', fontSize: 11, background: '#25d366', color: '#ffffff', border: '1px solid #128c7e', textDecoration: 'none', display: 'inline-flex', alignItems: 'center' }}>WhatsApp</a>
                         )}

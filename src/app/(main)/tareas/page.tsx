@@ -46,6 +46,7 @@ export default function TareasPage() {
   const [vistaLista, setVistaLista] = useState<VistaLista>('tabla')
   const [selected, setSelected] = useState<Tarea | null>(null)
   const [viewDetail, setViewDetail] = useState<Tarea | null>(null)
+  const [verLectura, setVerLectura] = useState(false)
   const [search, setSearch] = useState('')
   const [filtroSituacion, setFiltroSituacion] = useState('')
 
@@ -156,7 +157,7 @@ export default function TareasPage() {
         <div style={{ display: 'flex', gap: 10, marginBottom: 16 }}>
           <button onClick={() => { setViewDetail(null); setVista('lista') }} style={{ ...btnStyle, background: '#000', color: '#fff', border: '1px solid #333' }}>{tr('btn.volver')}</button>
           {permisos.editar && viewDetail.situacion !== 'Completada' && viewDetail.situacion !== 'Cancelada' && (
-            <button onClick={() => { setSelected(viewDetail); setVista('form') }} style={{ ...btnStyle, background: 'rgba(59,130,246,0.15)', color: '#60a5fa', border: '1px solid rgba(59,130,246,0.3)' }}>{tr('btn.editar')}</button>
+            <button onClick={() => { setSelected(viewDetail); setVerLectura(false); setVista('form') }} style={{ ...btnStyle, background: 'rgba(59,130,246,0.15)', color: '#60a5fa', border: '1px solid rgba(59,130,246,0.3)' }}>{tr('btn.editar')}</button>
           )}
           {permisos.eliminar && (
             <button onClick={() => { if (confirm(idi === 'en' ? 'Delete task?' : '¿Eliminar tarea?')) { deleteTarea(viewDetail.id); setViewDetail(null); setVista('lista') } }}
@@ -211,9 +212,10 @@ export default function TareasPage() {
   if (vista === 'form' && selected) {
     return (
       <div>
-        <button onClick={() => { setSelected(null); setVista('lista') }} style={{ ...btnStyle, background: '#000', color: '#fff', border: '1px solid #333', marginBottom: 16 }}>← Cancelar</button>
+        <button onClick={() => { setSelected(null); setVerLectura(false); setVista('lista') }} style={{ ...btnStyle, background: '#000', color: '#fff', border: '1px solid #333', marginBottom: 16 }}>← Cancelar</button>
         <form onSubmit={handleSave} style={cardStyle}>
-          <h2 style={{ color: '#fff', fontSize: 18, fontWeight: 700, marginBottom: 20 }}>{selected.id ? tr('fmt.editarTarea') : tr('fmt.nuevaTarea')}</h2>
+          <h2 style={{ color: '#fff', fontSize: 18, fontWeight: 700, marginBottom: 20 }}>{verLectura ? 'Ver Tarea' : (selected.id ? tr('fmt.editarTarea') : tr('fmt.nuevaTarea'))}</h2>
+          <fieldset disabled={verLectura} style={{ border: 'none', padding: 0, margin: 0, minInlineSize: 'auto' }}>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 16 }}>
             <div>
               <label style={labelStyle}>{tr('lbl.codigo')}</label>
@@ -267,12 +269,15 @@ export default function TareasPage() {
                 style={{ ...inputStyle, resize: 'vertical', minHeight: 100 }} />
             </div>
           </div>
+          </fieldset>
           <div style={{ marginTop: 20, display: 'flex', gap: 10 }}>
-            <button type="submit" style={{ ...btnStyle, background: '#22c55e', color: '#fff', border: '1px solid #16a34a' }}>
-              {selected.id ? 'Actualizar' : 'Guardar'} Tarea
-            </button>
-            <button type="button" onClick={() => { setSelected(null); setVista('lista') }} style={{ ...btnStyle, background: 'rgba(255,255,255,0.1)', color: '#0f172a', border: '1px solid rgba(255,255,255,0.2)' }}>
-              Cancelar
+            {!verLectura && (
+              <button type="submit" style={{ ...btnStyle, background: '#22c55e', color: '#fff', border: '1px solid #16a34a' }}>
+                {selected.id ? 'Actualizar' : 'Guardar'} Tarea
+              </button>
+            )}
+            <button type="button" onClick={() => { setSelected(null); setVerLectura(false); setVista('lista') }} style={{ ...btnStyle, background: 'rgba(255,255,255,0.1)', color: '#0f172a', border: '1px solid rgba(255,255,255,0.2)' }}>
+              {verLectura ? 'Volver' : 'Cancelar'}
             </button>
           </div>
         </form>
@@ -394,7 +399,7 @@ export default function TareasPage() {
             </button>
           </div>
           {permisos.editar && (
-            <button onClick={() => { setSelected(emptyTarea(nextConsecutivo('TAR-', tareas.map(t => t.codigo)).codigo)); setVista('form') }}
+            <button onClick={() => { setSelected(emptyTarea(nextConsecutivo('TAR-', tareas.map(t => t.codigo)).codigo)); setVerLectura(false); setVista('form') }}
               style={{ ...btnStyle, background: '#1e3a8a', color: '#fff' }}>{tr('page.tareas.btnNuevo')}</button>
           )}
         </div>
@@ -454,10 +459,10 @@ export default function TareasPage() {
                       <td style={{ padding: '10px 14px' }}><span style={situacionBadge(t.situacion)}>{t.situacion}</span></td>
                       <td style={{ padding: '10px 14px' }}>
                         <div style={{ display: 'flex', gap: 4 }}>
-                          <button onClick={() => { setViewDetail(t); setVista('detalle') }}
+                          <button onClick={() => { setSelected(t); setVerLectura(true); setVista('form') }}
                             style={{ ...btnStyle, background: '#1e40af', color: '#ffffff', border: '1px solid #3b82f6', padding: '3px 10px', fontSize: 10 }}>Ver</button>
                           {permisos.editar && (
-                            <button onClick={() => { setSelected(t); setVista('form') }}
+                            <button onClick={() => { setSelected(t); setVerLectura(false); setVista('form') }}
                               style={{ ...btnStyle, background: '#047857', color: '#ffffff', border: '1px solid #10b981', padding: '3px 10px', fontSize: 10 }}>Edit</button>
                           )}
                           {permisos.eliminar && (
