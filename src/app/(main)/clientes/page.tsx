@@ -355,6 +355,16 @@ export default function ClientesPage() {
         <div style={{ background: '#ffffff', borderRadius: 16, padding: 24, border: '1px solid #1e3a8a' }}>
           <h2 style={{ color: '#013978', fontSize: 18, fontWeight: 700, marginBottom: 12 }}>{verLectura ? (idioma === 'en' ? 'View Company' : 'Ver Empresa') : (selected.id ? t('fmt.editarCliente') : t('fmt.nuevoCliente'))} {selected.razon_social ? `— ${selected.razon_social}` : ''}</h2>
 
+          {/* Creado por — visible en modo Ver (arriba a la izquierda) */}
+          {verLectura && (
+            <div style={{ marginBottom: 16, padding: '12px 16px', background: '#fde68a', borderRadius: 12, border: '2px solid #000000', textAlign: 'left' }}>
+              <p style={{ color: '#000000', fontSize: 13, fontWeight: 800, marginBottom: 2 }}>👤 CREADO POR</p>
+              <p style={{ color: '#000000', fontSize: 24, fontWeight: 900 }}>
+                {selected.creado_por || '—'}{selected.creado_por_usuario ? ` (${selected.creado_por_usuario})` : ''}{selected.creado_en ? ` · ${selected.creado_en}` : ''}
+              </p>
+            </div>
+          )}
+
           {/* Sub-tabs en modo edición (solo si ya existe el cliente) */}
           {cId && (
             <div style={{ display: 'flex', gap: 8, marginBottom: 20, flexWrap: 'wrap' }}>
