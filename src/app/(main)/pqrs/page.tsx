@@ -15,6 +15,7 @@ import { usePermisos } from '@/shared/hooks/use-permisos'
 import { fDate, todayColombia } from '@/shared/lib/format-date'
 import { nextConsecutivo } from '@/shared/lib/consecutivo'
 import ReportPanel from '@/shared/components/report-panel'
+import { useIdioma } from '@/shared/i18n/use-t'
 
 interface PQRSExterna {
   id: string; radicado: string; fecha: string; tipo: string; prioridad: string
@@ -36,6 +37,7 @@ const emptyPQRS = (codigo: string, nro: number, responsable: string): PQRS => ({
 })
 
 export default function PQRSPage() {
+  const idioma = useIdioma()
   const permisos = usePermisos('pqrs')
   const currentUser = useCurrentUserStore(s => s.user)
   const { pqrs, addPQRS, updatePQRS, deletePQRS } = usePQRSStore()
@@ -177,7 +179,7 @@ export default function PQRSPage() {
     const diasAbierto = Math.floor((Date.now() - new Date(viewDetail.fecha_registro).getTime()) / 86400000)
     return (
       <div>
-        <button onClick={() => setViewDetail(null)} style={{ ...btnStyle, background: '#000000', color: '#ffffff', border: '1px solid #333333', marginBottom: 16 }}>← Volver</button>
+        <button onClick={() => setViewDetail(null)} style={{ ...btnStyle, background: '#000000', color: '#ffffff', border: '1px solid #333333', marginBottom: 16 }}>← {idioma === 'en' ? 'Back' : 'Volver'}</button>
         <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: 16 }}>
           {/* Main info */}
           <div style={{ background: 'rgba(255,255,255,0.05)', borderRadius: 16, padding: 24, border: '1px solid rgba(255,255,255,0.15)' }}>
@@ -191,19 +193,19 @@ export default function PQRSPage() {
                 </div>
               </div>
               <div style={{ textAlign: 'right' }}>
-                <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 11 }}>{diasAbierto} días abierto</p>
+                <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 11 }}>{diasAbierto} {idioma === 'en' ? 'days open' : 'días abierto'}</p>
               </div>
             </div>
 
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 12, marginBottom: 16 }}>
               {[
-                { l: 'Fecha', v: fDate(viewDetail.fecha_registro) }, { l: 'Tipo', v: viewDetail.tipo },
-                { l: 'Empresa', v: viewDetail.cliente_nombre }, { l: 'Contacto', v: viewDetail.contacto_nombre },
-                { l: 'Fecha Aviso Empresa', v: fDate(viewDetail.fecha_aviso) }, { l: 'Hora Aviso', v: viewDetail.hora_aviso },
-                { l: 'Persona que Avisa', v: viewDetail.persona_avisa }, { l: 'Móvil que Avisa', v: viewDetail.movil_avisa },
-                { l: 'Persona que Recibe', v: viewDetail.persona_caso }, { l: 'Móvil Recibe', v: viewDetail.movil_caso },
-                { l: 'Prioridad', v: viewDetail.prioridad }, { l: 'Situación', v: viewDetail.situacion },
-                { l: 'Cierre', v: fDate(viewDetail.fecha_cierre) },
+                { l: idioma === 'en' ? 'Date' : 'Fecha', v: fDate(viewDetail.fecha_registro) }, { l: idioma === 'en' ? 'Type' : 'Tipo', v: viewDetail.tipo },
+                { l: idioma === 'en' ? 'Company' : 'Empresa', v: viewDetail.cliente_nombre }, { l: idioma === 'en' ? 'Contact' : 'Contacto', v: viewDetail.contacto_nombre },
+                { l: idioma === 'en' ? 'Company Notice Date' : 'Fecha Aviso Empresa', v: fDate(viewDetail.fecha_aviso) }, { l: idioma === 'en' ? 'Notice Time' : 'Hora Aviso', v: viewDetail.hora_aviso },
+                { l: idioma === 'en' ? 'Reporting Person' : 'Persona que Avisa', v: viewDetail.persona_avisa }, { l: idioma === 'en' ? 'Reporter Mobile' : 'Móvil que Avisa', v: viewDetail.movil_avisa },
+                { l: idioma === 'en' ? 'Receiving Person' : 'Persona que Recibe', v: viewDetail.persona_caso }, { l: idioma === 'en' ? 'Receiver Mobile' : 'Móvil Recibe', v: viewDetail.movil_caso },
+                { l: idioma === 'en' ? 'Priority' : 'Prioridad', v: viewDetail.prioridad }, { l: idioma === 'en' ? 'Status' : 'Situación', v: viewDetail.situacion },
+                { l: idioma === 'en' ? 'Closure' : 'Cierre', v: fDate(viewDetail.fecha_cierre) },
               ].map(f => (
                 <div key={f.l}><p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 11 }}>{f.l}</p><p style={{ color: '#ffffff', fontSize: 13 }}>{f.v || '—'}</p></div>
               ))}
@@ -211,26 +213,26 @@ export default function PQRSPage() {
 
             {viewDetail.detalle_incidencia && (
               <div style={{ background: 'rgba(255,255,255,0.03)', borderRadius: 10, padding: 14, marginBottom: 16 }}>
-                <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 11, marginBottom: 4 }}>Detalle de la Incidencia</p>
+                <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 11, marginBottom: 4 }}>{idioma === 'en' ? 'Incident Detail' : 'Detalle de la Incidencia'}</p>
                 <p style={{ color: '#ffffff', fontSize: 13, lineHeight: 1.6, whiteSpace: 'pre-wrap' }}>{viewDetail.detalle_incidencia}</p>
               </div>
             )}
 
             <div style={{ display: 'flex', gap: 8 }}>
               <div style={{ marginTop: 16, padding: '12px 16px', background: '#ffffff', borderRadius: 12, border: '1px solid #1e3a8a' }}>
-                <p style={{ color: '#000000', fontSize: 13, fontWeight: 800, marginBottom: 2 }}>👤 Creado por</p>
+                <p style={{ color: '#000000', fontSize: 13, fontWeight: 800, marginBottom: 2 }}>👤 {idioma === 'en' ? 'Created by' : 'Creado por'}</p>
                 <p style={{ color: '#000000', fontSize: 24, fontWeight: 900 }}>
                   {viewDetail.creado_por || '—'}{viewDetail.creado_por_usuario ? ` (${viewDetail.creado_por_usuario})` : ''}{viewDetail.creado_en ? ` · ${viewDetail.creado_en}` : ''}
                 </p>
               </div>
               {permisos.editar && viewDetail.situacion !== 'Cerrada' && (
-                <button onClick={() => { setSelected(viewDetail); setIsForm(true); setViewDetail(null) }} style={{ ...btnStyle, background: '#15803d', color: '#ffffff', border: '1px solid #16a34a' }}>Editar</button>
+                <button onClick={() => { setSelected(viewDetail); setIsForm(true); setViewDetail(null) }} style={{ ...btnStyle, background: '#15803d', color: '#ffffff', border: '1px solid #16a34a' }}>{idioma === 'en' ? 'Edit' : 'Editar'}</button>
               )}
               {permisos.editar && viewDetail.situacion !== 'Cerrada' && (
                 <button onClick={() => {
                   const updated = { ...viewDetail, situacion: 'Cerrada', fecha_cierre: today }
                   updatePQRS(viewDetail.id, updated); setViewDetail(updated)
-                }} style={{ ...btnStyle, background: '#15803d', color: '#ffffff', border: '1px solid #16a34a' }}>Cerrar PQRS</button>
+                }} style={{ ...btnStyle, background: '#15803d', color: '#ffffff', border: '1px solid #16a34a' }}>{idioma === 'en' ? 'Close PQRS' : 'Cerrar PQRS'}</button>
               )}
             </div>
           </div>
@@ -260,95 +262,95 @@ export default function PQRSPage() {
   if (isForm && selected) {
     return (
       <div>
-        <button onClick={() => { setIsForm(false); setSelected(null); setVerLectura(false) }} style={{ ...btnStyle, background: '#000000', color: '#ffffff', border: '1px solid #333333', marginBottom: 16 }}>← Volver</button>
+        <button onClick={() => { setIsForm(false); setSelected(null); setVerLectura(false) }} style={{ ...btnStyle, background: '#000000', color: '#ffffff', border: '1px solid #333333', marginBottom: 16 }}>← {idioma === 'en' ? 'Back' : 'Volver'}</button>
         <form onSubmit={handleSave} style={{ background: 'rgba(255,255,255,0.05)', borderRadius: 16, padding: 24, border: '1px solid rgba(255,255,255,0.15)' }}>
-          <h2 style={{ color: '#ffffff', fontSize: 18, fontWeight: 700, marginBottom: 20 }}>{verLectura ? 'Ver' : selected.id ? 'Editar' : 'Nueva'} PQRS</h2>
+          <h2 style={{ color: '#ffffff', fontSize: 18, fontWeight: 700, marginBottom: 20 }}>{verLectura ? (idioma === 'en' ? 'View' : 'Ver') : selected.id ? (idioma === 'en' ? 'Edit' : 'Editar') : (idioma === 'en' ? 'New' : 'Nueva')} PQRS</h2>
           <fieldset disabled={verLectura} style={{ border: 'none', padding: 0, margin: 0, minInlineSize: 'auto' }}>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 16 }}>
             <div>
-              <label style={{ color: '#ffffff', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>Código</label>
+              <label style={{ color: '#ffffff', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{idioma === 'en' ? 'Code' : 'Código'}</label>
               <input value={selected.codigo} readOnly style={{ ...inputStyle, opacity: 0.5 }} />
             </div>
             <div>
-              <label style={{ color: '#ffffff', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>Fecha</label>
+              <label style={{ color: '#ffffff', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{idioma === 'en' ? 'Date' : 'Fecha'}</label>
               <input type="date" value={selected.fecha_registro} onChange={e => setSelected({ ...selected, fecha_registro: e.target.value })} style={inputStyle} />
             </div>
             <div>
-              <label style={{ color: '#ffffff', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>Tipo *</label>
+              <label style={{ color: '#ffffff', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{idioma === 'en' ? 'Type *' : 'Tipo *'}</label>
               <select value={selected.tipo} onChange={e => setSelected({ ...selected, tipo: e.target.value })} style={inputStyle}>
                 {refOptions('tipo_pqrs').map(o => <option key={o} value={o}>{o}</option>)}
               </select>
             </div>
             <div style={{ gridColumn: 'span 2' }}>
-              <label style={{ color: '#ffffff', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>Empresa *</label>
+              <label style={{ color: '#ffffff', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{idioma === 'en' ? 'Company *' : 'Empresa *'}</label>
               <select value={selected.cliente_id} onChange={e => {
                 const cli = clientes.find(c => c.id === e.target.value)
                 setSelected({ ...selected, cliente_id: e.target.value, cliente_nombre: cli?.razon_social || '', contacto_id: '', contacto_nombre: '' })
               }} required style={inputStyle}>
-                <option value="">Seleccionar empresa...</option>
+                <option value="">{idioma === 'en' ? 'Select company...' : 'Seleccionar empresa...'}</option>
                 {selected.cliente_id && !clientes.some(c => c.id === selected.cliente_id) && (
-                  <option value={selected.cliente_id}>{selected.cliente_nombre || '(empresa del registro)'}</option>
+                  <option value={selected.cliente_id}>{selected.cliente_nombre || (idioma === 'en' ? '(record company)' : '(empresa del registro)')}</option>
                 )}
                 {clientes.map(c => <option key={c.id} value={c.id}>{c.razon_social}</option>)}
               </select>
             </div>
             <div>
-              <label style={{ color: '#ffffff', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>Contacto</label>
+              <label style={{ color: '#ffffff', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{idioma === 'en' ? 'Contact' : 'Contacto'}</label>
               <select value={selected.contacto_id} onChange={e => {
                 const con = contactosDelCliente.find(c => c.id === e.target.value)
                 setSelected({ ...selected, contacto_id: e.target.value, contacto_nombre: con ? `${con.nombre} ${con.apellido}` : '' })
               }} style={inputStyle}>
-                <option value="">Seleccionar...</option>
+                <option value="">{idioma === 'en' ? 'Select...' : 'Seleccionar...'}</option>
                 {selected.contacto_id && !contactosDelCliente.some(c => c.id === selected.contacto_id) && (
-                  <option value={selected.contacto_id}>{selected.contacto_nombre || '(contacto del registro)'}</option>
+                  <option value={selected.contacto_id}>{selected.contacto_nombre || (idioma === 'en' ? '(record contact)' : '(contacto del registro)')}</option>
                 )}
                 {contactosDelCliente.map(c => <option key={c.id} value={c.id}>{c.nombre} {c.apellido}</option>)}
               </select>
             </div>
             <div style={{ gridColumn: 'span 3' }}>
-              <label style={{ color: '#ffffff', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>Asunto</label>
-              <input value={selected.asunto} onChange={e => setSelected({ ...selected, asunto: e.target.value })} placeholder="Asunto del PQRS..." style={inputStyle} />
+              <label style={{ color: '#ffffff', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{idioma === 'en' ? 'Subject' : 'Asunto'}</label>
+              <input value={selected.asunto} onChange={e => setSelected({ ...selected, asunto: e.target.value })} placeholder={idioma === 'en' ? 'PQRS subject...' : 'Asunto del PQRS...'} style={inputStyle} />
             </div>
             <div>
-              <label style={{ color: '#ffffff', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>Fecha Aviso Empresa</label>
+              <label style={{ color: '#ffffff', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{idioma === 'en' ? 'Company Notice Date' : 'Fecha Aviso Empresa'}</label>
               <input type="date" value={selected.fecha_aviso} onChange={e => setSelected({ ...selected, fecha_aviso: e.target.value })} style={inputStyle} />
             </div>
             <div>
-              <label style={{ color: '#ffffff', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>Hora Aviso</label>
+              <label style={{ color: '#ffffff', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{idioma === 'en' ? 'Notice Time' : 'Hora Aviso'}</label>
               <input type="time" value={selected.hora_aviso} onChange={e => setSelected({ ...selected, hora_aviso: e.target.value })} style={inputStyle} />
             </div>
             <div>
-              <label style={{ color: '#ffffff', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>Persona que Avisa</label>
-              <input value={selected.persona_avisa} onChange={e => setSelected({ ...selected, persona_avisa: e.target.value })} placeholder="Nombre de quien avisa..." style={inputStyle} />
+              <label style={{ color: '#ffffff', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{idioma === 'en' ? 'Reporting Person' : 'Persona que Avisa'}</label>
+              <input value={selected.persona_avisa} onChange={e => setSelected({ ...selected, persona_avisa: e.target.value })} placeholder={idioma === 'en' ? 'Name of reporter...' : 'Nombre de quien avisa...'} style={inputStyle} />
             </div>
             <div>
-              <label style={{ color: '#ffffff', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>Móvil que Avisa</label>
-              <input value={selected.movil_avisa} onChange={e => setSelected({ ...selected, movil_avisa: e.target.value })} placeholder="Teléfono móvil..." style={inputStyle} />
+              <label style={{ color: '#ffffff', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{idioma === 'en' ? 'Reporter Mobile' : 'Móvil que Avisa'}</label>
+              <input value={selected.movil_avisa} onChange={e => setSelected({ ...selected, movil_avisa: e.target.value })} placeholder={idioma === 'en' ? 'Mobile phone...' : 'Teléfono móvil...'} style={inputStyle} />
             </div>
             <div>
-              <label style={{ color: '#ffffff', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>Persona que Recibe</label>
-              <input value={selected.persona_caso} onChange={e => setSelected({ ...selected, persona_caso: e.target.value })} placeholder="Nombre de quien recibe..." style={inputStyle} />
+              <label style={{ color: '#ffffff', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{idioma === 'en' ? 'Receiving Person' : 'Persona que Recibe'}</label>
+              <input value={selected.persona_caso} onChange={e => setSelected({ ...selected, persona_caso: e.target.value })} placeholder={idioma === 'en' ? 'Name of receiver...' : 'Nombre de quien recibe...'} style={inputStyle} />
             </div>
             <div>
-              <label style={{ color: '#ffffff', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>Móvil Recibe</label>
-              <input value={selected.movil_caso} onChange={e => setSelected({ ...selected, movil_caso: e.target.value })} placeholder="Teléfono móvil..." style={inputStyle} />
+              <label style={{ color: '#ffffff', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{idioma === 'en' ? 'Receiver Mobile' : 'Móvil Recibe'}</label>
+              <input value={selected.movil_caso} onChange={e => setSelected({ ...selected, movil_caso: e.target.value })} placeholder={idioma === 'en' ? 'Mobile phone...' : 'Teléfono móvil...'} style={inputStyle} />
             </div>
             <div>
-              <label style={{ color: '#ffffff', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>Responsable</label>
-              <input value={selected.responsable} onChange={e => setSelected({ ...selected, responsable: e.target.value })} placeholder="Responsable del caso..." style={inputStyle} />
+              <label style={{ color: '#ffffff', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{idioma === 'en' ? 'Responsible' : 'Responsable'}</label>
+              <input value={selected.responsable} onChange={e => setSelected({ ...selected, responsable: e.target.value })} placeholder={idioma === 'en' ? 'Case owner...' : 'Responsable del caso...'} style={inputStyle} />
             </div>
             <div style={{ gridColumn: 'span 3' }}>
-              <label style={{ color: '#ffffff', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>Detalle de la Incidencia</label>
-              <textarea value={selected.detalle_incidencia} onChange={e => setSelected({ ...selected, detalle_incidencia: e.target.value })} rows={4} style={{ ...inputStyle, resize: 'vertical' }} placeholder="Describir la incidencia..." />
+              <label style={{ color: '#ffffff', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{idioma === 'en' ? 'Incident Detail' : 'Detalle de la Incidencia'}</label>
+              <textarea value={selected.detalle_incidencia} onChange={e => setSelected({ ...selected, detalle_incidencia: e.target.value })} rows={4} style={{ ...inputStyle, resize: 'vertical' }} placeholder={idioma === 'en' ? 'Describe the incident...' : 'Describir la incidencia...'} />
             </div>
             <div>
-              <label style={{ color: '#ffffff', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>Prioridad</label>
+              <label style={{ color: '#ffffff', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{idioma === 'en' ? 'Priority' : 'Prioridad'}</label>
               <select value={selected.prioridad} onChange={e => setSelected({ ...selected, prioridad: e.target.value })} style={inputStyle}>
                 {refOptions('prioridad_pqrs').map(o => <option key={o} value={o}>{o}</option>)}
               </select>
             </div>
             <div>
-              <label style={{ color: '#ffffff', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>Situación</label>
+              <label style={{ color: '#ffffff', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{idioma === 'en' ? 'Status' : 'Situación'}</label>
               <select value={selected.situacion} onChange={e => setSelected({ ...selected, situacion: e.target.value })} style={inputStyle}>
                 {refOptions('situacion_pqrs').map(o => <option key={o} value={o}>{o}</option>)}
               </select>
@@ -357,12 +359,12 @@ export default function PQRSPage() {
           </fieldset>
           {verLectura && (
             <p style={{ color: '#ffffff', fontSize: 13, fontWeight: 700, marginTop: 14 }}>
-              👤 Creado por: {selected.creado_por || '—'}{selected.creado_por_usuario ? ` (${selected.creado_por_usuario})` : ''}{selected.creado_en ? ` · ${selected.creado_en}` : ''}
+              👤 {idioma === 'en' ? 'Created by' : 'Creado por'}: {selected.creado_por || '—'}{selected.creado_por_usuario ? ` (${selected.creado_por_usuario})` : ''}{selected.creado_en ? ` · ${selected.creado_en}` : ''}
             </p>
           )}
           <div style={{ display: 'flex', gap: 10, marginTop: 20 }}>
-            {!verLectura && <button type="submit" style={{ ...btnStyle, background: '#0f1b3d', color: '#ffffff' }}>Guardar</button>}
-            <button type="button" onClick={() => { setIsForm(false); setSelected(null); setVerLectura(false) }} style={{ ...btnStyle, background: '#64748b', color: '#ffffff' }}>{verLectura ? 'Cerrar' : 'Cancelar'}</button>
+            {!verLectura && <button type="submit" style={{ ...btnStyle, background: '#0f1b3d', color: '#ffffff' }}>{idioma === 'en' ? 'Save' : 'Guardar'}</button>}
+            <button type="button" onClick={() => { setIsForm(false); setSelected(null); setVerLectura(false) }} style={{ ...btnStyle, background: '#64748b', color: '#ffffff' }}>{verLectura ? (idioma === 'en' ? 'Close' : 'Cerrar') : (idioma === 'en' ? 'Cancel' : 'Cancelar')}</button>
           </div>
         </form>
       </div>
@@ -371,13 +373,13 @@ export default function PQRSPage() {
 
   // ── REPORT DATA ──
   const reportColumns = [
-    { header: 'Código', key: 'codigo', width: 12 },
-    { header: 'Tipo', key: 'tipo', width: 10 },
-    { header: 'Prioridad', key: 'prioridad', width: 10 },
-    { header: 'Empresa', key: 'cliente_nombre', width: 22 },
-    { header: 'Responsable', key: 'responsable', width: 14 },
-    { header: 'Registro', key: 'registro', width: 10 },
-    { header: 'Situación', key: 'situacion', width: 10 },
+    { header: idioma === 'en' ? 'Code' : 'Código', key: 'codigo', width: 12 },
+    { header: idioma === 'en' ? 'Type' : 'Tipo', key: 'tipo', width: 10 },
+    { header: idioma === 'en' ? 'Priority' : 'Prioridad', key: 'prioridad', width: 10 },
+    { header: idioma === 'en' ? 'Company' : 'Empresa', key: 'cliente_nombre', width: 22 },
+    { header: idioma === 'en' ? 'Responsible' : 'Responsable', key: 'responsable', width: 14 },
+    { header: idioma === 'en' ? 'Record' : 'Registro', key: 'registro', width: 10 },
+    { header: idioma === 'en' ? 'Status' : 'Situación', key: 'situacion', width: 10 },
   ]
   const reportRows = filtered.map(p => ({
     codigo: p.codigo, tipo: p.tipo, prioridad: p.prioridad,
@@ -392,18 +394,18 @@ export default function PQRSPage() {
           {empresa?.logo_url && <img src={empresa.logo_url} alt="Logo" style={{ width: 100, height: 100, borderRadius: 12, objectFit: 'contain', background: '#f3f4f6', padding: 8, flexShrink: 0 }} />}
           <div>
             <h1 style={{ fontSize: 24, fontWeight: 700, color: '#ffffff', marginBottom: 4 }}>PQRS</h1>
-            <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: 14 }}>Peticiones, Quejas, Reclamos y Sugerencias</p>
+            <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: 14 }}>{idioma === 'en' ? 'Requests, Complaints, Claims and Suggestions' : 'Peticiones, Quejas, Reclamos y Sugerencias'}</p>
           </div>
         </div>
         <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
           {permisos.editar && externas.length > 0 && (
             <button onClick={() => setShowExternas(!showExternas)} style={{ ...btnStyle, background: '#ea580c', color: '#ffffff', border: '1px solid #f97316', position: 'relative' }}>
-              📩 PQRS Externas
+              📩 {idioma === 'en' ? 'External PQRS' : 'PQRS Externas'}
               <span style={{ position: 'absolute', top: -8, right: -8, background: '#dc2626', color: '#fff', borderRadius: '50%', width: 22, height: 22, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 11, fontWeight: 800 }}>{externas.length}</span>
             </button>
           )}
           {permisos.editar && tab === 'registros' && (
-            <button onClick={() => { { const nc = nextConsecutivo('PQRS-', pqrs.map(p => p.codigo)); setSelected(emptyPQRS(nc.codigo, nc.nro, `${currentUser?.nombre || ''} ${currentUser?.apellido || ''}`)) }; setIsForm(true) }} style={{ ...btnStyle, background: '#0f1b3d', color: '#ffffff' }}>+ Nueva PQRS</button>
+            <button onClick={() => { { const nc = nextConsecutivo('PQRS-', pqrs.map(p => p.codigo)); setSelected(emptyPQRS(nc.codigo, nc.nro, `${currentUser?.nombre || ''} ${currentUser?.apellido || ''}`)) }; setIsForm(true) }} style={{ ...btnStyle, background: '#0f1b3d', color: '#ffffff' }}>+ {idioma === 'en' ? 'New PQRS' : 'Nueva PQRS'}</button>
           )}
         </div>
       </div>
@@ -411,10 +413,10 @@ export default function PQRSPage() {
       {/* Summary cards */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12, marginBottom: 20 }}>
         {[
-          { label: 'Abiertas', count: pqrs.filter(p => p.situacion === 'Abierta').length, color: '#86efac' },
-          { label: 'En Proceso', count: pqrs.filter(p => p.situacion === 'En Proceso').length, color: '#fcd34d' },
-          { label: 'Escaladas', count: pqrs.filter(p => p.situacion === 'Escalada').length, color: '#fca5a5' },
-          { label: 'Cerradas', count: pqrs.filter(p => p.situacion === 'Cerrada').length, color: '#86efac' },
+          { label: idioma === 'en' ? 'Open' : 'Abiertas', count: pqrs.filter(p => p.situacion === 'Abierta').length, color: '#86efac' },
+          { label: idioma === 'en' ? 'In Progress' : 'En Proceso', count: pqrs.filter(p => p.situacion === 'En Proceso').length, color: '#fcd34d' },
+          { label: idioma === 'en' ? 'Escalated' : 'Escaladas', count: pqrs.filter(p => p.situacion === 'Escalada').length, color: '#fca5a5' },
+          { label: idioma === 'en' ? 'Closed' : 'Cerradas', count: pqrs.filter(p => p.situacion === 'Cerrada').length, color: '#86efac' },
         ].map(c => (
           <div key={c.label} style={{ background: 'rgba(255,255,255,0.05)', borderRadius: 12, padding: 16, border: '1px solid rgba(255,255,255,0.15)', textAlign: 'center' }}>
             <p style={{ color: c.color, fontSize: 28, fontWeight: 800 }}>{c.count}</p>
@@ -427,10 +429,10 @@ export default function PQRSPage() {
       {showExternas && externas.length > 0 && (
         <div style={{ background: 'rgba(234,88,12,0.1)', borderRadius: 14, padding: 20, border: '1px solid rgba(234,88,12,0.3)', marginBottom: 20 }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 }}>
-            <h3 style={{ color: '#f97316', fontSize: 15, fontWeight: 700 }}>📩 PQRS Recibidas desde Formulario Público ({externas.length})</h3>
+            <h3 style={{ color: '#f97316', fontSize: 15, fontWeight: 700 }}>📩 {idioma === 'en' ? 'PQRS Received from Public Form' : 'PQRS Recibidas desde Formulario Público'} ({externas.length})</h3>
             <div style={{ display: 'flex', gap: 8 }}>
-              <button onClick={importarTodas} style={{ ...btnStyle, background: '#15803d', color: '#ffffff', border: '1px solid #16a34a', fontSize: 12 }}>Importar Todas</button>
-              <button onClick={() => setShowExternas(false)} style={{ ...btnStyle, background: 'transparent', color: '#f97316', border: '1px solid rgba(234,88,12,0.3)', fontSize: 12 }}>Cerrar</button>
+              <button onClick={importarTodas} style={{ ...btnStyle, background: '#15803d', color: '#ffffff', border: '1px solid #16a34a', fontSize: 12 }}>{idioma === 'en' ? 'Import All' : 'Importar Todas'}</button>
+              <button onClick={() => setShowExternas(false)} style={{ ...btnStyle, background: 'transparent', color: '#f97316', border: '1px solid rgba(234,88,12,0.3)', fontSize: 12 }}>{idioma === 'en' ? 'Close' : 'Cerrar'}</button>
             </div>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
@@ -444,10 +446,10 @@ export default function PQRSPage() {
                   </div>
                   <p style={{ color: '#ffffff', fontSize: 14, fontWeight: 600, marginBottom: 2 }}>{ext.detalle_incidencia.substring(0, 80)}{ext.detalle_incidencia.length > 80 ? '...' : ''}</p>
                   <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: 12 }}>
-                    {ext.cliente_nombre} · Avisa: {ext.persona_avisa} {ext.movil_avisa ? `· ${ext.movil_avisa}` : ''} · Rad: {ext.radicado}
+                    {ext.cliente_nombre} · {idioma === 'en' ? 'Reporter' : 'Avisa'}: {ext.persona_avisa} {ext.movil_avisa ? `· ${ext.movil_avisa}` : ''} · {idioma === 'en' ? 'Ref' : 'Rad'}: {ext.radicado}
                   </p>
                 </div>
-                <button onClick={() => importarExterna(ext)} style={{ ...btnStyle, background: '#1e3a8a', color: '#ffffff', border: '1px solid #2563eb', fontSize: 12, whiteSpace: 'nowrap' }}>Importar al CRM</button>
+                <button onClick={() => importarExterna(ext)} style={{ ...btnStyle, background: '#1e3a8a', color: '#ffffff', border: '1px solid #2563eb', fontSize: 12, whiteSpace: 'nowrap' }}>{idioma === 'en' ? 'Import to CRM' : 'Importar al CRM'}</button>
               </div>
             ))}
           </div>
@@ -455,18 +457,18 @@ export default function PQRSPage() {
       )}
 
       <div style={{ display: 'flex', gap: 8, marginBottom: 20 }}>
-        <button onClick={() => setTab('registros')} style={tabBtnStyle(tab === 'registros')}>📋 Registros</button>
-        <button onClick={() => setTab('reportes')} style={tabBtnStyle(tab === 'reportes')}>📊 Reportes</button>
+        <button onClick={() => setTab('registros')} style={tabBtnStyle(tab === 'registros')}>📋 {idioma === 'en' ? 'Records' : 'Registros'}</button>
+        <button onClick={() => setTab('reportes')} style={tabBtnStyle(tab === 'reportes')}>📊 {idioma === 'en' ? 'Reports' : 'Reportes'}</button>
       </div>
 
       {tab === 'registros' && (
         <>
-          <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Buscar por código o empresa..."
+          <input value={search} onChange={e => setSearch(e.target.value)} placeholder={idioma === 'en' ? 'Search by code or company...' : 'Buscar por código o empresa...'}
             style={{ ...inputStyle, maxWidth: 400, marginBottom: 16 }} />
           <div style={{ borderRadius: 12, border: '1px solid rgba(255,255,255,0.15)', overflow: 'hidden' }}>
             <table style={{ width: '100%', borderCollapse: 'collapse' }}>
               <thead><tr>
-                {['Código', 'Tipo', 'Prioridad', 'Empresa', 'Responsable', 'Situación', 'Acciones'].map(h => (
+                {(idioma === 'en' ? ['Code', 'Type', 'Priority', 'Company', 'Responsible', 'Status', 'Actions'] : ['Código', 'Tipo', 'Prioridad', 'Empresa', 'Responsable', 'Situación', 'Acciones']).map(h => (
                   <th key={h} style={{ padding: '12px 14px', background: '#1e3a5f', color: '#fff', fontSize: 12, textAlign: 'left' }}>{h}</th>
                 ))}
               </tr></thead>
@@ -485,14 +487,14 @@ export default function PQRSPage() {
                     </td>
                     <td style={{ padding: '10px 14px', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
                       <div style={{ display: 'flex', gap: 6 }}>
-                        <button onClick={() => { setSelected(p); setVerLectura(true); setIsForm(true) }} style={{ ...btnStyle, padding: '4px 12px', fontSize: 11, background: '#ea580c', color: '#ffffff', border: '1px solid #f97316' }}>Ver</button>
-                        {permisos.editar && p.situacion !== 'Cerrada' && <button onClick={() => { setSelected(p); setIsForm(true) }} style={{ ...btnStyle, padding: '4px 12px', fontSize: 11, background: '#15803d', color: '#ffffff', border: '1px solid #16a34a' }}>Editar</button>}
-                        {permisos.eliminar && <button onClick={() => { if (confirm(`¿Eliminar ${p.codigo}?`)) { deletePQRS(p.id); logAudit({ ...auditParams(), accion: 'ELIMINAR', registro_codigo: p.codigo, registro_nombre: p.asunto }) } }} style={{ ...btnStyle, padding: '4px 12px', fontSize: 11, background: '#dc2626', color: '#ffffff', border: '1px solid #ef4444' }}>Eliminar</button>}
+                        <button onClick={() => { setSelected(p); setVerLectura(true); setIsForm(true) }} style={{ ...btnStyle, padding: '4px 12px', fontSize: 11, background: '#ea580c', color: '#ffffff', border: '1px solid #f97316' }}>{idioma === 'en' ? 'View' : 'Ver'}</button>
+                        {permisos.editar && p.situacion !== 'Cerrada' && <button onClick={() => { setSelected(p); setIsForm(true) }} style={{ ...btnStyle, padding: '4px 12px', fontSize: 11, background: '#15803d', color: '#ffffff', border: '1px solid #16a34a' }}>{idioma === 'en' ? 'Edit' : 'Editar'}</button>}
+                        {permisos.eliminar && <button onClick={() => { if (confirm(idioma === 'en' ? `Delete ${p.codigo}?` : `¿Eliminar ${p.codigo}?`)) { deletePQRS(p.id); logAudit({ ...auditParams(), accion: 'ELIMINAR', registro_codigo: p.codigo, registro_nombre: p.asunto }) } }} style={{ ...btnStyle, padding: '4px 12px', fontSize: 11, background: '#dc2626', color: '#ffffff', border: '1px solid #ef4444' }}>{idioma === 'en' ? 'Delete' : 'Eliminar'}</button>}
                       </div>
                     </td>
                   </tr>
                 ))}
-                {filtered.length === 0 && <tr><td colSpan={7} style={{ padding: 32, textAlign: 'center', color: 'rgba(255,255,255,0.5)', fontSize: 14 }}>No hay PQRS registradas</td></tr>}
+                {filtered.length === 0 && <tr><td colSpan={7} style={{ padding: 32, textAlign: 'center', color: 'rgba(255,255,255,0.5)', fontSize: 14 }}>{idioma === 'en' ? 'No PQRS records' : 'No hay PQRS registradas'}</td></tr>}
               </tbody>
             </table>
           </div>
@@ -500,11 +502,11 @@ export default function PQRSPage() {
       )}
 
       {tab === 'reportes' && (
-        <ReportPanel title="Reporte de PQRS" columns={reportColumns} rows={reportRows}
+        <ReportPanel title={idioma === 'en' ? 'PQRS Report' : 'Reporte de PQRS'} columns={reportColumns} rows={reportRows}
           filters={[
-            { label: 'Tipo', key: 'tipo', options: [...new Set(pqrs.map(p => p.tipo).filter(Boolean))] },
-            { label: 'Prioridad', key: 'prioridad', options: [...new Set(pqrs.map(p => p.prioridad).filter(Boolean))] },
-            { label: 'Situación', key: 'situacion', options: [...new Set(pqrs.map(p => p.situacion).filter(Boolean))] },
+            { label: idioma === 'en' ? 'Type' : 'Tipo', key: 'tipo', options: [...new Set(pqrs.map(p => p.tipo).filter(Boolean))] },
+            { label: idioma === 'en' ? 'Priority' : 'Prioridad', key: 'prioridad', options: [...new Set(pqrs.map(p => p.prioridad).filter(Boolean))] },
+            { label: idioma === 'en' ? 'Status' : 'Situación', key: 'situacion', options: [...new Set(pqrs.map(p => p.situacion).filter(Boolean))] },
           ]} />
       )}
     </div>
