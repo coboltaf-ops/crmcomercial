@@ -9,6 +9,7 @@ import { useCurrentUserStore } from '@/features/usuarios-gestion/store/current-u
 import { usePermisos } from '@/shared/hooks/use-permisos'
 import { fDate, todayColombia } from '@/shared/lib/format-date'
 import { fmtMoney } from '@/shared/lib/format-number'
+import MoneyInput from '@/shared/components/money-input'
 import { nextConsecutivo } from '@/shared/lib/consecutivo'
 import SeguimientoPanel from '@/shared/components/seguimiento-panel'
 import DocumentosPanel from '@/shared/components/documentos-panel'
@@ -158,11 +159,11 @@ export default function ProyectosPage() {
               </div>
               <div>
                 <label style={labelStyle}>Monto Aprobado</label>
-                <input type="number" step="0.01" min="0" value={selected.monto_aprobado || ''} onChange={e => setSelected({ ...selected, monto_aprobado: parseFloat(e.target.value) || 0 })} placeholder="0" style={inputStyle} />
+                <MoneyInput value={selected.monto_aprobado || 0} onChange={n => setSelected({ ...selected, monto_aprobado: n })} placeholder="0.00" style={inputStyle} />
               </div>
               <div>
                 <label style={labelStyle}>Monto Cobrado</label>
-                <input type="number" step="0.01" min="0" value={selected.monto_cobrado || ''} onChange={e => setSelected({ ...selected, monto_cobrado: parseFloat(e.target.value) || 0 })} placeholder="0" style={inputStyle} />
+                <MoneyInput value={selected.monto_cobrado || 0} onChange={n => setSelected({ ...selected, monto_cobrado: n })} placeholder="0.00" style={inputStyle} />
               </div>
               <div>
                 <label style={labelStyle}>Situación</label>
