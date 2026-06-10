@@ -1,10 +1,12 @@
 'use client'
+import { useEffect } from 'react'
 import { useClientesStore } from '@/features/clientes/store/clientes-store'
 import { useContactosStore } from '@/features/contactos/store/contactos-store'
 import { useProductosStore } from '@/features/productos/store/productos-store'
 import { useOportunidadesStore } from '@/features/oportunidades/store/oportunidades-store'
 import { useCotizacionesStore } from '@/features/cotizaciones/store/cotizaciones-store'
 import { usePQRSStore } from '@/features/pqrs/store/pqrs-store'
+import { useProyectosStore } from '@/features/proyectos/store/proyectos-store'
 import { fmtMoney } from '@/shared/lib/format-number'
 
 export default function DashboardPage() {
@@ -14,6 +16,21 @@ export default function DashboardPage() {
   const oportunidades = useOportunidadesStore(s => s.oportunidades)
   const cotizaciones = useCotizacionesStore(s => s.cotizaciones)
   const pqrs = usePQRSStore(s => s.pqrs)
+  const proyectos = useProyectosStore(s => s.proyectos)
+
+  // El dashboard carga sus propios datos desde el servidor, así los conteos
+  // son reales aunque no hayas visitado cada módulo primero.
+  const loadClientes = useClientesStore(s => s.loadClientes)
+  const loadContactos = useContactosStore(s => s.loadContactos)
+  const loadProductos = useProductosStore(s => s.loadProductos)
+  const loadOportunidades = useOportunidadesStore(s => s.loadOportunidades)
+  const loadCotizaciones = useCotizacionesStore(s => s.loadCotizaciones)
+  const loadPQRS = usePQRSStore(s => s.loadPQRS)
+  const loadProyectos = useProyectosStore(s => s.loadProyectos)
+  useEffect(() => {
+    loadClientes(); loadContactos(); loadProductos()
+    loadOportunidades(); loadCotizaciones(); loadPQRS(); loadProyectos()
+  }, [loadClientes, loadContactos, loadProductos, loadOportunidades, loadCotizaciones, loadPQRS, loadProyectos])
 
   const opoAbiertas = oportunidades.filter(o => o.situacion === 'Abierta' || o.situacion === 'En Negociación')
   const pqrsAbiertas = pqrs.filter(p => p.situacion !== 'Cerrada')
@@ -28,6 +45,7 @@ export default function DashboardPage() {
     { label: 'Empresas', value: clientes.length, icon: '🏢', color: '#1e3a8a' },
     { label: 'Contactos', value: contactos.length, icon: '👤', color: '#1e3a8a' },
     { label: 'Oportunidades', value: opoAbiertas.length, icon: '🎯', color: '#1e3a8a' },
+    { label: 'Proyectos', value: proyectos.length, icon: '🏗️', color: '#1e3a8a' },
     { label: 'Cotizaciones', value: cotizaciones.length, icon: '📋', color: '#1e3a8a' },
     { label: 'PQRS Abiertas', value: pqrsAbiertas.length, icon: '📩', color: '#1e3a8a' },
     { label: 'Productos', value: productos.length, icon: '📦', color: '#1e3a8a' },
