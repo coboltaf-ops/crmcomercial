@@ -44,11 +44,13 @@ export function makeListHandlers(KV_KEY: string) {
           await writeList(KV_KEY, next)
           return NextResponse.json({ ok: true, count: next.length }, { headers: noStore })
         }
+        // Reemplazo masivo (set): SOLO permitido con el secreto del servidor.
+        // Esto impide que un navegador desactualizado resucite datos viejos.
         if (body.op === 'set' && Array.isArray(body.items)) {
-          if (body.items.length === 0 && current.length > 0 && !body.force) {
+          if (!process.env.CRON_SECRET || body.secret !== process.env.CRON_SECRET) {
             return NextResponse.json(
-              { error: 'Bloqueado: vaciar una lista con datos requiere force' },
-              { status: 409, headers: noStore },
+              { error: 'Reemplazo masivo deshabilitado por seguridad' },
+              { status: 403, headers: noStore },
             )
           }
           await writeList(KV_KEY, body.items)
@@ -57,16 +59,13 @@ export function makeListHandlers(KV_KEY: string) {
         return NextResponse.json({ error: 'Operación inválida' }, { status: 400, headers: noStore })
       }
 
-      // ── Compatibilidad: array crudo = reemplazo total, con guardia anti-vaciado ──
+      // ── Array crudo (reemplazo total) BLOQUEADO: lo usaba el código viejo para
+      //    resucitar datos. El cliente actual solo usa upsert/delete por registro. ──
       if (Array.isArray(body)) {
-        if (body.length === 0 && current.length > 0) {
-          return NextResponse.json(
-            { error: 'Bloqueado: intento de vaciar una lista con datos' },
-            { status: 409, headers: noStore },
-          )
-        }
-        await writeList(KV_KEY, body)
-        return NextResponse.json({ ok: true, count: body.length }, { headers: noStore })
+        return NextResponse.json(
+          { error: 'Reemplazo masivo deshabilitado por seguridad' },
+          { status: 403, headers: noStore },
+        )
       }
 
       return NextResponse.json({ error: 'Formato inválido' }, { status: 400, headers: noStore })
