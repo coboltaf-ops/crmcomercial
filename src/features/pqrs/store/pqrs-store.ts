@@ -59,7 +59,7 @@ export const usePQRSStore = create<PQRSState>()((set, get) => ({
   loaded: false,
   loadPQRS: async () => {
     try {
-      const res = await fetch('/api/pqrs')
+      const res = await fetch('/api/pqrs', { cache: 'no-store' })
       const data = await res.json()
       const kvPQRS: PQRS[] = Array.isArray(data) ? data : []
 

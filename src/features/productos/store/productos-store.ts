@@ -47,7 +47,7 @@ export const useProductosStore = create<ProductosState>()((set, get) => ({
   loaded: false,
   loadProductos: async () => {
     try {
-      const res = await fetch('/api/productos')
+      const res = await fetch('/api/productos', { cache: 'no-store' })
       const data = await res.json()
       const kvProductos: Producto[] = Array.isArray(data) ? data : []
 

@@ -69,7 +69,7 @@ export const useCotizacionesStore = create<CotizacionesState>()((set, get) => ({
   loaded: false,
   loadCotizaciones: async () => {
     try {
-      const res = await fetch('/api/cotizaciones')
+      const res = await fetch('/api/cotizaciones', { cache: 'no-store' })
       const data = await res.json()
       const kvCotizaciones: Cotizacion[] = Array.isArray(data) ? data : []
 

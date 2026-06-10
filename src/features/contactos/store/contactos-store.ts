@@ -54,7 +54,7 @@ export const useContactosStore = create<ContactosState>()((set, get) => ({
   loaded: false,
   loadContactos: async () => {
     try {
-      const res = await fetch('/api/contactos')
+      const res = await fetch('/api/contactos', { cache: 'no-store' })
       const data = await res.json()
       const kvContactos: Contacto[] = Array.isArray(data) ? data : []
 

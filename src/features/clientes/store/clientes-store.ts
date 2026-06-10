@@ -65,7 +65,7 @@ export const useClientesStore = create<ClientesState>()((set, get) => ({
   loaded: false,
   loadClientes: async () => {
     try {
-      const res = await fetch('/api/clientes')
+      const res = await fetch('/api/clientes', { cache: 'no-store' })
       const data = await res.json()
       const kvClientes: Cliente[] = Array.isArray(data) ? data : []
 

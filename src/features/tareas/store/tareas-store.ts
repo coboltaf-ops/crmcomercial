@@ -66,7 +66,7 @@ export const useTareasStore = create<TareasState>()((set, get) => ({
   loaded: false,
   loadTareas: async () => {
     try {
-      const res = await fetch('/api/tareas')
+      const res = await fetch('/api/tareas', { cache: 'no-store' })
       const data = await res.json()
       const kvTareas: Tarea[] = Array.isArray(data) ? data : []
 

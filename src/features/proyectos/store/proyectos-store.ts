@@ -53,7 +53,7 @@ export const useProyectosStore = create<ProyectosState>()((set, get) => ({
   loaded: false,
   loadProyectos: async () => {
     try {
-      const res = await fetch('/api/proyectos')
+      const res = await fetch('/api/proyectos', { cache: 'no-store' })
       const data = await res.json()
       const kvProyectos: Proyecto[] = Array.isArray(data) ? data : []
 

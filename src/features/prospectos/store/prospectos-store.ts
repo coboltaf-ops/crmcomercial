@@ -52,7 +52,7 @@ export const useProspectosStore = create<ProspectosState>()((set, get) => ({
   loaded: false,
   loadProspectos: async () => {
     try {
-      const res = await fetch('/api/prospectos')
+      const res = await fetch('/api/prospectos', { cache: 'no-store' })
       const data = await res.json()
       const kvProspectos: Prospecto[] = Array.isArray(data) ? data : []
 

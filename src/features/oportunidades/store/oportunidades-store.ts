@@ -86,7 +86,7 @@ export const useOportunidadesStore = create<OportunidadesState>()((set, get) => 
   loaded: false,
   loadOportunidades: async () => {
     try {
-      const res = await fetch('/api/oportunidades')
+      const res = await fetch('/api/oportunidades', { cache: 'no-store' })
       const data = await res.json()
       const kvOportunidades: Oportunidad[] = Array.isArray(data) ? data : []
 
