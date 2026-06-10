@@ -56,23 +56,6 @@ export const useClientesStore = create<ClientesState>()((set, get) => ({
       const res = await fetch('/api/clientes', { cache: 'no-store' })
       const data = await res.json()
       const kvClientes: Cliente[] = Array.isArray(data) ? data : []
-
-      // Migración suave: si KV está vacío pero el navegador tiene datos del
-      // localStorage antiguo ('crm-clientes-storage'), súbelos a KV una sola vez.
-      if (kvClientes.length === 0 && typeof window !== 'undefined') {
-        try {
-          const raw = window.localStorage.getItem('crm-clientes-storage')
-          const legacy: Cliente[] = raw ? (JSON.parse(raw)?.state?.clientes || []) : []
-          if (legacy.length > 0) {
-            set({ clientes: legacy, loaded: true })
-            await apiSet('/api/clientes', legacy, true)
-            return
-          }
-        } catch (e) {
-          console.error('[clientes-store] migración localStorage error:', e)
-        }
-      }
-
       set({ clientes: kvClientes, loaded: true })
     } catch (err) {
       console.error('[clientes-store] load error:', err)

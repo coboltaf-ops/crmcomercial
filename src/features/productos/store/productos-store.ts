@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { Seguimiento } from '@/shared/types/seguimiento'
-import { apiUpsert, apiDelete, apiSet } from '@/shared/lib/list-client'
+import { apiUpsert, apiDelete } from '@/shared/lib/list-client'
 
 export type { Seguimiento }
 
@@ -38,23 +38,6 @@ export const useProductosStore = create<ProductosState>()((set, get) => ({
       const res = await fetch('/api/productos', { cache: 'no-store' })
       const data = await res.json()
       const kvProductos: Producto[] = Array.isArray(data) ? data : []
-
-      // Migración suave: si KV está vacío pero el navegador tiene datos del
-      // localStorage antiguo ('crm-productos-storage'), súbelos a KV una sola vez.
-      if (kvProductos.length === 0 && typeof window !== 'undefined') {
-        try {
-          const raw = window.localStorage.getItem('crm-productos-storage')
-          const legacy: Producto[] = raw ? (JSON.parse(raw)?.state?.productos || []) : []
-          if (legacy.length > 0) {
-            set({ productos: legacy, loaded: true })
-            await apiSet('/api/productos', legacy, true)
-            return
-          }
-        } catch (e) {
-          console.error('[productos-store] migración localStorage error:', e)
-        }
-      }
-
       set({ productos: kvProductos, loaded: true })
     } catch (err) {
       console.error('[productos-store] load error:', err)

@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { Seguimiento } from '@/shared/types/seguimiento'
-import { apiUpsert, apiDelete, apiSet } from '@/shared/lib/list-client'
+import { apiUpsert, apiDelete } from '@/shared/lib/list-client'
 
 export type { Seguimiento }
 
@@ -43,23 +43,6 @@ export const useProspectosStore = create<ProspectosState>()((set, get) => ({
       const res = await fetch('/api/prospectos', { cache: 'no-store' })
       const data = await res.json()
       const kvProspectos: Prospecto[] = Array.isArray(data) ? data : []
-
-      // Migración suave: si KV está vacío pero el navegador tiene datos del
-      // localStorage antiguo ('crm-prospectos-storage'), súbelos a KV una sola vez.
-      if (kvProspectos.length === 0 && typeof window !== 'undefined') {
-        try {
-          const raw = window.localStorage.getItem('crm-prospectos-storage')
-          const legacy: Prospecto[] = raw ? (JSON.parse(raw)?.state?.prospectos || []) : []
-          if (legacy.length > 0) {
-            set({ prospectos: legacy, loaded: true })
-            await apiSet('/api/prospectos', legacy, true)
-            return
-          }
-        } catch (e) {
-          console.error('[prospectos-store] migración localStorage error:', e)
-        }
-      }
-
       set({ prospectos: kvProspectos, loaded: true })
     } catch (err) {
       console.error('[prospectos-store] load error:', err)

@@ -45,23 +45,6 @@ export const useContactosStore = create<ContactosState>()((set, get) => ({
       const res = await fetch('/api/contactos', { cache: 'no-store' })
       const data = await res.json()
       const kvContactos: Contacto[] = Array.isArray(data) ? data : []
-
-      // Migración suave: si KV está vacío pero el navegador tiene datos del
-      // localStorage antiguo ('crm-contactos-storage'), súbelos a KV una sola vez.
-      if (kvContactos.length === 0 && typeof window !== 'undefined') {
-        try {
-          const raw = window.localStorage.getItem('crm-contactos-storage')
-          const legacy: Contacto[] = raw ? (JSON.parse(raw)?.state?.contactos || []) : []
-          if (legacy.length > 0) {
-            set({ contactos: legacy, loaded: true })
-            await apiSet('/api/contactos', legacy, true)
-            return
-          }
-        } catch (e) {
-          console.error('[contactos-store] migración localStorage error:', e)
-        }
-      }
-
       set({ contactos: kvContactos, loaded: true })
     } catch (err) {
       console.error('[contactos-store] load error:', err)

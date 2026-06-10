@@ -77,23 +77,6 @@ export const useOportunidadesStore = create<OportunidadesState>()((set, get) => 
       const res = await fetch('/api/oportunidades', { cache: 'no-store' })
       const data = await res.json()
       const kvOportunidades: Oportunidad[] = Array.isArray(data) ? data : []
-
-      // Migración suave: si KV está vacío pero el navegador tiene datos del
-      // localStorage antiguo ('crm-oportunidades-storage'), súbelos a KV una sola vez.
-      if (kvOportunidades.length === 0 && typeof window !== 'undefined') {
-        try {
-          const raw = window.localStorage.getItem('crm-oportunidades-storage')
-          const legacy: Oportunidad[] = raw ? (JSON.parse(raw)?.state?.oportunidades || []) : []
-          if (legacy.length > 0) {
-            set({ oportunidades: legacy, loaded: true })
-            await apiSet('/api/oportunidades', legacy, true)
-            return
-          }
-        } catch (e) {
-          console.error('[oportunidades-store] migración localStorage error:', e)
-        }
-      }
-
       set({ oportunidades: kvOportunidades, loaded: true })
     } catch (err) {
       console.error('[oportunidades-store] load error:', err)

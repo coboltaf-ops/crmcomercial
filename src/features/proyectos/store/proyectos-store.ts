@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { Seguimiento } from '@/shared/types/seguimiento'
-import { apiUpsert, apiDelete, apiSet } from '@/shared/lib/list-client'
+import { apiUpsert, apiDelete } from '@/shared/lib/list-client'
 
 export type { Seguimiento }
 
@@ -44,23 +44,6 @@ export const useProyectosStore = create<ProyectosState>()((set, get) => ({
       const res = await fetch('/api/proyectos', { cache: 'no-store' })
       const data = await res.json()
       const kvProyectos: Proyecto[] = Array.isArray(data) ? data : []
-
-      // Migración suave: si KV está vacío pero el navegador tiene datos del
-      // localStorage antiguo ('crm-proyectos-storage'), súbelos a KV una sola vez.
-      if (kvProyectos.length === 0 && typeof window !== 'undefined') {
-        try {
-          const raw = window.localStorage.getItem('crm-proyectos-storage')
-          const legacy: Proyecto[] = raw ? (JSON.parse(raw)?.state?.proyectos || []) : []
-          if (legacy.length > 0) {
-            set({ proyectos: legacy, loaded: true })
-            await apiSet('/api/proyectos', legacy, true)
-            return
-          }
-        } catch (e) {
-          console.error('[proyectos-store] migración localStorage error:', e)
-        }
-      }
-
       set({ proyectos: kvProyectos, loaded: true })
     } catch (err) {
       console.error('[proyectos-store] load error:', err)

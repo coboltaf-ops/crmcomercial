@@ -210,15 +210,8 @@ export const useReferenceStore = create<ReferenceState>()((set, get) => ({
         set({ data: mergeData(kv.data), vendedores: kv.vendedores || [], loaded: true })
         return
       }
-      // KV vacío: migración suave del localStorage antiguo, o initialData
-      let legacy: { data?: Partial<RefData>; vendedores?: Vendedor[] } | null = null
-      if (typeof window !== 'undefined') {
-        try { const raw = window.localStorage.getItem('crm-referencias-storage'); legacy = raw ? (JSON.parse(raw)?.state || null) : null } catch { /* ignore */ }
-      }
-      const data = mergeData(legacy?.data)
-      const vendedores = legacy?.vendedores || []
-      set({ data, vendedores, loaded: true })
-      persistRef(data, vendedores)
+      // KV vacío: usar los catálogos por defecto (NO leer datos viejos del navegador)
+      set({ data: initialData, vendedores: [], loaded: true })
     } catch (err) {
       console.error('[reference-store] load error:', err)
       set({ loaded: true })

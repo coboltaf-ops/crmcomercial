@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { Seguimiento } from '@/shared/types/seguimiento'
-import { apiUpsert, apiDelete, apiSet } from '@/shared/lib/list-client'
+import { apiUpsert, apiDelete } from '@/shared/lib/list-client'
 
 export type { Seguimiento }
 
@@ -50,23 +50,6 @@ export const usePQRSStore = create<PQRSState>()((set, get) => ({
       const res = await fetch('/api/pqrs', { cache: 'no-store' })
       const data = await res.json()
       const kvPQRS: PQRS[] = Array.isArray(data) ? data : []
-
-      // Migración suave: si KV está vacío pero el navegador tiene datos del
-      // localStorage antiguo ('crm-pqrs-storage'), súbelos a KV una sola vez.
-      if (kvPQRS.length === 0 && typeof window !== 'undefined') {
-        try {
-          const raw = window.localStorage.getItem('crm-pqrs-storage')
-          const legacy: PQRS[] = raw ? (JSON.parse(raw)?.state?.pqrs || []) : []
-          if (legacy.length > 0) {
-            set({ pqrs: legacy, loaded: true })
-            await apiSet('/api/pqrs', legacy, true)
-            return
-          }
-        } catch (e) {
-          console.error('[pqrs-store] migración localStorage error:', e)
-        }
-      }
-
       set({ pqrs: kvPQRS, loaded: true })
     } catch (err) {
       console.error('[pqrs-store] load error:', err)
