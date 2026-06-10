@@ -54,6 +54,7 @@ export default function OportunidadesPage() {
   const allClientes = useClientesStore(s => s.clientes)
   const allContactos = useContactosStore(s => s.contactos)
   const refData = useReferenceStore(s => s.data)
+  const vendedores = useReferenceStore(s => s.vendedores)
 
   const [selected, setSelected] = useState<Oportunidad | null>(null)
   const [isForm, setIsForm] = useState(false)
@@ -363,7 +364,16 @@ export default function OportunidadesPage() {
             </div>
             <div>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.responsable')}</label>
-              <input value={selected.responsable} onChange={e => setSelected({ ...selected, responsable: e.target.value })} style={inputStyle} />
+              <select value={selected.responsable || ''} onChange={e => setSelected({ ...selected, responsable: e.target.value })} style={inputStyle}>
+                <option value="">{idioma === 'en' ? 'Select...' : 'Seleccionar...'}</option>
+                {selected.responsable && !vendedores.some(v => `${v.nombre} ${v.apellido}`.trim() === selected.responsable) && (
+                  <option value={selected.responsable}>{selected.responsable}</option>
+                )}
+                {vendedores.filter(v => v.situacion).map(v => {
+                  const nombre = `${v.nombre} ${v.apellido}`.trim()
+                  return <option key={v.id} value={nombre}>{nombre}</option>
+                })}
+              </select>
             </div>
           </div>
 
@@ -623,7 +633,7 @@ export default function OportunidadesPage() {
 
       {permisos.editar && tab === 'registros' && (
         <div style={{ marginBottom: 20 }}>
-          <button onClick={() => { setSelected(emptyOportunidad(nextConsecutivo('OPP-', oportunidades.map(o => o.codigo)).codigo, `${currentUser?.nombre || ''} ${currentUser?.apellido || ''}`.trim())); setIsForm(true) }} style={{ ...btnStyle, background: '#0f1b3d', color: '#ffffff' }}>{t('page.oportunidades.btnNuevo')}</button>
+          <button onClick={() => { setSelected(emptyOportunidad(nextConsecutivo('OPP-', oportunidades.map(o => o.codigo)).codigo, '')); setIsForm(true) }} style={{ ...btnStyle, background: '#0f1b3d', color: '#ffffff' }}>{t('page.oportunidades.btnNuevo')}</button>
         </div>
       )}
 
