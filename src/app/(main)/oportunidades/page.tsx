@@ -371,8 +371,8 @@ export default function OportunidadesPage() {
           <h3 className="seccion-franja" style={sectionTitle()}>{idioma === 'en' ? 'PROBABILITY AND AWARD' : 'PROBABILIDAD Y ADJUDICACIÓN'}</h3>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: 14, marginBottom: 20 }}>
             <div>
-              <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.probabilidad')} *</label>
-              <input type="number" step="0.01" min="0" max="100" value={selected.probable_pct ?? ''} onChange={e => { const v = e.target.value; setSelected({ ...selected, probable_pct: v === '' ? undefined : (parseFloat(v) || 0) }) }} required style={inputStyle} />
+              <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.probabilidad')}</label>
+              <input type="number" step="0.01" min="0" max="100" value={selected.probable_pct ?? ''} onChange={e => { const v = e.target.value; setSelected({ ...selected, probable_pct: v === '' ? undefined : (parseFloat(v) || 0) }) }} style={inputStyle} />
             </div>
             <div>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.parcialDolarProbable')}</label>
