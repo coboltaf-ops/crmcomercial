@@ -31,6 +31,29 @@ const ROUTE_KEYWORDS: { keywords: string[]; href: string; label: string }[] = [
   { keywords: ['dashboard', 'inicio', 'home', 'principal', 'menu', 'menú'], href: '/dashboard', label: 'Dashboard' },
 ]
 
+// Etiquetas del menú lateral en inglés (por id de módulo)
+const MENU_EN: Record<string, string> = {
+  dashboard: 'Dashboard',
+  clientes: 'Companies',
+  contactos: 'Contacts',
+  prospectos: 'Prospects',
+  oportunidades: 'Opportunities',
+  proyectos: 'Projects',
+  productos: 'Products',
+  cotizaciones: 'Quotes',
+  pqrs: 'PQRS',
+  correos: 'Sent Emails',
+  tareas: 'Tasks',
+  referencias: 'References',
+  usuarios: 'Users',
+  'email-marketing': 'Email Marketing',
+  flujos: 'Automations',
+  'datos-empresa': 'My Company',
+  'disenador-correos': 'Email Designer',
+  modulos: 'Modules',
+  auditoria: 'Audit',
+}
+
 function resolveRoute(text: string): { href: string; label: string } | null {
   const t = text.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
   for (const r of ROUTE_KEYWORDS) {
@@ -180,13 +203,14 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
 
   const isAdmin = user.rol.toLowerCase() === 'admin'
   const configModuleIds = ['usuarios', 'email-marketing', 'flujos', 'datos-empresa', 'disenador-correos', 'modulos']
+  const menuLabel = (m: { id: string; label: string }) => (idioma === 'en' ? (MENU_EN[m.id] || m.label) : m.label)
   const mainItems = modulos
     .filter(m => m.activo && (m.grupo === 'principal' || !configModuleIds.includes(m.id)))
     .filter(m => m.grupo === 'principal')
-    .map(m => ({ href: m.href, icon: m.icon, label: m.label }))
+    .map(m => ({ href: m.href, icon: m.icon, label: menuLabel(m) }))
   const configItems = isAdmin ? modulos
     .filter(m => m.activo && m.grupo === 'configuracion')
-    .map(m => ({ href: m.href, icon: m.icon, label: m.label })) : []
+    .map(m => ({ href: m.href, icon: m.icon, label: menuLabel(m) })) : []
 
   const sideW = collapsed ? 64 : 240
 
@@ -254,8 +278,8 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
                 <div style={{ width: 120, height: 120, borderRadius: 14, background: 'rgba(255,255,255,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#ffffff', fontWeight: 700, fontSize: 34 }}>C</div>
               )}
               <div style={{ textAlign: 'center' }}>
-                <p style={{ color: '#ffffff', fontWeight: 800, fontSize: 16, lineHeight: 1.2, margin: 0 }}>GESTION COMERCIAL</p>
-                <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: 11, margin: '2px 0 0' }}>{empresa?.nombre || 'Sistema de Gestión'}</p>
+                <p style={{ color: '#ffffff', fontWeight: 800, fontSize: 16, lineHeight: 1.2, margin: 0 }}>{idioma === 'en' ? 'COMMERCIAL MANAGEMENT' : 'GESTION COMERCIAL'}</p>
+                <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: 11, margin: '2px 0 0' }}>{empresa?.nombre || (idioma === 'en' ? 'Management System' : 'Sistema de Gestión')}</p>
               </div>
             </div>
           )}
