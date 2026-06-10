@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import { Seguimiento } from '@/shared/types/seguimiento'
+import { apiUpsert, apiDelete, apiSet } from '@/shared/lib/list-client'
 
 export type { Seguimiento }
 
@@ -46,20 +47,6 @@ interface TareasState {
   deleteSituacion: (id: string) => void
 }
 
-// Persiste la lista completa de tareas en Vercel KV vía /api/tareas.
-// Así los datos sobreviven a cualquier navegador o despliegue.
-async function persistTareas(tareas: Tarea[]) {
-  try {
-    await fetch('/api/tareas', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(tareas),
-    })
-  } catch (err) {
-    console.error('[tareas-store] persist error:', err)
-  }
-}
-
 export const useTareasStore = create<TareasState>()((set, get) => ({
   tareas: [],
   situaciones: defaultSituaciones,
@@ -78,7 +65,7 @@ export const useTareasStore = create<TareasState>()((set, get) => ({
           const legacy: Tarea[] = raw ? (JSON.parse(raw)?.state?.tareas || []) : []
           if (legacy.length > 0) {
             set({ tareas: legacy, loaded: true })
-            await persistTareas(legacy)
+            await apiSet('/api/tareas', legacy, true)
             return
           }
         } catch (e) {
@@ -95,17 +82,19 @@ export const useTareasStore = create<TareasState>()((set, get) => ({
   addTarea: (t) => {
     const tareas = [...get().tareas, t]
     set({ tareas })
-    persistTareas(tareas)
+    apiUpsert('/api/tareas', t)
   },
   updateTarea: (id, t) => {
+    const prev = get().tareas.find((r) => r.id === id)
+    const item = { ...(prev ?? ({} as Tarea)), ...t, id }
     const tareas = get().tareas.map((r) => (r.id === id ? { ...r, ...t } : r))
     set({ tareas })
-    persistTareas(tareas)
+    apiUpsert('/api/tareas', item)
   },
   deleteTarea: (id) => {
     const tareas = get().tareas.filter((r) => r.id !== id)
     set({ tareas })
-    persistTareas(tareas)
+    apiDelete('/api/tareas', id)
   },
   addSituacion: (sit) => set((s) => ({ situaciones: [...s.situaciones, sit] })),
   updateSituacion: (id, sit) => set((s) => ({ situaciones: s.situaciones.map((r) => r.id === id ? { ...r, ...sit } : r) })),

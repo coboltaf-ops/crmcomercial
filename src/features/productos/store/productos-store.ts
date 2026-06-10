@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import { Seguimiento } from '@/shared/types/seguimiento'
+import { apiUpsert, apiDelete, apiSet } from '@/shared/lib/list-client'
 
 export type { Seguimiento }
 
@@ -28,20 +29,6 @@ interface ProductosState {
   deleteProducto: (id: string) => void
 }
 
-// Persiste la lista completa en Vercel KV vía /api/productos.
-// Así los datos sobreviven a cualquier navegador o despliegue.
-async function persistProductos(productos: Producto[]) {
-  try {
-    await fetch('/api/productos', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(productos),
-    })
-  } catch (err) {
-    console.error('[productos-store] persist error:', err)
-  }
-}
-
 export const useProductosStore = create<ProductosState>()((set, get) => ({
   productos: [],
   loaded: false,
@@ -59,7 +46,7 @@ export const useProductosStore = create<ProductosState>()((set, get) => ({
           const legacy: Producto[] = raw ? (JSON.parse(raw)?.state?.productos || []) : []
           if (legacy.length > 0) {
             set({ productos: legacy, loaded: true })
-            await persistProductos(legacy)
+            await apiSet('/api/productos', legacy, true)
             return
           }
         } catch (e) {
@@ -76,16 +63,18 @@ export const useProductosStore = create<ProductosState>()((set, get) => ({
   addProducto: (p) => {
     const productos = [...get().productos, p]
     set({ productos })
-    persistProductos(productos)
+    apiUpsert('/api/productos', p)
   },
   updateProducto: (id, p) => {
+    const prev = get().productos.find((r) => r.id === id)
+    const item = { ...prev, ...p, id } as Producto
     const productos = get().productos.map((r) => (r.id === id ? { ...r, ...p } : r))
     set({ productos })
-    persistProductos(productos)
+    apiUpsert('/api/productos', item)
   },
   deleteProducto: (id) => {
     const productos = get().productos.filter((r) => r.id !== id)
     set({ productos })
-    persistProductos(productos)
+    apiDelete('/api/productos', id)
   },
 }))

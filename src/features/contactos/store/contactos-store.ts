@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import { Seguimiento } from '@/shared/types/seguimiento'
+import { apiUpsert, apiDelete, apiSet } from '@/shared/lib/list-client'
 
 export type { Seguimiento }
 
@@ -35,20 +36,6 @@ interface ContactosState {
   deleteContacto: (id: string) => void
 }
 
-// Persiste la lista completa en Vercel KV vía /api/contactos.
-// Así los datos sobreviven a cualquier navegador o despliegue.
-async function persistContactos(contactos: Contacto[]) {
-  try {
-    await fetch('/api/contactos', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(contactos),
-    })
-  } catch (err) {
-    console.error('[contactos-store] persist error:', err)
-  }
-}
-
 export const useContactosStore = create<ContactosState>()((set, get) => ({
   contactos: [],
   loaded: false,
@@ -66,7 +53,7 @@ export const useContactosStore = create<ContactosState>()((set, get) => ({
           const legacy: Contacto[] = raw ? (JSON.parse(raw)?.state?.contactos || []) : []
           if (legacy.length > 0) {
             set({ contactos: legacy, loaded: true })
-            await persistContactos(legacy)
+            await apiSet('/api/contactos', legacy, true)
             return
           }
         } catch (e) {
@@ -83,16 +70,17 @@ export const useContactosStore = create<ContactosState>()((set, get) => ({
   addContacto: (c) => {
     const contactos = [...get().contactos, c]
     set({ contactos })
-    persistContactos(contactos)
+    apiUpsert('/api/contactos', c)
   },
   updateContacto: (id, c) => {
     const contactos = get().contactos.map((r) => (r.id === id ? { ...r, ...c } : r))
     set({ contactos })
-    persistContactos(contactos)
+    const item = get().contactos.find((r) => r.id === id)
+    if (item) apiUpsert('/api/contactos', item)
   },
   deleteContacto: (id) => {
     const contactos = get().contactos.filter((r) => r.id !== id)
     set({ contactos })
-    persistContactos(contactos)
+    apiDelete('/api/contactos', id)
   },
 }))

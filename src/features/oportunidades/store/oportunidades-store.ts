@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import { Seguimiento } from '@/shared/types/seguimiento'
+import { apiUpsert, apiDelete, apiSet } from '@/shared/lib/list-client'
 
 export type { Seguimiento }
 
@@ -67,20 +68,6 @@ interface OportunidadesState {
   deleteOportunidad: (id: string) => void
 }
 
-// Persiste la lista completa en Vercel KV vía /api/oportunidades.
-// Así los datos sobreviven a cualquier navegador o despliegue.
-async function persistOportunidades(oportunidades: Oportunidad[]) {
-  try {
-    await fetch('/api/oportunidades', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(oportunidades),
-    })
-  } catch (err) {
-    console.error('[oportunidades-store] persist error:', err)
-  }
-}
-
 export const useOportunidadesStore = create<OportunidadesState>()((set, get) => ({
   oportunidades: [],
   loaded: false,
@@ -98,7 +85,7 @@ export const useOportunidadesStore = create<OportunidadesState>()((set, get) => 
           const legacy: Oportunidad[] = raw ? (JSON.parse(raw)?.state?.oportunidades || []) : []
           if (legacy.length > 0) {
             set({ oportunidades: legacy, loaded: true })
-            await persistOportunidades(legacy)
+            await apiSet('/api/oportunidades', legacy, true)
             return
           }
         } catch (e) {
@@ -115,16 +102,17 @@ export const useOportunidadesStore = create<OportunidadesState>()((set, get) => 
   addOportunidad: (o) => {
     const oportunidades = [...get().oportunidades, o]
     set({ oportunidades })
-    persistOportunidades(oportunidades)
+    apiUpsert('/api/oportunidades', o)
   },
   updateOportunidad: (id, o) => {
     const oportunidades = get().oportunidades.map((r) => (r.id === id ? { ...r, ...o } : r))
     set({ oportunidades })
-    persistOportunidades(oportunidades)
+    const item = get().oportunidades.find((r) => r.id === id)
+    if (item) apiUpsert('/api/oportunidades', item)
   },
   deleteOportunidad: (id) => {
     const oportunidades = get().oportunidades.filter((r) => r.id !== id)
     set({ oportunidades })
-    persistOportunidades(oportunidades)
+    apiDelete('/api/oportunidades', id)
   },
 }))

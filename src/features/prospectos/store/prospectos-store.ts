@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import { Seguimiento } from '@/shared/types/seguimiento'
+import { apiUpsert, apiDelete, apiSet } from '@/shared/lib/list-client'
 
 export type { Seguimiento }
 
@@ -33,20 +34,6 @@ interface ProspectosState {
   deleteProspecto: (id: string) => void
 }
 
-// Persiste la lista completa en Vercel KV vía /api/prospectos.
-// Así los datos sobreviven a cualquier navegador o despliegue.
-async function persistProspectos(prospectos: Prospecto[]) {
-  try {
-    await fetch('/api/prospectos', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(prospectos),
-    })
-  } catch (err) {
-    console.error('[prospectos-store] persist error:', err)
-  }
-}
-
 export const useProspectosStore = create<ProspectosState>()((set, get) => ({
   prospectos: [],
   loaded: false,
@@ -64,7 +51,7 @@ export const useProspectosStore = create<ProspectosState>()((set, get) => ({
           const legacy: Prospecto[] = raw ? (JSON.parse(raw)?.state?.prospectos || []) : []
           if (legacy.length > 0) {
             set({ prospectos: legacy, loaded: true })
-            await persistProspectos(legacy)
+            await apiSet('/api/prospectos', legacy, true)
             return
           }
         } catch (e) {
@@ -81,16 +68,18 @@ export const useProspectosStore = create<ProspectosState>()((set, get) => ({
   addProspecto: (p) => {
     const prospectos = [...get().prospectos, p]
     set({ prospectos })
-    persistProspectos(prospectos)
+    apiUpsert('/api/prospectos', p)
   },
   updateProspecto: (id, p) => {
+    const prev = get().prospectos.find((r) => r.id === id)
+    const item = { ...(prev ?? ({} as Prospecto)), ...p, id }
     const prospectos = get().prospectos.map((r) => (r.id === id ? { ...r, ...p } : r))
     set({ prospectos })
-    persistProspectos(prospectos)
+    apiUpsert('/api/prospectos', item)
   },
   deleteProspecto: (id) => {
     const prospectos = get().prospectos.filter((r) => r.id !== id)
     set({ prospectos })
-    persistProspectos(prospectos)
+    apiDelete('/api/prospectos', id)
   },
 }))

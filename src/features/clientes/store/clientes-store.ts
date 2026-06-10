@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import { Seguimiento } from '@/shared/types/seguimiento'
+import { apiUpsert, apiDelete, apiSet } from '@/shared/lib/list-client'
 
 export type { Seguimiento }
 
@@ -46,20 +47,6 @@ interface ClientesState {
   deleteCliente: (id: string) => void
 }
 
-// Persiste la lista completa en Vercel KV vía /api/clientes.
-// Así los datos sobreviven a cualquier navegador o despliegue.
-async function persistClientes(clientes: Cliente[]) {
-  try {
-    await fetch('/api/clientes', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(clientes),
-    })
-  } catch (err) {
-    console.error('[clientes-store] persist error:', err)
-  }
-}
-
 export const useClientesStore = create<ClientesState>()((set, get) => ({
   clientes: [],
   loaded: false,
@@ -77,7 +64,7 @@ export const useClientesStore = create<ClientesState>()((set, get) => ({
           const legacy: Cliente[] = raw ? (JSON.parse(raw)?.state?.clientes || []) : []
           if (legacy.length > 0) {
             set({ clientes: legacy, loaded: true })
-            await persistClientes(legacy)
+            await apiSet('/api/clientes', legacy, true)
             return
           }
         } catch (e) {
@@ -94,16 +81,17 @@ export const useClientesStore = create<ClientesState>()((set, get) => ({
   addCliente: (c) => {
     const clientes = [...get().clientes, c]
     set({ clientes })
-    persistClientes(clientes)
+    apiUpsert('/api/clientes', c)
   },
   updateCliente: (id, c) => {
     const clientes = get().clientes.map((r) => (r.id === id ? { ...r, ...c } : r))
     set({ clientes })
-    persistClientes(clientes)
+    const item = get().clientes.find((r) => r.id === id)
+    if (item) apiUpsert('/api/clientes', item)
   },
   deleteCliente: (id) => {
     const clientes = get().clientes.filter((r) => r.id !== id)
     set({ clientes })
-    persistClientes(clientes)
+    apiDelete('/api/clientes', id)
   },
 }))

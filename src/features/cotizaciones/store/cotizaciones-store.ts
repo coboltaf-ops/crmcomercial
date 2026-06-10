@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import { Seguimiento } from '@/shared/types/seguimiento'
+import { apiUpsert, apiDelete, apiSet } from '@/shared/lib/list-client'
 
 export type { Seguimiento }
 
@@ -50,20 +51,6 @@ interface CotizacionesState {
   deleteCotizacion: (id: string) => void
 }
 
-// Persiste la lista completa en Vercel KV vía /api/cotizaciones.
-// Así los datos sobreviven a cualquier navegador o despliegue.
-async function persistCotizaciones(cotizaciones: Cotizacion[]) {
-  try {
-    await fetch('/api/cotizaciones', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(cotizaciones),
-    })
-  } catch (err) {
-    console.error('[cotizaciones-store] persist error:', err)
-  }
-}
-
 export const useCotizacionesStore = create<CotizacionesState>()((set, get) => ({
   cotizaciones: [],
   loaded: false,
@@ -81,7 +68,7 @@ export const useCotizacionesStore = create<CotizacionesState>()((set, get) => ({
           const legacy: Cotizacion[] = raw ? (JSON.parse(raw)?.state?.cotizaciones || []) : []
           if (legacy.length > 0) {
             set({ cotizaciones: legacy, loaded: true })
-            await persistCotizaciones(legacy)
+            await apiSet('/api/cotizaciones', legacy, true)
             return
           }
         } catch (e) {
@@ -98,16 +85,18 @@ export const useCotizacionesStore = create<CotizacionesState>()((set, get) => ({
   addCotizacion: (c) => {
     const cotizaciones = [...get().cotizaciones, c]
     set({ cotizaciones })
-    persistCotizaciones(cotizaciones)
+    apiUpsert('/api/cotizaciones', c)
   },
   updateCotizacion: (id, c) => {
+    const prev = get().cotizaciones.find((r) => r.id === id)
+    const item = { ...(prev ?? ({} as Cotizacion)), ...c, id }
     const cotizaciones = get().cotizaciones.map((r) => (r.id === id ? { ...r, ...c } : r))
     set({ cotizaciones })
-    persistCotizaciones(cotizaciones)
+    apiUpsert('/api/cotizaciones', item)
   },
   deleteCotizacion: (id) => {
     const cotizaciones = get().cotizaciones.filter((r) => r.id !== id)
     set({ cotizaciones })
-    persistCotizaciones(cotizaciones)
+    apiDelete('/api/cotizaciones', id)
   },
 }))

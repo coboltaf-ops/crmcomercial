@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import { Seguimiento } from '@/shared/types/seguimiento'
+import { apiUpsert, apiDelete, apiSet } from '@/shared/lib/list-client'
 
 export type { Seguimiento }
 
@@ -40,20 +41,6 @@ interface PQRSState {
   deletePQRS: (id: string) => void
 }
 
-// Persiste la lista completa en Vercel KV vía /api/pqrs.
-// Así los datos sobreviven a cualquier navegador o despliegue.
-async function persistPQRS(pqrs: PQRS[]) {
-  try {
-    await fetch('/api/pqrs', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(pqrs),
-    })
-  } catch (err) {
-    console.error('[pqrs-store] persist error:', err)
-  }
-}
-
 export const usePQRSStore = create<PQRSState>()((set, get) => ({
   pqrs: [],
   loaded: false,
@@ -71,7 +58,7 @@ export const usePQRSStore = create<PQRSState>()((set, get) => ({
           const legacy: PQRS[] = raw ? (JSON.parse(raw)?.state?.pqrs || []) : []
           if (legacy.length > 0) {
             set({ pqrs: legacy, loaded: true })
-            await persistPQRS(legacy)
+            await apiSet('/api/pqrs', legacy, true)
             return
           }
         } catch (e) {
@@ -88,16 +75,18 @@ export const usePQRSStore = create<PQRSState>()((set, get) => ({
   addPQRS: (p) => {
     const pqrs = [...get().pqrs, p]
     set({ pqrs })
-    persistPQRS(pqrs)
+    apiUpsert('/api/pqrs', p)
   },
   updatePQRS: (id, p) => {
+    const prev = get().pqrs.find((r) => r.id === id)
+    const item = { ...prev, ...p, id } as PQRS
     const pqrs = get().pqrs.map((r) => (r.id === id ? { ...r, ...p } : r))
     set({ pqrs })
-    persistPQRS(pqrs)
+    apiUpsert('/api/pqrs', item)
   },
   deletePQRS: (id) => {
     const pqrs = get().pqrs.filter((r) => r.id !== id)
     set({ pqrs })
-    persistPQRS(pqrs)
+    apiDelete('/api/pqrs', id)
   },
 }))

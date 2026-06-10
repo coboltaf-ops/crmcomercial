@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import { Seguimiento } from '@/shared/types/seguimiento'
+import { apiUpsert, apiDelete, apiSet } from '@/shared/lib/list-client'
 
 export type { Seguimiento }
 
@@ -34,20 +35,6 @@ interface ProyectosState {
   deleteProyecto: (id: string) => void
 }
 
-// Persiste la lista completa en Vercel KV vía /api/proyectos.
-// Así los datos sobreviven a cualquier navegador o despliegue.
-async function persistProyectos(proyectos: Proyecto[]) {
-  try {
-    await fetch('/api/proyectos', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(proyectos),
-    })
-  } catch (err) {
-    console.error('[proyectos-store] persist error:', err)
-  }
-}
-
 export const useProyectosStore = create<ProyectosState>()((set, get) => ({
   proyectos: [],
   loaded: false,
@@ -65,7 +52,7 @@ export const useProyectosStore = create<ProyectosState>()((set, get) => ({
           const legacy: Proyecto[] = raw ? (JSON.parse(raw)?.state?.proyectos || []) : []
           if (legacy.length > 0) {
             set({ proyectos: legacy, loaded: true })
-            await persistProyectos(legacy)
+            await apiSet('/api/proyectos', legacy, true)
             return
           }
         } catch (e) {
@@ -82,16 +69,18 @@ export const useProyectosStore = create<ProyectosState>()((set, get) => ({
   addProyecto: (p) => {
     const proyectos = [...get().proyectos, p]
     set({ proyectos })
-    persistProyectos(proyectos)
+    apiUpsert('/api/proyectos', p)
   },
   updateProyecto: (id, p) => {
+    const prev = get().proyectos.find((r) => r.id === id)
+    const item = { ...prev, ...p, id } as Proyecto
     const proyectos = get().proyectos.map((r) => (r.id === id ? { ...r, ...p } : r))
     set({ proyectos })
-    persistProyectos(proyectos)
+    apiUpsert('/api/proyectos', item)
   },
   deleteProyecto: (id) => {
     const proyectos = get().proyectos.filter((r) => r.id !== id)
     set({ proyectos })
-    persistProyectos(proyectos)
+    apiDelete('/api/proyectos', id)
   },
 }))
