@@ -106,7 +106,7 @@ export default function TareasPage() {
       alert(idi === 'en' ? 'Complete required fields' : 'Complete los campos obligatorios'); return
     }
     const esNueva = !selected.id
-    const tareaFinal = esNueva ? { ...selected, id: crypto.randomUUID(), fecha_registro: todayCO(), creado_por: `${user?.nombre || ''} ${user?.apellido || ''}`.trim() || (user?.usuario || 'desconocido'), creado_en: todayCO() } : selected
+    const tareaFinal = esNueva ? { ...selected, id: crypto.randomUUID(), fecha_registro: todayCO(), creado_por: `${user?.nombre || ''} ${user?.apellido || ''}`.trim() || (user?.usuario || 'desconocido'), creado_por_usuario: user?.usuario || '', creado_en: todayCO() } : selected
 
     if (esNueva) {
       addTarea(tareaFinal); logAudit({ ...auditParams(), accion: "CREAR", registro_codigo: tareaFinal.codigo, registro_nombre: tareaFinal.descripcion })
@@ -153,7 +153,7 @@ export default function TareasPage() {
       { label: 'Fecha Real Fin', value: fDate(viewDetail.fecha_real_fin) },
       { label: 'Situación', value: viewDetail.situacion },
       { label: 'Fecha Registro', value: fDate(viewDetail.fecha_registro) },
-      { label: 'Creado por', value: viewDetail.creado_por ? `${viewDetail.creado_por}${viewDetail.creado_en ? ` · ${viewDetail.creado_en}` : ''}` : '—' },
+      { label: 'Creado por', value: viewDetail.creado_por ? `${viewDetail.creado_por}${viewDetail.creado_por_usuario ? ` (${viewDetail.creado_por_usuario})` : ''}${viewDetail.creado_en ? ` · ${viewDetail.creado_en}` : ''}` : '—' },
     ]
     return (
       <div>

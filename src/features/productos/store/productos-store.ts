@@ -15,6 +15,7 @@ export interface Producto {
   observaciones: string
   situacion: string
   creado_por?: string
+  creado_por_usuario?: string
   creado_en?: string
   fecha_registro: string
   seguimientos: Seguimiento[]

@@ -52,6 +52,7 @@ export interface Oportunidad {
   situacion: string
   fecha_registro: string
   creado_por?: string
+  creado_por_usuario?: string
   creado_por_rol?: string
   creado_en?: string
   codigo_interno?: string

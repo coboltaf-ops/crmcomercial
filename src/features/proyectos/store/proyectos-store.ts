@@ -22,6 +22,7 @@ export interface Proyecto {
   tipo_moneda: string
   situacion: string
   creado_por?: string
+  creado_por_usuario?: string
   creado_en?: string
   seguimientos: Seguimiento[]
 }

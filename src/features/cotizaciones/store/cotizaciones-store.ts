@@ -35,6 +35,7 @@ export interface Cotizacion {
   detalles: DetalleCotizacion[]
   situacion: string
   creado_por?: string
+  creado_por_usuario?: string
   creado_en?: string
   responsable: string
   vendedor: string

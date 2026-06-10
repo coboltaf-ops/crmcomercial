@@ -72,7 +72,7 @@ export default function ProyectosPage() {
       updateProyecto(toSave.id, toSave)
       logAudit({ ...auditParams(), accion: 'MODIFICAR', registro_codigo: toSave.codigo, registro_nombre: toSave.codigo_proyecto, detalle: computarDiff(_anterior as unknown as Record<string, unknown>, toSave as unknown as Record<string, unknown>) })
     } else {
-      addProyecto({ ...toSave, id: crypto.randomUUID(), fecha_registro: today, creado_por: `${currentUser?.nombre || ''} ${currentUser?.apellido || ''}`.trim() || (currentUser?.usuario || 'desconocido'), creado_en: today })
+      addProyecto({ ...toSave, id: crypto.randomUUID(), fecha_registro: today, creado_por: `${currentUser?.nombre || ''} ${currentUser?.apellido || ''}`.trim() || (currentUser?.usuario || 'desconocido'), creado_por_usuario: currentUser?.usuario || '', creado_en: today })
       logAudit({ ...auditParams(), accion: 'CREAR', registro_codigo: toSave.codigo, registro_nombre: toSave.codigo_proyecto })
     }
     setIsForm(false); setSelected(null); setVerLectura(false)
@@ -173,7 +173,7 @@ export default function ProyectosPage() {
             </div>
           </fieldset>
           {selected.creado_por && (
-            <p style={{ color: '#64748b', fontSize: 12, marginTop: 14 }}>Creado por: <strong style={{ color: '#013978' }}>{selected.creado_por}</strong>{selected.creado_en ? ` · ${selected.creado_en}` : ''}</p>
+            <p style={{ color: '#64748b', fontSize: 12, marginTop: 14 }}>Creado por: <strong style={{ color: '#013978' }}>{selected.creado_por}</strong>{selected.creado_por_usuario ? ` (${selected.creado_por_usuario})` : ''}{selected.creado_en ? ` · ${selected.creado_en}` : ''}</p>
           )}
           <div style={{ display: 'flex', gap: 10, marginTop: 20 }}>
             {!verLectura && <button type="submit" style={{ ...btnStyle, background: '#1e3a8a', color: '#ffffff' }}>Guardar</button>}

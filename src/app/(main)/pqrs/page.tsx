@@ -133,7 +133,7 @@ export default function PQRSPage() {
       updatePQRS(toSave.id, toSave)
       logAudit({ ...auditParams(), accion: 'MODIFICAR', registro_codigo: toSave.codigo, registro_nombre: toSave.asunto, detalle: computarDiff(_anterior as unknown as Record<string, unknown>, toSave as unknown as Record<string, unknown>) })
     } else {
-      addPQRS({ ...toSave, id: crypto.randomUUID(), creado_por: `${currentUser?.nombre || ''} ${currentUser?.apellido || ''}`.trim() || (currentUser?.usuario || 'desconocido'), creado_en: today })
+      addPQRS({ ...toSave, id: crypto.randomUUID(), creado_por: `${currentUser?.nombre || ''} ${currentUser?.apellido || ''}`.trim() || (currentUser?.usuario || 'desconocido'), creado_por_usuario: currentUser?.usuario || '', creado_en: today })
       logAudit({ ...auditParams(), accion: 'CREAR', registro_codigo: toSave.codigo, registro_nombre: toSave.asunto })
     }
     setIsForm(false); setSelected(null)
@@ -217,7 +217,7 @@ export default function PQRSPage() {
             )}
 
             <div style={{ display: 'flex', gap: 8 }}>
-              <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: 12, marginTop: 12 }}>Creado por: <strong style={{ color: '#ffffff' }}>{viewDetail.creado_por || '—'}</strong>{viewDetail.creado_en ? ` · ${viewDetail.creado_en}` : ''}</p>
+              <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: 12, marginTop: 12 }}>Creado por: <strong style={{ color: '#ffffff' }}>{viewDetail.creado_por || '—'}</strong>{viewDetail.creado_por_usuario ? ` (${viewDetail.creado_por_usuario})` : ''}{viewDetail.creado_en ? ` · ${viewDetail.creado_en}` : ''}</p>
               {permisos.editar && viewDetail.situacion !== 'Cerrada' && (
                 <button onClick={() => { setSelected(viewDetail); setIsForm(true); setViewDetail(null) }} style={{ ...btnStyle, background: '#15803d', color: '#ffffff', border: '1px solid #16a34a' }}>Editar</button>
               )}

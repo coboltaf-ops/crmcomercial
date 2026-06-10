@@ -113,7 +113,7 @@ export default function OportunidadesPage() {
       updateOportunidad(toSave.id, toSave)
       logAudit({ ...auditParams(), accion: 'MODIFICAR', registro_codigo: toSave.codigo, registro_nombre: toSave.proyecto, detalle: computarDiff(_anterior as unknown as Record<string, unknown>, toSave as unknown as Record<string, unknown>) })
     } else {
-      addOportunidad({ ...toSave, id: crypto.randomUUID(), fecha_registro: today, creado_por: `${currentUser?.nombre || ''} ${currentUser?.apellido || ''}`.trim() || (currentUser?.usuario || 'desconocido'), creado_por_rol: currentUser?.rol || '', creado_en: today })
+      addOportunidad({ ...toSave, id: crypto.randomUUID(), fecha_registro: today, creado_por: `${currentUser?.nombre || ''} ${currentUser?.apellido || ''}`.trim() || (currentUser?.usuario || 'desconocido'), creado_por_usuario: currentUser?.usuario || '', creado_por_rol: currentUser?.rol || '', creado_en: today })
       logAudit({ ...auditParams(), accion: 'CREAR', registro_codigo: toSave.codigo, registro_nombre: toSave.proyecto })
     }
     setIsForm(false); setSelected(null)
@@ -168,7 +168,7 @@ export default function OportunidadesPage() {
               { l: 'Estimado USA', v: `$${fmtMoney(viewDetail.monto_estimado || 0)}` },
               { l: t('lbl.situacion'), v: viewDetail.situacion },
               { l: t('lbl.responsable'), v: viewDetail.responsable },
-              { l: 'Creado por', v: viewDetail.creado_por ? `${viewDetail.creado_por}${viewDetail.creado_en ? ` · ${viewDetail.creado_en}` : ''}` : '—' },
+              { l: 'Creado por', v: viewDetail.creado_por ? `${viewDetail.creado_por}${viewDetail.creado_por_usuario ? ` (${viewDetail.creado_por_usuario})` : ''}${viewDetail.creado_en ? ` · ${viewDetail.creado_en}` : ''}` : '—' },
             ]
             return (
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: 14, marginBottom: 20 }}>

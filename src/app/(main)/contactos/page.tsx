@@ -86,7 +86,7 @@ export default function ContactosPage() {
     if (toSave.id) {
       const _anterior = contactos.find(x => x.id === toSave.id); updateContacto(toSave.id, toSave); logAudit({ ...auditParams(), accion: "MODIFICAR", registro_codigo: toSave.codigo, registro_nombre: `${toSave.nombre} ${toSave.apellido}`, detalle: computarDiff(_anterior as unknown as Record<string, unknown>, toSave as unknown as Record<string, unknown>) })
     } else {
-      addContacto({ ...toSave, id: crypto.randomUUID(), fecha_registro: today, creado_por: `${currentUser?.nombre || ''} ${currentUser?.apellido || ''}`.trim() || (currentUser?.usuario || 'desconocido'), creado_en: today }); logAudit({ ...auditParams(), accion: "CREAR", registro_codigo: toSave.codigo, registro_nombre: `${toSave.nombre} ${toSave.apellido}` })
+      addContacto({ ...toSave, id: crypto.randomUUID(), fecha_registro: today, creado_por: `${currentUser?.nombre || ''} ${currentUser?.apellido || ''}`.trim() || (currentUser?.usuario || 'desconocido'), creado_por_usuario: currentUser?.usuario || '', creado_en: today }); logAudit({ ...auditParams(), accion: "CREAR", registro_codigo: toSave.codigo, registro_nombre: `${toSave.nombre} ${toSave.apellido}` })
     }
     setIsForm(false); setSelected(null)
   }
@@ -134,7 +134,7 @@ export default function ContactosPage() {
               </div>
             ))}
           </div>
-          <p style={{ color: '#64748b', fontSize: 12, marginTop: 12 }}>Creado por: <strong style={{ color: '#013978' }}>{viewDetail.creado_por || '—'}</strong>{viewDetail.creado_en ? ` · ${viewDetail.creado_en}` : ''}</p>
+          <p style={{ color: '#64748b', fontSize: 12, marginTop: 12 }}>Creado por: <strong style={{ color: '#013978' }}>{viewDetail.creado_por || '—'}</strong>{viewDetail.creado_por_usuario ? ` (${viewDetail.creado_por_usuario})` : ''}{viewDetail.creado_en ? ` · ${viewDetail.creado_en}` : ''}</p>
           {permisos.editar && (
             <button onClick={() => { setSelected(viewDetail); setIsForm(true); setViewDetail(null) }} style={{ ...btnStyle, background: '#2563eb', color: '#ffffff', border: '1px solid #3b82f6', marginTop: 16 }}>{t('btn.editar')}</button>
           )}
