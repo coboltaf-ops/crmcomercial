@@ -14,7 +14,7 @@ const KEYS = [
 ]
 
 const INDEX_KEY = 'backups-index'   // lista de snapshots guardados
-const MAX_BACKUPS = 6               // ~18 días de historial (cada 3 días)
+const MAX_BACKUPS = 5               // siempre los últimos 5, rotando
 
 async function hacerRespaldo() {
   // 1) Leer todos los datos
@@ -25,9 +25,13 @@ async function hacerRespaldo() {
     data[k] = arr
     if (Array.isArray(arr)) totalRegistros += arr.length
   }
-  const fechaISO = new Date().toISOString()
+  const ahora = new Date()
+  const fechaISO = ahora.toISOString()
   const fechaCorta = fechaISO.slice(0, 10)
-  const bundle = { fecha: fechaISO, sistema: 'crmcomercial', totalRegistros, data }
+  // Fecha y hora en horario de Colombia (para mostrar al usuario)
+  const fechaHoraCO = ahora.toLocaleString('es-CO', { timeZone: 'America/Bogota', dateStyle: 'short', timeStyle: 'medium' })
+  const horaCO = ahora.toLocaleTimeString('es-CO', { timeZone: 'America/Bogota', hour: '2-digit', minute: '2-digit' })
+  const bundle = { fecha: fechaISO, fecha_hora_colombia: fechaHoraCO, sistema: 'crmcomercial', totalRegistros, data }
   const json = JSON.stringify(bundle)
 
   // 2) Guardar snapshot con fecha en KV (copia interna para restaurar rápido)
@@ -43,10 +47,10 @@ async function hacerRespaldo() {
   await writeList(INDEX_KEY, index)
   for (const k of aBorrar) { try { await writeList(k, []) } catch { /* ignore */ } }
 
-  return { json, fechaCorta, totalRegistros }
+  return { json, fechaCorta, fechaHoraCO, horaCO, totalRegistros, conservados: index.length, eliminados: aBorrar.length }
 }
 
-async function enviarCorreo(json: string, fechaCorta: string, totalRegistros: number) {
+async function enviarCorreo(json: string, fechaCorta: string, fechaHoraCO: string, totalRegistros: number) {
   if (!process.env.SMTP_USER || !process.env.SMTP_PASS) return 'SMTP no configurado'
   const to = process.env.BACKUP_EMAIL || 'coboltaf@gmail.com'
   const transporter = nodemailer.createTransport({
@@ -58,8 +62,8 @@ async function enviarCorreo(json: string, fechaCorta: string, totalRegistros: nu
   await transporter.sendMail({
     from: process.env.SMTP_USER,
     to,
-    subject: `🗄️ Respaldo CRM Comercial — ${fechaCorta} (${totalRegistros} registros)`,
-    text: `Respaldo automático del CRM Comercial.\n\nFecha: ${fechaCorta}\nTotal de registros: ${totalRegistros}\n\nEl archivo adjunto (JSON) contiene TODOS los datos del sistema. Guárdalo en un lugar seguro. Con este archivo se pueden restaurar los datos.`,
+    subject: `🗄️ Respaldo CRM Comercial — ${fechaHoraCO} (${totalRegistros} registros)`,
+    text: `Respaldo automático del CRM Comercial.\n\nFecha y hora (Colombia): ${fechaHoraCO}\nTotal de registros: ${totalRegistros}\n\nEl archivo adjunto (JSON) contiene TODOS los datos del sistema. Guárdalo en un lugar seguro. Con este archivo se pueden restaurar los datos.`,
     attachments: [{ filename: `respaldo-crmcomercial-${fechaCorta}.json`, content: json }],
   })
   return 'enviado a ' + to
@@ -75,11 +79,11 @@ export async function GET(req: NextRequest) {
     }
   }
   try {
-    const { json, fechaCorta, totalRegistros } = await hacerRespaldo()
+    const { json, fechaCorta, fechaHoraCO, horaCO, totalRegistros, conservados, eliminados } = await hacerRespaldo()
     let correo = 'no enviado'
-    try { correo = await enviarCorreo(json, fechaCorta, totalRegistros) }
+    try { correo = await enviarCorreo(json, fechaCorta, fechaHoraCO, totalRegistros) }
     catch (e) { correo = 'error correo: ' + String(e) }
-    return NextResponse.json({ ok: true, fecha: fechaCorta, totalRegistros, correo, tamano_kb: Math.round(json.length / 1024) })
+    return NextResponse.json({ ok: true, fecha_hora: fechaHoraCO, hora: horaCO, totalRegistros, respaldos_guardados: conservados, respaldos_eliminados: eliminados, correo, tamano_kb: Math.round(json.length / 1024) })
   } catch (err) {
     console.error('[backup] error', err)
     return NextResponse.json({ error: String(err) }, { status: 500 })
