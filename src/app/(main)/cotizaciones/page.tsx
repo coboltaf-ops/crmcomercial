@@ -637,6 +637,11 @@ export default function CotizacionesPage() {
           </div>
 
           </fieldset>
+          {verLectura && (
+            <p style={{ color: '#000000', fontSize: 13, fontWeight: 700, marginTop: 14 }}>
+              👤 Creado por: {selected.creado_por || '—'}{selected.creado_por_usuario ? ` (${selected.creado_por_usuario})` : ''}{selected.creado_en ? ` · ${selected.creado_en}` : ''}
+            </p>
+          )}
           <div style={{ display: 'flex', gap: 10 }}>
             {!verLectura && <button type="submit" style={{ ...btnStyle, background: '#1e3a8a', color: '#ffffff' }}>{t('btn.guardar')}</button>}
             <button type="button" onClick={() => { setIsForm(false); setSelected(null); setVerLectura(false) }} style={{ ...btnStyle, background: '#64748b', color: '#ffffff' }}>{verLectura ? t('btn.volver') : t('btn.cancelar')}</button>

@@ -582,6 +582,11 @@ export default function OportunidadesPage() {
             <textarea value={selected.observaciones} onChange={e => setSelected({ ...selected, observaciones: e.target.value })} rows={3} style={{ ...inputStyle, resize: 'vertical' }} />
           </div>
           </fieldset>
+          {verLectura && (
+            <p style={{ color: '#000000', fontSize: 13, fontWeight: 700, marginTop: 14 }}>
+              👤 Creado por: {selected.creado_por || '—'}{selected.creado_por_usuario ? ` (${selected.creado_por_usuario})` : ''}{selected.creado_en ? ` · ${selected.creado_en}` : ''}
+            </p>
+          )}
 
           <div style={{ display: 'flex', gap: 10, marginTop: 20 }}>
             {!verLectura && <button type="submit" style={{ ...btnStyle, background: '#0f1b3d', color: '#ffffff' }}>{selected.id ? 'Actualizar' : 'Crear'} Oportunidad</button>}

@@ -273,6 +273,11 @@ export default function TareasPage() {
             </div>
           </div>
           </fieldset>
+          {verLectura && (
+            <p style={{ color: '#ffffff', fontSize: 13, fontWeight: 700, marginTop: 14 }}>
+              👤 Creado por: {selected.creado_por || '—'}{selected.creado_por_usuario ? ` (${selected.creado_por_usuario})` : ''}{selected.creado_en ? ` · ${selected.creado_en}` : ''}
+            </p>
+          )}
           <div style={{ marginTop: 20, display: 'flex', gap: 10 }}>
             {!verLectura && (
               <button type="submit" style={{ ...btnStyle, background: '#22c55e', color: '#fff', border: '1px solid #16a34a' }}>

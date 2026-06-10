@@ -172,12 +172,11 @@ export default function ProyectosPage() {
               </div>
             </div>
           </fieldset>
-          <div style={{ marginTop: 16, padding: '12px 16px', background: '#eef2ff', borderRadius: 12, border: '1px solid #1e3a8a' }}>
-            <p style={{ color: '#000000', fontSize: 13, fontWeight: 800, marginBottom: 2 }}>👤 Creado por</p>
-            <p style={{ color: '#000000', fontSize: 24, fontWeight: 900 }}>
-              {selected.creado_por || '—'}{selected.creado_por_usuario ? ` (${selected.creado_por_usuario})` : ''}{selected.creado_en ? ` · ${selected.creado_en}` : ''}
+          {verLectura && (
+            <p style={{ color: '#000000', fontSize: 13, fontWeight: 700, marginTop: 14 }}>
+              👤 Creado por: {selected.creado_por || '—'}{selected.creado_por_usuario ? ` (${selected.creado_por_usuario})` : ''}{selected.creado_en ? ` · ${selected.creado_en}` : ''}
             </p>
-          </div>
+          )}
           <div style={{ display: 'flex', gap: 10, marginTop: 20 }}>
             {!verLectura && <button type="submit" style={{ ...btnStyle, background: '#1e3a8a', color: '#ffffff' }}>Guardar</button>}
             <button type="button" onClick={() => { setIsForm(false); setSelected(null); setVerLectura(false) }} style={{ ...btnStyle, background: '#64748b', color: '#ffffff' }}>{verLectura ? 'Volver' : 'Cancelar'}</button>
