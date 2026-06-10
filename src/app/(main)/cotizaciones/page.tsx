@@ -414,7 +414,12 @@ export default function CotizacionesPage() {
             <button onClick={() => generatePDF(viewDetail)} style={{ ...btnStyle, background: '#b91c1c', color: '#ffffff', border: '1px solid #dc2626' }}>PDF</button>
             <button onClick={() => { setEmailTo(''); setEmailAsunto(''); setEmailMsg(''); setEmailModal(viewDetail) }} style={{ ...btnStyle, background: '#1e3a8a', color: '#ffffff', border: '1px solid #3b82f6' }}>{t('btn.enviarEmail')}</button>
             <button onClick={() => sendWhatsApp(viewDetail)} style={{ ...btnStyle, background: '#25d366', color: '#ffffff', border: '1px solid #22c55e' }}>WhatsApp</button>
-            <p style={{ color: '#64748b', fontSize: 12, marginTop: 12 }}>Creado por: <strong style={{ color: '#013978' }}>{viewDetail.creado_por || '—'}</strong>{viewDetail.creado_por_usuario ? ` (${viewDetail.creado_por_usuario})` : ''}{viewDetail.creado_en ? ` · ${viewDetail.creado_en}` : ''}</p>
+            <div style={{ marginTop: 16, padding: '12px 16px', background: '#eef2ff', borderRadius: 12, border: '1px solid #1e3a8a' }}>
+              <p style={{ color: '#000000', fontSize: 13, fontWeight: 800, marginBottom: 2 }}>👤 Creado por</p>
+              <p style={{ color: '#000000', fontSize: 24, fontWeight: 900 }}>
+                {viewDetail.creado_por || '—'}{viewDetail.creado_por_usuario ? ` (${viewDetail.creado_por_usuario})` : ''}{viewDetail.creado_en ? ` · ${viewDetail.creado_en}` : ''}
+              </p>
+            </div>
             {permisos.editar && !['Aprobada', 'Rechazada'].includes(viewDetail.situacion) && (
               <button onClick={() => { setSelected(viewDetail); setIsForm(true); setViewDetail(null) }} style={{ ...btnStyle, background: '#2563eb', color: '#ffffff', border: '1px solid #3b82f6' }}>{t('btn.editar')}</button>
             )}

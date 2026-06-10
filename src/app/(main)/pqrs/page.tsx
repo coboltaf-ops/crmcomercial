@@ -217,7 +217,12 @@ export default function PQRSPage() {
             )}
 
             <div style={{ display: 'flex', gap: 8 }}>
-              <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: 12, marginTop: 12 }}>Creado por: <strong style={{ color: '#ffffff' }}>{viewDetail.creado_por || '—'}</strong>{viewDetail.creado_por_usuario ? ` (${viewDetail.creado_por_usuario})` : ''}{viewDetail.creado_en ? ` · ${viewDetail.creado_en}` : ''}</p>
+              <div style={{ marginTop: 16, padding: '12px 16px', background: '#ffffff', borderRadius: 12, border: '1px solid #1e3a8a' }}>
+                <p style={{ color: '#000000', fontSize: 13, fontWeight: 800, marginBottom: 2 }}>👤 Creado por</p>
+                <p style={{ color: '#000000', fontSize: 24, fontWeight: 900 }}>
+                  {viewDetail.creado_por || '—'}{viewDetail.creado_por_usuario ? ` (${viewDetail.creado_por_usuario})` : ''}{viewDetail.creado_en ? ` · ${viewDetail.creado_en}` : ''}
+                </p>
+              </div>
               {permisos.editar && viewDetail.situacion !== 'Cerrada' && (
                 <button onClick={() => { setSelected(viewDetail); setIsForm(true); setViewDetail(null) }} style={{ ...btnStyle, background: '#15803d', color: '#ffffff', border: '1px solid #16a34a' }}>Editar</button>
               )}
