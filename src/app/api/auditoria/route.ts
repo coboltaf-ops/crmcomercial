@@ -65,3 +65,39 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Error al registrar auditoría' }, { status: 500 })
   }
 }
+
+// DELETE — limpiar la auditoría real (llave auditoria-log)
+//   { modo: 'todo' }                              → borra TODA la auditoría
+//   { modo: 'rango', fechaInicio, fechaFinal }    → borra registros en ese rango (inclusive)
+export async function DELETE(req: NextRequest) {
+  try {
+    const { modo, fechaInicio, fechaFinal } = await req.json()
+
+    if (modo === 'todo') {
+      const data = await readList<Registro>(KV_KEY)
+      const total = data.length
+      await writeList(KV_KEY, [])
+      return NextResponse.json({ ok: true, eliminados: total, mensaje: `Se eliminó toda la auditoría (${total} registros).` })
+    }
+
+    if (modo === 'rango') {
+      if (!fechaInicio || !fechaFinal) {
+        return NextResponse.json({ error: 'Faltan fechaInicio y fechaFinal' }, { status: 400 })
+      }
+      const data = await readList<Registro>(KV_KEY)
+      // Comparación por día (YYYY-MM-DD), inclusiva en ambos extremos
+      const conservados = data.filter(r => {
+        const dia = (r.fecha || '').slice(0, 10)
+        return !(dia >= fechaInicio && dia <= fechaFinal)
+      })
+      const eliminados = data.length - conservados.length
+      await writeList(KV_KEY, conservados)
+      return NextResponse.json({ ok: true, eliminados, mensaje: `Se eliminaron ${eliminados} registros entre ${fechaInicio} y ${fechaFinal}.` })
+    }
+
+    return NextResponse.json({ error: 'Modo no válido (usa "todo" o "rango")' }, { status: 400 })
+  } catch (err) {
+    console.error('[auditoria] DELETE', err)
+    return NextResponse.json({ error: 'Error al limpiar auditoría: ' + String(err) }, { status: 500 })
+  }
+}

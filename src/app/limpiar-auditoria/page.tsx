@@ -16,7 +16,7 @@ export default function LimpiarAuditoriaPage() {
     }
 
     const confirmacion = opcion === 'todo'
-      ? '⚠️ ¿Borrar TODA la auditoría del mes actual? No se puede deshacer.'
+      ? '⚠️ ¿Borrar TODA la auditoría? No se puede deshacer.'
       : `⚠️ ¿Borrar registros del ${fechaInicio} al ${fechaFinal}? No se puede deshacer.`
 
     if (!confirm(confirmacion)) {
@@ -28,7 +28,7 @@ export default function LimpiarAuditoriaPage() {
     try {
       console.log('Iniciando borrado...', { opcion, fechaInicio, fechaFinal })
 
-      const res = await fetch('/api/audit-log', {
+      const res = await fetch('/api/auditoria', {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -79,7 +79,7 @@ export default function LimpiarAuditoriaPage() {
               onChange={() => setOpcion('todo')}
               style={{ marginRight: 8 }}
             />
-            🗓️ Borrar TODO el mes actual
+            🗓️ Borrar TODA la auditoría
           </label>
 
           <label style={{ color: 'rgba(255,255,255,0.8)', display: 'block', marginBottom: 12, fontWeight: 600, cursor: 'pointer' }}>

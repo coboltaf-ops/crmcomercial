@@ -48,6 +48,35 @@ export default function AuditoriaPage() {
 
   useEffect(() => { cargar() }, [cargar])
 
+  const [borrando, setBorrando] = useState(false)
+  const borrar = async () => {
+    const porRango = !!(fDesde && fHasta)
+    const msg = porRango
+      ? `⚠️ ¿Borrar los registros de auditoría del ${fDesde} al ${fHasta}? No se puede deshacer.`
+      : '⚠️ ¿Borrar TODA la auditoría? No se puede deshacer.'
+    if (!confirm(msg)) return
+    setBorrando(true)
+    try {
+      const res = await fetch('/api/auditoria', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(porRango
+          ? { modo: 'rango', fechaInicio: fDesde, fechaFinal: fHasta }
+          : { modo: 'todo' }),
+      })
+      const data = await res.json()
+      if (res.ok) {
+        alert(`✅ ${data.mensaje || 'Auditoría limpiada'}`)
+        await cargar()
+      } else {
+        alert(`❌ ${data.error || 'No se pudo borrar'}`)
+      }
+    } catch (err) {
+      alert(`❌ Error de conexión: ${err}`)
+    }
+    setBorrando(false)
+  }
+
   if (currentUser?.rol?.toLowerCase() !== 'admin') {
     return <div style={{ color: '#013978', padding: 40, textAlign: 'center' }}>No tienes acceso a esta sección (solo Admin).</div>
   }
@@ -78,7 +107,10 @@ export default function AuditoriaPage() {
         </select>
         <input type="date" value={fDesde} onChange={e => setFDesde(e.target.value)} style={inputStyle} title="Desde" />
         <input type="date" value={fHasta} onChange={e => setFHasta(e.target.value)} style={inputStyle} title="Hasta" />
-        <button onClick={() => { setFUsuario(''); setFModulo(''); setFAccion(''); setFDesde(''); setFHasta('') }} style={{ ...inputStyle, background: '#64748b', color: '#fff', border: 'none', cursor: 'pointer', fontWeight: 700 }}>Limpiar</button>
+        <button onClick={() => { setFUsuario(''); setFModulo(''); setFAccion(''); setFDesde(''); setFHasta('') }} style={{ ...inputStyle, background: '#64748b', color: '#fff', border: 'none', cursor: 'pointer', fontWeight: 700 }}>Limpiar filtros</button>
+        <button onClick={borrar} disabled={borrando} style={{ ...inputStyle, background: borrando ? '#9ca3af' : '#dc2626', color: '#fff', border: 'none', cursor: borrando ? 'default' : 'pointer', fontWeight: 700 }}>
+          {borrando ? 'Borrando…' : (fDesde && fHasta ? '🗑️ Borrar rango' : '🗑️ Borrar auditoría')}
+        </button>
       </div>
 
       {/* Tabla */}
