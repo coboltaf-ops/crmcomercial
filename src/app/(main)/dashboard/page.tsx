@@ -107,7 +107,7 @@ export default function DashboardPage() {
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 24 }}>
         {/* Pipeline de Ventas — torta por situación */}
-        <div className="dash-card" style={cardStyle}>
+        <div className="dash-card" onClick={() => router.push('/oportunidades')} title="Ir a Oportunidades" style={{ ...cardStyle, cursor: 'pointer' }}>
           <h2 style={{ color: '#1e3a8a', fontSize: 16, fontWeight: 600, marginBottom: 16 }}>Pipeline de Ventas</h2>
           {/* Totales arriba */}
           <div style={{ display: 'flex', gap: 24, marginBottom: 18 }}>
@@ -162,7 +162,7 @@ export default function DashboardPage() {
         </div>
 
         {/* Cotizaciones resumen */}
-        <div className="dash-card" style={cardStyle}>
+        <div className="dash-card" onClick={() => router.push('/cotizaciones')} title="Ir a Cotizaciones" style={{ ...cardStyle, cursor: 'pointer' }}>
           <h2 style={{ color: '#1e3a8a', fontSize: 16, fontWeight: 600, marginBottom: 16 }}>Cotizaciones</h2>
           <div style={{ display: 'flex', gap: 16, marginBottom: 16 }}>
             <div>
@@ -189,7 +189,7 @@ export default function DashboardPage() {
         </div>
 
         {/* PQRS por tipo */}
-        <div className="dash-card" style={cardStyle}>
+        <div className="dash-card" onClick={() => router.push('/pqrs')} title="Ir a PQRS" style={{ ...cardStyle, cursor: 'pointer' }}>
           <h2 style={{ color: '#1e3a8a', fontSize: 16, fontWeight: 600, marginBottom: 16 }}>PQRS por Tipo</h2>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
             {pqrsPorTipo.map(t => (
@@ -232,7 +232,7 @@ export default function DashboardPage() {
       </div>
 
       {/* Gráfico: Clientes por Ciudad (barras verticales) */}
-      <div className="dash-card" style={{ ...cardStyle, marginBottom: 24 }}>
+      <div className="dash-card" onClick={() => router.push('/clientes')} title="Ir a Empresas" style={{ ...cardStyle, marginBottom: 24, cursor: 'pointer' }}>
         <h2 style={{ color: '#1e3a8a', fontSize: 16, fontWeight: 600, marginBottom: 20 }}>Clientes por Ciudad</h2>
         {clientesPorCiudad.length === 0 ? (
           <p style={{ color: '#1e3a8a', fontSize: 13 }}>No hay clientes registrados</p>
