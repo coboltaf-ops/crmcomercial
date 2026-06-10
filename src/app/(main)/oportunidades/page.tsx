@@ -412,8 +412,8 @@ export default function OportunidadesPage() {
               />
             </div>
             <div>
-              <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.ejecucionAnyo')} *</label>
-              <input type="number" step="1" min="0" max="100" value={selected.ejecucion_anyo_pct || ''} onChange={e => setSelected({ ...selected, ejecucion_anyo_pct: parseFloat(e.target.value) || 0 })} required style={inputStyle} />
+              <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.ejecucionAnyo')}</label>
+              <input type="number" step="1" min="0" max="100" value={selected.ejecucion_anyo_pct ?? ''} onChange={e => { const v = e.target.value; setSelected({ ...selected, ejecucion_anyo_pct: v === '' ? undefined : (parseFloat(v) || 0) }) }} style={inputStyle} />
             </div>
             <div>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{idioma === 'en' ? 'Year Partial $' : 'Parcial Año $'}</label>
