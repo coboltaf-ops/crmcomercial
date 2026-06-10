@@ -164,6 +164,14 @@ export default function ClientesPage() {
         <div style={{ background: '#ffffff', borderRadius: 16, padding: 24, border: '1px solid #1e3a8a' }}>
           <h2 style={{ color: '#013978', fontSize: 18, fontWeight: 700, marginBottom: 12 }}>{viewDetail.razon_social}</h2>
 
+          {/* Creado por — arriba, bien visible */}
+          <div style={{ marginBottom: 16, padding: '12px 16px', background: '#fde68a', borderRadius: 12, border: '2px solid #000000', textAlign: 'left' }}>
+            <p style={{ color: '#000000', fontSize: 13, fontWeight: 800, marginBottom: 2 }}>👤 CREADO POR</p>
+            <p style={{ color: '#000000', fontSize: 24, fontWeight: 900 }}>
+              {viewDetail.creado_por || '—'}{viewDetail.creado_por_usuario ? ` (${viewDetail.creado_por_usuario})` : ''}{viewDetail.creado_en ? ` · ${viewDetail.creado_en}` : ''}
+            </p>
+          </div>
+
           {/* Sub-tabs de la vista detalle */}
           <div style={{ display: 'flex', gap: 8, marginBottom: 20, flexWrap: 'wrap' }}>
             <button onClick={() => setDetailTab('info')} style={tabBtnStyle(detailTab === 'info')}>🏢 Información</button>
