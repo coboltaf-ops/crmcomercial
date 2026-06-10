@@ -55,6 +55,20 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
   const idioma = useI18nStore(s => s.idioma)
   const setIdioma = useI18nStore(s => s.setIdioma)
 
+  // Limpieza única: borrar datos viejos de los módulos guardados en el
+  // navegador (versión antigua). Ya no se usan — los datos viven en KV.
+  // Esto evita que reaparezca data de ejemplo al quedar KV vacío.
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    const legacyKeys = [
+      'crm-clientes-storage', 'crm-contactos-storage', 'crm-oportunidades-storage',
+      'crm-cotizaciones-storage', 'crm-tareas-storage', 'crm-prospectos-storage',
+      'crm-productos-storage', 'crm-pqrs-storage', 'crm-proyectos-storage',
+      'crm-referencias-storage',
+    ]
+    legacyKeys.forEach(k => { try { window.localStorage.removeItem(k) } catch { /* ignore */ } })
+  }, [])
+
   // Cargar datos de empresa (logo, etc.) y referencias desde KV para toda la app
   useEffect(() => {
     loadEmpresas()
