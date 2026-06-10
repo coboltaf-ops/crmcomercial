@@ -1,5 +1,6 @@
 'use client'
 import { useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 import { useClientesStore } from '@/features/clientes/store/clientes-store'
 import { useContactosStore } from '@/features/contactos/store/contactos-store'
 import { useProductosStore } from '@/features/productos/store/productos-store'
@@ -10,6 +11,7 @@ import { useProyectosStore } from '@/features/proyectos/store/proyectos-store'
 import { fmtMoney } from '@/shared/lib/format-number'
 
 export default function DashboardPage() {
+  const router = useRouter()
   const clientes = useClientesStore(s => s.clientes)
   const contactos = useContactosStore(s => s.contactos)
   const productos = useProductosStore(s => s.productos)
@@ -42,13 +44,13 @@ export default function DashboardPage() {
   }
 
   const cards = [
-    { label: 'Empresas', value: clientes.length, icon: '🏢', color: '#1e3a8a' },
-    { label: 'Contactos', value: contactos.length, icon: '👤', color: '#1e3a8a' },
-    { label: 'Oportunidades', value: opoAbiertas.length, icon: '🎯', color: '#1e3a8a' },
-    { label: 'Proyectos', value: proyectos.length, icon: '🏗️', color: '#1e3a8a' },
-    { label: 'Cotizaciones', value: cotizaciones.length, icon: '📋', color: '#1e3a8a' },
-    { label: 'PQRS Abiertas', value: pqrsAbiertas.length, icon: '📩', color: '#1e3a8a' },
-    { label: 'Productos', value: productos.length, icon: '📦', color: '#1e3a8a' },
+    { label: 'Empresas', value: clientes.length, icon: '🏢', color: '#1e3a8a', href: '/clientes' },
+    { label: 'Contactos', value: contactos.length, icon: '👤', color: '#1e3a8a', href: '/contactos' },
+    { label: 'Oportunidades', value: opoAbiertas.length, icon: '🎯', color: '#1e3a8a', href: '/oportunidades' },
+    { label: 'Proyectos', value: proyectos.length, icon: '🏗️', color: '#1e3a8a', href: '/proyectos' },
+    { label: 'Cotizaciones', value: cotizaciones.length, icon: '📋', color: '#1e3a8a', href: '/cotizaciones' },
+    { label: 'PQRS Abiertas', value: pqrsAbiertas.length, icon: '📩', color: '#1e3a8a', href: '/pqrs' },
+    { label: 'Productos', value: productos.length, icon: '📦', color: '#1e3a8a', href: '/productos' },
   ]
 
   // PQRS por tipo
@@ -92,7 +94,8 @@ export default function DashboardPage() {
       {/* Summary cards */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: 16, marginBottom: 24 }}>
         {cards.map(c => (
-          <div key={c.label} className="dash-card" style={cardStyle}>
+          <div key={c.label} className="dash-card" onClick={() => router.push(c.href)}
+            title={`Ir a ${c.label}`} style={{ ...cardStyle, cursor: 'pointer' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
               <span style={{ fontSize: 28 }}>{c.icon}</span>
               <span style={{ fontSize: 32, fontWeight: 800, color: c.color }}>{c.value}</span>
