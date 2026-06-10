@@ -6,6 +6,7 @@ import { useModulosStore } from '@/features/modulos/store/modulos-store'
 import { useAsistenteStore } from '@/shared/stores/asistente-store'
 import { useClientesStore } from '@/features/clientes/store/clientes-store'
 import { useEmpresaStore } from '@/features/empresa/store/empresa-store'
+import { useReferenceStore } from '@/features/referencias/store/reference-store'
 import { useFlujoListener } from '@/features/flujos/lib/useFlujoListener'
 import { useAutoSeed } from '@/shared/hooks/use-auto-seed'
 import { useI18nStore } from '@/shared/i18n/use-t'
@@ -49,14 +50,16 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
   const clientes = useClientesStore(s => s.clientes)
   const empresas = useEmpresaStore(s => s.empresas)
   const loadEmpresas = useEmpresaStore(s => s.loadEmpresas)
+  const loadReferencias = useReferenceStore(s => s.loadReferencias)
   const empresa = empresas[0]
   const idioma = useI18nStore(s => s.idioma)
   const setIdioma = useI18nStore(s => s.setIdioma)
 
-  // Cargar datos de empresa (logo, etc.) desde KV para toda la app
+  // Cargar datos de empresa (logo, etc.) y referencias desde KV para toda la app
   useEffect(() => {
     loadEmpresas()
-  }, [loadEmpresas])
+    loadReferencias()
+  }, [loadEmpresas, loadReferencias])
   const { setPending } = useAsistenteStore()
   const [collapsed, setCollapsed] = useState(false)
   const [showAsistente, setShowAsistente] = useState(false)

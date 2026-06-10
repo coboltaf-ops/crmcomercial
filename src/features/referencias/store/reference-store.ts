@@ -1,5 +1,4 @@
 import { create } from 'zustand'
-import { persist } from 'zustand/middleware'
 import { BaseReference, ReferenceTableId, Vendedor } from '../types'
 
 type RefData = Record<ReferenceTableId, BaseReference[]>
@@ -7,6 +6,8 @@ type RefData = Record<ReferenceTableId, BaseReference[]>
 interface ReferenceState {
   data: RefData
   vendedores: Vendedor[]
+  loaded: boolean
+  loadReferencias: () => Promise<void>
   addItem: (table: ReferenceTableId, item: BaseReference) => void
   updateItem: (table: ReferenceTableId, id: string, item: Partial<BaseReference>) => void
   deleteItem: (table: ReferenceTableId, id: string) => void
@@ -172,46 +173,79 @@ const initialData: RefData = {
 
 const sortItems = (items: BaseReference[]) => [...items].sort((a, b) => a.descripcion.localeCompare(b.descripcion))
 
-export const useReferenceStore = create<ReferenceState>()(
-  persist(
-    (set) => ({
-      data: initialData,
-      vendedores: [],
-      addItem: (table, item) => set((s) => ({
-        data: { ...s.data, [table]: sortItems([...(s.data[table] || []), item]) }
-      })),
-      updateItem: (table, id, item) => set((s) => ({
-        data: { ...s.data, [table]: sortItems((s.data[table] || []).map(r => r.id === id ? { ...r, ...item } : r)) }
-      })),
-      deleteItem: (table, id) => set((s) => ({
-        data: { ...s.data, [table]: (s.data[table] || []).filter(r => r.id !== id) }
-      })),
-      addVendedor: (v) => set((s) => ({
-        vendedores: [...s.vendedores, v].sort((a, b) => a.nombre.localeCompare(b.nombre))
-      })),
-      updateVendedor: (id, v) => set((s) => ({
-        vendedores: s.vendedores.map(x => x.id === id ? { ...x, ...v } : x).sort((a, b) => a.nombre.localeCompare(b.nombre))
-      })),
-      deleteVendedor: (id) => set((s) => ({
-        vendedores: s.vendedores.filter(x => x.id !== id)
-      })),
-    }),
-    {
-      name: 'crm-referencias-storage',
-      merge: (persisted, current) => {
-        const p = persisted as Partial<ReferenceState> | undefined
-        const merged = { ...current }
-        if (p?.data) {
-          merged.data = { ...current.data }
-          for (const key of Object.keys(current.data) as ReferenceTableId[]) {
-            merged.data[key] = p.data[key] ?? current.data[key]
-          }
-        }
-        if (p?.vendedores) {
-          merged.vendedores = p.vendedores
-        }
-        return merged
-      },
+// Combina lo guardado con initialData para que SIEMPRE existan todas las tablas
+// (incluidas las nuevas que se agreguen al sistema, ej. situacion_proyecto).
+function mergeData(saved?: Partial<RefData> | null): RefData {
+  const merged = { ...initialData } as RefData
+  if (saved) {
+    for (const key of Object.keys(initialData) as ReferenceTableId[]) {
+      merged[key] = saved[key] ?? initialData[key]
     }
-  )
-)
+  }
+  return merged
+}
+
+// Persiste { data, vendedores } en Vercel KV vía /api/referencias.
+async function persistRef(data: RefData, vendedores: Vendedor[]) {
+  try {
+    await fetch('/api/referencias', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ data, vendedores }),
+    })
+  } catch (err) {
+    console.error('[reference-store] persist error:', err)
+  }
+}
+
+export const useReferenceStore = create<ReferenceState>()((set, get) => ({
+  data: initialData,
+  vendedores: [],
+  loaded: false,
+  loadReferencias: async () => {
+    try {
+      const res = await fetch('/api/referencias', { cache: 'no-store' })
+      const kv = await res.json()
+      if (kv && kv.data) {
+        set({ data: mergeData(kv.data), vendedores: kv.vendedores || [], loaded: true })
+        return
+      }
+      // KV vacío: migración suave del localStorage antiguo, o initialData
+      let legacy: { data?: Partial<RefData>; vendedores?: Vendedor[] } | null = null
+      if (typeof window !== 'undefined') {
+        try { const raw = window.localStorage.getItem('crm-referencias-storage'); legacy = raw ? (JSON.parse(raw)?.state || null) : null } catch { /* ignore */ }
+      }
+      const data = mergeData(legacy?.data)
+      const vendedores = legacy?.vendedores || []
+      set({ data, vendedores, loaded: true })
+      persistRef(data, vendedores)
+    } catch (err) {
+      console.error('[reference-store] load error:', err)
+      set({ loaded: true })
+    }
+  },
+  addItem: (table, item) => {
+    const data = { ...get().data, [table]: sortItems([...(get().data[table] || []), item]) }
+    set({ data }); persistRef(data, get().vendedores)
+  },
+  updateItem: (table, id, item) => {
+    const data = { ...get().data, [table]: sortItems((get().data[table] || []).map(r => r.id === id ? { ...r, ...item } : r)) }
+    set({ data }); persistRef(data, get().vendedores)
+  },
+  deleteItem: (table, id) => {
+    const data = { ...get().data, [table]: (get().data[table] || []).filter(r => r.id !== id) }
+    set({ data }); persistRef(data, get().vendedores)
+  },
+  addVendedor: (v) => {
+    const vendedores = [...get().vendedores, v].sort((a, b) => a.nombre.localeCompare(b.nombre))
+    set({ vendedores }); persistRef(get().data, vendedores)
+  },
+  updateVendedor: (id, v) => {
+    const vendedores = get().vendedores.map(x => x.id === id ? { ...x, ...v } : x).sort((a, b) => a.nombre.localeCompare(b.nombre))
+    set({ vendedores }); persistRef(get().data, vendedores)
+  },
+  deleteVendedor: (id) => {
+    const vendedores = get().vendedores.filter(x => x.id !== id)
+    set({ vendedores }); persistRef(get().data, vendedores)
+  },
+}))
