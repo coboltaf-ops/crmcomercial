@@ -132,12 +132,12 @@ export default function DashboardPage() {
           {totalOpoCount === 0 ? (
             <p style={{ color: '#1e3a8a', fontSize: 13 }}>No hay oportunidades registradas</p>
           ) : (
-            <div style={{ display: 'flex', alignItems: 'flex-end', gap: 12, height: 200, paddingTop: 16, overflowX: 'auto' }}>
+            <div style={{ display: 'flex', alignItems: 'flex-end', gap: 12, paddingTop: 16, overflowX: 'auto' }}>
               {opoPorEtapa.map(e => (
-                <div key={e.etapa} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-end', flex: '1 0 64px', minWidth: 64, height: '100%' }}>
+                <div key={e.etapa} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-end', flex: '1 0 64px', minWidth: 64 }}>
                   <span style={{ color: '#1e3a8a', fontSize: 12, fontWeight: 800, marginBottom: 4, whiteSpace: 'nowrap' }}>${fmtMoney(e.monto)}</span>
                   <div title={`${e.etapa}: ${e.count} op · $${fmtMoney(e.monto)}`}
-                    style={{ width: '100%', maxWidth: 48, height: `${(e.monto / maxEtapaMonto) * 100}%`, minHeight: 6, borderRadius: '6px 6px 0 0', background: e.color }} />
+                    style={{ width: 42, height: Math.max(8, Math.round((e.monto / maxEtapaMonto) * 140)), background: e.color, borderRadius: '6px 6px 0 0' }} />
                   <span style={{ color: '#1e3a8a', fontSize: 11, fontWeight: 700, marginTop: 6, textAlign: 'center', wordBreak: 'break-word' }}>{e.etapa}</span>
                   <span style={{ color: '#64748b', fontSize: 10 }}>{e.count} op.</span>
                 </div>
