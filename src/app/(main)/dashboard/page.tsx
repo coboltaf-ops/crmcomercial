@@ -76,6 +76,12 @@ export default function DashboardPage() {
   const ETAPA_ORDEN = ['Prospección', 'Calificación', 'Propuesta', 'Negociación', 'Cierre']
   // Colores: azul oscuro, azul claro, rojo intenso, rojo suave, morado suave
   const ETAPA_COLORES = ['#1e3a8a', '#60a5fa', '#dc2626', '#f87171', '#c4b5fd']
+  // Colores FIJOS para etapas específicas (lo demás usa la paleta de arriba)
+  const ETAPA_COLOR_FIJO: Record<string, string> = {
+    'Negociación': '#1e3a8a',   // azul oscuro
+    'Cancelada': '#dc2626',     // rojo intenso
+    'Sin etapa': '#ea580c',     // naranja intenso
+  }
   const etapaMap: Record<string, { count: number; monto: number }> = {}
   oportunidades.forEach(o => {
     const e = (o.etapa || '').trim() || 'Sin etapa'
@@ -141,7 +147,7 @@ export default function DashboardPage() {
                   const y = topPad + (chartH - h)
                   return (
                     <g key={e.etapa}>
-                      <rect x={cx - barW / 2} y={y} width={barW} height={h} rx={4} fill={ETAPA_COLORES[e.cidx]} />
+                      <rect x={cx - barW / 2} y={y} width={barW} height={h} rx={4} fill={ETAPA_COLOR_FIJO[e.etapa] || ETAPA_COLORES[e.cidx]} />
                       <text x={cx} y={y - 6} textAnchor="middle" fontSize={11} fontWeight={800} fill="#1e3a8a">${fmtMoney(e.monto)}</text>
                       <text x={cx} y={topPad + chartH + 17} textAnchor="middle" fontSize={11} fontWeight={700} fill="#1e3a8a">{e.etapa}</text>
                       <text x={cx} y={topPad + chartH + 31} textAnchor="middle" fontSize={10} fill="#64748b">{e.count} op.</text>
