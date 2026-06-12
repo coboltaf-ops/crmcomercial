@@ -72,20 +72,29 @@ export default function DashboardPage() {
     .slice(0, 12)
   const maxCiudad = Math.max(1, ...clientesPorCiudad.map(c => c.count))
 
-  // Pipeline por situación (gráfico de torta)
-  const sitColors: Record<string, string> = { 'Abierta': '#2563eb', 'En Negociación': '#f59e0b', 'Ganada': '#16a34a', 'Perdida': '#dc2626' }
-  const sitMap: Record<string, { count: number; monto: number }> = {}
+  // Pipeline de Ventas — barras verticales por ETAPA (monto por etapa)
+  const ETAPA_ORDEN = ['Prospección', 'Calificación', 'Propuesta', 'Negociación', 'Cierre']
+  // Colores: azul oscuro, azul claro, rojo intenso, rojo suave, morado suave
+  const ETAPA_COLORES = ['#1e3a8a', '#60a5fa', '#dc2626', '#f87171', '#c4b5fd']
+  const etapaMap: Record<string, { count: number; monto: number }> = {}
   oportunidades.forEach(o => {
-    const s = o.situacion || 'Otra'
-    if (!sitMap[s]) sitMap[s] = { count: 0, monto: 0 }
-    sitMap[s].count++
-    sitMap[s].monto += (o.valor_estimado || o.monto_estimado || 0)
+    const e = (o.etapa || '').trim() || 'Sin etapa'
+    if (!etapaMap[e]) etapaMap[e] = { count: 0, monto: 0 }
+    etapaMap[e].count++
+    etapaMap[e].monto += (o.valor_estimado || o.monto_estimado || 0)
   })
-  const opoPorSituacion = Object.entries(sitMap)
-    .map(([situacion, v]) => ({ situacion, count: v.count, monto: v.monto, color: sitColors[situacion] || '#6b7280' }))
-    .sort((a, b) => b.count - a.count)
+  const orden = (x: string) => { const i = ETAPA_ORDEN.indexOf(x); return i === -1 ? 99 : i }
+  const opoPorEtapa = Object.keys(etapaMap)
+    .sort((a, b) => orden(a) - orden(b))
+    .map((etapa, idx) => ({
+      etapa,
+      count: etapaMap[etapa].count,
+      monto: etapaMap[etapa].monto,
+      color: ETAPA_COLORES[ETAPA_ORDEN.indexOf(etapa) !== -1 ? ETAPA_ORDEN.indexOf(etapa) : idx % ETAPA_COLORES.length],
+    }))
+  const maxEtapaMonto = Math.max(1, ...opoPorEtapa.map(e => e.monto))
   const totalOpoCount = oportunidades.length
-  const totalOpoMonto = opoPorSituacion.reduce((s, x) => s + x.monto, 0)
+  const totalOpoMonto = opoPorEtapa.reduce((s, x) => s + x.monto, 0)
 
   return (
     <div>
@@ -110,53 +119,29 @@ export default function DashboardPage() {
         <div className="dash-card" onClick={() => router.push('/oportunidades')} title="Ir a Oportunidades" style={{ ...cardStyle, cursor: 'pointer' }}>
           <h2 style={{ color: '#1e3a8a', fontSize: 16, fontWeight: 600, marginBottom: 16 }}>Pipeline de Ventas</h2>
           {/* Totales arriba */}
-          <div style={{ display: 'flex', gap: 24, marginBottom: 18 }}>
+          <div style={{ display: 'flex', gap: 24, marginBottom: 14 }}>
             <div>
-              <p style={{ color: '#1e3a8a', fontSize: 12 }}>Cantidad</p>
-              <p style={{ color: '#1e3a8a', fontSize: 28, fontWeight: 800 }}>{totalOpoCount}</p>
+              <p style={{ color: '#1e3a8a', fontSize: 12 }}>Total Oportunidades</p>
+              <p style={{ color: '#1e3a8a', fontSize: 24, fontWeight: 800 }}>{totalOpoCount}</p>
             </div>
             <div>
-              <p style={{ color: '#1e3a8a', fontSize: 12 }}>Monto Total</p>
-              <p style={{ color: '#1e3a8a', fontSize: 28, fontWeight: 800 }}>${fmtMoney(totalOpoMonto)}</p>
+              <p style={{ color: '#1e3a8a', fontSize: 12 }}>Total General</p>
+              <p style={{ color: '#1e3a8a', fontSize: 24, fontWeight: 800 }}>${fmtMoney(totalOpoMonto)}</p>
             </div>
           </div>
           {totalOpoCount === 0 ? (
             <p style={{ color: '#1e3a8a', fontSize: 13 }}>No hay oportunidades registradas</p>
           ) : (
-            <div style={{ display: 'flex', alignItems: 'center', gap: 20, flexWrap: 'wrap' }}>
-              {/* Torta (donut) en SVG */}
-              <svg width="150" height="150" viewBox="0 0 150 150" style={{ flexShrink: 0 }}>
-                <g transform="rotate(-90 75 75)">
-                  {(() => {
-                    const C = 2 * Math.PI * 55
-                    let acc = 0
-                    return opoPorSituacion.filter(s => s.count > 0).map(s => {
-                      const frac = s.count / (totalOpoCount || 1)
-                      const dash = frac * C
-                      const el = (
-                        <circle key={s.situacion} cx="75" cy="75" r="55" fill="none"
-                          stroke={s.color} strokeWidth="30"
-                          strokeDasharray={`${dash} ${C - dash}`} strokeDashoffset={-acc} />
-                      )
-                      acc += dash
-                      return el
-                    })
-                  })()}
-                </g>
-                <text x="75" y="70" textAnchor="middle" fontSize="22" fontWeight="800" fill="#1e3a8a">{totalOpoCount}</text>
-                <text x="75" y="90" textAnchor="middle" fontSize="10" fill="#1e3a8a">oportunidades</text>
-              </svg>
-              {/* Leyenda */}
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 8, flex: 1, minWidth: 160 }}>
-                {opoPorSituacion.map(s => (
-                  <div key={s.situacion} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                    <svg width="12" height="12" style={{ flexShrink: 0 }}><circle cx="6" cy="6" r="6" fill={s.color} /></svg>
-                    <span style={{ color: '#1e3a8a', fontSize: 12, fontWeight: 600, flex: 1 }}>{s.situacion}</span>
-                    <span style={{ color: '#1e3a8a', fontSize: 12, fontWeight: 800 }}>{s.count}</span>
-                    <span style={{ color: '#1e3a8a', fontSize: 11, fontWeight: 600, minWidth: 70, textAlign: 'right' }}>${fmtMoney(s.monto)}</span>
-                  </div>
-                ))}
-              </div>
+            <div style={{ display: 'flex', alignItems: 'flex-end', gap: 12, height: 200, paddingTop: 16, overflowX: 'auto' }}>
+              {opoPorEtapa.map(e => (
+                <div key={e.etapa} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-end', flex: '1 0 64px', minWidth: 64, height: '100%' }}>
+                  <span style={{ color: '#1e3a8a', fontSize: 12, fontWeight: 800, marginBottom: 4, whiteSpace: 'nowrap' }}>${fmtMoney(e.monto)}</span>
+                  <div title={`${e.etapa}: ${e.count} op · $${fmtMoney(e.monto)}`}
+                    style={{ width: '100%', maxWidth: 48, height: `${(e.monto / maxEtapaMonto) * 100}%`, minHeight: 6, borderRadius: '6px 6px 0 0', background: e.color }} />
+                  <span style={{ color: '#1e3a8a', fontSize: 11, fontWeight: 700, marginTop: 6, textAlign: 'center', wordBreak: 'break-word' }}>{e.etapa}</span>
+                  <span style={{ color: '#64748b', fontSize: 10 }}>{e.count} op.</span>
+                </div>
+              ))}
             </div>
           )}
         </div>
