@@ -18,9 +18,8 @@ interface Registro {
 const MODULOS = ['clientes', 'contactos', 'oportunidades', 'cotizaciones', 'tareas', 'prospectos', 'pqrs', 'productos', 'usuarios']
 const ACCIONES = ['CREAR', 'MODIFICAR', 'ELIMINAR']
 
-const accColor = (a: string) => a === 'CREAR' ? '#16a34a' : a === 'ELIMINAR' ? '#dc2626' : '#2563eb'
-// Fondo suave (pastel) por acción, para que la letra del color fuerte se lea bien
-const accBg = (a: string) => a === 'CREAR' ? '#dcfce7' : a === 'ELIMINAR' ? '#fee2e2' : '#dbeafe'
+// Colores INTENSOS por acción: CREAR verde, MODIFICAR azul, ELIMINAR rojo
+const accColor = (a: string) => a === 'CREAR' ? '#15803d' : a === 'ELIMINAR' ? '#dc2626' : '#1d4ed8'
 
 export default function AuditoriaPage() {
   const currentUser = useCurrentUserStore(s => s.user)
@@ -133,7 +132,7 @@ export default function AuditoriaPage() {
                 <td style={{ padding: '8px 12px', borderBottom: '1px solid #e2e8f0', color: '#000', fontSize: 12, whiteSpace: 'nowrap' }}>{fmtFecha(r.fecha)}</td>
                 <td style={{ padding: '8px 12px', borderBottom: '1px solid #e2e8f0', color: '#000', fontSize: 12, fontWeight: 600 }}>{r.usuario_nombre || r.usuario}</td>
                 <td style={{ padding: '8px 12px', borderBottom: '1px solid #e2e8f0' }}>
-                  <div style={{ display: 'inline-block', background: accBg(r.accion), color: accColor(r.accion), border: `1px solid ${accColor(r.accion)}`, padding: '2px 10px', borderRadius: 10, fontSize: 11, fontWeight: 800 }}>{r.accion}</div>
+                  <div style={{ display: 'inline-block', background: accColor(r.accion), color: '#ffffff', padding: '3px 12px', borderRadius: 10, fontSize: 11, fontWeight: 800 }}>{r.accion}</div>
                 </td>
                 <td style={{ padding: '8px 12px', borderBottom: '1px solid #e2e8f0', color: '#000', fontSize: 12, textTransform: 'capitalize' }}>{r.modulo}</td>
                 <td style={{ padding: '8px 12px', borderBottom: '1px solid #e2e8f0', color: '#000', fontSize: 12 }}>{r.registro_codigo} {r.registro_nombre}</td>
