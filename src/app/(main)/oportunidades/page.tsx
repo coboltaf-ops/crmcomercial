@@ -357,6 +357,13 @@ export default function OportunidadesPage() {
               <input type="number" step="0.01" min="0" value={selected.monto_estimado || ''} onChange={e => setSelected({ ...selected, monto_estimado: parseFloat(e.target.value) || 0 })} required style={inputStyle} />
             </div>
             <div>
+              <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{idioma === 'en' ? 'Opportunity Stage' : 'Etapa Oportunidad'}</label>
+              <select value={selected.etapa || ''} onChange={e => setSelected({ ...selected, etapa: e.target.value })} style={inputStyle}>
+                <option value="">{idioma === 'en' ? 'Select...' : 'Seleccionar...'}</option>
+                {refOptions('etapa_oportunidad').map(o => <option key={o} value={o}>{o}</option>)}
+              </select>
+            </div>
+            <div>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.situacion')} *</label>
               <select value={selected.situacion} onChange={e => setSelected({ ...selected, situacion: e.target.value })} required style={inputStyle}>
                 {refOptions('situacion_oportunidad').map(o => <option key={o} value={o}>{o}</option>)}
