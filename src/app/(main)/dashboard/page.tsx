@@ -90,7 +90,7 @@ export default function DashboardPage() {
       etapa,
       count: etapaMap[etapa].count,
       monto: etapaMap[etapa].monto,
-      color: ETAPA_COLORES[ETAPA_ORDEN.indexOf(etapa) !== -1 ? ETAPA_ORDEN.indexOf(etapa) : idx % ETAPA_COLORES.length],
+      cidx: (ETAPA_ORDEN.indexOf(etapa) !== -1 ? ETAPA_ORDEN.indexOf(etapa) : idx) % ETAPA_COLORES.length,
     }))
   const maxEtapaMonto = Math.max(1, ...opoPorEtapa.map(e => e.monto))
   const totalOpoCount = oportunidades.length
@@ -115,7 +115,7 @@ export default function DashboardPage() {
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 24 }}>
-        {/* Pipeline de Ventas — torta por situación */}
+        {/* Pipeline de Ventas — barras verticales por etapa */}
         <div className="dash-card" onClick={() => router.push('/oportunidades')} title="Ir a Oportunidades" style={{ ...cardStyle, cursor: 'pointer' }}>
           <h2 style={{ color: '#1e3a8a', fontSize: 16, fontWeight: 600, marginBottom: 16 }}>Pipeline de Ventas</h2>
           {/* Totales arriba */}
@@ -136,8 +136,8 @@ export default function DashboardPage() {
               {opoPorEtapa.map(e => (
                 <div key={e.etapa} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-end', flex: '1 0 64px', minWidth: 64 }}>
                   <span style={{ color: '#1e3a8a', fontSize: 12, fontWeight: 800, marginBottom: 4, whiteSpace: 'nowrap' }}>${fmtMoney(e.monto)}</span>
-                  <div title={`${e.etapa}: ${e.count} op · $${fmtMoney(e.monto)}`}
-                    style={{ width: 42, height: Math.max(8, Math.round((e.monto / maxEtapaMonto) * 140)), background: e.color, borderRadius: '6px 6px 0 0' }} />
+                  <div className={`bar-et${e.cidx}`} title={`${e.etapa}: ${e.count} op · $${fmtMoney(e.monto)}`}
+                    style={{ width: 42, height: Math.max(8, Math.round((e.monto / maxEtapaMonto) * 140)), borderRadius: '6px 6px 0 0' }} />
                   <span style={{ color: '#1e3a8a', fontSize: 11, fontWeight: 700, marginTop: 6, textAlign: 'center', wordBreak: 'break-word' }}>{e.etapa}</span>
                   <span style={{ color: '#64748b', fontSize: 10 }}>{e.count} op.</span>
                 </div>
