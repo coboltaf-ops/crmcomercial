@@ -256,12 +256,12 @@ export default function DashboardPage() {
             <p style={{ color: '#1e3a8a', fontSize: 26, fontWeight: 800 }}>${fmtMoney(totalProyAprobado)}</p>
           </div>
           <div>
-            <p style={{ color: '#16a34a', fontSize: 13 }}>Total Cobrado</p>
-            <p style={{ color: '#16a34a', fontSize: 26, fontWeight: 800 }}>${fmtMoney(totalProyCobrado)}</p>
+            <p style={{ color: '#15803d', fontSize: 13 }}>Total Cobrado</p>
+            <p style={{ color: '#15803d', fontSize: 26, fontWeight: 800 }}>${fmtMoney(totalProyCobrado)}</p>
           </div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-            <span style={{ color: '#1e3a8a', fontSize: 13, fontWeight: 700 }}>● Aprobado</span>
-            <span style={{ color: '#16a34a', fontSize: 13, fontWeight: 700 }}>● Cobrado</span>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+            <span style={{ color: '#1e3a8a', fontSize: 18, fontWeight: 800 }}>● Aprobado</span>
+            <span style={{ color: '#15803d', fontSize: 18, fontWeight: 800 }}>● Cobrado</span>
           </div>
         </div>
         {proyPorSituacion.length === 0 ? (
@@ -280,8 +280,8 @@ export default function DashboardPage() {
                     <text x={0} y={rowY + 48} fontSize={12} fill="#64748b">{p.count} proy.</text>
                     <rect x={x0} y={rowY + 6} width={wA} height={22} rx={4} fill="#1e3a8a" />
                     <text x={x0 + wA + 8} y={rowY + 22} fontSize={13} fontWeight={700} fill="#1e3a8a">${fmtMoney(p.aprobado)}</text>
-                    <rect x={x0} y={rowY + 34} width={wC} height={22} rx={4} fill="#16a34a" />
-                    <text x={x0 + wC + 8} y={rowY + 50} fontSize={13} fontWeight={700} fill="#16a34a">${fmtMoney(p.cobrado)}</text>
+                    <rect x={x0} y={rowY + 34} width={wC} height={22} rx={4} fill="#15803d" />
+                    <text x={x0 + wC + 8} y={rowY + 50} fontSize={13} fontWeight={700} fill="#15803d">${fmtMoney(p.cobrado)}</text>
                   </g>
                 )
               })}
