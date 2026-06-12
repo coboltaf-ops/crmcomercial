@@ -103,6 +103,22 @@ export default function DashboardPage() {
   const totalOpoCount = oportunidades.length
   const totalOpoMonto = opoPorEtapa.reduce((s, x) => s + x.monto, 0)
 
+  // Proyectos por situación — monto aprobado y cobrado
+  const proySitMap: Record<string, { aprobado: number; cobrado: number; count: number }> = {}
+  proyectos.forEach(p => {
+    const s = (p.situacion || '').trim() || 'Sin situación'
+    if (!proySitMap[s]) proySitMap[s] = { aprobado: 0, cobrado: 0, count: 0 }
+    proySitMap[s].aprobado += p.monto_aprobado || 0
+    proySitMap[s].cobrado += p.monto_cobrado || 0
+    proySitMap[s].count++
+  })
+  const proyPorSituacion = Object.entries(proySitMap)
+    .map(([situacion, v]) => ({ situacion, ...v }))
+    .sort((a, b) => b.aprobado - a.aprobado)
+  const maxProyMonto = Math.max(1, ...proyPorSituacion.flatMap(p => [p.aprobado, p.cobrado]))
+  const totalProyAprobado = proyPorSituacion.reduce((s, p) => s + p.aprobado, 0)
+  const totalProyCobrado = proyPorSituacion.reduce((s, p) => s + p.cobrado, 0)
+
   return (
     <div>
       <h1 style={{ fontSize: 24, fontWeight: 700, color: '#ffffff', marginBottom: 24 }}>Dashboard</h1>
@@ -228,6 +244,50 @@ export default function DashboardPage() {
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Gráfico: Proyectos por Situación (barras horizontales) */}
+      <div className="dash-card" onClick={() => router.push('/proyectos')} title="Ir a Proyectos" style={{ ...cardStyle, marginBottom: 24, cursor: 'pointer' }}>
+        <h2 style={{ color: '#1e3a8a', fontSize: 16, fontWeight: 600, marginBottom: 12 }}>🏗️ Proyectos por Situación</h2>
+        {/* Totales + leyenda */}
+        <div style={{ display: 'flex', gap: 28, flexWrap: 'wrap', alignItems: 'center', marginBottom: 14 }}>
+          <div>
+            <p style={{ color: '#1e3a8a', fontSize: 12 }}>Total Aprobado</p>
+            <p style={{ color: '#1e3a8a', fontSize: 22, fontWeight: 800 }}>${fmtMoney(totalProyAprobado)}</p>
+          </div>
+          <div>
+            <p style={{ color: '#16a34a', fontSize: 12 }}>Total Cobrado</p>
+            <p style={{ color: '#16a34a', fontSize: 22, fontWeight: 800 }}>${fmtMoney(totalProyCobrado)}</p>
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+            <span style={{ color: '#1e3a8a', fontSize: 12, fontWeight: 600 }}>● Aprobado</span>
+            <span style={{ color: '#16a34a', fontSize: 12, fontWeight: 600 }}>● Cobrado</span>
+          </div>
+        </div>
+        {proyPorSituacion.length === 0 ? (
+          <p style={{ color: '#1e3a8a', fontSize: 13 }}>No hay proyectos registrados</p>
+        ) : (
+          <div style={{ overflowX: 'auto' }}>
+            <svg width={640} height={proyPorSituacion.length * 60 + 10} style={{ display: 'block' }}>
+              {proyPorSituacion.map((p, i) => {
+                const rowY = i * 60 + 8
+                const x0 = 150, maxW = 360
+                const wA = Math.max(2, Math.round((p.aprobado / maxProyMonto) * maxW))
+                const wC = Math.max(2, Math.round((p.cobrado / maxProyMonto) * maxW))
+                return (
+                  <g key={p.situacion}>
+                    <text x={0} y={rowY + 26} fontSize={12} fontWeight={700} fill="#013978">{p.situacion}</text>
+                    <text x={0} y={rowY + 40} fontSize={10} fill="#64748b">{p.count} proy.</text>
+                    <rect x={x0} y={rowY + 6} width={wA} height={16} rx={3} fill="#1e3a8a" />
+                    <text x={x0 + wA + 6} y={rowY + 18} fontSize={10} fontWeight={700} fill="#1e3a8a">${fmtMoney(p.aprobado)}</text>
+                    <rect x={x0} y={rowY + 28} width={wC} height={16} rx={3} fill="#16a34a" />
+                    <text x={x0 + wC + 6} y={rowY + 40} fontSize={10} fontWeight={700} fill="#16a34a">${fmtMoney(p.cobrado)}</text>
+                  </g>
+                )
+              })}
+            </svg>
+          </div>
+        )}
       </div>
 
       {/* Gráfico: Clientes por Ciudad (barras verticales) */}
