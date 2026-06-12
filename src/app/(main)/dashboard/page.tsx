@@ -260,8 +260,14 @@ export default function DashboardPage() {
             <p style={{ color: '#15803d', fontSize: 26, fontWeight: 800 }}>${fmtMoney(totalProyCobrado)}</p>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-            <span style={{ color: '#1e3a8a', fontSize: 18, fontWeight: 800 }}>● Aprobado</span>
-            <span style={{ color: '#15803d', fontSize: 18, fontWeight: 800 }}>● Cobrado</span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 18, fontWeight: 800, color: '#1e3a8a' }}>
+              <svg width="14" height="14"><circle cx="7" cy="7" r="7" fill="#1e3a8a" /></svg>
+              Aprobado
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 18, fontWeight: 800, color: '#15803d' }}>
+              <svg width="14" height="14"><circle cx="7" cy="7" r="7" fill="#15803d" /></svg>
+              Cobrado
+            </div>
           </div>
         </div>
         {proyPorSituacion.length === 0 ? (
