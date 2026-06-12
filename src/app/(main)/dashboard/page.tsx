@@ -132,16 +132,23 @@ export default function DashboardPage() {
           {totalOpoCount === 0 ? (
             <p style={{ color: '#1e3a8a', fontSize: 13 }}>No hay oportunidades registradas</p>
           ) : (
-            <div style={{ display: 'flex', alignItems: 'flex-end', gap: 12, paddingTop: 16, overflowX: 'auto' }}>
-              {opoPorEtapa.map(e => (
-                <div key={e.etapa} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-end', flex: '1 0 64px', minWidth: 64 }}>
-                  <span style={{ color: '#1e3a8a', fontSize: 12, fontWeight: 800, marginBottom: 4, whiteSpace: 'nowrap' }}>${fmtMoney(e.monto)}</span>
-                  <div className={`bar-et${e.cidx}`} title={`${e.etapa}: ${e.count} op · $${fmtMoney(e.monto)}`}
-                    style={{ width: 42, height: Math.max(8, Math.round((e.monto / maxEtapaMonto) * 140)), borderRadius: '6px 6px 0 0' }} />
-                  <span style={{ color: '#1e3a8a', fontSize: 11, fontWeight: 700, marginTop: 6, textAlign: 'center', wordBreak: 'break-word' }}>{e.etapa}</span>
-                  <span style={{ color: '#64748b', fontSize: 10 }}>{e.count} op.</span>
-                </div>
-              ))}
+            <div style={{ overflowX: 'auto', paddingTop: 8 }}>
+              <svg width={Math.max(opoPorEtapa.length * 104, 220)} height={210} style={{ display: 'block' }}>
+                {opoPorEtapa.map((e, i) => {
+                  const slot = 104, barW = 50, chartH = 145, topPad = 22
+                  const h = Math.max(6, Math.round((e.monto / maxEtapaMonto) * chartH))
+                  const cx = i * slot + slot / 2
+                  const y = topPad + (chartH - h)
+                  return (
+                    <g key={e.etapa}>
+                      <rect x={cx - barW / 2} y={y} width={barW} height={h} rx={4} fill={ETAPA_COLORES[e.cidx]} />
+                      <text x={cx} y={y - 6} textAnchor="middle" fontSize={11} fontWeight={800} fill="#1e3a8a">${fmtMoney(e.monto)}</text>
+                      <text x={cx} y={topPad + chartH + 17} textAnchor="middle" fontSize={11} fontWeight={700} fill="#1e3a8a">{e.etapa}</text>
+                      <text x={cx} y={topPad + chartH + 31} textAnchor="middle" fontSize={10} fill="#64748b">{e.count} op.</text>
+                    </g>
+                  )
+                })}
+              </svg>
             </div>
           )}
         </div>

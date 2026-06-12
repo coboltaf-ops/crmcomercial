@@ -162,13 +162,6 @@ div[style*="rgba(255,255,255,0.05)"] * {
 .bar-c6 { background: #1d4ed8 !important; }
 .bar-c7 { background: #f87171 !important; }
 
-/* ═══ Barras del Pipeline de Ventas por Etapa (colores definidos) ═══ */
-.bar-et0 { background: #1e3a8a !important; }  /* azul oscuro */
-.bar-et1 { background: #60a5fa !important; }  /* azul claro */
-.bar-et2 { background: #dc2626 !important; }  /* rojo intenso */
-.bar-et3 { background: #f87171 !important; }  /* rojo suave */
-.bar-et4 { background: #c4b5fd !important; }  /* morado suave */
-
 /* ═══ Franjas de sección (títulos con fondo azul): texto blanco ═══ */
 .seccion-franja, .seccion-franja * {
   color: #ffffff !important;
