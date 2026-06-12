@@ -81,6 +81,7 @@ export default function DashboardPage() {
     'Negociación': '#1e3a8a',   // azul oscuro
     'Cancelada': '#dc2626',     // rojo intenso
     'Sin etapa': '#ea580c',     // naranja intenso
+    'Construccion Oferta': '#38bdf8',  // azul celeste
   }
   const etapaMap: Record<string, { count: number; monto: number }> = {}
   oportunidades.forEach(o => {
