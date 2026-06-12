@@ -22,11 +22,13 @@ export default function MoneyInput({
   onChange,
   style,
   placeholder,
+  required,
 }: {
   value: number
   onChange: (n: number) => void
   style?: React.CSSProperties
   placeholder?: string
+  required?: boolean
 }) {
   const [focused, setFocused] = useState(false)
   const [text, setText] = useState(value ? fmtMoney(value) : '')
@@ -40,6 +42,7 @@ export default function MoneyInput({
     <input
       type="text"
       inputMode="decimal"
+      required={required}
       value={text}
       placeholder={placeholder}
       style={style}

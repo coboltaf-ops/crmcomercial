@@ -9,6 +9,7 @@ import { useClientesStore } from '@/features/clientes/store/clientes-store'
 import { useContactosStore } from '@/features/contactos/store/contactos-store'
 import { buildWhatsAppLink, isValidPhone } from '@/shared/lib/whatsapp'
 import { useReferenceStore } from '@/features/referencias/store/reference-store'
+import MoneyInput from '@/shared/components/money-input'
 import { useCurrentUserStore } from '@/features/usuarios-gestion/store/current-user-store'
 import { usePermisos } from '@/shared/hooks/use-permisos'
 import { fmtMoney, monedaSimbolo } from '@/shared/lib/format-number'
@@ -350,11 +351,11 @@ export default function OportunidadesPage() {
             </div>
             <div>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>Estimado COP *</label>
-              <input type="number" step="0.01" min="0" value={selected.estimado_cop || ''} onChange={e => setSelected({ ...selected, estimado_cop: parseFloat(e.target.value) || 0 })} required style={inputStyle} />
+              <MoneyInput value={selected.estimado_cop || 0} onChange={n => setSelected({ ...selected, estimado_cop: n })} required placeholder="0.00" style={inputStyle} />
             </div>
             <div>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>Estimado USA *</label>
-              <input type="number" step="0.01" min="0" value={selected.monto_estimado || ''} onChange={e => setSelected({ ...selected, monto_estimado: parseFloat(e.target.value) || 0 })} required style={inputStyle} />
+              <MoneyInput value={selected.monto_estimado || 0} onChange={n => setSelected({ ...selected, monto_estimado: n })} required placeholder="0.00" style={inputStyle} />
             </div>
             <div>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{idioma === 'en' ? 'Opportunity Stage' : 'Etapa Oportunidad'}</label>
