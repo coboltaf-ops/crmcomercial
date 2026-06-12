@@ -162,6 +162,9 @@ div[style*="rgba(255,255,255,0.05)"] * {
 .bar-c6 { background: #1d4ed8 !important; }
 .bar-c7 { background: #f87171 !important; }
 
+/* Badge de Acción en Auditoría: texto SIEMPRE blanco (gana a las reglas globales) */
+td .accion-badge, .accion-badge { color: #ffffff !important; }
+
 /* ═══ Franjas de sección (títulos con fondo azul): texto blanco ═══ */
 .seccion-franja, .seccion-franja * {
   color: #ffffff !important;
