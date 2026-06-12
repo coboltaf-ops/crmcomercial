@@ -252,36 +252,36 @@ export default function DashboardPage() {
         {/* Totales + leyenda */}
         <div style={{ display: 'flex', gap: 28, flexWrap: 'wrap', alignItems: 'center', marginBottom: 14 }}>
           <div>
-            <p style={{ color: '#1e3a8a', fontSize: 12 }}>Total Aprobado</p>
-            <p style={{ color: '#1e3a8a', fontSize: 22, fontWeight: 800 }}>${fmtMoney(totalProyAprobado)}</p>
+            <p style={{ color: '#1e3a8a', fontSize: 13 }}>Total Aprobado</p>
+            <p style={{ color: '#1e3a8a', fontSize: 26, fontWeight: 800 }}>${fmtMoney(totalProyAprobado)}</p>
           </div>
           <div>
-            <p style={{ color: '#16a34a', fontSize: 12 }}>Total Cobrado</p>
-            <p style={{ color: '#16a34a', fontSize: 22, fontWeight: 800 }}>${fmtMoney(totalProyCobrado)}</p>
+            <p style={{ color: '#16a34a', fontSize: 13 }}>Total Cobrado</p>
+            <p style={{ color: '#16a34a', fontSize: 26, fontWeight: 800 }}>${fmtMoney(totalProyCobrado)}</p>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-            <span style={{ color: '#1e3a8a', fontSize: 12, fontWeight: 600 }}>● Aprobado</span>
-            <span style={{ color: '#16a34a', fontSize: 12, fontWeight: 600 }}>● Cobrado</span>
+            <span style={{ color: '#1e3a8a', fontSize: 13, fontWeight: 700 }}>● Aprobado</span>
+            <span style={{ color: '#16a34a', fontSize: 13, fontWeight: 700 }}>● Cobrado</span>
           </div>
         </div>
         {proyPorSituacion.length === 0 ? (
           <p style={{ color: '#1e3a8a', fontSize: 13 }}>No hay proyectos registrados</p>
         ) : (
           <div style={{ overflowX: 'auto' }}>
-            <svg width={640} height={proyPorSituacion.length * 60 + 10} style={{ display: 'block' }}>
+            <svg width={720} height={proyPorSituacion.length * 72 + 12} style={{ display: 'block' }}>
               {proyPorSituacion.map((p, i) => {
-                const rowY = i * 60 + 8
-                const x0 = 150, maxW = 360
+                const rowY = i * 72 + 10
+                const x0 = 175, maxW = 360
                 const wA = Math.max(2, Math.round((p.aprobado / maxProyMonto) * maxW))
                 const wC = Math.max(2, Math.round((p.cobrado / maxProyMonto) * maxW))
                 return (
                   <g key={p.situacion}>
-                    <text x={0} y={rowY + 26} fontSize={12} fontWeight={700} fill="#013978">{p.situacion}</text>
-                    <text x={0} y={rowY + 40} fontSize={10} fill="#64748b">{p.count} proy.</text>
-                    <rect x={x0} y={rowY + 6} width={wA} height={16} rx={3} fill="#1e3a8a" />
-                    <text x={x0 + wA + 6} y={rowY + 18} fontSize={10} fontWeight={700} fill="#1e3a8a">${fmtMoney(p.aprobado)}</text>
-                    <rect x={x0} y={rowY + 28} width={wC} height={16} rx={3} fill="#16a34a" />
-                    <text x={x0 + wC + 6} y={rowY + 40} fontSize={10} fontWeight={700} fill="#16a34a">${fmtMoney(p.cobrado)}</text>
+                    <text x={0} y={rowY + 30} fontSize={15} fontWeight={800} fill="#013978">{p.situacion}</text>
+                    <text x={0} y={rowY + 48} fontSize={12} fill="#64748b">{p.count} proy.</text>
+                    <rect x={x0} y={rowY + 6} width={wA} height={22} rx={4} fill="#1e3a8a" />
+                    <text x={x0 + wA + 8} y={rowY + 22} fontSize={13} fontWeight={700} fill="#1e3a8a">${fmtMoney(p.aprobado)}</text>
+                    <rect x={x0} y={rowY + 34} width={wC} height={22} rx={4} fill="#16a34a" />
+                    <text x={x0 + wC + 8} y={rowY + 50} fontSize={13} fontWeight={700} fill="#16a34a">${fmtMoney(p.cobrado)}</text>
                   </g>
                 )
               })}
