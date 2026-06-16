@@ -393,6 +393,14 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
                   opacity: idioma === 'en' ? 1 : 0.55,
                 }}>🇺🇸</button>
             </div>
+            <button onClick={() => setShowAsistente(true)} title={idioma === 'en' ? 'Assistant' : 'Asistente'}
+              style={{
+                padding: '8px 20px', borderRadius: 8,
+                background: '#7c3aed', border: '1px solid #8b5cf6',
+                color: '#fff', fontSize: 13, fontWeight: 700, cursor: 'pointer',
+              }}>
+              🤖 {idioma === 'en' ? 'Agent' : 'Agente'}
+            </button>
             {pathname !== '/dashboard' && (
               <button onClick={() => router.push('/dashboard')}
                 style={{
