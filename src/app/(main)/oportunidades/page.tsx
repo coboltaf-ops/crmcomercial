@@ -86,8 +86,16 @@ export default function OportunidadesPage() {
   })
 
   // Visibilidad: el admin ve todas; los no-admin NO ven las creadas por admin
-  const esAdmin = (currentUser?.rol || '').toLowerCase() === 'admin'
-  const visibles = oportunidades.filter(o => esAdmin || (o.creado_por_rol || '').toLowerCase() !== 'admin')
+  // Visibilidad: SOLO 'directorlatam' ve todas. Los demás NO ven las creadas por directorlatam.
+  const DIRECTOR = 'directorlatam'
+  const esDirector = (currentUser?.usuario || '').toLowerCase() === DIRECTOR
+  const esDeDirector = (o: Oportunidad) => {
+    const u = (o.creado_por_usuario || '').toLowerCase()
+    if (u) return u === DIRECTOR
+    // Registros viejos sin usuario guardado: se infiere por rol Admin (directorlatam era el Admin)
+    return (o.creado_por_rol || '').toLowerCase() === 'admin'
+  }
+  const visibles = oportunidades.filter(o => esDirector || !esDeDirector(o))
 
   const filtered = visibles.filter(o =>
     !search || o.proyecto.toLowerCase().includes(search.toLowerCase()) ||
