@@ -126,15 +126,15 @@ export default function AsistenteVoz() {
       {/* Botón flotante */}
       <button onClick={() => setOpen(!open)} title="Asistente"
         style={{
-          position: 'fixed', bottom: 24, right: 24, width: 60, height: 60, borderRadius: '50%',
-          background: '#1e3a8a', color: '#fff', border: '2px solid #60a5fa', fontSize: 26,
+          position: 'fixed', top: 16, right: 24, width: 56, height: 56, borderRadius: '50%',
+          background: '#1e3a8a', color: '#fff', border: '2px solid #60a5fa', fontSize: 24,
           cursor: 'pointer', boxShadow: '0 8px 24px rgba(0,0,0,0.35)', zIndex: 1500,
         }}>🤖</button>
 
       {/* Panel */}
       {open && (
         <div style={{
-          position: 'fixed', bottom: 96, right: 24, width: 340, maxWidth: 'calc(100vw - 48px)',
+          position: 'fixed', top: 80, right: 24, width: 340, maxWidth: 'calc(100vw - 48px)',
           background: '#0f1b3d', borderRadius: 16, border: '2px solid #1e3a8a',
           boxShadow: '0 16px 48px rgba(0,0,0,0.5)', zIndex: 1500, padding: 16,
         }}>
