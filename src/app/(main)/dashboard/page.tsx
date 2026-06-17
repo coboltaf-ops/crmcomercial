@@ -296,20 +296,28 @@ export default function DashboardPage() {
         )}
       </div>
 
-      {/* Gráfico: Clientes por Ciudad (barras verticales) */}
+      {/* Gráfico: Clientes por Ciudad (barras horizontales) */}
       <div className="dash-card" onClick={() => router.push('/clientes')} title="Ir a Empresas" style={{ ...cardStyle, marginBottom: 24, cursor: 'pointer' }}>
         <h2 style={{ color: '#1e3a8a', fontSize: 16, fontWeight: 600, marginBottom: 20 }}>Clientes por Ciudad</h2>
         {clientesPorCiudad.length === 0 ? (
           <p style={{ color: '#1e3a8a', fontSize: 13 }}>No hay clientes registrados</p>
         ) : (
-          <div style={{ display: 'flex', alignItems: 'flex-end', gap: 14, height: 240, paddingTop: 20, overflowX: 'auto' }}>
-            {clientesPorCiudad.map((c, i) => (
-              <div key={c.ciudad} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-end', flex: '1 0 56px', minWidth: 56, height: '100%' }}>
-                <span style={{ color: '#1e3a8a', fontSize: 15, fontWeight: 800, marginBottom: 4 }}>{c.count}</span>
-                <div className={`bar-c${i % 8}`} style={{ width: '100%', maxWidth: 46, height: `${(c.count / maxCiudad) * 100}%`, minHeight: 6, borderRadius: '6px 6px 0 0' }} />
-                <span style={{ color: '#1e3a8a', fontSize: 11, fontWeight: 600, marginTop: 6, textAlign: 'center', wordBreak: 'break-word' }}>{c.ciudad}</span>
-              </div>
-            ))}
+          <div style={{ overflowX: 'auto' }}>
+            <svg width={600} height={clientesPorCiudad.length * 32 + 10} style={{ display: 'block', maxWidth: '100%' }}>
+              {clientesPorCiudad.map((c, i) => {
+                const COLORES = ['#1e3a8a', '#15803d', '#38bdf8', '#4ade80'] // azul oscuro, verde oscuro, azul celeste, verde claro
+                const rowY = i * 32 + 6
+                const x0 = 150, maxW = 370
+                const w = Math.max(4, Math.round((c.count / maxCiudad) * maxW))
+                return (
+                  <g key={c.ciudad}>
+                    <text x={0} y={rowY + 17} fontSize={13} fontWeight={700} fill="#013978">{c.ciudad}</text>
+                    <rect x={x0} y={rowY + 4} width={w} height={20} rx={4} fill={COLORES[i % COLORES.length]} />
+                    <text x={x0 + w + 8} y={rowY + 19} fontSize={13} fontWeight={800} fill="#013978">{c.count}</text>
+                  </g>
+                )
+              })}
+            </svg>
           </div>
         )}
       </div>
