@@ -11,6 +11,7 @@ import { useFlujoListener } from '@/features/flujos/lib/useFlujoListener'
 import { useAutoSeed } from '@/shared/hooks/use-auto-seed'
 import { useI18nStore } from '@/shared/i18n/use-t'
 import AsistenteVoz from '@/shared/components/asistente-voz'
+import AutoUpdate from '@/shared/components/auto-update'
 
 const ROUTE_KEYWORDS: { keywords: string[]; href: string; label: string }[] = [
   { keywords: ['empresa', 'empresas', 'cliente', 'clientes'], href: '/clientes', label: 'Empresas' },
@@ -419,6 +420,7 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
         {children}
       </main>
       <AsistenteVoz />
+      <AutoUpdate />
     </div>
   )
 }
