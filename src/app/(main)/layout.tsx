@@ -39,6 +39,7 @@ const MENU_EN: Record<string, string> = {
   prospectos: 'Prospects',
   oportunidades: 'Opportunities',
   proyectos: 'Projects',
+  proveedores: 'Suppliers',
   productos: 'Products',
   cotizaciones: 'Quotes',
   pqrs: 'PQRS',
