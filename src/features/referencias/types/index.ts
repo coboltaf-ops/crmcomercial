@@ -39,6 +39,7 @@ export const REFERENCE_TABLES = [
   { id: 'situacion_prospecto', label: 'Situación Prospecto' },
   { id: 'origen_prospecto', label: 'Origen Prospecto' },
   { id: 'situacion_proyecto', label: 'Situación Proyecto' },
+  { id: 'actividad_proveedor', label: 'Actividad Proveedor' },
   { id: 'vendedores', label: 'Vendedores', custom: true },
 ] as const
 

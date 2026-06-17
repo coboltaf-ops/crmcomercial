@@ -168,6 +168,13 @@ const initialData: RefData = {
     { id: '6', descripcion: 'Email', situacion: true },
     { id: '7', descripcion: 'Otro', situacion: true },
   ],
+  actividad_proveedor: [
+    { id: '1', descripcion: 'Suministros', situacion: true },
+    { id: '2', descripcion: 'Servicios', situacion: true },
+    { id: '3', descripcion: 'Materiales', situacion: true },
+    { id: '4', descripcion: 'Transporte', situacion: true },
+    { id: '5', descripcion: 'Tecnología', situacion: true },
+  ],
   vendedores: [],
 }
 
