@@ -73,7 +73,7 @@ export default function ReferenciasPage() {
 
       {/* Table selector */}
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 20 }}>
-        {REFERENCE_TABLES.map(t => (
+        {[...REFERENCE_TABLES].sort((a, b) => a.label.localeCompare(b.label, 'es')).map(t => (
           <button key={t.id} onClick={() => { setSelectedTable(t.id); setEditId(null); setDesc(''); setVNombre(''); setVApellido(''); setVCorreo(''); setVMovil('') }}
             style={{ ...btnStyle, background: '#1e3a8a', color: '#ffffff', border: selectedTable === t.id ? '2px solid #60a5fa' : '1px solid #1e3a8a' }}>
             {t.label}

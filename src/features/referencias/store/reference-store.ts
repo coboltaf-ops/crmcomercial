@@ -175,6 +175,16 @@ const initialData: RefData = {
     { id: '4', descripcion: 'Transporte', situacion: true },
     { id: '5', descripcion: 'Tecnología', situacion: true },
   ],
+  calificacion_proveedor: [
+    { id: '1', descripcion: 'Excelente', situacion: true },
+    { id: '2', descripcion: 'Bueno', situacion: true },
+    { id: '3', descripcion: 'Regular', situacion: true },
+    { id: '4', descripcion: 'Malo', situacion: true },
+  ],
+  situacion_proveedor: [
+    { id: '1', descripcion: 'Activo', situacion: true },
+    { id: '2', descripcion: 'Inactivo', situacion: true },
+  ],
   vendedores: [],
 }
 
