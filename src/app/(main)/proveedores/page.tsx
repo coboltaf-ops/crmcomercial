@@ -23,7 +23,7 @@ const emptyProveedor = (codigo: string): Proveedor => ({
   id: '', codigo, fecha_registro: today,
   nombre: '', tipo_id: 'NIT', nro_documento: '', correo: '',
   tel_oficina: '', celular_oficina: '', persona_contacto: '',
-  calificacion: '', proveedor_desde: '', representante_legal: '',
+  calificacion: '', actividad: '', proveedor_desde: '', representante_legal: '',
   direccion: '', ciudad: '', pais: 'Colombia', codigo_postal: '',
   observaciones: '', situacion: 'Activo', seguimientos: [],
 })
@@ -142,6 +142,14 @@ export default function ProveedoresPage() {
               <div>
                 <label style={labelStyle}>Proveedor Desde</label>
                 <input type="date" value={selected.proveedor_desde} onChange={e => setSelected({ ...selected, proveedor_desde: e.target.value })} style={inputStyle} />
+              </div>
+              <div>
+                <label style={labelStyle}>Actividad</label>
+                <select value={selected.actividad} onChange={e => setSelected({ ...selected, actividad: e.target.value })} style={inputStyle}>
+                  <option value="">Seleccionar...</option>
+                  {selected.actividad && !refOptions('actividad_proveedor', []).includes(selected.actividad) && <option value={selected.actividad}>{selected.actividad}</option>}
+                  {refOptions('actividad_proveedor', []).map(o => <option key={o} value={o}>{o}</option>)}
+                </select>
               </div>
               <div style={{ gridColumn: 'span 2' }}>
                 <label style={labelStyle}>Representante Legal</label>

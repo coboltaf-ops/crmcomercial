@@ -16,6 +16,7 @@ export interface Proveedor {
   celular_oficina: string
   persona_contacto: string
   calificacion: string
+  actividad: string           // de la tabla Referencias: Actividad Proveedor
   proveedor_desde: string     // fecha
   representante_legal: string
   // Ubicación
