@@ -32,13 +32,25 @@ export const SECCIONES: Seccion[] = [
   },
   {
     id: 'dashboard', titulo: 'Dashboard (Tablero)', icono: '📊', grupo: 'general',
-    intro: 'Pantalla de inicio con un resumen visual del negocio. Las tarjetas son clickeables y llevan a su módulo.',
-    comoUsar: [
-      'Tarjetas de conteo: Empresas, Contactos, Oportunidades, Proyectos, Cotizaciones, PQRS, Productos.',
-      'Pipeline de Ventas: barras por etapa de la oportunidad con su monto.',
-      'Proyectos por Situación: barras horizontales con Monto Aprobado (azul) y Cobrado (verde).',
-      'Clientes por Ciudad: barras horizontales por ciudad.',
-      'Cotizaciones, PQRS por Tipo y Resumen General.',
+    intro: 'Pantalla de inicio con el resumen visual del negocio. Todas las tarjetas son clickeables y llevan a su módulo. Carga sus propios datos del servidor, así los conteos son reales apenas entras.',
+    campos: [
+      { nombre: 'Tarjeta Empresas', desc: 'Cantidad total de empresas/clientes registrados.' },
+      { nombre: 'Tarjeta Contactos', desc: 'Cantidad total de contactos.' },
+      { nombre: 'Tarjeta Oportunidades', desc: 'Oportunidades abiertas o en negociación (no incluye ganadas/perdidas).' },
+      { nombre: 'Tarjeta Proyectos', desc: 'Cantidad total de proyectos.' },
+      { nombre: 'Tarjeta Cotizaciones', desc: 'Cantidad total de cotizaciones.' },
+      { nombre: 'Tarjeta PQRS Abiertas', desc: 'PQRS que no están cerradas.' },
+      { nombre: 'Tarjeta Productos', desc: 'Cantidad total de productos del catálogo.' },
+      { nombre: 'Pipeline de Ventas', desc: 'Barras verticales por ETAPA de la oportunidad, mostrando el monto de cada etapa. Arriba: Total de Oportunidades y Total General (suma de montos). Cada etapa con su color.' },
+      { nombre: 'Proyectos por Situación', desc: 'Barras horizontales por situación del proyecto, con dos barras: Monto Aprobado (azul) y Monto Cobrado (verde). Arriba: Total Aprobado y Total Cobrado.' },
+      { nombre: 'Cotizaciones', desc: 'Pendientes y total, y el desglose por situación (Borrador, Enviada, Aprobada, Rechazada, Vencida).' },
+      { nombre: 'PQRS por Tipo', desc: 'Conteo por tipo: Petición, Queja, Reclamo, Sugerencia (y cuántas abiertas de cada uno).' },
+      { nombre: 'Resumen General', desc: 'Empresas Activas, Contactos Principales, Productos Activos, Oportunidades Ganadas y PQRS Urgentes.' },
+      { nombre: 'Clientes por Ciudad', desc: 'Barras horizontales con la cantidad de clientes en cada ciudad.' },
+    ],
+    especiales: [
+      'Cada tarjeta es un acceso directo: al hacer clic, te lleva al módulo correspondiente.',
+      'Los gráficos se dibujan con los datos reales del momento; si no hay datos, la tarjeta lo indica.',
     ],
   },
 
