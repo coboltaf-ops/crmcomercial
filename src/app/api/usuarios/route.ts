@@ -1,22 +1,43 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { readList, writeList } from '@/shared/lib/kv-store'
+import { verifySession, hashPassword, isHashed } from '@/shared/lib/auth-crypto'
 
 const KV_KEY = 'usuarios-datos'
 
-// GET — listar usuarios (persistidos en Vercel KV)
-export async function GET() {
+// Solo usuarios con sesión válida pueden ver/guardar la lista (ya NO es público).
+function autorizado(req: NextRequest): boolean {
+  const token = req.cookies.get('palomares_session')?.value
+  return verifySession(token) !== null
+}
+
+// GET — listar usuarios (PROTEGIDO: requiere sesión)
+export async function GET(req: NextRequest) {
+  if (!autorizado(req)) {
+    return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
+  }
   const data = await readList(KV_KEY)
   return NextResponse.json(data)
 }
 
-// POST — guardar la lista completa de usuarios en KV
+// POST — guardar la lista (PROTEGIDO + cifra las claves nuevas)
 export async function POST(req: NextRequest) {
+  if (!autorizado(req)) {
+    return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
+  }
   try {
     const data = await req.json()
     if (!Array.isArray(data)) {
       return NextResponse.json({ error: 'Se esperaba un arreglo de usuarios' }, { status: 400 })
     }
-    await writeList(KV_KEY, data)
+    // Cifra las claves que aún estén en texto plano; deja intactas las ya cifradas.
+    const segura = data.map((u: Record<string, unknown>) => {
+      const clave = u.clave as string | undefined
+      return {
+        ...u,
+        clave: clave && !isHashed(clave) ? hashPassword(clave) : clave,
+      }
+    })
+    await writeList(KV_KEY, segura)
     return NextResponse.json({ ok: true })
   } catch (err) {
     console.error('[api/usuarios] POST error:', err)

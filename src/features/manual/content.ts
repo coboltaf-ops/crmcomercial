@@ -1,0 +1,221 @@
+// Contenido del Manual de Usuario. Estructura por secciones/módulos.
+// Mantener al día junto con cada cambio de módulo (parte de la rutina).
+
+export type Campo = { nombre: string; desc: string }
+export type Seccion = {
+  id: string
+  titulo: string
+  icono: string
+  grupo: 'general' | 'modulo' | 'config'
+  intro: string
+  campos?: Campo[]
+  comoUsar?: string[]
+  especiales?: string[]
+}
+
+export const SECCIONES: Seccion[] = [
+  // ─────────── GENERAL ───────────
+  {
+    id: 'introduccion', titulo: 'Introducción', icono: '👋', grupo: 'general',
+    intro: 'El CRM Comercial es el sistema para gestionar toda la relación comercial: empresas/clientes, contactos, prospectos, oportunidades de negocio, proyectos, proveedores, productos, cotizaciones, PQRS y tareas. Todos los datos viven en el servidor (la nube), por lo que son compartidos: lo que registra un usuario lo ven los demás (según sus permisos).',
+    comoUsar: [
+      'Ingresar: escribe tu usuario y contraseña en la pantalla de inicio.',
+      'Menú lateral (izquierda): cambia entre módulos. Se puede colapsar con el botón ☰.',
+      'Barra superior: muestra tu nombre y rol, el selector de idioma 🇪🇸/🇺🇸 y el botón de Cerrar Sesión.',
+      'Botón 🤖 Agente: asistente que responde preguntas sobre tus datos y abre módulos.',
+      'El sistema se actualiza solo: cuando se publica una mejora, la pantalla se refresca automáticamente.',
+    ],
+    especiales: [
+      'Cada registro guarda “Creado por” (nombre y usuario) y la fecha, visible en la pantalla Ver.',
+      'Los campos de nombres y razones sociales se guardan en MAYÚSCULAS automáticamente.',
+    ],
+  },
+  {
+    id: 'dashboard', titulo: 'Dashboard (Tablero)', icono: '📊', grupo: 'general',
+    intro: 'Pantalla de inicio con un resumen visual del negocio. Las tarjetas son clickeables y llevan a su módulo.',
+    comoUsar: [
+      'Tarjetas de conteo: Empresas, Contactos, Oportunidades, Proyectos, Cotizaciones, PQRS, Productos.',
+      'Pipeline de Ventas: barras por etapa de la oportunidad con su monto.',
+      'Proyectos por Situación: barras horizontales con Monto Aprobado (azul) y Cobrado (verde).',
+      'Clientes por Ciudad: barras horizontales por ciudad.',
+      'Cotizaciones, PQRS por Tipo y Resumen General.',
+    ],
+  },
+
+  // ─────────── MÓDULOS ───────────
+  {
+    id: 'clientes', titulo: 'Empresas (Clientes)', icono: '🏢', grupo: 'modulo',
+    intro: 'Registro de las empresas/clientes con los que se hace negocio.',
+    campos: [
+      { nombre: 'Código', desc: 'Consecutivo automático (CLI-XXXXX).' },
+      { nombre: 'Tipo Identificación / Nro Documento', desc: 'NIT, Cédula, etc. y su número.' },
+      { nombre: 'Razón Social / Nombre Comercial', desc: 'Nombre legal y comercial.' },
+      { nombre: 'Actividad', desc: 'Actividad económica (desde Referencias).' },
+      { nombre: 'Teléfono / Correo / Sitio Web', desc: 'Datos de contacto.' },
+      { nombre: 'Ubicación', desc: 'Dirección, Ciudad, País, Código Postal.' },
+      { nombre: 'Condición de Pago / Moneda', desc: 'Términos comerciales.' },
+      { nombre: 'Situación', desc: 'Activo, Inactivo, Prospecto.' },
+      { nombre: 'Código de Acceso PQRS', desc: 'Permite a la empresa radicar PQRS desde el formulario público.' },
+    ],
+    comoUsar: [
+      'Clic en “+ Nuevo” para crear; llena los campos y Guardar.',
+      'En la lista: Ver (lectura), Editar o Eliminar.',
+      'Dentro del registro puedes ver sus Contactos, Cotizaciones, Oportunidades y Tickets.',
+    ],
+    especiales: ['Bitácora de seguimiento para registrar la gestión con cada empresa.'],
+  },
+  {
+    id: 'contactos', titulo: 'Contactos', icono: '👤', grupo: 'modulo',
+    intro: 'Personas de contacto dentro de cada empresa/cliente.',
+    campos: [
+      { nombre: 'Código', desc: 'Consecutivo automático (CON-XXXXX).' },
+      { nombre: 'Nombre / Apellido / Cargo', desc: 'Datos de la persona.' },
+      { nombre: 'Empresa', desc: 'Empresa a la que pertenece (desde Clientes).' },
+      { nombre: 'Correo / Celular / Teléfono', desc: 'Datos de contacto.' },
+      { nombre: 'Nivel de Influencia', desc: 'Decisor, Influenciador, etc. (Referencias).' },
+      { nombre: 'Situación', desc: 'Activo / Inactivo.' },
+    ],
+    comoUsar: ['Crear, Ver, Editar, Eliminar. Bitácora de seguimiento incluida.'],
+  },
+  {
+    id: 'prospectos', titulo: 'Prospectos', icono: '🧲', grupo: 'modulo',
+    intro: 'Posibles clientes (leads) que aún no son empresas formales. Pueden llegar por el formulario público.',
+    campos: [
+      { nombre: 'Código', desc: 'Consecutivo automático.' },
+      { nombre: 'Nombre / Empresa / Contacto', desc: 'Datos del prospecto.' },
+      { nombre: 'Origen', desc: 'Web, Referido, Llamada, etc. (Referencias).' },
+      { nombre: 'Situación', desc: 'Nuevo, Contactado, Calificado, Convertido, Descartado, etc.' },
+    ],
+    especiales: [
+      'Formulario público: un visitante puede dejar sus datos sin entrar al sistema.',
+      'Esos prospectos llegan a una bandeja externa y tú decides cuáles importar al CRM.',
+    ],
+  },
+  {
+    id: 'oportunidades', titulo: 'Oportunidades', icono: '🎯', grupo: 'modulo',
+    intro: 'Negocios en curso (pipeline de ventas).',
+    campos: [
+      { nombre: 'Código', desc: 'Consecutivo automático (OPP-XXXXX).' },
+      { nombre: 'Proyecto / Cliente / Contacto', desc: 'A qué se asocia la oportunidad.' },
+      { nombre: 'Estimado COP / Estimado USA', desc: 'Montos (con separadores de miles).' },
+      { nombre: 'Etapa', desc: 'Etapa de la oportunidad (desde Referencias).' },
+      { nombre: 'Situación', desc: 'Abierta, En Negociación, Ganada, Perdida.' },
+      { nombre: 'Probable % / Ejecución año % / MGC', desc: 'Indicadores de avance y margen.' },
+      { nombre: 'Responsable', desc: 'Vendedor asignado (desde Referencias → Vendedores).' },
+      { nombre: 'Adjudicación / Veredicto / Fechas', desc: 'Seguimiento del cierre.' },
+    ],
+    especiales: [
+      'Visibilidad: solo el usuario “directorlatam” ve TODAS las oportunidades; los demás ven todas menos las creadas por directorlatam.',
+      'Documentos exigidos y bitácora de seguimiento dentro del registro.',
+    ],
+  },
+  {
+    id: 'proyectos', titulo: 'Proyectos', icono: '🏗️', grupo: 'modulo',
+    intro: 'Proyectos asociados a un cliente, con control de montos aprobado y cobrado.',
+    campos: [
+      { nombre: 'Nro / Código Proyecto', desc: 'Consecutivo (PRY-XXXXX) y código propio.' },
+      { nombre: 'Cliente / Responsable', desc: 'A quién pertenece y quién lo lidera.' },
+      { nombre: 'Descripción / Fechas', desc: 'Detalle y fechas estimada/real de inicio.' },
+      { nombre: 'Consorcio', desc: 'Si aplica, con el nombre del consorcio.' },
+      { nombre: 'Monto Aprobado / Cobrado', desc: 'Con separadores de miles.' },
+      { nombre: 'Situación', desc: 'En Planeación, En Ejecución, Finalizado, etc.' },
+    ],
+    especiales: ['Bitácora de seguimiento y panel de documentos.'],
+  },
+  {
+    id: 'proveedores', titulo: 'Proveedores', icono: '🏭', grupo: 'modulo',
+    intro: 'Registro de proveedores del negocio.',
+    campos: [
+      { nombre: 'Nro / Fecha Registro', desc: 'Consecutivo automático (PRV-XXXXX) y fecha del día.' },
+      { nombre: 'Nombre / Tipo ID / Nro Documento', desc: 'Identificación del proveedor.' },
+      { nombre: 'Correo / Tel Oficina / Celular Oficina', desc: 'Datos de contacto.' },
+      { nombre: 'Persona Contacto', desc: 'Persona con quien se trata.' },
+      { nombre: 'Calificación', desc: 'Excelente, Bueno, Regular, Malo (desde Referencias).' },
+      { nombre: 'Actividad', desc: 'Actividad del proveedor (desde Referencias).' },
+      { nombre: 'Proveedor Desde / Representante Legal', desc: 'Antigüedad y representante.' },
+      { nombre: 'Ubicación', desc: 'Dirección, Ciudad, País, Código Postal.' },
+      { nombre: 'Observaciones / Situación', desc: 'Notas y estado (Activo/Inactivo).' },
+    ],
+    especiales: ['Bitácora de seguimiento. Calificación, Actividad y Situación se eligen desde Referencias.'],
+  },
+  {
+    id: 'productos', titulo: 'Productos', icono: '📦', grupo: 'modulo',
+    intro: 'Catálogo de productos o servicios que se ofrecen.',
+    campos: [
+      { nombre: 'Código / Nombre / Descripción', desc: 'Identificación del producto.' },
+      { nombre: 'Categoría / Unidad de Medida', desc: 'Desde Referencias.' },
+      { nombre: 'Precio / Impuesto', desc: 'Valor y % de impuesto.' },
+      { nombre: 'Situación', desc: 'Activo / Inactivo / Descontinuado.' },
+    ],
+  },
+  {
+    id: 'cotizaciones', titulo: 'Cotizaciones', icono: '📋', grupo: 'modulo',
+    intro: 'Cotizaciones/proformas para los clientes, con sus ítems y totales.',
+    campos: [
+      { nombre: 'Código / Fecha / Vencimiento', desc: 'Datos de la cotización.' },
+      { nombre: 'Cliente / Contacto', desc: 'A quién se cotiza.' },
+      { nombre: 'Ítems', desc: 'Productos, cantidad, precio, subtotal.' },
+      { nombre: 'Impuesto / Total', desc: 'Cálculo automático.' },
+      { nombre: 'Situación', desc: 'Borrador, Enviada, Aprobada, Rechazada, Vencida.' },
+    ],
+    especiales: ['Se puede enviar por correo al cliente.'],
+  },
+  {
+    id: 'pqrs', titulo: 'PQRS', icono: '📩', grupo: 'modulo',
+    intro: 'Peticiones, Quejas, Reclamos y Sugerencias de los clientes.',
+    campos: [
+      { nombre: 'Código / Fecha', desc: 'Identificación del caso.' },
+      { nombre: 'Tipo', desc: 'Petición, Queja, Reclamo, Sugerencia (Referencias).' },
+      { nombre: 'Empresa / Contacto', desc: 'Quién reporta.' },
+      { nombre: 'Asunto / Detalle', desc: 'Descripción de la incidencia.' },
+      { nombre: 'Prioridad / Situación', desc: 'Urgencia y estado (Abierta, En Proceso, Cerrada).' },
+    ],
+    especiales: [
+      'Formulario público: el cliente radica su PQRS con su Código de Acceso (solo clientes reales).',
+      'Llega a una bandeja externa y se importa al CRM.',
+    ],
+  },
+  {
+    id: 'tareas', titulo: 'Tareas', icono: '✅', grupo: 'modulo',
+    intro: 'Tareas y asignaciones del equipo.',
+    campos: [
+      { nombre: 'Código / Fecha', desc: 'Identificación y fecha de asignación.' },
+      { nombre: 'Descripción', desc: 'Qué se debe hacer.' },
+      { nombre: 'Persona que Asigna / Ejecuta', desc: 'Responsables.' },
+      { nombre: 'Fechas', desc: 'Requerida y real de finalización.' },
+      { nombre: 'Situación', desc: 'Pendiente / En Proceso / Finalizada.' },
+    ],
+    especiales: ['Puede notificar por correo al responsable.'],
+  },
+
+  // ─────────── CONFIG / TRANSVERSAL ───────────
+  {
+    id: 'referencias', titulo: 'Referencias (Tablas)', icono: '⚙️', grupo: 'config',
+    intro: 'Catálogos que alimentan los desplegables de todo el sistema (países, ciudades, situaciones, tipos, actividades, vendedores, etc.). Solo Admin.',
+    comoUsar: [
+      'Entra a Referencias y elige una tabla (salen en orden alfabético).',
+      'Agrega, edita o activa/desactiva cada valor.',
+      'Lo que cambies aquí aparece automáticamente en los desplegables de los módulos.',
+    ],
+    especiales: ['Ejemplos: Actividad Proveedor, Calificación Proveedor, Situación Proveedor, Etapa Oportunidad, Vendedores.'],
+  },
+  {
+    id: 'seguimientos', titulo: 'Bitácora de Seguimiento', icono: '🗒️', grupo: 'config',
+    intro: 'Casi todos los módulos tienen una bitácora para registrar la gestión.',
+    campos: [
+      { nombre: 'Fecha', desc: 'Cuándo se hizo la gestión.' },
+      { nombre: 'Descripción', desc: 'Qué se hizo o conversó.' },
+      { nombre: 'Persona que Atendió', desc: 'Quién gestionó.' },
+      { nombre: 'Situación', desc: 'Estado al que pasa el registro.' },
+    ],
+  },
+  {
+    id: 'seguridad', titulo: 'Seguridad y Respaldos', icono: '🛡️', grupo: 'config',
+    intro: 'Cómo se protegen los datos.',
+    especiales: [
+      'Los datos viven en el servidor (la nube), no en el navegador: compartidos y permanentes.',
+      'Respaldo automático cada 3 días (8:00 p.m.): copia de TODO el sistema enviada por correo, y se guardan los últimos 5.',
+      'Auditoría: registra quién creó, modificó o eliminó cada registro, con fecha y hora.',
+    ],
+  },
+]

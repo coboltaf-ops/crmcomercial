@@ -47,6 +47,7 @@ const MENU_EN: Record<string, string> = {
   correos: 'Sent Emails',
   tareas: 'Tasks',
   referencias: 'References',
+  manual: 'Manual',
   usuarios: 'Users',
   'email-marketing': 'Email Marketing',
   flujos: 'Automations',

@@ -1,14 +1,11 @@
 'use client'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { useUsuariosStore } from '@/features/usuarios-gestion/store/usuarios-store'
 import { useCurrentUserStore } from '@/features/usuarios-gestion/store/current-user-store'
 import { useEmpresaStore } from '@/features/empresa/store/empresa-store'
 
 export default function LoginPage() {
   const router = useRouter()
-  const usuarios = useUsuariosStore(s => s.usuarios)
-  const loadUsuarios = useUsuariosStore(s => s.loadUsuarios)
   const setUser = useCurrentUserStore(s => s.setUser)
   const empresas = useEmpresaStore(s => s.empresas)
   const loadEmpresas = useEmpresaStore(s => s.loadEmpresas)
@@ -19,16 +16,28 @@ export default function LoginPage() {
 
   // Cargar usuarios y datos de empresa desde KV (servidor)
   useEffect(() => {
-    loadUsuarios()
     loadEmpresas()
-  }, [loadUsuarios, loadEmpresas])
+  }, [loadEmpresas])
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
-    const found = usuarios.find(u => u.usuario === usuario && u.clave === clave && u.situacion === 'Activo')
-    if (!found) { setError('Usuario o clave incorrectos'); return }
-    setUser(found)
-    router.push('/dashboard')
+    setError('')
+    try {
+      const res = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ usuario, clave }),
+      })
+      const data = await res.json()
+      if (!res.ok || !data.ok) {
+        setError(data.error || 'Usuario o clave incorrectos')
+        return
+      }
+      setUser(data.user)
+      router.push('/dashboard')
+    } catch {
+      setError('Error de conexión')
+    }
   }
 
   return (
