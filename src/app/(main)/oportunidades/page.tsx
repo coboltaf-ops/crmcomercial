@@ -672,7 +672,7 @@ export default function OportunidadesPage() {
               <tbody>
                 {filtered.map((o, i) => {
                   const pct = o.probable_pct ?? 0
-                  const rowBg = pct >= 60 ? '#bbf7d0' : pct >= 40 ? '#fef08a' : '#f87171'
+                  const rowBg = pct >= 60 ? '#bbf7d0' : pct >= 40 ? '#fef08a' : '#ef4444'
                   const rowBorde = pct >= 60 ? '#16a34a' : pct >= 40 ? '#ca8a04' : '#dc2626'
                   return (
                   <tr key={o.id} style={{ background: rowBg }}>
