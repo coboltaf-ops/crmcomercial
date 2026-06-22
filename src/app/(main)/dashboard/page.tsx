@@ -10,6 +10,39 @@ import { usePQRSStore } from '@/features/pqrs/store/pqrs-store'
 import { useProyectosStore } from '@/features/proyectos/store/proyectos-store'
 import { fmtMoney } from '@/shared/lib/format-number'
 
+// ── Mapa de Colombia: proyección de coordenadas reales (lat/lon) a SVG ──
+const MAPA_W = 300, MAPA_H = 410
+const LON_MIN = -79.2, LON_MAX = -66.8, LAT_MIN = -4.3, LAT_MAX = 12.7
+const proj = (lat: number, lon: number): [number, number] => [
+  ((lon - LON_MIN) / (LON_MAX - LON_MIN)) * MAPA_W,
+  ((LAT_MAX - lat) / (LAT_MAX - LAT_MIN)) * MAPA_H,
+]
+// Borde aproximado de Colombia (lat, lon)
+const COLOMBIA_BORDE: [number, number][] = [
+  [12.45, -71.66], [11.55, -72.9], [11.1, -74.2], [10.9, -74.85], [10.4, -75.55],
+  [9.4, -76.2], [8.7, -76.8], [8.0, -77.35], [6.5, -77.4], [4.0, -77.2],
+  [2.5, -78.2], [1.8, -78.8], [1.45, -78.2], [0.8, -77.6], [0.4, -76.4],
+  [-0.6, -75.2], [-2.0, -71.5], [-4.2, -69.95], [-1.5, -69.5], [1.0, -69.8],
+  [1.7, -67.1], [3.0, -67.5], [4.2, -67.8], [6.2, -67.5], [7.1, -70.2],
+  [9.0, -72.0], [10.5, -72.4], [11.8, -71.3], [12.45, -71.66],
+]
+// Coordenadas (lat, lon) de ciudades de Colombia
+const CIUDAD_COORDS: Record<string, [number, number]> = {
+  'bogota': [4.61, -74.08], 'medellin': [6.25, -75.56], 'cali': [3.44, -76.52],
+  'barranquilla': [10.96, -74.80], 'cartagena': [10.39, -75.51], 'cucuta': [7.89, -72.50],
+  'bucaramanga': [7.12, -73.12], 'pereira': [4.81, -75.69], 'manizales': [5.07, -75.52],
+  'santa marta': [11.24, -74.20], 'ibague': [4.44, -75.24], 'pasto': [1.21, -77.28],
+  'villavicencio': [4.14, -73.63], 'neiva': [2.93, -75.28], 'armenia': [4.53, -75.68],
+  'monteria': [8.75, -75.88], 'valledupar': [10.46, -73.25], 'sincelejo': [9.30, -75.40],
+  'popayan': [2.44, -76.61], 'tunja': [5.53, -73.36], 'riohacha': [11.54, -72.91],
+  'quibdo': [5.69, -76.66], 'florencia': [1.61, -75.61], 'yopal': [5.34, -72.40],
+  'leticia': [-4.21, -69.94], 'palmira': [3.54, -76.30], 'soacha': [4.58, -74.22],
+  'bello': [6.34, -75.56], 'tulua': [4.08, -76.20], 'cartago': [4.75, -75.91],
+  'duitama': [5.83, -73.03], 'sogamoso': [5.71, -72.93], 'girardot': [4.30, -74.80],
+  'buenaventura': [3.88, -77.03], 'maicao': [11.38, -72.24], 'monteria': [8.75, -75.88],
+}
+const normCiudad = (s: string) => s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim()
+
 export default function DashboardPage() {
   const router = useRouter()
   const clientes = useClientesStore(s => s.clientes)
@@ -71,6 +104,13 @@ export default function DashboardPage() {
     .sort((a, b) => b.count - a.count)
     .slice(0, 12)
   const maxCiudad = Math.max(1, ...clientesPorCiudad.map(c => c.count))
+
+  // Clientes en el mapa de Colombia (ciudades con coordenadas conocidas)
+  const mapaCiudades = Object.entries(ciudadCount)
+    .map(([ciudad, count]) => ({ ciudad, count, coord: CIUDAD_COORDS[normCiudad(ciudad)] }))
+    .filter((c): c is { ciudad: string; count: number; coord: [number, number] } => !!c.coord)
+    .sort((a, b) => b.count - a.count)
+  const maxMapa = Math.max(1, ...mapaCiudades.map(c => c.count))
 
   // Pipeline de Ventas — barras verticales por ETAPA (monto por etapa)
   const ETAPA_ORDEN = ['Prospección', 'Calificación', 'Propuesta', 'Negociación', 'Cierre']
@@ -320,6 +360,36 @@ export default function DashboardPage() {
             </svg>
           </div>
         )}
+      </div>
+
+      {/* Mapa de Colombia: clientes por ubicación */}
+      <div className="dash-card" style={{ ...cardStyle, marginBottom: 24 }}>
+        <h2 style={{ color: '#1e3a8a', fontSize: 16, fontWeight: 600, marginBottom: 8 }}>🗺️ Clientes en el Mapa de Colombia</h2>
+        {mapaCiudades.length === 0 ? (
+          <p style={{ color: '#1e3a8a', fontSize: 13 }}>No hay clientes en ciudades con ubicación en el mapa.</p>
+        ) : (
+          <div style={{ display: 'flex', justifyContent: 'center', overflowX: 'auto' }}>
+            <svg width={MAPA_W} height={MAPA_H} viewBox={`0 0 ${MAPA_W} ${MAPA_H}`} style={{ maxWidth: '100%' }}>
+              <polygon
+                points={COLOMBIA_BORDE.map(([la, lo]) => proj(la, lo).join(',')).join(' ')}
+                fill="#eef2ff" stroke="#1e3a8a" strokeWidth={1.5} strokeLinejoin="round"
+              />
+              {mapaCiudades.map(c => {
+                const [x, y] = proj(c.coord[0], c.coord[1])
+                const r = 7 + (c.count / maxMapa) * 14
+                return (
+                  <g key={c.ciudad}>
+                    <title>{`${c.ciudad}: ${c.count} cliente(s)`}</title>
+                    <circle cx={x} cy={y} r={r} fill="rgba(30,58,138,0.82)" stroke="#ffffff" strokeWidth={1.5} />
+                    <text x={x} y={y + 4} textAnchor="middle" fontSize={r >= 11 ? 12 : 10} fontWeight={800} fill="#ffffff">{c.count}</text>
+                    <text x={x} y={y + r + 11} textAnchor="middle" fontSize={9} fontWeight={700} fill="#013978">{c.ciudad}</text>
+                  </g>
+                )
+              })}
+            </svg>
+          </div>
+        )}
+        <p style={{ color: '#64748b', fontSize: 11, marginTop: 8, textAlign: 'center' }}>El tamaño del punto indica cuántos clientes hay en cada ciudad.</p>
       </div>
     </div>
   )
