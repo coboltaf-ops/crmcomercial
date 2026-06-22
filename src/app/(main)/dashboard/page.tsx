@@ -39,7 +39,7 @@ const CIUDAD_COORDS: Record<string, [number, number]> = {
   'leticia': [-4.21, -69.94], 'palmira': [3.54, -76.30], 'soacha': [4.58, -74.22],
   'bello': [6.34, -75.56], 'tulua': [4.08, -76.20], 'cartago': [4.75, -75.91],
   'duitama': [5.83, -73.03], 'sogamoso': [5.71, -72.93], 'girardot': [4.30, -74.80],
-  'buenaventura': [3.88, -77.03], 'maicao': [11.38, -72.24], 'monteria': [8.75, -75.88],
+  'buenaventura': [3.88, -77.03], 'maicao': [11.38, -72.24],
 }
 const normCiudad = (s: string) => s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim()
 
