@@ -160,7 +160,22 @@ export default function DashboardPage() {
     .map(([ciudad, count]) => ({ ciudad, count, coord: CIUDAD_COORDS[normCiudad(ciudad)] }))
     .filter((c): c is { ciudad: string; count: number; coord: [number, number] } => !!c.coord)
     .sort((a, b) => b.count - a.count)
-  const maxMapa = Math.max(1, ...mapaCiudades.map(c => c.count))
+  // Separar marcadores de ciudades muy cercanas (ej. Bogotá y Cota) para que no se tapen
+  const mapaPuntos = (() => {
+    const placed: { x: number; y: number }[] = []
+    return mapaCiudades.map(c => {
+      let [x, y] = proj(c.coord[0], c.coord[1])
+      let t = 0
+      while (placed.some(p => Math.hypot(p.x - x, p.y - y) < 24) && t < 18) {
+        const ang = t * 1.25
+        x += Math.cos(ang) * 14
+        y += Math.sin(ang) * 14
+        t++
+      }
+      placed.push({ x, y })
+      return { ...c, x, y }
+    })
+  })()
 
   // Pipeline de Ventas — barras verticales por ETAPA (monto por etapa)
   const ETAPA_ORDEN = ['Prospección', 'Calificación', 'Propuesta', 'Negociación', 'Cierre']
@@ -437,18 +452,14 @@ export default function DashboardPage() {
                 points={COLOMBIA_BORDE.map(([la, lo]) => proj(la, lo).join(',')).join(' ')}
                 fill="none" stroke="#1e3a8a" strokeWidth={1.6} strokeLinejoin="round"
               />
-              {mapaCiudades.map(c => {
-                const [x, y] = proj(c.coord[0], c.coord[1])
-                const r = 7 + (c.count / maxMapa) * 14
-                return (
-                  <g key={c.ciudad}>
-                    <title>{`${c.ciudad}: ${c.count} cliente(s)`}</title>
-                    <circle cx={x} cy={y} r={r} fill="rgba(30,58,138,0.82)" stroke="#ffffff" strokeWidth={1.5} />
-                    <text x={x} y={y + 4} textAnchor="middle" fontSize={r >= 11 ? 12 : 10} fontWeight={800} fill="#ffffff">{c.count}</text>
-                    <text x={x} y={y + r + 11} textAnchor="middle" fontSize={9} fontWeight={700} fill="#000000">{c.ciudad}</text>
-                  </g>
-                )
-              })}
+              {mapaPuntos.map(c => (
+                <g key={c.ciudad}>
+                  <title>{`${c.ciudad}: ${c.count} cliente(s)`}</title>
+                  <circle cx={c.x} cy={c.y} r={4} fill="#dc2626" stroke="#ffffff" strokeWidth={1} />
+                  <text x={c.x} y={c.y - 6} textAnchor="middle" fontSize={12} fontWeight={900} fill="#000000">{c.count}</text>
+                  <text x={c.x} y={c.y + 14} textAnchor="middle" fontSize={9} fontWeight={700} fill="#000000">{c.ciudad}</text>
+                </g>
+              ))}
             </svg>
           </div>
         )}
