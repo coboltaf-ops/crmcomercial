@@ -8,6 +8,7 @@ import { useOportunidadesStore } from '@/features/oportunidades/store/oportunida
 import { useCotizacionesStore } from '@/features/cotizaciones/store/cotizaciones-store'
 import { usePQRSStore } from '@/features/pqrs/store/pqrs-store'
 import { useProyectosStore } from '@/features/proyectos/store/proyectos-store'
+import { useFactoresStore } from '@/features/factores-monedas/store/factores-store'
 import { fmtMoney } from '@/shared/lib/format-number'
 import { DEPARTAMENTOS } from '@/features/dashboard/colombia-departamentos'
 
@@ -94,6 +95,7 @@ export default function DashboardPage() {
   const cotizaciones = useCotizacionesStore(s => s.cotizaciones)
   const pqrs = usePQRSStore(s => s.pqrs)
   const proyectos = useProyectosStore(s => s.proyectos)
+  const factores = useFactoresStore(s => s.factores)
 
   // El dashboard carga sus propios datos desde el servidor, así los conteos
   // son reales aunque no hayas visitado cada módulo primero.
@@ -104,10 +106,16 @@ export default function DashboardPage() {
   const loadCotizaciones = useCotizacionesStore(s => s.loadCotizaciones)
   const loadPQRS = usePQRSStore(s => s.loadPQRS)
   const loadProyectos = useProyectosStore(s => s.loadProyectos)
+  const loadFactores = useFactoresStore(s => s.loadFactores)
   useEffect(() => {
     loadClientes(); loadContactos(); loadProductos()
-    loadOportunidades(); loadCotizaciones(); loadPQRS(); loadProyectos()
-  }, [loadClientes, loadContactos, loadProductos, loadOportunidades, loadCotizaciones, loadPQRS, loadProyectos])
+    loadOportunidades(); loadCotizaciones(); loadPQRS(); loadProyectos(); loadFactores()
+  }, [loadClientes, loadContactos, loadProductos, loadOportunidades, loadCotizaciones, loadPQRS, loadProyectos, loadFactores])
+
+  // Factor US$ → Euro (del registro activo más reciente de Factores). Euro = US$ / factor.
+  const factorUsdEur = factores.filter(f => f.situacion === 'Activo').slice(-1)[0]?.factor_usd_euro || 0
+  const usd = (n: number) => `US$ ${fmtMoney(n)}`
+  const eur = (n: number) => factorUsdEur > 0 ? `Eur ${fmtMoney(n / factorUsdEur)}` : 'Eur —'
 
   const opoAbiertas = oportunidades.filter(o => o.situacion === 'Abierta' || o.situacion === 'En Negociación')
   const pqrsAbiertas = pqrs.filter(p => p.situacion !== 'Cerrada')
@@ -231,23 +239,25 @@ export default function DashboardPage() {
             </div>
             <div>
               <p style={{ color: '#1e3a8a', fontSize: 12 }}>Total General</p>
-              <p style={{ color: '#1e3a8a', fontSize: 24, fontWeight: 800 }}>${fmtMoney(totalOpoMonto)}</p>
+              <p style={{ color: '#1e3a8a', fontSize: 20, fontWeight: 800 }}>{usd(totalOpoMonto)}</p>
+              <p style={{ color: '#15803d', fontSize: 15, fontWeight: 800 }}>{eur(totalOpoMonto)}</p>
             </div>
           </div>
           {totalOpoCount === 0 ? (
             <p style={{ color: '#1e3a8a', fontSize: 13 }}>No hay oportunidades registradas</p>
           ) : (
             <div style={{ overflowX: 'auto', paddingTop: 8 }}>
-              <svg width={Math.max(opoPorEtapa.length * 104, 220)} height={210} style={{ display: 'block' }}>
+              <svg width={Math.max(opoPorEtapa.length * 110, 240)} height={216} style={{ display: 'block' }}>
                 {opoPorEtapa.map((e, i) => {
-                  const slot = 104, barW = 50, chartH = 145, topPad = 22
+                  const slot = 110, barW = 48, chartH = 135, topPad = 34
                   const h = Math.max(6, Math.round((e.monto / maxEtapaMonto) * chartH))
                   const cx = i * slot + slot / 2
                   const y = topPad + (chartH - h)
                   return (
                     <g key={e.etapa}>
                       <rect x={cx - barW / 2} y={y} width={barW} height={h} rx={4} fill={ETAPA_COLOR_FIJO[e.etapa] || ETAPA_COLORES[e.cidx]} />
-                      <text x={cx} y={y - 6} textAnchor="middle" fontSize={11} fontWeight={800} fill="#1e3a8a">${fmtMoney(e.monto)}</text>
+                      <text x={cx} y={y - 16} textAnchor="middle" fontSize={10} fontWeight={800} fill="#1e3a8a">{usd(e.monto)}</text>
+                      <text x={cx} y={y - 5} textAnchor="middle" fontSize={9} fontWeight={700} fill="#15803d">{eur(e.monto)}</text>
                       <text x={cx} y={topPad + chartH + 17} textAnchor="middle" fontSize={11} fontWeight={700} fill="#1e3a8a">{e.etapa}</text>
                       <text x={cx} y={topPad + chartH + 31} textAnchor="middle" fontSize={10} fill="#64748b">{e.count} op.</text>
                     </g>
@@ -335,11 +345,13 @@ export default function DashboardPage() {
         <div style={{ display: 'flex', gap: 28, flexWrap: 'wrap', alignItems: 'center', marginBottom: 14 }}>
           <div>
             <p style={{ color: '#1e3a8a', fontSize: 13 }}>Total Aprobado</p>
-            <p style={{ color: '#1e3a8a', fontSize: 26, fontWeight: 800 }}>${fmtMoney(totalProyAprobado)}</p>
+            <p style={{ color: '#1e3a8a', fontSize: 20, fontWeight: 800 }}>{usd(totalProyAprobado)}</p>
+            <p style={{ color: '#1e3a8a', fontSize: 15, fontWeight: 700 }}>{eur(totalProyAprobado)}</p>
           </div>
           <div>
             <p style={{ color: '#15803d', fontSize: 13 }}>Total Cobrado</p>
-            <p style={{ color: '#15803d', fontSize: 26, fontWeight: 800 }}>${fmtMoney(totalProyCobrado)}</p>
+            <p style={{ color: '#15803d', fontSize: 20, fontWeight: 800 }}>{usd(totalProyCobrado)}</p>
+            <p style={{ color: '#15803d', fontSize: 15, fontWeight: 700 }}>{eur(totalProyCobrado)}</p>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 18, fontWeight: 800, color: '#1e3a8a' }}>
@@ -356,10 +368,10 @@ export default function DashboardPage() {
           <p style={{ color: '#1e3a8a', fontSize: 13 }}>No hay proyectos registrados</p>
         ) : (
           <div style={{ overflowX: 'auto' }}>
-            <svg width={720} height={proyPorSituacion.length * 72 + 12} style={{ display: 'block' }}>
+            <svg width={880} height={proyPorSituacion.length * 72 + 12} style={{ display: 'block' }}>
               {proyPorSituacion.map((p, i) => {
                 const rowY = i * 72 + 10
-                const x0 = 175, maxW = 360
+                const x0 = 175, maxW = 300
                 const wA = Math.max(2, Math.round((p.aprobado / maxProyMonto) * maxW))
                 const wC = Math.max(2, Math.round((p.cobrado / maxProyMonto) * maxW))
                 return (
@@ -367,9 +379,9 @@ export default function DashboardPage() {
                     <text x={0} y={rowY + 30} fontSize={15} fontWeight={800} fill="#013978">{p.situacion}</text>
                     <text x={0} y={rowY + 48} fontSize={12} fill="#64748b">{p.count} proy.</text>
                     <rect x={x0} y={rowY + 6} width={wA} height={22} rx={4} fill="#1e3a8a" />
-                    <text x={x0 + wA + 8} y={rowY + 22} fontSize={13} fontWeight={700} fill="#1e3a8a">${fmtMoney(p.aprobado)}</text>
+                    <text x={x0 + wA + 8} y={rowY + 22} fontSize={12} fontWeight={700} fill="#1e3a8a">{usd(p.aprobado)} · {eur(p.aprobado)}</text>
                     <rect x={x0} y={rowY + 34} width={wC} height={22} rx={4} fill="#15803d" />
-                    <text x={x0 + wC + 8} y={rowY + 50} fontSize={13} fontWeight={700} fill="#15803d">${fmtMoney(p.cobrado)}</text>
+                    <text x={x0 + wC + 8} y={rowY + 50} fontSize={12} fontWeight={700} fill="#15803d">{usd(p.cobrado)} · {eur(p.cobrado)}</text>
                   </g>
                 )
               })}
