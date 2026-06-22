@@ -671,7 +671,7 @@ export default function OportunidadesPage() {
               </tr></thead>
               <tbody>
                 {filtered.map((o, i) => (
-                  <tr key={o.id} style={{ background: i % 2 === 0 ? 'rgba(255,255,255,0.03)' : 'transparent' }}>
+                  <tr key={o.id} style={{ background: (o.probable_pct ?? 0) >= 60 ? '#dcfce7' : (o.probable_pct ?? 0) >= 40 ? '#fef9c3' : '#fee2e2' }}>
                     <td style={{ padding: '10px 14px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 13, fontFamily: 'monospace' }}>{o.codigo}</td>
                     <td style={{ padding: '10px 14px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 13, maxWidth: 280 }}>{o.proyecto}</td>
                     <td style={{ padding: '10px 14px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 13 }}>
