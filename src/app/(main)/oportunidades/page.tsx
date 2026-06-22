@@ -359,11 +359,11 @@ export default function OportunidadesPage() {
             </div>
             <div>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>Estimado COP *</label>
-              <MoneyInput value={selected.estimado_cop || 0} onChange={n => setSelected({ ...selected, estimado_cop: n })} required placeholder="0.00" style={inputStyle} />
+              <MoneyInput value={selected.estimado_cop || 0} onChange={n => setSelected({ ...selected, estimado_cop: n })} required placeholder="0" style={inputStyle} />
             </div>
             <div>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>Estimado USA *</label>
-              <MoneyInput value={selected.monto_estimado || 0} onChange={n => setSelected({ ...selected, monto_estimado: n })} required placeholder="0.00" style={inputStyle} />
+              <MoneyInput value={selected.monto_estimado || 0} onChange={n => setSelected({ ...selected, monto_estimado: n })} required placeholder="0" style={inputStyle} />
             </div>
             <div>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{idioma === 'en' ? 'Opportunity Stage' : 'Etapa Oportunidad'}</label>

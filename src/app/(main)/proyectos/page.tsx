@@ -159,11 +159,11 @@ export default function ProyectosPage() {
               </div>
               <div>
                 <label style={labelStyle}>Monto Aprobado</label>
-                <MoneyInput value={selected.monto_aprobado || 0} onChange={n => setSelected({ ...selected, monto_aprobado: n })} placeholder="0.00" style={inputStyle} />
+                <MoneyInput value={selected.monto_aprobado || 0} onChange={n => setSelected({ ...selected, monto_aprobado: n })} placeholder="0" style={inputStyle} />
               </div>
               <div>
                 <label style={labelStyle}>Monto Cobrado</label>
-                <MoneyInput value={selected.monto_cobrado || 0} onChange={n => setSelected({ ...selected, monto_cobrado: n })} placeholder="0.00" style={inputStyle} />
+                <MoneyInput value={selected.monto_cobrado || 0} onChange={n => setSelected({ ...selected, monto_cobrado: n })} placeholder="0" style={inputStyle} />
               </div>
               <div>
                 <label style={labelStyle}>Situación</label>
