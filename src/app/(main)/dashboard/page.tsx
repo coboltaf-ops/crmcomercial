@@ -115,7 +115,7 @@ export default function DashboardPage() {
   // Factor US$ → Euro (del registro activo más reciente de Factores). Euro = US$ / factor.
   const factorUsdEur = factores.filter(f => f.situacion === 'Activo').slice(-1)[0]?.factor_usd_euro || 0
   const usd = (n: number) => `US$ ${fmtMoney(n)}`
-  const eur = (n: number) => factorUsdEur > 0 ? `Eur ${fmtMoney(n / factorUsdEur)}` : 'Eur —'
+  const eur = (n: number) => factorUsdEur > 0 ? `EUR ${fmtMoney(n / factorUsdEur)}` : 'EUR —'
 
   const opoAbiertas = oportunidades.filter(o => o.situacion === 'Abierta' || o.situacion === 'En Negociación')
   const pqrsAbiertas = pqrs.filter(p => p.situacion !== 'Cerrada')
@@ -127,13 +127,13 @@ export default function DashboardPage() {
   }
 
   const cards = [
-    { label: 'Empresas', value: clientes.length, icon: '🏢', color: '#1e3a8a', href: '/clientes' },
-    { label: 'Contactos', value: contactos.length, icon: '👤', color: '#1e3a8a', href: '/contactos' },
-    { label: 'Oportunidades', value: opoAbiertas.length, icon: '🎯', color: '#1e3a8a', href: '/oportunidades' },
-    { label: 'Proyectos', value: proyectos.length, icon: '🏗️', color: '#1e3a8a', href: '/proyectos' },
-    { label: 'Cotizaciones', value: cotizaciones.length, icon: '📋', color: '#1e3a8a', href: '/cotizaciones' },
-    { label: 'PQRS Abiertas', value: pqrsAbiertas.length, icon: '📩', color: '#1e3a8a', href: '/pqrs' },
-    { label: 'Productos', value: productos.length, icon: '📦', color: '#1e3a8a', href: '/productos' },
+    { label: 'Empresas', value: clientes.length, icon: '🏢', color: '#000000', href: '/clientes' },
+    { label: 'Contactos', value: contactos.length, icon: '👤', color: '#000000', href: '/contactos' },
+    { label: 'Oportunidades', value: opoAbiertas.length, icon: '🎯', color: '#000000', href: '/oportunidades' },
+    { label: 'Proyectos', value: proyectos.length, icon: '🏗️', color: '#000000', href: '/proyectos' },
+    { label: 'Cotizaciones', value: cotizaciones.length, icon: '📋', color: '#000000', href: '/cotizaciones' },
+    { label: 'PQRS Abiertas', value: pqrsAbiertas.length, icon: '📩', color: '#000000', href: '/pqrs' },
+    { label: 'Productos', value: productos.length, icon: '📦', color: '#000000', href: '/productos' },
   ]
 
   // PQRS por tipo
@@ -222,7 +222,7 @@ export default function DashboardPage() {
               <span style={{ fontSize: 28 }}>{c.icon}</span>
               <span style={{ fontSize: 32, fontWeight: 800, color: c.color }}>{c.value}</span>
             </div>
-            <p style={{ color: '#1e3a8a', fontSize: 13 }}>{c.label}</p>
+            <p style={{ color: '#000000', fontSize: 13 }}>{c.label}</p>
           </div>
         ))}
       </div>
@@ -230,21 +230,21 @@ export default function DashboardPage() {
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 24 }}>
         {/* Pipeline de Ventas — barras verticales por etapa */}
         <div className="dash-card" onClick={() => router.push('/oportunidades')} title="Ir a Oportunidades" style={{ ...cardStyle, cursor: 'pointer' }}>
-          <h2 style={{ color: '#1e3a8a', fontSize: 16, fontWeight: 600, marginBottom: 16 }}>Pipeline de Ventas</h2>
+          <h2 style={{ color: '#000000', fontSize: 16, fontWeight: 600, marginBottom: 16 }}>Pipeline de Ventas</h2>
           {/* Totales arriba */}
           <div style={{ display: 'flex', gap: 24, marginBottom: 14 }}>
             <div>
-              <p style={{ color: '#1e3a8a', fontSize: 12 }}>Total Oportunidades</p>
+              <p style={{ color: '#000000', fontSize: 12 }}>Total Oportunidades</p>
               <p style={{ color: '#000000', fontSize: 22, fontWeight: 900 }}>{totalOpoCount}</p>
             </div>
             <div>
-              <p style={{ color: '#1e3a8a', fontSize: 12 }}>Total General</p>
+              <p style={{ color: '#000000', fontSize: 12 }}>Total General</p>
               <p style={{ color: '#000000', fontSize: 19, fontWeight: 900 }}>{usd(totalOpoMonto)}</p>
               <p style={{ color: '#000000', fontSize: 19, fontWeight: 900 }}>{eur(totalOpoMonto)}</p>
             </div>
           </div>
           {totalOpoCount === 0 ? (
-            <p style={{ color: '#1e3a8a', fontSize: 13 }}>No hay oportunidades registradas</p>
+            <p style={{ color: '#000000', fontSize: 13 }}>No hay oportunidades registradas</p>
           ) : (
             <div style={{ overflowX: 'auto', paddingTop: 8 }}>
               <svg width={Math.max(opoPorEtapa.length * 110, 240)} height={216} style={{ display: 'block' }}>
@@ -270,15 +270,15 @@ export default function DashboardPage() {
 
         {/* Cotizaciones resumen */}
         <div className="dash-card" onClick={() => router.push('/cotizaciones')} title="Ir a Cotizaciones" style={{ ...cardStyle, cursor: 'pointer' }}>
-          <h2 style={{ color: '#1e3a8a', fontSize: 16, fontWeight: 600, marginBottom: 16 }}>Cotizaciones</h2>
+          <h2 style={{ color: '#000000', fontSize: 16, fontWeight: 600, marginBottom: 16 }}>Cotizaciones</h2>
           <div style={{ display: 'flex', gap: 16, marginBottom: 16 }}>
             <div>
-              <p style={{ color: '#1e3a8a', fontSize: 12 }}>Pendientes</p>
-              <p style={{ color: '#1e3a8a', fontSize: 28, fontWeight: 800 }}>{cotPendientes.length}</p>
+              <p style={{ color: '#000000', fontSize: 12 }}>Pendientes</p>
+              <p style={{ color: '#000000', fontSize: 28, fontWeight: 800 }}>{cotPendientes.length}</p>
             </div>
             <div>
-              <p style={{ color: '#1e3a8a', fontSize: 12 }}>Total</p>
-              <p style={{ color: '#1e3a8a', fontSize: 28, fontWeight: 800 }}>{cotizaciones.length}</p>
+              <p style={{ color: '#000000', fontSize: 12 }}>Total</p>
+              <p style={{ color: '#000000', fontSize: 28, fontWeight: 800 }}>{cotizaciones.length}</p>
             </div>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
@@ -287,7 +287,7 @@ export default function DashboardPage() {
               const colors: Record<string, string> = { Borrador: '#1e3a8a', Enviada: '#1e3a8a', Aprobada: '#1e3a8a', Rechazada: '#1e3a8a', Vencida: '#1e3a8a' }
               return (
                 <div key={s} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <span style={{ color: '#1e3a8a', fontSize: 12 }}>{s}</span>
+                  <span style={{ color: '#000000', fontSize: 12 }}>{s}</span>
                   <span style={{ color: colors[s] || '#fff', fontSize: 13, fontWeight: 600 }}>{count}</span>
                 </div>
               )
@@ -297,14 +297,14 @@ export default function DashboardPage() {
 
         {/* PQRS por tipo */}
         <div className="dash-card" onClick={() => router.push('/pqrs')} title="Ir a PQRS" style={{ ...cardStyle, cursor: 'pointer' }}>
-          <h2 style={{ color: '#1e3a8a', fontSize: 16, fontWeight: 600, marginBottom: 16 }}>PQRS por Tipo</h2>
+          <h2 style={{ color: '#000000', fontSize: 16, fontWeight: 600, marginBottom: 16 }}>PQRS por Tipo</h2>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
             {pqrsPorTipo.map(t => (
               <div key={t.tipo} style={{ background: '#f1f5f9', borderRadius: 10, padding: 12, textAlign: 'center' }}>
                 <span style={{ fontSize: 24 }}>{tipoIcons[t.tipo]}</span>
-                <p style={{ color: '#1e3a8a', fontSize: 18, fontWeight: 800 }}>{t.count}</p>
-                <p style={{ color: '#1e3a8a', fontSize: 11 }}>{t.tipo}</p>
-                {t.abiertas > 0 && <p style={{ color: '#1e3a8a', fontSize: 10 }}>{t.abiertas} abiertas</p>}
+                <p style={{ color: '#000000', fontSize: 18, fontWeight: 800 }}>{t.count}</p>
+                <p style={{ color: '#000000', fontSize: 11 }}>{t.tipo}</p>
+                {t.abiertas > 0 && <p style={{ color: '#000000', fontSize: 10 }}>{t.abiertas} abiertas</p>}
               </div>
             ))}
           </div>
@@ -312,27 +312,27 @@ export default function DashboardPage() {
 
         {/* Actividad reciente */}
         <div className="dash-card" style={cardStyle}>
-          <h2 style={{ color: '#1e3a8a', fontSize: 16, fontWeight: 600, marginBottom: 16 }}>Resumen General</h2>
+          <h2 style={{ color: '#000000', fontSize: 16, fontWeight: 600, marginBottom: 16 }}>Resumen General</h2>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', borderBottom: '1px solid #e5e7eb' }}>
-              <span style={{ color: '#1e3a8a', fontSize: 13 }}>Empresas Activas</span>
-              <span style={{ color: '#1e3a8a', fontWeight: 600 }}>{clientes.filter(c => c.situacion === 'Activo').length}</span>
+              <span style={{ color: '#000000', fontSize: 13 }}>Empresas Activas</span>
+              <span style={{ color: '#000000', fontWeight: 600 }}>{clientes.filter(c => c.situacion === 'Activo').length}</span>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', borderBottom: '1px solid #e5e7eb' }}>
-              <span style={{ color: '#1e3a8a', fontSize: 13 }}>Contactos Principales</span>
-              <span style={{ color: '#1e3a8a', fontWeight: 600 }}>{contactos.filter(c => c.es_principal).length}</span>
+              <span style={{ color: '#000000', fontSize: 13 }}>Contactos Principales</span>
+              <span style={{ color: '#000000', fontWeight: 600 }}>{contactos.filter(c => c.es_principal).length}</span>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', borderBottom: '1px solid #e5e7eb' }}>
-              <span style={{ color: '#1e3a8a', fontSize: 13 }}>Productos Activos</span>
-              <span style={{ color: '#1e3a8a', fontWeight: 600 }}>{productos.filter(p => p.situacion === 'Activo').length}</span>
+              <span style={{ color: '#000000', fontSize: 13 }}>Productos Activos</span>
+              <span style={{ color: '#000000', fontWeight: 600 }}>{productos.filter(p => p.situacion === 'Activo').length}</span>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', borderBottom: '1px solid #e5e7eb' }}>
-              <span style={{ color: '#1e3a8a', fontSize: 13 }}>Oportunidades Ganadas</span>
-              <span style={{ color: '#1e3a8a', fontWeight: 600 }}>{oportunidades.filter(o => o.situacion === 'Ganada').length}</span>
+              <span style={{ color: '#000000', fontSize: 13 }}>Oportunidades Ganadas</span>
+              <span style={{ color: '#000000', fontWeight: 600 }}>{oportunidades.filter(o => o.situacion === 'Ganada').length}</span>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0' }}>
-              <span style={{ color: '#1e3a8a', fontSize: 13 }}>PQRS Urgentes</span>
-              <span style={{ color: '#1e3a8a', fontWeight: 600 }}>{pqrs.filter(p => p.prioridad === 'Urgente' && p.situacion !== 'Cerrada').length}</span>
+              <span style={{ color: '#000000', fontSize: 13 }}>PQRS Urgentes</span>
+              <span style={{ color: '#000000', fontWeight: 600 }}>{pqrs.filter(p => p.prioridad === 'Urgente' && p.situacion !== 'Cerrada').length}</span>
             </div>
           </div>
         </div>
@@ -340,11 +340,11 @@ export default function DashboardPage() {
 
       {/* Gráfico: Proyectos por Situación (barras horizontales) */}
       <div className="dash-card" onClick={() => router.push('/proyectos')} title="Ir a Proyectos" style={{ ...cardStyle, marginBottom: 24, cursor: 'pointer' }}>
-        <h2 style={{ color: '#1e3a8a', fontSize: 16, fontWeight: 600, marginBottom: 12 }}>🏗️ Proyectos por Situación</h2>
+        <h2 style={{ color: '#000000', fontSize: 16, fontWeight: 600, marginBottom: 12 }}>🏗️ Proyectos por Situación</h2>
         {/* Totales + leyenda */}
         <div style={{ display: 'flex', gap: 28, flexWrap: 'wrap', alignItems: 'center', marginBottom: 14 }}>
           <div>
-            <p style={{ color: '#1e3a8a', fontSize: 13 }}>Total Aprobado</p>
+            <p style={{ color: '#000000', fontSize: 13 }}>Total Aprobado</p>
             <p style={{ color: '#000000', fontSize: 19, fontWeight: 900 }}>{usd(totalProyAprobado)}</p>
             <p style={{ color: '#000000', fontSize: 19, fontWeight: 900 }}>{eur(totalProyAprobado)}</p>
           </div>
@@ -354,7 +354,7 @@ export default function DashboardPage() {
             <p style={{ color: '#000000', fontSize: 19, fontWeight: 900 }}>{eur(totalProyCobrado)}</p>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 18, fontWeight: 800, color: '#1e3a8a' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 18, fontWeight: 800, color: '#000000' }}>
               <svg width="14" height="14"><circle cx="7" cy="7" r="7" fill="#1e3a8a" /></svg>
               Aprobado
             </div>
@@ -365,7 +365,7 @@ export default function DashboardPage() {
           </div>
         </div>
         {proyPorSituacion.length === 0 ? (
-          <p style={{ color: '#1e3a8a', fontSize: 13 }}>No hay proyectos registrados</p>
+          <p style={{ color: '#000000', fontSize: 13 }}>No hay proyectos registrados</p>
         ) : (
           <div style={{ overflowX: 'auto' }}>
             <svg width={880} height={proyPorSituacion.length * 72 + 12} style={{ display: 'block' }}>
@@ -392,9 +392,9 @@ export default function DashboardPage() {
 
       {/* Gráfico: Clientes por Ciudad (barras horizontales) */}
       <div className="dash-card" onClick={() => router.push('/clientes')} title="Ir a Empresas" style={{ ...cardStyle, marginBottom: 24, cursor: 'pointer' }}>
-        <h2 style={{ color: '#1e3a8a', fontSize: 16, fontWeight: 600, marginBottom: 20 }}>Clientes por Ciudad</h2>
+        <h2 style={{ color: '#000000', fontSize: 16, fontWeight: 600, marginBottom: 20 }}>Clientes por Ciudad</h2>
         {clientesPorCiudad.length === 0 ? (
-          <p style={{ color: '#1e3a8a', fontSize: 13 }}>No hay clientes registrados</p>
+          <p style={{ color: '#000000', fontSize: 13 }}>No hay clientes registrados</p>
         ) : (
           <div style={{ overflowX: 'auto' }}>
             <svg width={600} height={clientesPorCiudad.length * 32 + 10} style={{ display: 'block', maxWidth: '100%' }}>
@@ -418,9 +418,9 @@ export default function DashboardPage() {
 
       {/* Mapa de Colombia: clientes por ubicación */}
       <div className="dash-card" style={{ ...cardStyle, marginBottom: 24 }}>
-        <h2 style={{ color: '#1e3a8a', fontSize: 16, fontWeight: 600, marginBottom: 8 }}>🗺️ Clientes en el Mapa de Colombia</h2>
+        <h2 style={{ color: '#000000', fontSize: 16, fontWeight: 600, marginBottom: 8 }}>🗺️ Clientes en el Mapa de Colombia</h2>
         {mapaCiudades.length === 0 ? (
-          <p style={{ color: '#1e3a8a', fontSize: 13 }}>No hay clientes en ciudades con ubicación en el mapa.</p>
+          <p style={{ color: '#000000', fontSize: 13 }}>No hay clientes en ciudades con ubicación en el mapa.</p>
         ) : (
           <div style={{ display: 'flex', justifyContent: 'center', overflowX: 'auto' }}>
             <svg width={MAPA_W} height={MAPA_H} viewBox={`0 0 ${MAPA_W} ${MAPA_H}`} style={{ maxWidth: '100%' }}>
