@@ -480,7 +480,7 @@ export default function OportunidadesPage() {
             </div>
             <div>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.montoRealOferta')}</label>
-              <input type="number" step="0.01" min="0" value={selected.monto_real_oferta || ''} onChange={e => setSelected({ ...selected, monto_real_oferta: parseFloat(e.target.value) || 0 })} style={inputStyle} />
+              <input type="number" step="1" min="0" value={selected.monto_real_oferta || ''} onChange={e => setSelected({ ...selected, monto_real_oferta: Math.round(parseFloat(e.target.value)) || 0 })} style={inputStyle} />
             </div>
             <div>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.fechaEsperadaVeredicto')}</label>

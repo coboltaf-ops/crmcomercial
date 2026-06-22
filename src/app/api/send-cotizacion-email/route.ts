@@ -4,7 +4,7 @@ import jsPDF from 'jspdf'
 import autoTable from 'jspdf-autotable'
 
 function fmtMoney(n: number) {
-  return n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+  return Math.round(n || 0).toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })
 }
 
 export async function POST(req: Request) {

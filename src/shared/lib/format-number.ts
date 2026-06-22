@@ -1,5 +1,6 @@
 export function fmtMoney(n: number) {
-  return n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+  // Montos sin decimales, con separador de miles (ej. 1,234,567)
+  return Math.round(n || 0).toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })
 }
 
 export function monedaSimbolo(tipo?: string): string {

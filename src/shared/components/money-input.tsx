@@ -2,15 +2,10 @@
 import { useEffect, useState } from 'react'
 import { fmtMoney } from '@/shared/lib/format-number'
 
-// Formatea mientras se escribe: "," para miles, "." para decimales (máx 2).
+// Formatea mientras se escribe: "," para miles, SIN decimales (montos enteros).
 function formatTyping(raw: string): string {
-  let s = raw.replace(/[^\d.]/g, '')
-  const i = s.indexOf('.')
-  if (i !== -1) s = s.slice(0, i + 1) + s.slice(i + 1).replace(/\./g, '') // un solo punto
-  const [intp, decp] = s.split('.')
-  const intFmt = intp ? Number(intp).toLocaleString('en-US') : ''
-  if (s.includes('.')) return `${intFmt || '0'}.${(decp || '').slice(0, 2)}`
-  return intFmt
+  const s = raw.replace(/[^\d]/g, '') // solo dígitos
+  return s ? Number(s).toLocaleString('en-US') : ''
 }
 
 /**

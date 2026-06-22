@@ -607,7 +607,7 @@ export default function CotizacionesPage() {
                         </td>
                         <td style={{ padding: '6px 8px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 12, width: 70 }}>{d.unidad_medida}</td>
                         <td style={{ padding: '6px 8px', borderBottom: '1px solid #e2e8f0', width: 110 }}>
-                          <input type="number" step="0.01" min="0" value={d.precio_unitario || ''} onChange={e => updateDetalle(realIdx, 'precio_unitario', parseFloat(e.target.value) || 0)} style={{ ...inputStyle, fontSize: 12, padding: '4px 6px', textAlign: 'right' }} />
+                          <input type="number" step="1" min="0" value={d.precio_unitario || ''} onChange={e => updateDetalle(realIdx, 'precio_unitario', Math.round(parseFloat(e.target.value)) || 0)} style={{ ...inputStyle, fontSize: 12, padding: '4px 6px', textAlign: 'right' }} />
                         </td>
                         <td style={{ padding: '6px 8px', borderBottom: '1px solid #e2e8f0', width: 70 }}>
                           <input type="number" step="0.1" min="0" max="100" value={d.descuento_pct} onChange={e => updateDetalle(realIdx, 'descuento_pct', parseFloat(e.target.value) || 0)} style={{ ...inputStyle, fontSize: 12, padding: '4px 6px', textAlign: 'center' }} />

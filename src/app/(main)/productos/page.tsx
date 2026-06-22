@@ -171,7 +171,7 @@ export default function ProductosPage() {
             </div>
             <div>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.precioUnitario')} *</label>
-              <input type="number" step="0.01" min="0" value={selected.precio_unitario || ''} onChange={e => setSelected({ ...selected, precio_unitario: parseFloat(e.target.value) || 0 })} required style={inputStyle} />
+              <input type="number" step="1" min="0" value={selected.precio_unitario || ''} onChange={e => setSelected({ ...selected, precio_unitario: Math.round(parseFloat(e.target.value)) || 0 })} required style={inputStyle} />
             </div>
             <div>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.moneda')}</label>
