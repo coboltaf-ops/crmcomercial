@@ -40,6 +40,17 @@ const CIUDAD_COORDS: Record<string, [number, number]> = {
   'bello': [6.34, -75.56], 'tulua': [4.08, -76.20], 'cartago': [4.75, -75.91],
   'duitama': [5.83, -73.03], 'sogamoso': [5.71, -72.93], 'girardot': [4.30, -74.80],
   'buenaventura': [3.88, -77.03], 'maicao': [11.38, -72.24],
+  // Municipios y otras ciudades
+  'cota': [4.81, -74.10], 'chia': [4.86, -74.06], 'zipaquira': [5.03, -74.00],
+  'envigado': [6.17, -75.59], 'itagui': [6.18, -75.61], 'sabaneta': [6.15, -75.62],
+  'rionegro': [6.15, -75.37], 'apartado': [7.88, -76.63], 'turbo': [8.09, -76.73],
+  'floridablanca': [7.06, -73.09], 'giron': [7.07, -73.17], 'piedecuesta': [6.99, -73.05],
+  'facatativa': [4.81, -74.35], 'fusagasuga': [4.34, -74.37], 'madrid': [4.73, -74.27],
+  'mosquera': [4.71, -74.23], 'jamundi': [3.26, -76.54], 'yumbo': [3.58, -76.50],
+  'malambo': [10.86, -74.77], 'soledad': [10.92, -74.76], 'caucasia': [7.99, -75.20],
+  'magangue': [9.24, -74.75], 'aguachica': [8.31, -73.61], 'ocana': [8.24, -73.36],
+  // Internacionales (fuera de Colombia)
+  'quito': [-0.18, -78.47],
 }
 const normCiudad = (s: string) => s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim()
 
