@@ -7,6 +7,7 @@ import { useCurrentUserStore } from '@/features/usuarios-gestion/store/current-u
 import { usePermisos } from '@/shared/hooks/use-permisos'
 import { fDate, todayColombia } from '@/shared/lib/format-date'
 import { nextConsecutivo } from '@/shared/lib/consecutivo'
+import DecimalInput from '@/shared/components/decimal-input'
 
 const today = todayColombia()
 
@@ -79,11 +80,11 @@ export default function FactoresMonedasPage() {
               </div>
               <div>
                 <label style={labelStyle}>Factor Pesos a US$</label>
-                <input type="number" step="0.01" min="0" value={selected.factor_pesos_usd || ''} onChange={e => setSelected({ ...selected, factor_pesos_usd: parseFloat(e.target.value) || 0 })} placeholder="Ej: 4000.00" style={inputStyle} />
+                <DecimalInput value={selected.factor_pesos_usd || 0} onChange={n => setSelected({ ...selected, factor_pesos_usd: n })} placeholder="Ej: 4000.00" style={inputStyle} />
               </div>
               <div>
                 <label style={labelStyle}>Factor US$ a Euro</label>
-                <input type="number" step="0.01" min="0" value={selected.factor_usd_euro || ''} onChange={e => setSelected({ ...selected, factor_usd_euro: parseFloat(e.target.value) || 0 })} placeholder="Ej: 0.92" style={inputStyle} />
+                <DecimalInput value={selected.factor_usd_euro || 0} onChange={n => setSelected({ ...selected, factor_usd_euro: n })} placeholder="Ej: 0.92" style={inputStyle} />
               </div>
               <div>
                 <label style={labelStyle}>Situación</label>
