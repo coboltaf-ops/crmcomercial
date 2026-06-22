@@ -235,12 +235,12 @@ export default function DashboardPage() {
           <div style={{ display: 'flex', gap: 24, marginBottom: 14 }}>
             <div>
               <p style={{ color: '#1e3a8a', fontSize: 12 }}>Total Oportunidades</p>
-              <p style={{ color: '#1e3a8a', fontSize: 24, fontWeight: 800 }}>{totalOpoCount}</p>
+              <p style={{ color: '#000000', fontSize: 22, fontWeight: 900 }}>{totalOpoCount}</p>
             </div>
             <div>
               <p style={{ color: '#1e3a8a', fontSize: 12 }}>Total General</p>
-              <p style={{ color: '#1e3a8a', fontSize: 20, fontWeight: 800 }}>{usd(totalOpoMonto)}</p>
-              <p style={{ color: '#15803d', fontSize: 15, fontWeight: 800 }}>{eur(totalOpoMonto)}</p>
+              <p style={{ color: '#000000', fontSize: 19, fontWeight: 900 }}>{usd(totalOpoMonto)}</p>
+              <p style={{ color: '#000000', fontSize: 19, fontWeight: 900 }}>{eur(totalOpoMonto)}</p>
             </div>
           </div>
           {totalOpoCount === 0 ? (
@@ -256,10 +256,10 @@ export default function DashboardPage() {
                   return (
                     <g key={e.etapa}>
                       <rect x={cx - barW / 2} y={y} width={barW} height={h} rx={4} fill={ETAPA_COLOR_FIJO[e.etapa] || ETAPA_COLORES[e.cidx]} />
-                      <text x={cx} y={y - 16} textAnchor="middle" fontSize={10} fontWeight={800} fill="#1e3a8a">{usd(e.monto)}</text>
-                      <text x={cx} y={y - 5} textAnchor="middle" fontSize={9} fontWeight={700} fill="#15803d">{eur(e.monto)}</text>
-                      <text x={cx} y={topPad + chartH + 17} textAnchor="middle" fontSize={11} fontWeight={700} fill="#1e3a8a">{e.etapa}</text>
-                      <text x={cx} y={topPad + chartH + 31} textAnchor="middle" fontSize={10} fill="#64748b">{e.count} op.</text>
+                      <text x={cx} y={y - 16} textAnchor="middle" fontSize={10} fontWeight={900} fill="#000000">{usd(e.monto)}</text>
+                      <text x={cx} y={y - 5} textAnchor="middle" fontSize={10} fontWeight={900} fill="#000000">{eur(e.monto)}</text>
+                      <text x={cx} y={topPad + chartH + 17} textAnchor="middle" fontSize={11} fontWeight={800} fill="#000000">{e.etapa}</text>
+                      <text x={cx} y={topPad + chartH + 31} textAnchor="middle" fontSize={10} fontWeight={700} fill="#000000">{e.count} op.</text>
                     </g>
                   )
                 })}
@@ -345,13 +345,13 @@ export default function DashboardPage() {
         <div style={{ display: 'flex', gap: 28, flexWrap: 'wrap', alignItems: 'center', marginBottom: 14 }}>
           <div>
             <p style={{ color: '#1e3a8a', fontSize: 13 }}>Total Aprobado</p>
-            <p style={{ color: '#1e3a8a', fontSize: 20, fontWeight: 800 }}>{usd(totalProyAprobado)}</p>
-            <p style={{ color: '#1e3a8a', fontSize: 15, fontWeight: 700 }}>{eur(totalProyAprobado)}</p>
+            <p style={{ color: '#000000', fontSize: 19, fontWeight: 900 }}>{usd(totalProyAprobado)}</p>
+            <p style={{ color: '#000000', fontSize: 19, fontWeight: 900 }}>{eur(totalProyAprobado)}</p>
           </div>
           <div>
             <p style={{ color: '#15803d', fontSize: 13 }}>Total Cobrado</p>
-            <p style={{ color: '#15803d', fontSize: 20, fontWeight: 800 }}>{usd(totalProyCobrado)}</p>
-            <p style={{ color: '#15803d', fontSize: 15, fontWeight: 700 }}>{eur(totalProyCobrado)}</p>
+            <p style={{ color: '#000000', fontSize: 19, fontWeight: 900 }}>{usd(totalProyCobrado)}</p>
+            <p style={{ color: '#000000', fontSize: 19, fontWeight: 900 }}>{eur(totalProyCobrado)}</p>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 18, fontWeight: 800, color: '#1e3a8a' }}>
@@ -376,12 +376,12 @@ export default function DashboardPage() {
                 const wC = Math.max(2, Math.round((p.cobrado / maxProyMonto) * maxW))
                 return (
                   <g key={p.situacion}>
-                    <text x={0} y={rowY + 30} fontSize={15} fontWeight={800} fill="#013978">{p.situacion}</text>
-                    <text x={0} y={rowY + 48} fontSize={12} fill="#64748b">{p.count} proy.</text>
+                    <text x={0} y={rowY + 30} fontSize={15} fontWeight={900} fill="#000000">{p.situacion}</text>
+                    <text x={0} y={rowY + 48} fontSize={12} fontWeight={700} fill="#000000">{p.count} proy.</text>
                     <rect x={x0} y={rowY + 6} width={wA} height={22} rx={4} fill="#1e3a8a" />
-                    <text x={x0 + wA + 8} y={rowY + 22} fontSize={12} fontWeight={700} fill="#1e3a8a">{usd(p.aprobado)} · {eur(p.aprobado)}</text>
+                    <text x={x0 + wA + 8} y={rowY + 22} fontSize={12} fontWeight={900} fill="#000000">{usd(p.aprobado)} · {eur(p.aprobado)}</text>
                     <rect x={x0} y={rowY + 34} width={wC} height={22} rx={4} fill="#15803d" />
-                    <text x={x0 + wC + 8} y={rowY + 50} fontSize={12} fontWeight={700} fill="#15803d">{usd(p.cobrado)} · {eur(p.cobrado)}</text>
+                    <text x={x0 + wC + 8} y={rowY + 50} fontSize={12} fontWeight={900} fill="#000000">{usd(p.cobrado)} · {eur(p.cobrado)}</text>
                   </g>
                 )
               })}
@@ -405,9 +405,9 @@ export default function DashboardPage() {
                 const w = Math.max(4, Math.round((c.count / maxCiudad) * maxW))
                 return (
                   <g key={c.ciudad}>
-                    <text x={0} y={rowY + 17} fontSize={13} fontWeight={700} fill="#013978">{c.ciudad}</text>
+                    <text x={0} y={rowY + 17} fontSize={13} fontWeight={700} fill="#000000">{c.ciudad}</text>
                     <rect x={x0} y={rowY + 4} width={w} height={20} rx={4} fill={COLORES[i % COLORES.length]} />
-                    <text x={x0 + w + 8} y={rowY + 19} fontSize={13} fontWeight={800} fill="#013978">{c.count}</text>
+                    <text x={x0 + w + 8} y={rowY + 19} fontSize={13} fontWeight={800} fill="#000000">{c.count}</text>
                   </g>
                 )
               })}
@@ -445,7 +445,7 @@ export default function DashboardPage() {
                     <title>{`${c.ciudad}: ${c.count} cliente(s)`}</title>
                     <circle cx={x} cy={y} r={r} fill="rgba(30,58,138,0.82)" stroke="#ffffff" strokeWidth={1.5} />
                     <text x={x} y={y + 4} textAnchor="middle" fontSize={r >= 11 ? 12 : 10} fontWeight={800} fill="#ffffff">{c.count}</text>
-                    <text x={x} y={y + r + 11} textAnchor="middle" fontSize={9} fontWeight={700} fill="#013978">{c.ciudad}</text>
+                    <text x={x} y={y + r + 11} textAnchor="middle" fontSize={9} fontWeight={700} fill="#000000">{c.ciudad}</text>
                   </g>
                 )
               })}
