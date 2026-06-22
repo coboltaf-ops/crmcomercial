@@ -222,6 +222,17 @@ export const SECCIONES: Seccion[] = [
     ],
   },
   {
+    id: 'factores-monedas', titulo: 'Factores Conversión Monedas', icono: '💱', grupo: 'config',
+    intro: 'Registra los factores para convertir entre monedas, usados en los cálculos del sistema.',
+    campos: [
+      { nombre: 'Nro / Fecha Registro', desc: 'Consecutivo automático (FCM-XXXXX) y fecha del día.' },
+      { nombre: 'Factor Pesos a US$', desc: 'Cuántos pesos equivalen a un dólar (ej. 4000).' },
+      { nombre: 'Factor US$ a Euro', desc: 'Cuántos euros equivale un dólar (ej. 0.92).' },
+      { nombre: 'Situación', desc: 'Activo / Inactivo.' },
+    ],
+    comoUsar: ['Crear, Ver, Editar o Eliminar. Cada registro guarda quién lo creó.'],
+  },
+  {
     id: 'seguridad', titulo: 'Seguridad y Respaldos', icono: '🛡️', grupo: 'config',
     intro: 'Cómo se protegen los datos.',
     especiales: [

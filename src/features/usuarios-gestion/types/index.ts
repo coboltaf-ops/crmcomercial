@@ -30,6 +30,7 @@ export const MODULOS_CRM = [
   { id: 'pqrs', label: 'PQRS' },
   { id: 'tareas', label: 'Tareas' },
   { id: 'referencias', label: 'Tablas de Referencias' },
+  { id: 'factores-monedas', label: 'Factores Conversión Monedas' },
 ]
 
 export const ROLES = ['Admin', 'Ventas', 'Soporte', 'Gerencia']
