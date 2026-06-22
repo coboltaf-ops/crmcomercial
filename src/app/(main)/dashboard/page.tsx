@@ -9,6 +9,7 @@ import { useCotizacionesStore } from '@/features/cotizaciones/store/cotizaciones
 import { usePQRSStore } from '@/features/pqrs/store/pqrs-store'
 import { useProyectosStore } from '@/features/proyectos/store/proyectos-store'
 import { fmtMoney } from '@/shared/lib/format-number'
+import { DEPARTAMENTOS } from '@/features/dashboard/colombia-departamentos'
 
 // ── Mapa de Colombia: proyección de coordenadas reales (lat/lon) a SVG ──
 const MAPA_W = 300, MAPA_H = 410
@@ -411,9 +412,18 @@ export default function DashboardPage() {
         ) : (
           <div style={{ display: 'flex', justifyContent: 'center', overflowX: 'auto' }}>
             <svg width={MAPA_W} height={MAPA_H} viewBox={`0 0 ${MAPA_W} ${MAPA_H}`} style={{ maxWidth: '100%' }}>
+              {/* Departamentos (relleno suave + borde gris) */}
+              {DEPARTAMENTOS.map(d => (
+                <polygon key={d.nombre}
+                  points={d.puntos.map(([la, lo]) => proj(la, lo).join(',')).join(' ')}
+                  fill="#eef2ff" stroke="#94a3b8" strokeWidth={0.6} strokeLinejoin="round">
+                  <title>{d.nombre}</title>
+                </polygon>
+              ))}
+              {/* Contorno del país (encima, para definir el borde) */}
               <polygon
                 points={COLOMBIA_BORDE.map(([la, lo]) => proj(la, lo).join(',')).join(' ')}
-                fill="#eef2ff" stroke="#1e3a8a" strokeWidth={1.5} strokeLinejoin="round"
+                fill="none" stroke="#1e3a8a" strokeWidth={1.6} strokeLinejoin="round"
               />
               {mapaCiudades.map(c => {
                 const [x, y] = proj(c.coord[0], c.coord[1])
