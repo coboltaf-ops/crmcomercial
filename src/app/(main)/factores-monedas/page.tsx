@@ -10,6 +10,9 @@ import { nextConsecutivo } from '@/shared/lib/consecutivo'
 
 const today = todayColombia()
 
+// Formato de factor: separador de miles y 2 decimales (ej. 4,000.00)
+const fmtFactor = (n: number) => (n || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+
 const emptyFactor = (codigo: string): FactorMoneda => ({
   id: '', codigo, fecha_registro: today,
   factor_pesos_usd: 0, factor_usd_euro: 0, situacion: 'Activo',
@@ -76,11 +79,11 @@ export default function FactoresMonedasPage() {
               </div>
               <div>
                 <label style={labelStyle}>Factor Pesos a US$</label>
-                <input type="number" step="any" min="0" value={selected.factor_pesos_usd || ''} onChange={e => setSelected({ ...selected, factor_pesos_usd: parseFloat(e.target.value) || 0 })} placeholder="Ej: 4000" style={inputStyle} />
+                <input type="number" step="0.01" min="0" value={selected.factor_pesos_usd || ''} onChange={e => setSelected({ ...selected, factor_pesos_usd: parseFloat(e.target.value) || 0 })} placeholder="Ej: 4000.00" style={inputStyle} />
               </div>
               <div>
                 <label style={labelStyle}>Factor US$ a Euro</label>
-                <input type="number" step="any" min="0" value={selected.factor_usd_euro || ''} onChange={e => setSelected({ ...selected, factor_usd_euro: parseFloat(e.target.value) || 0 })} placeholder="Ej: 0.92" style={inputStyle} />
+                <input type="number" step="0.01" min="0" value={selected.factor_usd_euro || ''} onChange={e => setSelected({ ...selected, factor_usd_euro: parseFloat(e.target.value) || 0 })} placeholder="Ej: 0.92" style={inputStyle} />
               </div>
               <div>
                 <label style={labelStyle}>Situación</label>
@@ -129,8 +132,8 @@ export default function FactoresMonedasPage() {
               <tr key={f.id} style={{ background: i % 2 === 0 ? '#f8fafc' : '#fff' }}>
                 <td style={{ padding: '8px 12px', borderBottom: '1px solid #e2e8f0', color: '#000', fontSize: 13, fontFamily: 'monospace' }}>{f.codigo}</td>
                 <td style={{ padding: '8px 12px', borderBottom: '1px solid #e2e8f0', color: '#000', fontSize: 13 }}>{fDate(f.fecha_registro)}</td>
-                <td style={{ padding: '8px 12px', borderBottom: '1px solid #e2e8f0', color: '#000', fontSize: 13 }}>{f.factor_pesos_usd}</td>
-                <td style={{ padding: '8px 12px', borderBottom: '1px solid #e2e8f0', color: '#000', fontSize: 13 }}>{f.factor_usd_euro}</td>
+                <td style={{ padding: '8px 12px', borderBottom: '1px solid #e2e8f0', color: '#000', fontSize: 13 }}>{fmtFactor(f.factor_pesos_usd)}</td>
+                <td style={{ padding: '8px 12px', borderBottom: '1px solid #e2e8f0', color: '#000', fontSize: 13 }}>{fmtFactor(f.factor_usd_euro)}</td>
                 <td style={{ padding: '8px 12px', borderBottom: '1px solid #e2e8f0' }}><span style={situColor(f.situacion)}>{f.situacion}</span></td>
                 <td style={{ padding: '8px 12px', borderBottom: '1px solid #e2e8f0' }}>
                   <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap' }}>
