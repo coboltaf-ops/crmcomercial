@@ -261,7 +261,7 @@ export default function UsuariosPage() {
 
           {/* Permisos del rol seleccionado */}
           {selectedRolObj && (
-            <div style={{ background: '#ffffff', borderRadius: 16, padding: 24, border: '1px solid #1e3a8a' }}>
+            <div style={{ background: '#ffffff', borderRadius: 16, padding: 24, border: '1px solid #1e3a8a', maxWidth: 760 }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
                 <div>
                   <h3 style={{ color: '#013978', fontSize: 18, fontWeight: 700 }}>Permisos: {selectedRolObj.nombre}</h3>
