@@ -105,7 +105,11 @@ export default function UsuariosPage() {
 
   const updateRolPermiso = (moduloId: string, campo: 'leer' | 'crear' | 'editar' | 'eliminar', value: boolean) => {
     if (!selectedRolObj || selectedRolObj.nombre === 'Admin') return
-    const newPermisos = selectedRolObj.permisos.map(p => p.modulo === moduloId ? { ...p, [campo]: value } : p)
+    const existe = selectedRolObj.permisos.some(p => p.modulo === moduloId)
+    const newPermisos = existe
+      ? selectedRolObj.permisos.map(p => p.modulo === moduloId ? { ...p, [campo]: value } : p)
+      // Si el rol no tenía este módulo (ej. se creó antes que el módulo existiera), lo agrega
+      : [...selectedRolObj.permisos, { modulo: moduloId, leer: false, crear: false, editar: false, eliminar: false, [campo]: value }]
     updateRol(selectedRolObj.id, { permisos: newPermisos })
     // Update all users with this role
     usuarios.filter(u => u.rol === selectedRolObj.nombre).forEach(u => updateUsuario(u.id, { permisos: newPermisos }))
