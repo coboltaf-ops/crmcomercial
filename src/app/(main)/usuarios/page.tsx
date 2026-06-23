@@ -28,6 +28,13 @@ export default function UsuariosPage() {
   const [selectedRolId, setSelectedRolId] = useState(roles[0]?.id || '')
   const [nuevoRolNombre, setNuevoRolNombre] = useState('')
   const [showNewRol, setShowNewRol] = useState(false)
+  const [guardadoMsg, setGuardadoMsg] = useState(false)
+
+  // Muestra "Guardado ✓" un par de segundos tras cada cambio guardado
+  const mostrarGuardado = () => {
+    setGuardadoMsg(true)
+    setTimeout(() => setGuardadoMsg(false), 2000)
+  }
 
   if (currentUser?.rol.toLowerCase() !== 'admin') {
     return <div style={{ color: '#013978', padding: 40, textAlign: 'center' }}>{idioma === 'en' ? 'You do not have access to this section' : 'No tienes acceso a esta sección'}</div>
@@ -102,6 +109,7 @@ export default function UsuariosPage() {
     updateRol(selectedRolObj.id, { permisos: newPermisos })
     // Update all users with this role
     usuarios.filter(u => u.rol === selectedRolObj.nombre).forEach(u => updateUsuario(u.id, { permisos: newPermisos }))
+    mostrarGuardado()
   }
 
   const setAllPermisos = (value: boolean) => {
@@ -109,6 +117,15 @@ export default function UsuariosPage() {
     const newPermisos = MODULOS_CRM.map(m => ({ modulo: m.id, leer: value, editar: value, eliminar: value }))
     updateRol(selectedRolObj.id, { permisos: newPermisos })
     usuarios.filter(u => u.rol === selectedRolObj.nombre).forEach(u => updateUsuario(u.id, { permisos: newPermisos }))
+    mostrarGuardado()
+  }
+
+  // Botón "Guardar Cambios": re-guarda el rol actual y confirma visualmente
+  const handleGuardarRol = () => {
+    if (!selectedRolObj || selectedRolObj.nombre === 'Admin') return
+    updateRol(selectedRolObj.id, { permisos: selectedRolObj.permisos })
+    usuarios.filter(u => u.rol === selectedRolObj.nombre).forEach(u => updateUsuario(u.id, { permisos: selectedRolObj.permisos }))
+    mostrarGuardado()
   }
 
   const inputStyle: React.CSSProperties = { width: '100%', padding: '8px 12px', borderRadius: 8, background: '#ffffff', border: '1px solid #1e3a8a', color: '#1e3a8a', fontWeight: 600, fontSize: 13, outline: 'none' }
@@ -269,10 +286,18 @@ export default function UsuariosPage() {
                     {selectedRolObj.nombre === 'Admin' ? 'Acceso total al sistema (no editable)' : `Configura los permisos para el rol ${selectedRolObj.nombre}`}
                   </p>
                 </div>
-                <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+                <div style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap' }}>
+                  {guardadoMsg && (
+                    <span style={{ display: 'inline-block', padding: '4px 12px', borderRadius: 20, fontSize: 12, fontWeight: 700, background: '#15803d', color: '#ffffff', border: '1px solid #16a34a' }}>
+                      <b style={{ color: '#ffffff' }}>Guardado ✓</b>
+                    </span>
+                  )}
                   <span style={{ padding: '4px 14px', borderRadius: 20, fontSize: 12, fontWeight: 600, background: '#15803d', color: '#ffffff', border: '1px solid #16a34a' }}>
                     {usuarios.filter(u => u.rol === selectedRolObj.nombre).length} usuario(s)
                   </span>
+                  {selectedRolObj.nombre !== 'Admin' && (
+                    <button onClick={handleGuardarRol} style={{ ...btnStyle, padding: '4px 14px', fontSize: 12, background: '#1d4ed8', color: '#ffffff', border: '1px solid #2563eb' }}>Guardar Cambios</button>
+                  )}
                   {selectedRolObj.nombre !== 'Admin' && (
                     <button onClick={() => handleDeleteRol(selectedRolObj.id)} style={{ ...btnStyle, padding: '4px 12px', fontSize: 11, background: '#dc2626', color: '#ffffff', border: '1px solid #ef4444' }}>Eliminar Rol</button>
                   )}
@@ -308,9 +333,15 @@ export default function UsuariosPage() {
               </div>
 
               {selectedRolObj.nombre !== 'Admin' && (
-                <div style={{ display: 'flex', gap: 10, marginTop: 20 }}>
+                <div style={{ display: 'flex', gap: 10, marginTop: 20, alignItems: 'center', flexWrap: 'wrap' }}>
                   <button onClick={() => setAllPermisos(true)} style={{ ...btnStyle, background: '#15803d', color: '#ffffff', border: '1px solid #16a34a' }}>Marcar Todos</button>
                   <button onClick={() => setAllPermisos(false)} style={{ ...btnStyle, background: '#dc2626', color: '#ffffff', border: '1px solid #ef4444' }}>Desmarcar Todos</button>
+                  <button onClick={handleGuardarRol} style={{ ...btnStyle, background: '#1d4ed8', color: '#ffffff', border: '1px solid #2563eb' }}>Guardar Cambios</button>
+                  {guardadoMsg && (
+                    <span style={{ display: 'inline-block', padding: '8px 14px', borderRadius: 8, fontSize: 13, fontWeight: 700, background: '#15803d', color: '#ffffff', border: '1px solid #16a34a' }}>
+                      <b style={{ color: '#ffffff' }}>Guardado ✓</b>
+                    </span>
+                  )}
                 </div>
               )}
             </div>
