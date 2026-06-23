@@ -27,7 +27,7 @@ interface ProspectoExterno {
 
 const emptyProspecto = (codigo: string): Prospecto => ({
   id: '', codigo, nombre: '', apellido: '', empresa: '', correo: '', nro_movil: '',
-  origen_prospecto: '', detalle_requerimiento: '', actividad: '', ciudad: '', pais: 'Colombia',
+  origen_prospecto: '', referenciado_por: '', empresa_referente: '', detalle_requerimiento: '', actividad: '', ciudad: '', pais: 'Colombia',
   situacion: 'Nuevo', fecha_registro: today, seguimientos: [],
 })
 
@@ -83,7 +83,7 @@ export default function ProspectosPage() {
     addProspecto({
       id: crypto.randomUUID(), codigo, nombre: ext.nombre, apellido: ext.apellido,
       empresa: ext.empresa, correo: ext.correo, nro_movil: ext.nro_movil,
-      origen_prospecto: 'Formulario Web', detalle_requerimiento: ext.descripcion_requerimiento,
+      origen_prospecto: 'Formulario Web', referenciado_por: '', empresa_referente: '', detalle_requerimiento: ext.descripcion_requerimiento,
       actividad: '', ciudad: '', pais: 'Colombia', situacion: 'Sin Contactar',
       fecha_registro: ext.fecha_registro || today, seguimientos: [{
         id: crypto.randomUUID(), fecha: today, detalle: `Prospecto importado desde formulario web. Registrado el ${ext.fecha_registro} a las ${ext.hora_registro}.`,
@@ -100,7 +100,7 @@ export default function ProspectosPage() {
       addProspecto({
         id: crypto.randomUUID(), codigo, nombre: ext.nombre, apellido: ext.apellido,
         empresa: ext.empresa, correo: ext.correo, nro_movil: ext.nro_movil,
-        origen_prospecto: 'Formulario Web', detalle_requerimiento: ext.descripcion_requerimiento,
+        origen_prospecto: 'Formulario Web', referenciado_por: '', empresa_referente: '', detalle_requerimiento: ext.descripcion_requerimiento,
         actividad: '', ciudad: '', pais: 'Colombia', situacion: 'Sin Contactar',
         fecha_registro: ext.fecha_registro || today, seguimientos: [{
           id: crypto.randomUUID(), fecha: today, detalle: `Prospecto importado desde formulario web. Registrado el ${ext.fecha_registro} a las ${ext.hora_registro}.`,
@@ -323,6 +323,14 @@ export default function ProspectosPage() {
                 <option value="">{t("campo.seleccionar")}</option>
                 {refOptions('origen_prospecto').map(o => <option key={o} value={o}>{o}</option>)}
               </select>
+            </div>
+            <div>
+              <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>Referenciado Por</label>
+              <input value={selected.referenciado_por || ''} onChange={e => setSelected({ ...selected, referenciado_por: e.target.value.toUpperCase() })} style={inputStyle} />
+            </div>
+            <div>
+              <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>Empresa Referente</label>
+              <input value={selected.empresa_referente || ''} onChange={e => setSelected({ ...selected, empresa_referente: e.target.value.toUpperCase() })} style={inputStyle} />
             </div>
             <div>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.actividad')}</label>
