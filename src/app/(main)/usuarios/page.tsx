@@ -292,15 +292,11 @@ export default function UsuariosPage() {
                           const col = p === 'leer' ? '#166534' : p === 'editar' ? '#ea580c' : '#b91c1c'
                           const label = p === 'leer' ? 'Ver' : p === 'editar' ? 'Editar' : 'Eliminar'
                           return (
-                            <label key={p} style={{ display: 'flex', alignItems: 'center', gap: 5, cursor: isAdmin ? 'not-allowed' : 'pointer', background: col, padding: '3px 9px', borderRadius: 6, opacity: on ? 1 : 0.35 }}>
-                              <input type="checkbox"
-                                checked={on}
-                                disabled={isAdmin}
-                                onChange={e => updateRolPermiso(m.id, p, e.target.checked)}
-                                style={{ accentColor: '#ffffff', width: 13, height: 13, cursor: isAdmin ? 'not-allowed' : 'pointer' }}
-                              />
+                            <div key={p} onClick={() => { if (!isAdmin) updateRolPermiso(m.id, p, !on) }}
+                              title={on ? 'Permitido (clic para quitar)' : 'Sin permiso (clic para dar)'}
+                              style={{ cursor: isAdmin ? 'not-allowed' : 'pointer', background: col, padding: '4px 12px', borderRadius: 6, opacity: on ? 1 : 0.35, userSelect: 'none' }}>
                               <b style={{ color: '#ffffff', fontSize: 11, fontWeight: 700 }}>{label}</b>
-                            </label>
+                            </div>
                           )
                         })}
                       </div>
