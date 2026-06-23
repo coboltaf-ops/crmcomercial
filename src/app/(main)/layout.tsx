@@ -219,7 +219,7 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
   const sideW = collapsed ? 64 : 240
 
   return (
-    <div style={{ display: 'flex', minHeight: '100vh', background: '#1e3a8a' }}>
+    <div style={{ display: 'flex', minHeight: '100vh', width: '100%', maxWidth: '100vw', overflowX: 'hidden', background: '#1e3a8a' }}>
 
       {/* Asistente de bienvenida */}
       {showAsistente && (
@@ -366,7 +366,7 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
       </aside>
 
       {/* Main content */}
-      <main style={{ flex: 1, padding: 24, overflow: 'auto' }}>
+      <main style={{ flex: 1, minWidth: 0, padding: 24, overflow: 'auto' }}>
         {/* Top bar */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20, padding: '10px 16px', background: 'rgba(255,255,255,0.08)', borderRadius: 12, border: '1px solid rgba(255,255,255,0.15)', position: 'relative' }}>
           <div />

@@ -284,11 +284,11 @@ export default function UsuariosPage() {
                   const perms = selectedRolObj.permisos.find(p => p.modulo === m.id)
                   const isAdmin = selectedRolObj.nombre === 'Admin'
                   return (
-                    <div key={m.id} style={{ display: 'flex', alignItems: 'center', padding: '12px 16px', background: i % 2 === 0 ? 'rgba(255,255,255,0.03)' : 'transparent', borderRadius: 10, border: '1px solid #1e3a8a' }}>
-                      <div style={{ flex: 1 }}>
+                    <div key={m.id} style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: 10, padding: '12px 16px', background: i % 2 === 0 ? 'rgba(255,255,255,0.03)' : 'transparent', borderRadius: 10, border: '1px solid #1e3a8a' }}>
+                      <div style={{ flex: 1, minWidth: 160 }}>
                         <p style={{ color: '#013978', fontSize: 14, fontWeight: 600 }}>{m.label}</p>
                       </div>
-                      <div style={{ display: 'flex', gap: 12 }}>
+                      <div style={{ display: 'flex', gap: 12, flexShrink: 0 }}>
                         {(['leer', 'editar', 'eliminar'] as const).map(p => {
                           const on = isAdmin ? true : (perms?.[p] ?? false)
                           const col = p === 'leer' ? '#166534' : p === 'editar' ? '#ea580c' : '#b91c1c'
