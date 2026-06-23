@@ -239,10 +239,10 @@ export default function UsuariosPage() {
           <div style={{ display: 'flex', gap: 8, marginBottom: 20, flexWrap: 'wrap', alignItems: 'center' }}>
             {roles.map(r => (
               <button key={r.id} onClick={() => setSelectedRolId(r.id)}
-                style={{ ...btnStyle, background: '#000000', color: '#ffffff', border: '1px solid #333333', fontSize: 14 }}>
+                style={{ ...btnStyle, background: selectedRolId === r.id ? '#1d4ed8' : '#000000', color: '#ffffff', border: selectedRolId === r.id ? '2px solid #60a5fa' : '1px solid #333333', fontSize: 14, fontWeight: 700 }}>
                 {r.nombre}
                 {r.nombre !== 'Admin' && (
-                  <span style={{ marginLeft: 6, fontSize: 11, color: '#013978' }}>({usuarios.filter(u => u.rol === r.nombre).length})</span>
+                  <b style={{ marginLeft: 6, fontSize: 11, fontWeight: 400, color: '#ffffff' }}>({usuarios.filter(u => u.rol === r.nombre).length})</b>
                 )}
               </button>
             ))}
