@@ -140,6 +140,15 @@ export default function ProductosPage() {
           <fieldset disabled={verLectura} style={{ border: 'none', padding: 0, margin: 0, minInlineSize: 'auto' }}>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 16 }}>
             <div>
+              <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.categoria')}</label>
+              <select value={selected.categoria} onChange={e => setSelected({ ...selected, categoria: e.target.value })} style={inputStyle}>
+                <option value="">Seleccione...</option>
+                {(refData.categoria_productos || []).filter(c => c.situacion).map(c => (
+                  <option key={c.id} value={c.descripcion}>{c.descripcion}</option>
+                ))}
+              </select>
+            </div>
+            <div>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.codigo')}</label>
               <input value={selected.codigo} readOnly style={{ ...inputStyle, opacity: 0.5 }} />
             </div>
@@ -150,15 +159,6 @@ export default function ProductosPage() {
             <div style={{ gridColumn: 'span 3' }}>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.descripcion')} *</label>
               <input value={selected.descripcion} onChange={e => setSelected({ ...selected, descripcion: e.target.value })} required style={inputStyle} />
-            </div>
-            <div>
-              <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.categoria')}</label>
-              <select value={selected.categoria} onChange={e => setSelected({ ...selected, categoria: e.target.value })} style={inputStyle}>
-                <option value="">Seleccione...</option>
-                {(refData.categoria_productos || []).filter(c => c.situacion).map(c => (
-                  <option key={c.id} value={c.descripcion}>{c.descripcion}</option>
-                ))}
-              </select>
             </div>
             <div>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.unidadMedida')}</label>
