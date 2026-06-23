@@ -33,7 +33,7 @@ const emptyDetalle = (): DetalleCotizacion => ({
 const emptyCotizacion = (codigo: string, nro: number, responsable: string): Cotizacion => ({
   id: '', codigo, nro, fecha_emision: today,
   fecha_vencimiento: '', cliente_id: '', cliente_nombre: '', contacto_id: '', contacto_nombre: '',
-  oportunidad_id: '', oportunidad_nombre: '', tipo_moneda: 'Pesos Colombianos',
+  oportunidad_id: '', oportunidad_nombre: '', categoria: '', tipo_moneda: 'Pesos Colombianos',
   condicion_pago: 'Contado', pct_impuesto: 18, observaciones: '', detalles: [emptyDetalle()],
   situacion: 'En Construcción', responsable, vendedor: '', fecha_registro: today, seguimientos: [],
 })
@@ -536,6 +536,13 @@ export default function CotizacionesPage() {
               </select>
             </div>
             <div>
+              <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.categoria')} *</label>
+              <select value={selected.categoria || ''} onChange={e => setSelected({ ...selected, categoria: e.target.value })} required style={inputStyle}>
+                <option value="">Seleccione...</option>
+                {refOptions('categoria_productos').map(o => <option key={o} value={o}>{o}</option>)}
+              </select>
+            </div>
+            <div>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>% Impuesto</label>
               <input type="number" step="0.01" min="0" value={selected.pct_impuesto} onChange={e => setSelected({ ...selected, pct_impuesto: parseFloat(e.target.value) || 0 })} style={inputStyle} />
             </div>
@@ -564,9 +571,15 @@ export default function CotizacionesPage() {
           </div>
           {showProductos && (
             <div style={{ marginBottom: 12 }}>
+              {!selected.categoria ? (
+                <div style={{ padding: '12px 14px', background: '#fff7ed', border: '1px solid #fdba74', borderRadius: 8, color: '#9a3412', fontSize: 13, fontWeight: 600 }}>
+                  ⚠️ Primero selecciona la <b>Categoría</b> en el encabezado para ver sus productos.
+                </div>
+              ) : (
+              <>
               <input value={searchProd} onChange={e => setSearchProd(e.target.value)} placeholder="Buscar producto por código o descripción..." style={{ ...inputStyle, maxWidth: 500, marginBottom: 8 }} autoFocus />
               <div style={{ background: '#ffffff', border: '1px solid rgba(255,255,255,0.2)', borderRadius: 8, maxHeight: 220, overflow: 'auto' }}>
-                {productos.filter(p => p.situacion === 'Activo').filter(p => !searchProd || p.descripcion.toLowerCase().includes(searchProd.toLowerCase()) || p.codigo.toLowerCase().includes(searchProd.toLowerCase())).slice(0, 20).map(p => (
+                {productos.filter(p => p.situacion === 'Activo').filter(p => p.categoria === selected.categoria).filter(p => !searchProd || p.descripcion.toLowerCase().includes(searchProd.toLowerCase()) || p.codigo.toLowerCase().includes(searchProd.toLowerCase())).slice(0, 20).map(p => (
                   <div key={p.id} onClick={() => {
                     if (!selected) return
                     const nuevo = recalcDetalle({ id: crypto.randomUUID(), producto_id: p.id, codigo_producto: p.codigo, descripcion: p.descripcion, cantidad: 1, precio_unitario: p.precio_unitario, unidad_medida: p.unidad_medida, descuento_pct: 0, subtotal: 0 })
@@ -582,10 +595,12 @@ export default function CotizacionesPage() {
                     <span style={{ color: '#013978', fontWeight: 600, whiteSpace: 'nowrap', marginLeft: 12 }}>{monedaSimbolo(selected.tipo_moneda)}{fmtMoney(p.precio_unitario)}</span>
                   </div>
                 ))}
-                {productos.filter(p => p.situacion === 'Activo').filter(p => !searchProd || p.descripcion.toLowerCase().includes(searchProd.toLowerCase()) || p.codigo.toLowerCase().includes(searchProd.toLowerCase())).length === 0 && (
-                  <div style={{ padding: '16px 14px', color: '#013978', fontSize: 12, textAlign: 'center' }}>No se encontraron productos</div>
+                {productos.filter(p => p.situacion === 'Activo').filter(p => p.categoria === selected.categoria).filter(p => !searchProd || p.descripcion.toLowerCase().includes(searchProd.toLowerCase()) || p.codigo.toLowerCase().includes(searchProd.toLowerCase())).length === 0 && (
+                  <div style={{ padding: '16px 14px', color: '#013978', fontSize: 12, textAlign: 'center' }}>No se encontraron productos en la categoría «{selected.categoria}»</div>
                 )}
               </div>
+              </>
+              )}
             </div>
           )}
 

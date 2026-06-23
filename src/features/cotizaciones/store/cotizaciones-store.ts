@@ -28,6 +28,7 @@ export interface Cotizacion {
   contacto_nombre: string
   oportunidad_id: string
   oportunidad_nombre: string
+  categoria: string
   tipo_moneda: string
   condicion_pago: string
   pct_impuesto: number
