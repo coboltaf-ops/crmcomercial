@@ -286,20 +286,23 @@ export default function UsuariosPage() {
                       <div style={{ flex: 1 }}>
                         <p style={{ color: '#013978', fontSize: 14, fontWeight: 600 }}>{m.label}</p>
                       </div>
-                      <div style={{ display: 'flex', gap: 24 }}>
-                        {(['leer', 'editar', 'eliminar'] as const).map(p => (
-                          <label key={p} style={{ display: 'flex', alignItems: 'center', gap: 6, cursor: isAdmin ? 'not-allowed' : 'pointer' }}>
-                            <input type="checkbox"
-                              checked={perms?.[p] ?? false}
-                              disabled={isAdmin}
-                              onChange={e => updateRolPermiso(m.id, p, e.target.checked)}
-                              style={{ accentColor: p === 'leer' ? '#16a34a' : p === 'editar' ? '#1e3a8a' : '#dc2626', width: 18, height: 18, cursor: isAdmin ? 'not-allowed' : 'pointer' }}
-                            />
-                            <span style={{ color: p === 'leer' ? '#22c55e' : p === 'editar' ? '#3b82f6' : '#ef4444', fontSize: 13, fontWeight: 600 }}>
-                              {p === 'leer' ? 'Leer' : p === 'editar' ? 'Editar' : 'Eliminar'}
-                            </span>
-                          </label>
-                        ))}
+                      <div style={{ display: 'flex', gap: 12 }}>
+                        {(['leer', 'editar', 'eliminar'] as const).map(p => {
+                          const on = perms?.[p] ?? false
+                          const col = p === 'leer' ? '#16a34a' : p === 'editar' ? '#1d4ed8' : '#dc2626'
+                          const label = p === 'leer' ? 'Ver' : p === 'editar' ? 'Editar' : 'Eliminar'
+                          return (
+                            <label key={p} style={{ display: 'flex', alignItems: 'center', gap: 6, cursor: isAdmin ? 'not-allowed' : 'pointer', background: on ? col : '#94a3b8', padding: '5px 12px', borderRadius: 8, opacity: isAdmin ? 0.8 : 1 }}>
+                              <input type="checkbox"
+                                checked={on}
+                                disabled={isAdmin}
+                                onChange={e => updateRolPermiso(m.id, p, e.target.checked)}
+                                style={{ accentColor: col, width: 16, height: 16, cursor: isAdmin ? 'not-allowed' : 'pointer' }}
+                              />
+                              <b style={{ color: '#ffffff', fontSize: 13, fontWeight: 700 }}>{label}</b>
+                            </label>
+                          )
+                        })}
                       </div>
                     </div>
                   )
