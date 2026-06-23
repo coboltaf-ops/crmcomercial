@@ -23,9 +23,18 @@ export default function AutoUpdate() {
           return
         }
         if (v !== cargada.current) {
-          // Hay versión nueva publicada → recargar para tomarla
+          // Hay versión nueva publicada → BORRAR caché y recargar forzado
           cargada.current = v
-          window.location.reload()
+          try {
+            if (typeof window !== 'undefined' && 'caches' in window) {
+              const keys = await caches.keys()
+              await Promise.all(keys.map(k => caches.delete(k)))
+            }
+          } catch { /* ignorar */ }
+          // Recarga con parámetro anti-caché para saltar el HTML viejo en disco
+          const url = new URL(window.location.href)
+          url.searchParams.set('_v', v.slice(0, 8))
+          window.location.replace(url.toString())
         }
       } catch {
         /* sin conexión o error: ignorar */
