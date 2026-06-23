@@ -38,7 +38,7 @@ export async function POST(request: Request) {
     const userContent = `Datos actuales del CRM (JSON):\n${JSON.stringify(contexto)}\n\nPregunta del usuario: ${pregunta}`
 
     const msg = await client.messages.create({
-      model: 'claude-opus-4-8',
+      model: 'claude-haiku-4-5',
       max_tokens: 1024,
       system,
       messages: [{ role: 'user', content: userContent }],
