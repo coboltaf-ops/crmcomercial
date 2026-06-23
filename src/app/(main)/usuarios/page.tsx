@@ -289,17 +289,17 @@ export default function UsuariosPage() {
                       <div style={{ display: 'flex', gap: 12 }}>
                         {(['leer', 'editar', 'eliminar'] as const).map(p => {
                           const on = perms?.[p] ?? false
-                          const col = p === 'leer' ? '#16a34a' : p === 'editar' ? '#1d4ed8' : '#dc2626'
+                          const col = p === 'leer' ? '#15803d' : p === 'editar' ? '#1e40af' : '#b91c1c'
                           const label = p === 'leer' ? 'Ver' : p === 'editar' ? 'Editar' : 'Eliminar'
                           return (
-                            <label key={p} style={{ display: 'flex', alignItems: 'center', gap: 6, cursor: isAdmin ? 'not-allowed' : 'pointer', background: on ? col : '#94a3b8', padding: '5px 12px', borderRadius: 8, opacity: isAdmin ? 0.8 : 1 }}>
+                            <label key={p} style={{ display: 'flex', alignItems: 'center', gap: 4, cursor: isAdmin ? 'not-allowed' : 'pointer', background: on ? col : '#94a3b8', padding: '3px 8px', borderRadius: 6, opacity: isAdmin ? 0.8 : 1 }}>
                               <input type="checkbox"
                                 checked={on}
                                 disabled={isAdmin}
                                 onChange={e => updateRolPermiso(m.id, p, e.target.checked)}
-                                style={{ accentColor: col, width: 16, height: 16, cursor: isAdmin ? 'not-allowed' : 'pointer' }}
+                                style={{ accentColor: col, width: 13, height: 13, cursor: isAdmin ? 'not-allowed' : 'pointer' }}
                               />
-                              <b style={{ color: '#ffffff', fontSize: 13, fontWeight: 700 }}>{label}</b>
+                              <b style={{ color: '#ffffff', fontSize: 11, fontWeight: 700 }}>{label}</b>
                             </label>
                           )
                         })}
