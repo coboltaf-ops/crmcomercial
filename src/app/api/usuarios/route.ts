@@ -29,6 +29,13 @@ export async function POST(req: NextRequest) {
     if (!Array.isArray(data)) {
       return NextResponse.json({ error: 'Se esperaba un arreglo de usuarios' }, { status: 400 })
     }
+    // BLINDAJE ANTI-BORRADO: nunca permitir vaciar una lista que YA tiene usuarios.
+    // Esto evita que un fallo de sesión/red sobrescriba a todos los usuarios.
+    const actual = await readList<Record<string, unknown>>(KV_KEY)
+    if (Array.isArray(actual) && actual.length > 0 && data.length === 0) {
+      console.error('[api/usuarios] BLOQUEADO: intento de vaciar la lista de usuarios')
+      return NextResponse.json({ error: 'Bloqueado: no se permite vaciar la lista de usuarios' }, { status: 409 })
+    }
     // Cifra las claves que aún estén en texto plano; deja intactas las ya cifradas.
     const segura = data.map((u: Record<string, unknown>) => {
       const clave = u.clave as string | undefined

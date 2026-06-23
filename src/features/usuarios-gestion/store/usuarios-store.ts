@@ -46,9 +46,17 @@ export const useUsuariosStore = create<UsuariosState>()((set, get) => ({
   loaded: false,
   loadUsuarios: async () => {
     try {
-      const res = await fetch('/api/usuarios')
+      const res = await fetch('/api/usuarios', { cache: 'no-store' })
       const data = await res.json()
-      const kv: Usuario[] = Array.isArray(data) ? data : []
+
+      // BLINDAJE: si la respuesta NO es un arreglo (error de sesión, fallo de red,
+      // {"error":...}), NO se toca NADA. Jamás sobrescribir el servidor por un fallo.
+      if (!Array.isArray(data)) {
+        console.error('[usuarios-store] respuesta no válida, se conserva lo existente:', data)
+        set({ loaded: true })
+        return
+      }
+      const kv = data as Usuario[]
 
       // Si KV ya tiene usuarios, se usan tal cual (NO se sobrescriben con el seed)
       if (kv.length > 0) {
@@ -62,21 +70,15 @@ export const useUsuariosStore = create<UsuariosState>()((set, get) => ({
         return
       }
 
-      // KV vacío: migración suave desde el localStorage antiguo, o seed admin
-      let lista: Usuario[] = []
-      if (typeof window !== 'undefined') {
-        try {
-          const raw = window.localStorage.getItem('crm-usuarios-storage')
-          lista = raw ? (JSON.parse(raw)?.state?.usuarios || []) : []
-        } catch { /* ignore */ }
-      }
-      if (lista.length === 0) lista = [defaultAdmin]
-      lista = lista.map(conPermisos)
+      // KV realmente vacío (primer arranque del sistema): sembrar el admin base.
+      // (Ya NO se migra desde localStorage para no resucitar datos viejos.)
+      const lista = [defaultAdmin].map(conPermisos)
       set({ usuarios: lista, loaded: true })
-      await persistUsuarios(lista) // guardar en KV la primera vez
+      await persistUsuarios(lista)
     } catch (err) {
-      console.error('[usuarios-store] load error:', err)
-      set({ usuarios: [defaultAdmin], loaded: true })
+      // BLINDAJE: ante cualquier error, NO sobrescribir; solo marcar cargado.
+      console.error('[usuarios-store] load error (se conserva lo existente):', err)
+      set({ loaded: true })
     }
   },
   addUsuario: (u) => {
