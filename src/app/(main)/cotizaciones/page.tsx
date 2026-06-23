@@ -579,22 +579,27 @@ export default function CotizacionesPage() {
               <>
               <input value={searchProd} onChange={e => setSearchProd(e.target.value)} placeholder="Buscar producto por código o descripción..." style={{ ...inputStyle, maxWidth: 500, marginBottom: 8 }} autoFocus />
               <div style={{ background: '#ffffff', border: '1px solid rgba(255,255,255,0.2)', borderRadius: 8, maxHeight: 220, overflow: 'auto' }}>
-                {productos.filter(p => p.situacion === 'Activo').filter(p => p.categoria === selected.categoria).filter(p => !searchProd || p.descripcion.toLowerCase().includes(searchProd.toLowerCase()) || p.codigo.toLowerCase().includes(searchProd.toLowerCase())).slice(0, 20).map(p => (
+                {productos.filter(p => p.situacion === 'Activo').filter(p => p.categoria === selected.categoria).filter(p => !searchProd || p.descripcion.toLowerCase().includes(searchProd.toLowerCase()) || p.codigo.toLowerCase().includes(searchProd.toLowerCase())).slice(0, 20).map(p => {
+                  const yaAgregado = selected.detalles.some(d => d.producto_id === p.id)
+                  return (
                   <div key={p.id} onClick={() => {
-                    if (!selected) return
+                    if (!selected || yaAgregado) return
                     const nuevo = recalcDetalle({ id: crypto.randomUUID(), producto_id: p.id, codigo_producto: p.codigo, descripcion: p.descripcion, cantidad: 1, precio_unitario: p.precio_unitario, unidad_medida: p.unidad_medida, descuento_pct: 0, subtotal: 0 })
                     const detalles = selected.detalles.filter(d => d.producto_id)
                     setSelected({ ...selected, detalles: [...detalles, nuevo] })
                     // Cerrar el listado de productos y limpiar la búsqueda al seleccionar
                     setShowProductos(false)
                     setSearchProd('')
-                  }} style={{ padding: '10px 14px', cursor: 'pointer', fontSize: 12, color: '#013978', borderBottom: '1px solid rgba(255,255,255,0.08)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', transition: 'background 0.15s' }}
-                    onMouseEnter={e => (e.currentTarget.style.background = 'rgba(59,130,246,0.15)')}
+                  }} style={{ padding: '10px 14px', cursor: yaAgregado ? 'not-allowed' : 'pointer', opacity: yaAgregado ? 0.45 : 1, fontSize: 12, color: '#013978', borderBottom: '1px solid rgba(255,255,255,0.08)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', transition: 'background 0.15s' }}
+                    onMouseEnter={e => { if (!yaAgregado) e.currentTarget.style.background = 'rgba(59,130,246,0.15)' }}
                     onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}>
                     <span><span style={{ color: '#013978', fontFamily: 'monospace', marginRight: 8 }}>{p.codigo}</span>{p.descripcion}</span>
-                    <span style={{ color: '#013978', fontWeight: 600, whiteSpace: 'nowrap', marginLeft: 12 }}>{monedaSimbolo(selected.tipo_moneda)}{fmtMoney(p.precio_unitario)}</span>
+                    {yaAgregado
+                      ? <span style={{ color: '#16a34a', fontWeight: 700, whiteSpace: 'nowrap', marginLeft: 12 }}>✓ Agregado</span>
+                      : <span style={{ color: '#013978', fontWeight: 600, whiteSpace: 'nowrap', marginLeft: 12 }}>{monedaSimbolo(selected.tipo_moneda)}{fmtMoney(p.precio_unitario)}</span>}
                   </div>
-                ))}
+                  )
+                })}
                 {productos.filter(p => p.situacion === 'Activo').filter(p => p.categoria === selected.categoria).filter(p => !searchProd || p.descripcion.toLowerCase().includes(searchProd.toLowerCase()) || p.codigo.toLowerCase().includes(searchProd.toLowerCase())).length === 0 && (
                   <div style={{ padding: '16px 14px', color: '#013978', fontSize: 12, textAlign: 'center' }}>No se encontraron productos en la categoría «{selected.categoria}»</div>
                 )}
