@@ -288,16 +288,16 @@ export default function UsuariosPage() {
                       </div>
                       <div style={{ display: 'flex', gap: 12 }}>
                         {(['leer', 'editar', 'eliminar'] as const).map(p => {
-                          const on = perms?.[p] ?? false
+                          const on = isAdmin ? true : (perms?.[p] ?? false)
                           const col = p === 'leer' ? '#166534' : p === 'editar' ? '#ea580c' : '#b91c1c'
                           const label = p === 'leer' ? 'Ver' : p === 'editar' ? 'Editar' : 'Eliminar'
                           return (
-                            <label key={p} style={{ display: 'flex', alignItems: 'center', gap: 4, cursor: isAdmin ? 'not-allowed' : 'pointer', background: on ? col : '#94a3b8', padding: '3px 8px', borderRadius: 6, opacity: isAdmin ? 0.8 : 1 }}>
+                            <label key={p} style={{ display: 'flex', alignItems: 'center', gap: 5, cursor: isAdmin ? 'not-allowed' : 'pointer', background: col, padding: '3px 9px', borderRadius: 6, opacity: on ? 1 : 0.35 }}>
                               <input type="checkbox"
                                 checked={on}
                                 disabled={isAdmin}
                                 onChange={e => updateRolPermiso(m.id, p, e.target.checked)}
-                                style={{ accentColor: col, width: 13, height: 13, cursor: isAdmin ? 'not-allowed' : 'pointer' }}
+                                style={{ accentColor: '#ffffff', width: 13, height: 13, cursor: isAdmin ? 'not-allowed' : 'pointer' }}
                               />
                               <b style={{ color: '#ffffff', fontSize: 11, fontWeight: 700 }}>{label}</b>
                             </label>
