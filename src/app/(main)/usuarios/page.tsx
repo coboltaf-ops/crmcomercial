@@ -289,7 +289,7 @@ export default function UsuariosPage() {
                       <div style={{ display: 'flex', gap: 12 }}>
                         {(['leer', 'editar', 'eliminar'] as const).map(p => {
                           const on = perms?.[p] ?? false
-                          const col = p === 'leer' ? '#15803d' : p === 'editar' ? '#1e40af' : '#b91c1c'
+                          const col = p === 'leer' ? '#166534' : p === 'editar' ? '#ea580c' : '#b91c1c'
                           const label = p === 'leer' ? 'Ver' : p === 'editar' ? 'Editar' : 'Eliminar'
                           return (
                             <label key={p} style={{ display: 'flex', alignItems: 'center', gap: 4, cursor: isAdmin ? 'not-allowed' : 'pointer', background: on ? col : '#94a3b8', padding: '3px 8px', borderRadius: 6, opacity: isAdmin ? 0.8 : 1 }}>
