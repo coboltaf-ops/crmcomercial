@@ -1,6 +1,7 @@
 export interface PermisoModulo {
   modulo: string
   leer: boolean
+  crear?: boolean
   editar: boolean
   eliminar: boolean
 }
@@ -36,10 +37,10 @@ export const MODULOS_CRM = [
 export const ROLES = ['Admin', 'Ventas', 'Soporte', 'Gerencia']
 
 export const PERMISOS_DEFAULT: Record<string, PermisoModulo[]> = {
-  Admin: MODULOS_CRM.map(m => ({ modulo: m.id, leer: true, editar: true, eliminar: true })),
-  Ventas: MODULOS_CRM.map(m => ({ modulo: m.id, leer: true, editar: ['clientes', 'contactos', 'oportunidades', 'cotizaciones', 'prospectos'].includes(m.id), eliminar: false })),
-  Soporte: MODULOS_CRM.map(m => ({ modulo: m.id, leer: true, editar: m.id === 'pqrs', eliminar: false })),
-  Gerencia: MODULOS_CRM.map(m => ({ modulo: m.id, leer: true, editar: false, eliminar: false })),
+  Admin: MODULOS_CRM.map(m => ({ modulo: m.id, leer: true, crear: true, editar: true, eliminar: true })),
+  Ventas: MODULOS_CRM.map(m => ({ modulo: m.id, leer: true, crear: ['clientes', 'contactos', 'oportunidades', 'cotizaciones', 'prospectos'].includes(m.id), editar: ['clientes', 'contactos', 'oportunidades', 'cotizaciones', 'prospectos'].includes(m.id), eliminar: false })),
+  Soporte: MODULOS_CRM.map(m => ({ modulo: m.id, leer: true, crear: m.id === 'pqrs', editar: m.id === 'pqrs', eliminar: false })),
+  Gerencia: MODULOS_CRM.map(m => ({ modulo: m.id, leer: true, crear: false, editar: false, eliminar: false })),
 }
 
 export const ESTADOS_CONFIG: Record<string, { bg: string; color: string; border: string }> = {

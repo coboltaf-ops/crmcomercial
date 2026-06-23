@@ -108,6 +108,10 @@ div[style*="background:#ffffff"] {
 [style*="background:#166534"] {
   background: #166534 !important;   /* Ver */
 }
+[style*="background: #1d4ed8"],
+[style*="background:#1d4ed8"] {
+  background: #1d4ed8 !important;   /* Crear */
+}
 [style*="background: #ea580c"],
 [style*="background:#ea580c"] {
   background: #ea580c !important;   /* Editar */
@@ -119,6 +123,8 @@ div[style*="background:#ffffff"] {
 /* El texto de los chips siempre blanco e intenso */
 [style*="background: #166534"] b,
 [style*="background:#166534"] b,
+[style*="background: #1d4ed8"] b,
+[style*="background:#1d4ed8"] b,
 [style*="background: #ea580c"] b,
 [style*="background:#ea580c"] b,
 [style*="background: #b91c1c"] b,

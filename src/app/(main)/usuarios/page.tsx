@@ -103,7 +103,7 @@ export default function UsuariosPage() {
     }
   }
 
-  const updateRolPermiso = (moduloId: string, campo: 'leer' | 'editar' | 'eliminar', value: boolean) => {
+  const updateRolPermiso = (moduloId: string, campo: 'leer' | 'crear' | 'editar' | 'eliminar', value: boolean) => {
     if (!selectedRolObj || selectedRolObj.nombre === 'Admin') return
     const newPermisos = selectedRolObj.permisos.map(p => p.modulo === moduloId ? { ...p, [campo]: value } : p)
     updateRol(selectedRolObj.id, { permisos: newPermisos })
@@ -114,7 +114,7 @@ export default function UsuariosPage() {
 
   const setAllPermisos = (value: boolean) => {
     if (!selectedRolObj || selectedRolObj.nombre === 'Admin') return
-    const newPermisos = MODULOS_CRM.map(m => ({ modulo: m.id, leer: value, editar: value, eliminar: value }))
+    const newPermisos = MODULOS_CRM.map(m => ({ modulo: m.id, leer: value, crear: value, editar: value, eliminar: value }))
     updateRol(selectedRolObj.id, { permisos: newPermisos })
     usuarios.filter(u => u.rol === selectedRolObj.nombre).forEach(u => updateUsuario(u.id, { permisos: newPermisos }))
     mostrarGuardado()
@@ -292,8 +292,8 @@ export default function UsuariosPage() {
                       <b style={{ color: '#ffffff' }}>Guardado ✓</b>
                     </span>
                   )}
-                  <span style={{ padding: '4px 14px', borderRadius: 20, fontSize: 12, fontWeight: 600, background: '#15803d', color: '#ffffff', border: '1px solid #16a34a' }}>
-                    {usuarios.filter(u => u.rol === selectedRolObj.nombre).length} usuario(s)
+                  <span style={{ padding: '4px 6px', fontSize: 13, fontWeight: 700, color: '#013978' }}>
+                    <b style={{ color: '#013978' }}>{usuarios.filter(u => u.rol === selectedRolObj.nombre).length} usuario(s)</b>
                   </span>
                   {selectedRolObj.nombre !== 'Admin' && (
                     <button onClick={handleGuardarRol} style={{ ...btnStyle, padding: '4px 14px', fontSize: 12, background: '#1d4ed8', color: '#ffffff', border: '1px solid #2563eb' }}>Guardar Cambios</button>
@@ -314,10 +314,10 @@ export default function UsuariosPage() {
                         <p style={{ color: '#013978', fontSize: 14, fontWeight: 600 }}>{m.label}</p>
                       </div>
                       <div style={{ display: 'flex', gap: 12, flexShrink: 0 }}>
-                        {(['leer', 'editar', 'eliminar'] as const).map(p => {
+                        {(['leer', 'crear', 'editar', 'eliminar'] as const).map(p => {
                           const on = isAdmin ? true : (perms?.[p] ?? false)
-                          const col = p === 'leer' ? '#166534' : p === 'editar' ? '#ea580c' : '#b91c1c'
-                          const label = p === 'leer' ? 'Ver' : p === 'editar' ? 'Editar' : 'Eliminar'
+                          const col = p === 'leer' ? '#166534' : p === 'crear' ? '#1d4ed8' : p === 'editar' ? '#ea580c' : '#b91c1c'
+                          const label = p === 'leer' ? 'Ver' : p === 'crear' ? 'Crear' : p === 'editar' ? 'Editar' : 'Eliminar'
                           return (
                             <span key={p} onClick={() => { if (!isAdmin) updateRolPermiso(m.id, p, !on) }}
                               title={on ? 'Permitido (clic para quitar)' : 'Sin permiso (clic para dar)'}

@@ -18,10 +18,10 @@ interface RolesState {
 }
 
 const defaultRoles: Rol[] = [
-  { id: 'admin', nombre: 'Admin', permisos: MODULOS_CRM.map(m => ({ modulo: m.id, leer: true, editar: true, eliminar: true })) },
-  { id: 'ventas', nombre: 'Ventas', permisos: MODULOS_CRM.map(m => ({ modulo: m.id, leer: true, editar: ['clientes', 'contactos', 'oportunidades', 'cotizaciones', 'prospectos'].includes(m.id), eliminar: false })) },
-  { id: 'soporte', nombre: 'Soporte', permisos: MODULOS_CRM.map(m => ({ modulo: m.id, leer: true, editar: m.id === 'pqrs', eliminar: false })) },
-  { id: 'gerencia', nombre: 'Gerencia', permisos: MODULOS_CRM.map(m => ({ modulo: m.id, leer: true, editar: false, eliminar: false })) },
+  { id: 'admin', nombre: 'Admin', permisos: MODULOS_CRM.map(m => ({ modulo: m.id, leer: true, crear: true, editar: true, eliminar: true })) },
+  { id: 'ventas', nombre: 'Ventas', permisos: MODULOS_CRM.map(m => ({ modulo: m.id, leer: true, crear: ['clientes', 'contactos', 'oportunidades', 'cotizaciones', 'prospectos'].includes(m.id), editar: ['clientes', 'contactos', 'oportunidades', 'cotizaciones', 'prospectos'].includes(m.id), eliminar: false })) },
+  { id: 'soporte', nombre: 'Soporte', permisos: MODULOS_CRM.map(m => ({ modulo: m.id, leer: true, crear: m.id === 'pqrs', editar: m.id === 'pqrs', eliminar: false })) },
+  { id: 'gerencia', nombre: 'Gerencia', permisos: MODULOS_CRM.map(m => ({ modulo: m.id, leer: true, crear: false, editar: false, eliminar: false })) },
 ]
 
 export const useRolesStore = create<RolesState>()((set, get) => ({
