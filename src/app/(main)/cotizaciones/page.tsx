@@ -453,6 +453,10 @@ export default function CotizacionesPage() {
           <fieldset disabled={verLectura} style={{ border: 'none', padding: 0, margin: 0, minInlineSize: 'auto' }}>
           {/* Header fields */}
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 16, marginBottom: 20 }}>
+            <div>
+              <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.codigo')}</label>
+              <input value={selected.codigo} readOnly style={{ ...inputStyle, opacity: 0.5 }} />
+            </div>
             <div style={{ gridColumn: 'span 3' }}>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.empresa')} *</label>
               <select value={selected.cliente_id} onChange={e => {
@@ -488,8 +492,21 @@ export default function CotizacionesPage() {
               )
             })()}
             <div>
-              <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.codigo')}</label>
-              <input value={selected.codigo} readOnly style={{ ...inputStyle, opacity: 0.5 }} />
+              <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.contacto')}</label>
+              <select value={selected.contacto_id} onChange={e => {
+                const con = contactosDelCliente.find(c => c.id === e.target.value)
+                setSelected({ ...selected, contacto_id: e.target.value, contacto_nombre: con ? `${con.nombre} ${con.apellido}` : '' })
+              }} style={inputStyle}>
+                <option value="">{t("campo.seleccionar")}</option>
+                {contactosDelCliente.map(c => <option key={c.id} value={c.id}>{c.nombre} {c.apellido}</option>)}
+              </select>
+            </div>
+            <div>
+              <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{idioma === 'en' ? 'Quotation Type' : 'Tipo de Cotización'} *</label>
+              <select value={selected.categoria || ''} onChange={e => setSelected({ ...selected, categoria: e.target.value })} required style={inputStyle}>
+                <option value="">Seleccione...</option>
+                {refOptions('categoria_productos').map(o => <option key={o} value={o}>{o}</option>)}
+              </select>
             </div>
             <div>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.fechaRegistro')}</label>
@@ -502,16 +519,6 @@ export default function CotizacionesPage() {
             <div>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.fechaVencimiento')}</label>
               <input type="date" value={selected.fecha_vencimiento} onChange={e => setSelected({ ...selected, fecha_vencimiento: e.target.value })} style={inputStyle} />
-            </div>
-            <div>
-              <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.contacto')}</label>
-              <select value={selected.contacto_id} onChange={e => {
-                const con = contactosDelCliente.find(c => c.id === e.target.value)
-                setSelected({ ...selected, contacto_id: e.target.value, contacto_nombre: con ? `${con.nombre} ${con.apellido}` : '' })
-              }} style={inputStyle}>
-                <option value="">{t("campo.seleccionar")}</option>
-                {contactosDelCliente.map(c => <option key={c.id} value={c.id}>{c.nombre} {c.apellido}</option>)}
-              </select>
             </div>
             <div>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.oportunidad')}</label>
@@ -533,13 +540,6 @@ export default function CotizacionesPage() {
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.moneda')}</label>
               <select value={selected.tipo_moneda} onChange={e => setSelected({ ...selected, tipo_moneda: e.target.value })} style={inputStyle}>
                 {refOptions('tipo_moneda').map(o => <option key={o} value={o}>{o}</option>)}
-              </select>
-            </div>
-            <div>
-              <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.categoria')} *</label>
-              <select value={selected.categoria || ''} onChange={e => setSelected({ ...selected, categoria: e.target.value })} required style={inputStyle}>
-                <option value="">Seleccione...</option>
-                {refOptions('categoria_productos').map(o => <option key={o} value={o}>{o}</option>)}
               </select>
             </div>
             <div>
@@ -573,7 +573,7 @@ export default function CotizacionesPage() {
             <div style={{ marginBottom: 12 }}>
               {!selected.categoria ? (
                 <div style={{ padding: '12px 14px', background: '#fff7ed', border: '1px solid #fdba74', borderRadius: 8, color: '#9a3412', fontSize: 13, fontWeight: 600 }}>
-                  ⚠️ Primero selecciona la <b>Categoría</b> en el encabezado para ver sus productos.
+                  ⚠️ Primero selecciona el <b>Tipo de Cotización</b> en el encabezado para ver sus productos.
                 </div>
               ) : (
               <>
