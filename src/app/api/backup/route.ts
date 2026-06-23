@@ -10,7 +10,7 @@ const KEYS = [
   'clientes-datos', 'contactos-datos', 'oportunidades-datos', 'cotizaciones-datos',
   'tareas-datos', 'prospectos-datos', 'productos-datos', 'pqrs-datos', 'proyectos-datos',
   'proveedores-datos', 'factores-monedas-datos',
-  'referencias-datos', 'usuarios-datos', 'empresa-datos', 'auditoria-log',
+  'referencias-datos', 'usuarios-datos', 'roles-datos', 'empresa-datos', 'auditoria-log',
   'pqrs-externas', 'prospectos-externos',
 ]
 

@@ -14,11 +14,13 @@ export default function UsuariosPage() {
   const loadUsuarios = useUsuariosStore(s => s.loadUsuarios)
   const currentUser = useCurrentUserStore(s => s.user)
   const { roles, addRol, updateRol, deleteRol } = useRolesStore()
+  const loadRoles = useRolesStore(s => s.loadRoles)
 
-  // Cargar usuarios desde KV (servidor)
+  // Cargar usuarios y roles desde KV (servidor)
   useEffect(() => {
     loadUsuarios()
-  }, [loadUsuarios])
+    loadRoles()
+  }, [loadUsuarios, loadRoles])
 
   const [selected, setSelected] = useState<Usuario | null>(null)
   const [isForm, setIsForm] = useState(false)
