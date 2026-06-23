@@ -572,6 +572,9 @@ export default function CotizacionesPage() {
                     const nuevo = recalcDetalle({ id: crypto.randomUUID(), producto_id: p.id, codigo_producto: p.codigo, descripcion: p.descripcion, cantidad: 1, precio_unitario: p.precio_unitario, unidad_medida: p.unidad_medida, descuento_pct: 0, subtotal: 0 })
                     const detalles = selected.detalles.filter(d => d.producto_id)
                     setSelected({ ...selected, detalles: [...detalles, nuevo] })
+                    // Cerrar el listado de productos y limpiar la búsqueda al seleccionar
+                    setShowProductos(false)
+                    setSearchProd('')
                   }} style={{ padding: '10px 14px', cursor: 'pointer', fontSize: 12, color: '#013978', borderBottom: '1px solid rgba(255,255,255,0.08)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', transition: 'background 0.15s' }}
                     onMouseEnter={e => (e.currentTarget.style.background = 'rgba(59,130,246,0.15)')}
                     onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}>
