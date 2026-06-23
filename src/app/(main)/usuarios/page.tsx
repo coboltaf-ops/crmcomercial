@@ -294,11 +294,11 @@ export default function UsuariosPage() {
                           const col = p === 'leer' ? '#166534' : p === 'editar' ? '#ea580c' : '#b91c1c'
                           const label = p === 'leer' ? 'Ver' : p === 'editar' ? 'Editar' : 'Eliminar'
                           return (
-                            <div key={p} onClick={() => { if (!isAdmin) updateRolPermiso(m.id, p, !on) }}
+                            <span key={p} onClick={() => { if (!isAdmin) updateRolPermiso(m.id, p, !on) }}
                               title={on ? 'Permitido (clic para quitar)' : 'Sin permiso (clic para dar)'}
-                              style={{ cursor: isAdmin ? 'not-allowed' : 'pointer', background: col, padding: '4px 12px', borderRadius: 6, opacity: on ? 1 : 0.35, userSelect: 'none' }}>
+                              style={{ display: 'inline-block', cursor: isAdmin ? 'not-allowed' : 'pointer', background: col, padding: '4px 12px', borderRadius: 6, opacity: on ? 1 : 0.35, userSelect: 'none' }}>
                               <b style={{ color: '#ffffff', fontSize: 11, fontWeight: 700 }}>{label}</b>
-                            </div>
+                            </span>
                           )
                         })}
                       </div>

@@ -102,6 +102,30 @@ div[style*="background:#ffffff"] {
   border-color: #1e3a8a !important;
 }
 
+/* Chips de permisos (Ver=verde / Editar=naranja / Eliminar=rojo).
+   Vencen la regla global div{background:#fff} que los dejaba en blanco. */
+[style*="background: #166534"],
+[style*="background:#166534"] {
+  background: #166534 !important;   /* Ver */
+}
+[style*="background: #ea580c"],
+[style*="background:#ea580c"] {
+  background: #ea580c !important;   /* Editar */
+}
+[style*="background: #b91c1c"],
+[style*="background:#b91c1c"] {
+  background: #b91c1c !important;   /* Eliminar */
+}
+/* El texto de los chips siempre blanco e intenso */
+[style*="background: #166534"] b,
+[style*="background:#166534"] b,
+[style*="background: #ea580c"] b,
+[style*="background:#ea580c"] b,
+[style*="background: #b91c1c"] b,
+[style*="background:#b91c1c"] b {
+  color: #ffffff !important;
+}
+
 /* Todos los bordes con colores claros → azul oscuro intenso */
 [style*="border"],
 [style*="border:"] {
