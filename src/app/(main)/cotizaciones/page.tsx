@@ -401,11 +401,11 @@ export default function CotizacionesPage() {
           </div>
 
           <div style={{ textAlign: 'right', marginBottom: 16 }}>
-            <p style={{ color: '#013978', fontSize: 13 }}>Subtotal: <span style={{ color: '#013978', fontWeight: 600 }}>{monedaSimbolo(viewDetail.tipo_moneda)}{fmtMoney(subtotal)}</span></p>
+            <p style={{ color: '#013978', fontSize: 15 }}>Subtotal: <span style={{ color: '#013978', fontWeight: 600 }}>{monedaSimbolo(viewDetail.tipo_moneda)}{fmtMoney(subtotal)}</span></p>
             <div style={{ height: 12 }} />
-            <p style={{ color: '#013978', fontSize: 13 }}>Impuesto ({viewDetail.pct_impuesto}%): <span style={{ color: '#013978', fontWeight: 600 }}>{monedaSimbolo(viewDetail.tipo_moneda)}{fmtMoney(impuesto)}</span></p>
+            <p style={{ color: '#013978', fontSize: 15 }}>Impuesto ({viewDetail.pct_impuesto}%): <span style={{ color: '#013978', fontWeight: 600 }}>{monedaSimbolo(viewDetail.tipo_moneda)}{fmtMoney(impuesto)}</span></p>
             <div style={{ height: 12 }} />
-            <p style={{ color: '#013978', fontSize: 18, fontWeight: 800, borderTop: '2px solid rgba(255,255,255,0.2)', paddingTop: 8 }}>TOTAL GENERAL: {monedaSimbolo(viewDetail.tipo_moneda)}{fmtMoney(total)}</p>
+            <p style={{ color: '#013978', fontSize: 15, fontWeight: 800, borderTop: '2px solid rgba(255,255,255,0.2)', paddingTop: 8 }}>TOTAL GENERAL: {monedaSimbolo(viewDetail.tipo_moneda)}{fmtMoney(total)}</p>
           </div>
 
           {viewDetail.observaciones && <p style={{ color: '#013978', fontSize: 13, marginBottom: 16 }}>Observaciones: {viewDetail.observaciones}</p>}
@@ -649,9 +649,9 @@ export default function CotizacionesPage() {
 
           {/* Totals */}
           <div style={{ textAlign: 'right', marginBottom: 16 }}>
-            <p style={{ color: '#013978', fontSize: 13 }}>Subtotal: <span style={{ color: '#013978', fontWeight: 600 }}>{monedaSimbolo(selected.tipo_moneda)}{fmtMoney(subtotal)}</span></p>
-            <p style={{ color: '#013978', fontSize: 13 }}>Impuesto ({selected.pct_impuesto}%): <span style={{ color: '#013978', fontWeight: 600 }}>{monedaSimbolo(selected.tipo_moneda)}{fmtMoney(impuesto)}</span></p>
-            <p style={{ color: '#013978', fontSize: 18, fontWeight: 800, marginTop: 4 }}>TOTAL: {monedaSimbolo(selected.tipo_moneda)}{fmtMoney(total)}</p>
+            <p style={{ color: '#013978', fontSize: 15 }}>Subtotal: <span style={{ color: '#013978', fontWeight: 600 }}>{monedaSimbolo(selected.tipo_moneda)}{fmtMoney(subtotal)}</span></p>
+            <p style={{ color: '#013978', fontSize: 15 }}>Impuesto ({selected.pct_impuesto}%): <span style={{ color: '#013978', fontWeight: 600 }}>{monedaSimbolo(selected.tipo_moneda)}{fmtMoney(impuesto)}</span></p>
+            <p style={{ color: '#013978', fontSize: 15, fontWeight: 800, marginTop: 4 }}>TOTAL: {monedaSimbolo(selected.tipo_moneda)}{fmtMoney(total)}</p>
           </div>
 
           <div style={{ gridColumn: 'span 3', marginBottom: 16 }}>
