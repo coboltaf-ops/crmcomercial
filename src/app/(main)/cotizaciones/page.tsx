@@ -690,19 +690,19 @@ export default function CotizacionesPage() {
               <>
                 <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: 8, marginTop: 6 }}>
                   <span style={{ color: '#013978', fontSize: 15 }}>Administración</span>
-                  <input type="number" step="0.01" min="0" value={selected.aiu_admin_pct || 0} onChange={e => setSelected({ ...selected, aiu_admin_pct: parseFloat(e.target.value) || 0 })} style={{ ...inputStyle, width: 70, padding: '4px 6px', textAlign: 'center', fontSize: 13 }} />
+                  <input type="number" step="0.01" min="0" value={selected.aiu_admin_pct || ''} onChange={e => setSelected({ ...selected, aiu_admin_pct: parseFloat(e.target.value) || 0 })} placeholder="0" style={{ ...inputStyle, width: 70, padding: '4px 6px', textAlign: 'center', fontSize: 13 }} />
                   <span style={{ color: '#013978', fontSize: 15 }}>%</span>
                   <span style={{ color: '#013978', fontSize: 15, fontWeight: 600, minWidth: 130, textAlign: 'right' }}>{monedaSimbolo(selected.tipo_moneda)}{fmtMoney(admin)}</span>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: 8, marginTop: 6 }}>
                   <span style={{ color: '#013978', fontSize: 15 }}>Imprevistos</span>
-                  <input type="number" step="0.01" min="0" value={selected.aiu_imprev_pct || 0} onChange={e => setSelected({ ...selected, aiu_imprev_pct: parseFloat(e.target.value) || 0 })} style={{ ...inputStyle, width: 70, padding: '4px 6px', textAlign: 'center', fontSize: 13 }} />
+                  <input type="number" step="0.01" min="0" value={selected.aiu_imprev_pct || ''} onChange={e => setSelected({ ...selected, aiu_imprev_pct: parseFloat(e.target.value) || 0 })} placeholder="0" style={{ ...inputStyle, width: 70, padding: '4px 6px', textAlign: 'center', fontSize: 13 }} />
                   <span style={{ color: '#013978', fontSize: 15 }}>%</span>
                   <span style={{ color: '#013978', fontSize: 15, fontWeight: 600, minWidth: 130, textAlign: 'right' }}>{monedaSimbolo(selected.tipo_moneda)}{fmtMoney(imprev)}</span>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: 8, marginTop: 6 }}>
                   <span style={{ color: '#013978', fontSize: 15 }}>Utilidad</span>
-                  <input type="number" step="0.01" min="0" value={selected.aiu_utilidad_pct || 0} onChange={e => setSelected({ ...selected, aiu_utilidad_pct: parseFloat(e.target.value) || 0 })} style={{ ...inputStyle, width: 70, padding: '4px 6px', textAlign: 'center', fontSize: 13 }} />
+                  <input type="number" step="0.01" min="0" value={selected.aiu_utilidad_pct || ''} onChange={e => setSelected({ ...selected, aiu_utilidad_pct: parseFloat(e.target.value) || 0 })} placeholder="0" style={{ ...inputStyle, width: 70, padding: '4px 6px', textAlign: 'center', fontSize: 13 }} />
                   <span style={{ color: '#013978', fontSize: 15 }}>%</span>
                   <span style={{ color: '#013978', fontSize: 15, fontWeight: 600, minWidth: 130, textAlign: 'right' }}>{monedaSimbolo(selected.tipo_moneda)}{fmtMoney(utilidad)}</span>
                 </div>
