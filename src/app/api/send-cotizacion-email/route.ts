@@ -18,9 +18,13 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Faltan campos requeridos' }, { status: 400 })
     }
 
+    const esConstruccion = (cotizacion.categoria || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').includes('construc')
     const subtotal = cotizacion.detalles.reduce((s: number, d: { subtotal: number }) => s + d.subtotal, 0)
-    const impuesto = subtotal * (cotizacion.pct_impuesto / 100)
-    const total = subtotal + impuesto
+    const admin = esConstruccion ? subtotal * ((cotizacion.aiu_admin_pct || 0) / 100) : 0
+    const imprev = esConstruccion ? subtotal * ((cotizacion.aiu_imprev_pct || 0) / 100) : 0
+    const utilidad = esConstruccion ? subtotal * ((cotizacion.aiu_utilidad_pct || 0) / 100) : 0
+    const impuesto = esConstruccion ? 0 : subtotal * (cotizacion.pct_impuesto / 100)
+    const total = esConstruccion ? subtotal + admin + imprev + utilidad : subtotal + impuesto
 
     // Generate PDF
     const doc = new jsPDF()
@@ -58,11 +62,18 @@ export async function POST(req: Request) {
 
     const finalY = (doc as unknown as { lastAutoTable: { finalY: number } }).lastAutoTable?.finalY || 150
     doc.setFontSize(10)
-    doc.text(`Subtotal: ${fmtMoney(subtotal)}`, 140, finalY + 10)
-    doc.text(`Impuesto (${cotizacion.pct_impuesto}%): ${fmtMoney(impuesto)}`, 140, finalY + 16)
+    let ty = finalY + 10
+    doc.text(`Subtotal: ${fmtMoney(subtotal)}`, 140, ty)
+    if (esConstruccion) {
+      ty += 6; doc.text(`Administracion (${cotizacion.aiu_admin_pct || 0}%): ${fmtMoney(admin)}`, 140, ty)
+      ty += 6; doc.text(`Imprevistos (${cotizacion.aiu_imprev_pct || 0}%): ${fmtMoney(imprev)}`, 140, ty)
+      ty += 6; doc.text(`Utilidad (${cotizacion.aiu_utilidad_pct || 0}%): ${fmtMoney(utilidad)}`, 140, ty)
+    } else {
+      ty += 6; doc.text(`Impuesto (${cotizacion.pct_impuesto}%): ${fmtMoney(impuesto)}`, 140, ty)
+    }
     doc.setFontSize(12)
     doc.setFont('helvetica', 'bold')
-    doc.text(`TOTAL: ${fmtMoney(total)}`, 140, finalY + 24)
+    ty += 8; doc.text(`TOTAL: ${fmtMoney(total)}`, 140, ty)
 
     if (cotizacion.observaciones) {
       doc.setFont('helvetica', 'normal')
@@ -103,7 +114,11 @@ export async function POST(req: Request) {
           </table>
           <div style="text-align:right;font-size:14px">
             <p>Subtotal: <strong>${fmtMoney(subtotal)}</strong></p>
-            <p>Impuesto (${cotizacion.pct_impuesto}%): <strong>${fmtMoney(impuesto)}</strong></p>
+            ${esConstruccion ? `
+            <p>Administración (${cotizacion.aiu_admin_pct || 0}%): <strong>${fmtMoney(admin)}</strong></p>
+            <p>Imprevistos (${cotizacion.aiu_imprev_pct || 0}%): <strong>${fmtMoney(imprev)}</strong></p>
+            <p>Utilidad (${cotizacion.aiu_utilidad_pct || 0}%): <strong>${fmtMoney(utilidad)}</strong></p>` : `
+            <p>Impuesto (${cotizacion.pct_impuesto}%): <strong>${fmtMoney(impuesto)}</strong></p>`}
             <p style="font-size:18px;color:#1e1b4b">Total: <strong>${fmtMoney(total)}</strong></p>
           </div>
         </div>

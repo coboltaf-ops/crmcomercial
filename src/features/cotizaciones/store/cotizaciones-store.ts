@@ -32,6 +32,11 @@ export interface Cotizacion {
   tipo_moneda: string
   condicion_pago: string
   pct_impuesto: number
+  aiu_activo: boolean
+  aiu_admin_pct: number
+  aiu_imprev_pct: number
+  aiu_utilidad_pct: number
+  aiu_base_iva: string
   observaciones: string
   detalles: DetalleCotizacion[]
   situacion: string

@@ -34,14 +34,27 @@ const emptyCotizacion = (codigo: string, nro: number, responsable: string): Coti
   id: '', codigo, nro, fecha_emision: today,
   fecha_vencimiento: '', cliente_id: '', cliente_nombre: '', contacto_id: '', contacto_nombre: '',
   oportunidad_id: '', oportunidad_nombre: '', categoria: '', tipo_moneda: 'Pesos Colombianos',
-  condicion_pago: 'Contado', pct_impuesto: 18, observaciones: '', detalles: [emptyDetalle()],
+  condicion_pago: 'Contado', pct_impuesto: 18, aiu_activo: false, aiu_admin_pct: 0, aiu_imprev_pct: 0, aiu_utilidad_pct: 0, aiu_base_iva: 'utilidad', observaciones: '', detalles: [emptyDetalle()],
   situacion: 'En Construcción', responsable, vendedor: '', fecha_registro: today, seguimientos: [],
 })
 
-const calcTotals = (detalles: DetalleCotizacion[], pct: number) => {
-  const subtotal = detalles.reduce((s, d) => s + d.subtotal, 0)
-  const impuesto = subtotal * (pct / 100)
-  return { subtotal, impuesto, total: subtotal + impuesto }
+// El AIU aplica cuando el Tipo de Cotización es "Construcción" (sin/ con tilde, may/min).
+const esConstruccion = (cat?: string) =>
+  (cat || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').includes('construc')
+
+const calcTotals = (cot: Cotizacion) => {
+  const subtotal = cot.detalles.reduce((s, d) => s + d.subtotal, 0)
+  if (esConstruccion(cot.categoria)) {
+    // Cada componente = Subtotal × porcentaje.
+    const admin = subtotal * ((cot.aiu_admin_pct || 0) / 100)
+    const imprev = subtotal * ((cot.aiu_imprev_pct || 0) / 100)
+    const utilidad = subtotal * ((cot.aiu_utilidad_pct || 0) / 100)
+    const aiuTotal = admin + imprev + utilidad
+    // Total General = Subtotal + Administración + Imprevistos + Utilidad (sin IVA aparte).
+    return { subtotal, admin, imprev, utilidad, aiuTotal, impuesto: 0, total: subtotal + aiuTotal }
+  }
+  const impuesto = subtotal * ((cot.pct_impuesto || 0) / 100)
+  return { subtotal, admin: 0, imprev: 0, utilidad: 0, aiuTotal: 0, impuesto, total: subtotal + impuesto }
 }
 
 export default function CotizacionesPage() {
@@ -179,7 +192,7 @@ export default function CotizacionesPage() {
   }
 
   const generatePDF = (cot: Cotizacion) => {
-    const { subtotal, impuesto, total } = calcTotals(cot.detalles, cot.pct_impuesto)
+    const { subtotal, impuesto, total, admin, imprev, utilidad } = calcTotals(cot)
     const cli = clientes.find(c => c.id === cot.cliente_id)
     const sym = monedaSimbolo(cot.tipo_moneda)
     const rows = cot.detalles.map((d, i) => `
@@ -232,8 +245,15 @@ export default function CotizacionesPage() {
       <div style="text-align:right;margin-bottom:24px">
         <p>Subtotal: <strong>${sym}${fmtMoney(subtotal)}</strong></p>
         <br/>
-        <p>Impuesto (${cot.pct_impuesto}%): <strong>${sym}${fmtMoney(impuesto)}</strong></p>
+        ${esConstruccion(cot.categoria) ? `
+        <p>Administración (${cot.aiu_admin_pct || 0}%): <strong>${sym}${fmtMoney(admin)}</strong></p>
         <br/>
+        <p>Imprevistos (${cot.aiu_imprev_pct || 0}%): <strong>${sym}${fmtMoney(imprev)}</strong></p>
+        <br/>
+        <p>Utilidad (${cot.aiu_utilidad_pct || 0}%): <strong>${sym}${fmtMoney(utilidad)}</strong></p>
+        <br/>` : `
+        <p>Impuesto (${cot.pct_impuesto}%): <strong>${sym}${fmtMoney(impuesto)}</strong></p>
+        <br/>`}
         <p style="font-size:18px;color:#1e1b4b;border-top:2px solid #1e1b4b;padding-top:8px;margin-top:4px">TOTAL GENERAL: <strong>${sym}${fmtMoney(total)}</strong></p>
       </div>
       ${cot.observaciones ? `<div style="background:#f9fafb;padding:12px;border-radius:8px;margin-bottom:24px"><p style="color:#1e3a8a;font-size:11px;font-weight:700">OBSERVACIONES</p><p>${cot.observaciones}</p></div>` : ''}
@@ -271,7 +291,7 @@ export default function CotizacionesPage() {
     const celular = contacto?.celular || cliente?.telefono || ''
     if (!celular) { alert('No se encontró número de celular del contacto o empresa'); return }
     const numero = celular.replace(/[^0-9]/g, '')
-    const { subtotal, impuesto, total } = calcTotals(cot.detalles, cot.pct_impuesto)
+    const { subtotal, impuesto, total, admin, imprev, utilidad } = calcTotals(cot)
     const sym = monedaSimbolo(cot.tipo_moneda)
     const items = cot.detalles.map(d => `  - ${d.descripcion}: ${d.cantidad} x ${sym}${fmtMoney(d.precio_unitario)} = ${sym}${fmtMoney(d.subtotal)}`).join('\n')
     const mensaje = `Hola, le enviamos la cotización *${cot.codigo}*\n\n` +
@@ -281,8 +301,10 @@ export default function CotizacionesPage() {
       `*Moneda:* ${cot.tipo_moneda}\n\n` +
       `*Detalle:*\n${items}\n\n` +
       `*Subtotal:* ${sym}${fmtMoney(subtotal)}\n` +
-      `*Impuesto (${cot.pct_impuesto}%):* ${sym}${fmtMoney(impuesto)}\n` +
-      `*TOTAL: ${sym}${fmtMoney(total)}*\n\n` +
+      (esConstruccion(cot.categoria)
+        ? `*Administración (${cot.aiu_admin_pct || 0}%):* ${sym}${fmtMoney(admin)}\n*Imprevistos (${cot.aiu_imprev_pct || 0}%):* ${sym}${fmtMoney(imprev)}\n*Utilidad (${cot.aiu_utilidad_pct || 0}%):* ${sym}${fmtMoney(utilidad)}\n`
+        : `*Impuesto (${cot.pct_impuesto}%):* ${sym}${fmtMoney(impuesto)}\n`) +
+      `*TOTAL${esConstruccion(cot.categoria) ? ' GENERAL' : ''}: ${sym}${fmtMoney(total)}*\n\n` +
       (cot.observaciones ? `_${cot.observaciones}_\n\n` : '') +
       `Vendedor: ${cot.vendedor || cot.responsable}`
     window.open(`https://wa.me/${numero}?text=${encodeURIComponent(mensaje)}`, '_blank')
@@ -325,7 +347,7 @@ export default function CotizacionesPage() {
 
   // ── VIEW DETAIL ──
   if (viewDetail) {
-    const { subtotal, impuesto, total } = calcTotals(viewDetail.detalles, viewDetail.pct_impuesto)
+    const { subtotal, impuesto, total, admin, imprev, utilidad } = calcTotals(viewDetail)
     return (
       <div>
         <button onClick={() => { const back = searchParams.get("back"); if (back) { router.push(back); return } setViewDetail(null) }} style={{ ...btnStyle, background: "#000000", color: "#ffffff", border: "1px solid #333333", marginBottom: 16 }}>{t('btn.volver')}</button>
@@ -403,7 +425,15 @@ export default function CotizacionesPage() {
           <div style={{ textAlign: 'right', marginBottom: 16 }}>
             <p style={{ color: '#013978', fontSize: 15 }}>Subtotal: <span style={{ color: '#013978', fontWeight: 600 }}>{monedaSimbolo(viewDetail.tipo_moneda)}{fmtMoney(subtotal)}</span></p>
             <div style={{ height: 12 }} />
-            <p style={{ color: '#013978', fontSize: 15 }}>Impuesto ({viewDetail.pct_impuesto}%): <span style={{ color: '#013978', fontWeight: 600 }}>{monedaSimbolo(viewDetail.tipo_moneda)}{fmtMoney(impuesto)}</span></p>
+            {esConstruccion(viewDetail.categoria) ? (<>
+              <p style={{ color: '#013978', fontSize: 15 }}>Administración ({viewDetail.aiu_admin_pct || 0}%): <span style={{ color: '#013978', fontWeight: 600 }}>{monedaSimbolo(viewDetail.tipo_moneda)}{fmtMoney(admin)}</span></p>
+              <div style={{ height: 12 }} />
+              <p style={{ color: '#013978', fontSize: 15 }}>Imprevistos ({viewDetail.aiu_imprev_pct || 0}%): <span style={{ color: '#013978', fontWeight: 600 }}>{monedaSimbolo(viewDetail.tipo_moneda)}{fmtMoney(imprev)}</span></p>
+              <div style={{ height: 12 }} />
+              <p style={{ color: '#013978', fontSize: 15 }}>Utilidad ({viewDetail.aiu_utilidad_pct || 0}%): <span style={{ color: '#013978', fontWeight: 600 }}>{monedaSimbolo(viewDetail.tipo_moneda)}{fmtMoney(utilidad)}</span></p>
+            </>) : (
+              <p style={{ color: '#013978', fontSize: 15 }}>Impuesto ({viewDetail.pct_impuesto}%): <span style={{ color: '#013978', fontWeight: 600 }}>{monedaSimbolo(viewDetail.tipo_moneda)}{fmtMoney(impuesto)}</span></p>
+            )}
             <div style={{ height: 12 }} />
             <p style={{ color: '#013978', fontSize: 15, fontWeight: 800, borderTop: '2px solid rgba(255,255,255,0.2)', paddingTop: 8 }}>TOTAL GENERAL: {monedaSimbolo(viewDetail.tipo_moneda)}{fmtMoney(total)}</p>
           </div>
@@ -443,7 +473,7 @@ export default function CotizacionesPage() {
 
   // ── FORM ──
   if (isForm && selected) {
-    const { subtotal, impuesto, total } = calcTotals(selected.detalles, selected.pct_impuesto)
+    const { subtotal, impuesto, total, admin, imprev, utilidad } = calcTotals(selected)
     return (
       <div>
         <button onClick={() => { setIsForm(false); setSelected(null); setVerLectura(false) }} style={{ ...btnStyle, background: '#000000', color: '#ffffff', border: '1px solid #333333', marginBottom: 16 }}>{t('btn.volver')}</button>
@@ -650,8 +680,31 @@ export default function CotizacionesPage() {
           {/* Totals */}
           <div style={{ textAlign: 'right', marginBottom: 16 }}>
             <p style={{ color: '#013978', fontSize: 15 }}>Subtotal: <span style={{ color: '#013978', fontWeight: 600 }}>{monedaSimbolo(selected.tipo_moneda)}{fmtMoney(subtotal)}</span></p>
-            <p style={{ color: '#013978', fontSize: 15 }}>Impuesto ({selected.pct_impuesto}%): <span style={{ color: '#013978', fontWeight: 600 }}>{monedaSimbolo(selected.tipo_moneda)}{fmtMoney(impuesto)}</span></p>
-            <p style={{ color: '#013978', fontSize: 15, fontWeight: 800, marginTop: 4 }}>TOTAL: {monedaSimbolo(selected.tipo_moneda)}{fmtMoney(total)}</p>
+            {esConstruccion(selected.categoria) ? (
+              <>
+                <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: 8, marginTop: 6 }}>
+                  <span style={{ color: '#013978', fontSize: 15 }}>Administración</span>
+                  <input type="number" step="0.01" min="0" value={selected.aiu_admin_pct || 0} onChange={e => setSelected({ ...selected, aiu_admin_pct: parseFloat(e.target.value) || 0 })} style={{ ...inputStyle, width: 70, padding: '4px 6px', textAlign: 'center', fontSize: 13 }} />
+                  <span style={{ color: '#013978', fontSize: 15 }}>%</span>
+                  <span style={{ color: '#013978', fontSize: 15, fontWeight: 600, minWidth: 130, textAlign: 'right' }}>{monedaSimbolo(selected.tipo_moneda)}{fmtMoney(admin)}</span>
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: 8, marginTop: 6 }}>
+                  <span style={{ color: '#013978', fontSize: 15 }}>Imprevistos</span>
+                  <input type="number" step="0.01" min="0" value={selected.aiu_imprev_pct || 0} onChange={e => setSelected({ ...selected, aiu_imprev_pct: parseFloat(e.target.value) || 0 })} style={{ ...inputStyle, width: 70, padding: '4px 6px', textAlign: 'center', fontSize: 13 }} />
+                  <span style={{ color: '#013978', fontSize: 15 }}>%</span>
+                  <span style={{ color: '#013978', fontSize: 15, fontWeight: 600, minWidth: 130, textAlign: 'right' }}>{monedaSimbolo(selected.tipo_moneda)}{fmtMoney(imprev)}</span>
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: 8, marginTop: 6 }}>
+                  <span style={{ color: '#013978', fontSize: 15 }}>Utilidad</span>
+                  <input type="number" step="0.01" min="0" value={selected.aiu_utilidad_pct || 0} onChange={e => setSelected({ ...selected, aiu_utilidad_pct: parseFloat(e.target.value) || 0 })} style={{ ...inputStyle, width: 70, padding: '4px 6px', textAlign: 'center', fontSize: 13 }} />
+                  <span style={{ color: '#013978', fontSize: 15 }}>%</span>
+                  <span style={{ color: '#013978', fontSize: 15, fontWeight: 600, minWidth: 130, textAlign: 'right' }}>{monedaSimbolo(selected.tipo_moneda)}{fmtMoney(utilidad)}</span>
+                </div>
+              </>
+            ) : (
+              <p style={{ color: '#013978', fontSize: 15 }}>Impuesto ({selected.pct_impuesto}%): <span style={{ color: '#013978', fontWeight: 600 }}>{monedaSimbolo(selected.tipo_moneda)}{fmtMoney(impuesto)}</span></p>
+            )}
+            <p style={{ color: '#013978', fontSize: 15, fontWeight: 800, marginTop: 8 }}>TOTAL{esConstruccion(selected.categoria) ? ' GENERAL' : ''}: {monedaSimbolo(selected.tipo_moneda)}{fmtMoney(total)}</p>
           </div>
 
           <div style={{ gridColumn: 'span 3', marginBottom: 16 }}>
@@ -686,7 +739,7 @@ export default function CotizacionesPage() {
     { header: 'Situación', key: 'situacion', width: 10 },
   ]
   const reportRows = filtered.map(c => {
-    const { total } = calcTotals(c.detalles, c.pct_impuesto)
+    const { total } = calcTotals(c)
     return {
       codigo: c.codigo, cliente_nombre: c.cliente_nombre, emision: fDate(c.fecha_emision),
       vence: fDate(c.fecha_vencimiento), items: c.detalles.length, total: `${monedaSimbolo(c.tipo_moneda)}${fmtMoney(total)}`,
@@ -723,7 +776,7 @@ export default function CotizacionesPage() {
               </tr></thead>
               <tbody>
                 {filtered.map((c, i) => {
-                  const { total } = calcTotals(c.detalles, c.pct_impuesto)
+                  const { total } = calcTotals(c)
                   const cli = clientes.find(cl => cl.id === c.cliente_id)
                   return (
                     <tr key={c.id} style={{ background: i % 2 === 0 ? 'rgba(255,255,255,0.03)' : 'transparent' }}>
