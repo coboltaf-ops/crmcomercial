@@ -101,7 +101,7 @@ export default function OportunidadesPage() {
     !search || o.proyecto.toLowerCase().includes(search.toLowerCase()) ||
     o.codigo.toLowerCase().includes(search.toLowerCase()) ||
     o.cliente_nombre.toLowerCase().includes(search.toLowerCase())
-  )
+  ).sort((a, b) => (a.probable_pct ?? 0) - (b.probable_pct ?? 0))
 
   // Cálculos derivados
   const calcDerivados = (o: Pick<Oportunidad, 'monto_estimado' | 'probable_pct' | 'ejecucion_anyo_pct' | 'mgc' | 'parcial_euros_anyo'>) => {
