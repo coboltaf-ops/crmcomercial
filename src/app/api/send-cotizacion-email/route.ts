@@ -23,8 +23,8 @@ export async function POST(req: Request) {
     const admin = esConstruccion ? subtotal * ((cotizacion.aiu_admin_pct || 0) / 100) : 0
     const imprev = esConstruccion ? subtotal * ((cotizacion.aiu_imprev_pct || 0) / 100) : 0
     const utilidad = esConstruccion ? subtotal * ((cotizacion.aiu_utilidad_pct || 0) / 100) : 0
-    const impuesto = esConstruccion ? 0 : subtotal * (cotizacion.pct_impuesto / 100)
-    const total = esConstruccion ? subtotal + admin + imprev + utilidad : subtotal + impuesto
+    const impuesto = esConstruccion ? utilidad * (cotizacion.pct_impuesto / 100) : subtotal * (cotizacion.pct_impuesto / 100)
+    const total = esConstruccion ? subtotal + admin + imprev + utilidad + impuesto : subtotal + impuesto
 
     // Generate PDF
     const doc = new jsPDF()
@@ -68,6 +68,7 @@ export async function POST(req: Request) {
       ty += 6; doc.text(`Administracion (${cotizacion.aiu_admin_pct || 0}%): ${fmtMoney(admin)}`, 140, ty)
       ty += 6; doc.text(`Imprevistos (${cotizacion.aiu_imprev_pct || 0}%): ${fmtMoney(imprev)}`, 140, ty)
       ty += 6; doc.text(`Utilidad (${cotizacion.aiu_utilidad_pct || 0}%): ${fmtMoney(utilidad)}`, 140, ty)
+      ty += 6; doc.text(`Impuesto IVA (${cotizacion.pct_impuesto}% sobre Utilidad): ${fmtMoney(impuesto)}`, 140, ty)
     } else {
       ty += 6; doc.text(`Impuesto (${cotizacion.pct_impuesto}%): ${fmtMoney(impuesto)}`, 140, ty)
     }
@@ -117,7 +118,8 @@ export async function POST(req: Request) {
             ${esConstruccion ? `
             <p>Administración (${cotizacion.aiu_admin_pct || 0}%): <strong>${fmtMoney(admin)}</strong></p>
             <p>Imprevistos (${cotizacion.aiu_imprev_pct || 0}%): <strong>${fmtMoney(imprev)}</strong></p>
-            <p>Utilidad (${cotizacion.aiu_utilidad_pct || 0}%): <strong>${fmtMoney(utilidad)}</strong></p>` : `
+            <p>Utilidad (${cotizacion.aiu_utilidad_pct || 0}%): <strong>${fmtMoney(utilidad)}</strong></p>
+            <p>Impuesto IVA (${cotizacion.pct_impuesto}% sobre Utilidad): <strong>${fmtMoney(impuesto)}</strong></p>` : `
             <p>Impuesto (${cotizacion.pct_impuesto}%): <strong>${fmtMoney(impuesto)}</strong></p>`}
             <p style="font-size:18px;color:#1e1b4b">Total: <strong>${fmtMoney(total)}</strong></p>
           </div>

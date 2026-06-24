@@ -50,8 +50,10 @@ const calcTotals = (cot: Cotizacion) => {
     const imprev = subtotal * ((cot.aiu_imprev_pct || 0) / 100)
     const utilidad = subtotal * ((cot.aiu_utilidad_pct || 0) / 100)
     const aiuTotal = admin + imprev + utilidad
-    // Total General = Subtotal + Administración + Imprevistos + Utilidad (sin IVA aparte).
-    return { subtotal, admin, imprev, utilidad, aiuTotal, impuesto: 0, total: subtotal + aiuTotal }
+    // El IVA se liquida solo sobre la Utilidad (estándar de obra/construcción en Colombia).
+    const impuesto = utilidad * ((cot.pct_impuesto || 0) / 100)
+    // Total General = Subtotal + Administración + Imprevistos + Utilidad + IVA.
+    return { subtotal, admin, imprev, utilidad, aiuTotal, impuesto, total: subtotal + aiuTotal + impuesto }
   }
   const impuesto = subtotal * ((cot.pct_impuesto || 0) / 100)
   return { subtotal, admin: 0, imprev: 0, utilidad: 0, aiuTotal: 0, impuesto, total: subtotal + impuesto }
@@ -251,6 +253,8 @@ export default function CotizacionesPage() {
         <p>Imprevistos (${cot.aiu_imprev_pct || 0}%): <strong>${sym}${fmtMoney(imprev)}</strong></p>
         <br/>
         <p>Utilidad (${cot.aiu_utilidad_pct || 0}%): <strong>${sym}${fmtMoney(utilidad)}</strong></p>
+        <br/>
+        <p>Impuesto IVA (${cot.pct_impuesto}% sobre Utilidad): <strong>${sym}${fmtMoney(impuesto)}</strong></p>
         <br/>` : `
         <p>Impuesto (${cot.pct_impuesto}%): <strong>${sym}${fmtMoney(impuesto)}</strong></p>
         <br/>`}
@@ -302,7 +306,7 @@ export default function CotizacionesPage() {
       `*Detalle:*\n${items}\n\n` +
       `*Subtotal:* ${sym}${fmtMoney(subtotal)}\n` +
       (esConstruccion(cot.categoria)
-        ? `*Administración (${cot.aiu_admin_pct || 0}%):* ${sym}${fmtMoney(admin)}\n*Imprevistos (${cot.aiu_imprev_pct || 0}%):* ${sym}${fmtMoney(imprev)}\n*Utilidad (${cot.aiu_utilidad_pct || 0}%):* ${sym}${fmtMoney(utilidad)}\n`
+        ? `*Administración (${cot.aiu_admin_pct || 0}%):* ${sym}${fmtMoney(admin)}\n*Imprevistos (${cot.aiu_imprev_pct || 0}%):* ${sym}${fmtMoney(imprev)}\n*Utilidad (${cot.aiu_utilidad_pct || 0}%):* ${sym}${fmtMoney(utilidad)}\n*Impuesto IVA (${cot.pct_impuesto}% sobre Utilidad):* ${sym}${fmtMoney(impuesto)}\n`
         : `*Impuesto (${cot.pct_impuesto}%):* ${sym}${fmtMoney(impuesto)}\n`) +
       `*TOTAL${esConstruccion(cot.categoria) ? ' GENERAL' : ''}: ${sym}${fmtMoney(total)}*\n\n` +
       (cot.observaciones ? `_${cot.observaciones}_\n\n` : '') +
@@ -431,6 +435,8 @@ export default function CotizacionesPage() {
               <p style={{ color: '#013978', fontSize: 15 }}>Imprevistos ({viewDetail.aiu_imprev_pct || 0}%): <span style={{ color: '#013978', fontWeight: 600 }}>{monedaSimbolo(viewDetail.tipo_moneda)}{fmtMoney(imprev)}</span></p>
               <div style={{ height: 12 }} />
               <p style={{ color: '#013978', fontSize: 15 }}>Utilidad ({viewDetail.aiu_utilidad_pct || 0}%): <span style={{ color: '#013978', fontWeight: 600 }}>{monedaSimbolo(viewDetail.tipo_moneda)}{fmtMoney(utilidad)}</span></p>
+              <div style={{ height: 12 }} />
+              <p style={{ color: '#013978', fontSize: 15 }}>Impuesto IVA ({viewDetail.pct_impuesto}% sobre Utilidad): <span style={{ color: '#013978', fontWeight: 600 }}>{monedaSimbolo(viewDetail.tipo_moneda)}{fmtMoney(impuesto)}</span></p>
             </>) : (
               <p style={{ color: '#013978', fontSize: 15 }}>Impuesto ({viewDetail.pct_impuesto}%): <span style={{ color: '#013978', fontWeight: 600 }}>{monedaSimbolo(viewDetail.tipo_moneda)}{fmtMoney(impuesto)}</span></p>
             )}
@@ -700,6 +706,7 @@ export default function CotizacionesPage() {
                   <span style={{ color: '#013978', fontSize: 15 }}>%</span>
                   <span style={{ color: '#013978', fontSize: 15, fontWeight: 600, minWidth: 130, textAlign: 'right' }}>{monedaSimbolo(selected.tipo_moneda)}{fmtMoney(utilidad)}</span>
                 </div>
+                <p style={{ color: '#013978', fontSize: 15, marginTop: 6 }}>Impuesto IVA ({selected.pct_impuesto}% sobre Utilidad): <span style={{ color: '#013978', fontWeight: 600 }}>{monedaSimbolo(selected.tipo_moneda)}{fmtMoney(impuesto)}</span></p>
               </>
             ) : (
               <p style={{ color: '#013978', fontSize: 15 }}>Impuesto ({selected.pct_impuesto}%): <span style={{ color: '#013978', fontWeight: 600 }}>{monedaSimbolo(selected.tipo_moneda)}{fmtMoney(impuesto)}</span></p>
