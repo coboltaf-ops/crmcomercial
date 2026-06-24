@@ -717,7 +717,7 @@ export default function CotizacionesPage() {
           <div style={{ borderRadius: 12, border: '1px solid #1e3a8a', overflow: 'hidden' }}>
             <table style={{ width: '100%', borderCollapse: 'collapse' }}>
               <thead><tr>
-                {[t('lbl.codigo'), t('lbl.empresa'), t('lbl.tipoIdentificacion'), t('lbl.nroDocumento'), t('lbl.direccion'), t('lbl.ciudad'), t('lbl.pais'), t('lbl.fechaEmision'), idioma === 'en' ? 'Expires' : 'Vence', idioma === 'en' ? 'Items' : 'Items', t('lbl.total'), t('lbl.situacion'), idioma === 'en' ? 'Actions' : 'Acciones'].map(h => (
+                {[t('lbl.codigo'), t('lbl.empresa'), t('lbl.tipoIdentificacion'), t('lbl.nroDocumento'), (idioma === 'en' ? 'Quotation Type' : 'Tipo de Cotización'), t('lbl.ciudad'), t('lbl.pais'), t('lbl.fechaEmision'), idioma === 'en' ? 'Expires' : 'Vence', idioma === 'en' ? 'Items' : 'Items', t('lbl.total'), t('lbl.situacion'), idioma === 'en' ? 'Actions' : 'Acciones'].map(h => (
                   <th key={h} style={{ padding: '12px 14px', background: '#1e3a8a', color: '#fff', fontSize: 12, textAlign: 'left' }}>{h}</th>
                 ))}
               </tr></thead>
@@ -731,7 +731,7 @@ export default function CotizacionesPage() {
                       <td style={{ padding: '10px 14px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 13 }}>{c.cliente_nombre}</td>
                       <td style={{ padding: '10px 14px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 13 }}>{cli?.tipo_identificacion || ''}</td>
                       <td style={{ padding: '10px 14px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 13 }}>{cli?.nro_documento || ''}</td>
-                      <td style={{ padding: '10px 14px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 13 }}>{cli?.direccion || ''}</td>
+                      <td style={{ padding: '10px 14px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 13 }}>{c.categoria || ''}</td>
                       <td style={{ padding: '10px 14px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 13 }}>{cli?.ciudad || ''}</td>
                       <td style={{ padding: '10px 14px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 13 }}>{cli?.pais || ''}</td>
                       <td style={{ padding: '10px 14px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 13 }}>{fDate(c.fecha_emision)}</td>
