@@ -202,7 +202,7 @@ export default function UsuariosPage() {
                     </td>
                     <td style={{ padding: '8px 10px', borderBottom: '1px solid #e2e8f0' }}>
                       <div style={{ display: 'flex', gap: 4 }}>
-                        <button onClick={() => { setSelected(u); setIsForm(true) }} style={{ ...btnStyle, padding: '3px 10px', fontSize: 10, background: '#15803d', color: '#ffffff', border: '1px solid #16a34a' }}>Edit</button>
+                        <button onClick={() => { setSelected({ ...u, clave: '' }); setIsForm(true) }} style={{ ...btnStyle, padding: '3px 10px', fontSize: 10, background: '#15803d', color: '#ffffff', border: '1px solid #16a34a' }}>Edit</button>
                         {u.id !== 'admin-1' && <button onClick={() => { if (confirm(`¿Eliminar usuario "${u.usuario}"?`)) deleteUsuario(u.id) }} style={{ ...btnStyle, padding: '3px 10px', fontSize: 10, background: '#dc2626', color: '#ffffff', border: '1px solid #ef4444' }}>Elim</button>}
                       </div>
                     </td>
