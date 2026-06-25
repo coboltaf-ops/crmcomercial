@@ -115,7 +115,7 @@ export default function DashboardPage() {
   // Factor US$ → Euro (del registro activo más reciente de Factores). Euro = US$ / factor.
   const factorUsdEur = factores.filter(f => f.situacion === 'Activo').slice(-1)[0]?.factor_usd_euro || 0
   const usd = (n: number) => `US$ ${fmtMoney(n)}`
-  const eur = (n: number) => factorUsdEur > 0 ? `EUR ${fmtMoney(n / factorUsdEur)}` : 'EUR —'
+  const eur = (n: number) => factorUsdEur > 0 ? `Euro ${fmtMoney(n / factorUsdEur)}` : 'Euro —'
 
   const opoAbiertas = oportunidades.filter(o => o.situacion === 'Abierta' || o.situacion === 'En Negociación')
   const pqrsAbiertas = pqrs.filter(p => p.situacion !== 'Cerrada')
