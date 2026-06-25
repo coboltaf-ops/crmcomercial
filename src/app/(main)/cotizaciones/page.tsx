@@ -27,6 +27,32 @@ import { buildWhatsAppLink, isValidPhone } from '@/shared/lib/whatsapp'
 // Los valores guardados (enteros) se ven como 1,000.00 — no se altera el dato.
 const fmtMoney = (n: number) => (Number(n) || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
 
+// Campo numérico de Cotizaciones: muestra 2 decimales cuando NO está enfocado
+// (ej. 1,000.00) y permite editar con decimales libremente al entrar. No altera el dato.
+function NumInput({ value, onChange, placeholder, align, style }: {
+  value: number
+  onChange: (n: number) => void
+  placeholder?: string
+  align?: 'left' | 'right' | 'center'
+  style?: React.CSSProperties
+}) {
+  const [editing, setEditing] = useState(false)
+  const [text, setText] = useState('')
+  const fmt = value ? fmtMoney(value) : ''
+  return (
+    <input
+      type="text"
+      inputMode="decimal"
+      value={editing ? text : fmt}
+      placeholder={placeholder}
+      onFocus={() => { setEditing(true); setText(value ? String(value) : '') }}
+      onChange={e => { const raw = e.target.value.replace(/[^0-9.]/g, ''); setText(raw); onChange(parseFloat(raw) || 0) }}
+      onBlur={() => setEditing(false)}
+      style={{ ...style, textAlign: align }}
+    />
+  )
+}
+
 const today = todayColombia()
 
 const emptyDetalle = (): DetalleCotizacion => ({
@@ -666,7 +692,7 @@ export default function CotizacionesPage() {
                         <td style={{ padding: '6px 8px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 12, fontFamily: 'monospace', width: 100 }}>{d.codigo_producto}</td>
                         <td style={{ padding: '6px 8px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 12 }}>{d.descripcion}</td>
                         <td style={{ padding: '6px 8px', borderBottom: '1px solid #e2e8f0', width: 80 }}>
-                          <input type="number" step="any" min="0" value={d.cantidad || ''} onChange={e => updateDetalle(realIdx, 'cantidad', parseFloat(e.target.value) || 0)} placeholder="0" style={{ ...inputStyle, fontSize: 12, padding: '4px 6px', textAlign: 'center' }} />
+                          <NumInput value={d.cantidad} onChange={n => updateDetalle(realIdx, 'cantidad', n)} placeholder="0" align="center" style={{ ...inputStyle, fontSize: 12, padding: '4px 6px' }} />
                         </td>
                         <td style={{ padding: '6px 8px', borderBottom: '1px solid #e2e8f0', width: 120 }}>
                           <select value={d.unidad_medida || ''} onChange={e => updateDetalle(realIdx, 'unidad_medida', e.target.value)} style={{ ...inputStyle, fontSize: 12, padding: '4px 6px' }}>
@@ -675,7 +701,7 @@ export default function CotizacionesPage() {
                           </select>
                         </td>
                         <td style={{ padding: '6px 8px', borderBottom: '1px solid #e2e8f0', width: 150 }}>
-                          <input type="number" step="any" min="0" value={d.precio_unitario || ''} onChange={e => updateDetalle(realIdx, 'precio_unitario', parseFloat(e.target.value) || 0)} placeholder="0" style={{ ...inputStyle, fontSize: 12, padding: '4px 6px', textAlign: 'right' }} />
+                          <NumInput value={d.precio_unitario} onChange={n => updateDetalle(realIdx, 'precio_unitario', n)} placeholder="0" align="right" style={{ ...inputStyle, fontSize: 12, padding: '4px 6px' }} />
                         </td>
                         <td style={{ padding: '6px 8px', borderBottom: '1px solid #e2e8f0', width: 70 }}>
                           <input type="number" step="0.1" min="0" max="100" value={d.descuento_pct || ''} onChange={e => updateDetalle(realIdx, 'descuento_pct', parseFloat(e.target.value) || 0)} placeholder="0" style={{ ...inputStyle, fontSize: 12, padding: '4px 6px', textAlign: 'center' }} />
