@@ -205,7 +205,7 @@ export default function CotizacionesPage() {
       <tr style="background:${i % 2 === 0 ? '#f9fafb' : '#fff'}">
         <td style="padding:8px 12px;border-bottom:1px solid #e5e7eb;font-family:monospace;font-size:12px">${d.codigo_producto}</td>
         <td style="padding:8px 12px;border-bottom:1px solid #e5e7eb">${d.descripcion}</td>
-        <td style="padding:8px 12px;border-bottom:1px solid #e5e7eb;text-align:center">${d.cantidad}</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #e5e7eb;text-align:center">${fmtMoney(d.cantidad)}</td>
         <td style="padding:8px 12px;border-bottom:1px solid #e5e7eb;text-align:center">${d.unidad_medida}</td>
         <td style="padding:8px 12px;border-bottom:1px solid #e5e7eb;text-align:right">${sym}${fmtMoney(d.precio_unitario)}</td>
         <td style="padding:8px 12px;border-bottom:1px solid #e5e7eb;text-align:center">${d.descuento_pct}%</td>
@@ -301,7 +301,7 @@ export default function CotizacionesPage() {
     const numero = celular.replace(/[^0-9]/g, '')
     const { subtotal, impuesto, total, admin, imprev, utilidad } = calcTotals(cot)
     const sym = monedaSimbolo(cot.tipo_moneda)
-    const items = cot.detalles.map(d => `  - ${d.descripcion}: ${d.cantidad} x ${sym}${fmtMoney(d.precio_unitario)} = ${sym}${fmtMoney(d.subtotal)}`).join('\n')
+    const items = cot.detalles.map(d => `  - ${d.descripcion}: ${fmtMoney(d.cantidad)} x ${sym}${fmtMoney(d.precio_unitario)} = ${sym}${fmtMoney(d.subtotal)}`).join('\n')
     const mensaje = `Hola, le enviamos la cotización *${cot.codigo}*\n\n` +
       `*Empresa:* ${cot.cliente_nombre}\n` +
       `*Fecha:* ${fDate(cot.fecha_emision)}\n` +
@@ -419,7 +419,7 @@ export default function CotizacionesPage() {
                   <tr key={d.id} style={{ background: i % 2 === 0 ? 'rgba(255,255,255,0.03)' : 'transparent' }}>
                     <td style={{ padding: '8px 12px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 12, fontFamily: 'monospace' }}>{d.codigo_producto}</td>
                     <td style={{ padding: '8px 12px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 12 }}>{d.descripcion}</td>
-                    <td style={{ padding: '8px 12px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 12, textAlign: 'center' }}>{d.cantidad}</td>
+                    <td style={{ padding: '8px 12px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 12, textAlign: 'center' }}>{fmtMoney(d.cantidad)}</td>
                     <td style={{ padding: '8px 12px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 12, textAlign: 'center' }}>{d.unidad_medida}</td>
                     <td style={{ padding: '8px 12px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 12, textAlign: 'right' }}>{monedaSimbolo(viewDetail.tipo_moneda)}{fmtMoney(d.precio_unitario)}</td>
                     <td style={{ padding: '8px 12px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 12, textAlign: 'center' }}>{d.descuento_pct}%</td>

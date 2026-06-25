@@ -52,7 +52,7 @@ export async function POST(req: Request) {
       startY: y + 22,
       head: [['Código', 'Descripción', 'Cant.', 'Unidad', 'Precio Unit.', 'Desc.%', 'Subtotal']],
       body: cotizacion.detalles.map((d: { codigo_producto: string; descripcion: string; cantidad: number; unidad_medida: string; precio_unitario: number; descuento_pct: number; subtotal: number }) => [
-        d.codigo_producto, d.descripcion, d.cantidad, d.unidad_medida,
+        d.codigo_producto, d.descripcion, fmtMoney(d.cantidad), d.unidad_medida,
         `${fmtMoney(d.precio_unitario)}`, `${d.descuento_pct}%`, `${fmtMoney(d.subtotal)}`
       ]),
       styles: { fontSize: 8, cellPadding: 3 },
@@ -108,7 +108,7 @@ export async function POST(req: Request) {
               ${cotizacion.detalles.map((d: { descripcion: string; cantidad: number; subtotal: number }, i: number) => `
                 <tr style="background:${i % 2 === 0 ? '#fff' : '#f9fafb'}">
                   <td style="padding:6px 8px;font-size:12px;border-bottom:1px solid #e5e7eb">${d.descripcion}</td>
-                  <td style="padding:6px 8px;font-size:12px;text-align:center;border-bottom:1px solid #e5e7eb">${d.cantidad}</td>
+                  <td style="padding:6px 8px;font-size:12px;text-align:center;border-bottom:1px solid #e5e7eb">${fmtMoney(d.cantidad)}</td>
                   <td style="padding:6px 8px;font-size:12px;text-align:right;border-bottom:1px solid #e5e7eb">${fmtMoney(d.subtotal)}</td>
                 </tr>`).join('')}
             </tbody>
