@@ -174,8 +174,8 @@ export default function OportunidadesPage() {
               { l: t('lbl.cliente'), v: clienteNode },
               { l: t('lbl.ciudad'), v: viewDetail.ciudad || '-' },
               { l: t('lbl.pais'), v: viewDetail.pais || '-' },
-              { l: 'Estimado COP', v: `$${fmtMoney(viewDetail.estimado_cop || 0)}` },
-              { l: 'Estimado USA', v: `$${fmtMoney(viewDetail.monto_estimado || 0)}` },
+              { l: 'Estimado COP', v: `COP ${fmtMoney(viewDetail.estimado_cop || 0)}` },
+              { l: 'Estimado USA', v: `US$ ${fmtMoney(viewDetail.monto_estimado || 0)}` },
               { l: t('lbl.situacion'), v: viewDetail.situacion },
               { l: t('lbl.responsable'), v: viewDetail.responsable },
               { l: 'Creado por', v: viewDetail.creado_por ? `${viewDetail.creado_por}${viewDetail.creado_por_usuario ? ` (${viewDetail.creado_por_usuario})` : ''}${viewDetail.creado_en ? ` · ${viewDetail.creado_en}` : ''}` : '—' },
@@ -638,7 +638,7 @@ export default function OportunidadesPage() {
   ]
   const reportRows = filtered.map(o => ({
     codigo: o.codigo, proyecto: o.proyecto, cliente_nombre: o.cliente_nombre,
-    ciudad: o.ciudad || '-', monto: `${monedaSimbolo(o.tipo_moneda)}${fmtMoney(o.monto_estimado || 0)}`,
+    ciudad: o.ciudad || '-', monto: `US$ ${fmtMoney(o.monto_estimado || 0)}`,
     prob: `${o.probable_pct || 0}%`, adj: o.adjudicacion || '-', veredicto: o.veredicto || '-', situacion: o.situacion,
   }))
 
@@ -692,7 +692,7 @@ export default function OportunidadesPage() {
                     </td>
                     <td style={{ padding: '10px 14px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 13 }}>{o.ciudad || '-'}</td>
                     <td style={{ padding: '10px 14px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 13 }}>{o.pais || '-'}</td>
-                    <td style={{ padding: '10px 14px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 13, fontWeight: 600, textAlign: 'right' }}>{monedaSimbolo(o.tipo_moneda)}{fmtMoney(o.monto_estimado || 0)}</td>
+                    <td style={{ padding: '10px 14px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 13, fontWeight: 600, textAlign: 'right' }}>US$ {fmtMoney(o.monto_estimado || 0)}</td>
                     <td style={{ padding: '10px 14px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 13, textAlign: 'center' }}>{o.probable_pct || 0}%</td>
                     <td style={{ padding: '10px 14px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 13 }}>{o.adjudicacion || '-'}</td>
                     <td style={{ padding: '10px 14px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 12 }}>{o.veredicto || '-'}</td>
@@ -739,7 +739,7 @@ export default function OportunidadesPage() {
           <div style={{ marginBottom: 16, padding: '16px 20px', background: 'linear-gradient(90deg, rgba(34,197,94,0.18), rgba(34,197,94,0.08))', border: '2px solid #22c55e', borderRadius: 12, display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 12 }}>
             <div>
               <div style={{ color: '#013978', fontSize: 12, fontWeight: 700, textTransform: 'uppercase', letterSpacing: 1 }}>{idioma === 'en' ? 'TOTAL ESTIMATED AMOUNT' : 'TOTAL MONTO ESTIMADO'}</div>
-              <div style={{ color: '#013978', fontSize: 28, fontWeight: 800, marginTop: 4 }}>${fmtMoney(oportunidades.reduce((s, o) => s + (o.monto_estimado || 0), 0))}</div>
+              <div style={{ color: '#013978', fontSize: 28, fontWeight: 800, marginTop: 4 }}>US$ {fmtMoney(oportunidades.reduce((s, o) => s + (o.monto_estimado || 0), 0))}</div>
             </div>
             <div style={{ color: '#013978', fontSize: 13 }}>{oportunidades.length} {idioma === 'en' ? 'opportunities' : 'oportunidades'}</div>
           </div>
