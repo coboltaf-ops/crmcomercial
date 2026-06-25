@@ -12,7 +12,7 @@ import { useReferenceStore } from '@/features/referencias/store/reference-store'
 import { useCurrentUserStore } from '@/features/usuarios-gestion/store/current-user-store'
 import { useEmpresaStore } from '@/features/empresa/store/empresa-store'
 import { usePermisos } from '@/shared/hooks/use-permisos'
-import { fmtMoney, monedaSimbolo } from '@/shared/lib/format-number'
+import { monedaSimbolo } from '@/shared/lib/format-number'
 import { fDate, todayColombia } from '@/shared/lib/format-date'
 import { nextConsecutivo } from '@/shared/lib/consecutivo'
 import ReportPanel from '@/shared/components/report-panel'
@@ -22,6 +22,10 @@ import { useAsistenteStore } from '@/shared/stores/asistente-store'
 import { useT, useIdioma, useTStatus } from '@/shared/i18n/use-t'
 import { Seguimiento } from '@/shared/types/seguimiento'
 import { buildWhatsAppLink, isValidPhone } from '@/shared/lib/whatsapp'
+
+// En Cotizaciones los montos se muestran CON 2 decimales (no afecta el resto del sistema).
+// Los valores guardados (enteros) se ven como 1,000.00 — no se altera el dato.
+const fmtMoney = (n: number) => (Number(n) || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
 
 const today = todayColombia()
 
@@ -662,11 +666,16 @@ export default function CotizacionesPage() {
                         <td style={{ padding: '6px 8px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 12, fontFamily: 'monospace', width: 100 }}>{d.codigo_producto}</td>
                         <td style={{ padding: '6px 8px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 12 }}>{d.descripcion}</td>
                         <td style={{ padding: '6px 8px', borderBottom: '1px solid #e2e8f0', width: 80 }}>
-                          <input type="number" min="1" value={d.cantidad} onChange={e => updateDetalle(realIdx, 'cantidad', parseInt(e.target.value) || 1)} style={{ ...inputStyle, fontSize: 12, padding: '4px 6px', textAlign: 'center' }} />
+                          <input type="number" step="any" min="0" value={d.cantidad || ''} onChange={e => updateDetalle(realIdx, 'cantidad', parseFloat(e.target.value) || 0)} placeholder="0" style={{ ...inputStyle, fontSize: 12, padding: '4px 6px', textAlign: 'center' }} />
                         </td>
-                        <td style={{ padding: '6px 8px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 12, width: 70 }}>{d.unidad_medida}</td>
+                        <td style={{ padding: '6px 8px', borderBottom: '1px solid #e2e8f0', width: 120 }}>
+                          <select value={d.unidad_medida || ''} onChange={e => updateDetalle(realIdx, 'unidad_medida', e.target.value)} style={{ ...inputStyle, fontSize: 12, padding: '4px 6px' }}>
+                            {d.unidad_medida && !refOptions('unidad_medida').includes(d.unidad_medida) && <option value={d.unidad_medida}>{d.unidad_medida}</option>}
+                            {refOptions('unidad_medida').map(o => <option key={o} value={o}>{o}</option>)}
+                          </select>
+                        </td>
                         <td style={{ padding: '6px 8px', borderBottom: '1px solid #e2e8f0', width: 150 }}>
-                          <input type="number" step="1" min="0" value={d.precio_unitario || ''} onChange={e => updateDetalle(realIdx, 'precio_unitario', Math.round(parseFloat(e.target.value)) || 0)} placeholder="0" style={{ ...inputStyle, fontSize: 12, padding: '4px 6px', textAlign: 'right' }} />
+                          <input type="number" step="any" min="0" value={d.precio_unitario || ''} onChange={e => updateDetalle(realIdx, 'precio_unitario', parseFloat(e.target.value) || 0)} placeholder="0" style={{ ...inputStyle, fontSize: 12, padding: '4px 6px', textAlign: 'right' }} />
                         </td>
                         <td style={{ padding: '6px 8px', borderBottom: '1px solid #e2e8f0', width: 70 }}>
                           <input type="number" step="0.1" min="0" max="100" value={d.descuento_pct || ''} onChange={e => updateDetalle(realIdx, 'descuento_pct', parseFloat(e.target.value) || 0)} placeholder="0" style={{ ...inputStyle, fontSize: 12, padding: '4px 6px', textAlign: 'center' }} />
