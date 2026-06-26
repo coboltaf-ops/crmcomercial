@@ -236,6 +236,8 @@ export default function ProspectosPage() {
                   nombre_comercial: viewDetail.empresa || '',
                   actividad: viewDetail.actividad || '',
                   direccion: '',
+                  region: '',
+                  departamento: '',
                   ciudad: viewDetail.ciudad || '',
                   pais: viewDetail.pais || 'Colombia',
                   codigo_postal: '',

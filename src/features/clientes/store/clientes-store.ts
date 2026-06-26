@@ -13,6 +13,8 @@ export interface Cliente {
   nombre_comercial: string
   actividad: string
   direccion: string
+  region: string
+  departamento: string
   ciudad: string
   pais: string
   codigo_postal: string
