@@ -1,10 +1,13 @@
 import type { Metadata } from "next"
-import { Geist, Geist_Mono } from "next/font/google"
 import "./globals.css"
 import { UpdateNotice } from "@/shared/components/UpdateNotice"
 
-const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] })
-const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] })
+// Fuentes del sistema (sin descargar de Google Fonts) para que el build de Vercel
+// nunca falle por un error temporal de red al traer las fuentes.
+const fontVars = {
+  "--font-geist-sans": 'system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
+  "--font-geist-mono": 'ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace',
+} as React.CSSProperties
 
 export const metadata: Metadata = {
   title: "CRM Comercial",
@@ -13,7 +16,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="es" className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}>
+    <html lang="es" className="h-full antialiased" style={fontVars}>
       <body className="min-h-full flex flex-col">{children}<UpdateNotice /></body>
     </html>
   )
