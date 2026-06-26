@@ -9,7 +9,7 @@ import { useCotizacionesStore } from '@/features/cotizaciones/store/cotizaciones
 import { useOportunidadesStore } from '@/features/oportunidades/store/oportunidades-store'
 import { usePQRSStore } from '@/features/pqrs/store/pqrs-store'
 import { fmtMoney } from '@/shared/lib/format-number'
-import { REGIONES_LISTA, departamentosDeRegion, ciudadesDeDepartamento, ubicacionDeCiudad } from '@/shared/data/colombia-divipola'
+import { REGIONES_LISTA, departamentosDeRegion, ciudadesDeDepartamento, ubicacionDeCiudad } from '@/features/referencias/data/colombia-divipola'
 import { useReferenceStore } from '@/features/referencias/store/reference-store'
 import { useCurrentUserStore } from '@/features/usuarios-gestion/store/current-user-store'
 import { usePermisos } from '@/shared/hooks/use-permisos'
