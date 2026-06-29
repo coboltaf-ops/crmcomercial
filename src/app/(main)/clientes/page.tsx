@@ -647,13 +647,6 @@ export default function ClientesPage() {
     { label: 'Actividad', key: 'actividad', options: [...new Set(clientes.map(c => c.actividad).filter(Boolean))] },
   ]
 
-  // Clientes por Región (deduce la región desde la ciudad si no está guardada)
-  const regionDeCliente = (c: Cliente) => c.region || deducirUbic(c.pais || 'Colombia', c.ciudad)?.region || 'Sin región'
-  const conteoRegion: Record<string, number> = {}
-  clientes.forEach(c => { const r = regionDeCliente(c); conteoRegion[r] = (conteoRegion[r] || 0) + 1 })
-  const clientesPorRegion = Object.entries(conteoRegion).map(([region, count]) => ({ region, count })).sort((a, b) => b.count - a.count)
-  const maxRegion = Math.max(1, ...clientesPorRegion.map(r => r.count))
-
   return (
     <div>
       <ModuleHeader title={t('page.clientes.title')} subtitle={t('page.clientes.subtitle')} />
@@ -671,30 +664,6 @@ export default function ClientesPage() {
 
       {tab === 'registros' && (
         <>
-          <div style={{ background: '#ffffff', borderRadius: 12, border: '1px solid #1e3a8a', padding: 16, marginBottom: 16 }}>
-            <h3 style={{ color: '#000000', fontSize: 16, fontWeight: 700, marginBottom: 16 }}>📊 Clientes por Región</h3>
-            {clientesPorRegion.length === 0 ? (
-              <p style={{ color: '#000000', fontSize: 13 }}>No hay empresas registradas.</p>
-            ) : (
-              <div style={{ overflowX: 'auto' }}>
-                <svg width={640} height={clientesPorRegion.length * 32 + 10} style={{ display: 'block', maxWidth: '100%' }}>
-                  {clientesPorRegion.map((r, i) => {
-                    const COLORES = ['#1e3a8a', '#dc2626', '#db2777', '#2563eb', '#b91c1c', '#ec4899', '#38bdf8', '#f472b6']
-                    const rowY = i * 32 + 6
-                    const x0 = 180, maxW = 360
-                    const w = Math.max(4, Math.round((r.count / maxRegion) * maxW))
-                    return (
-                      <g key={r.region}>
-                        <text x={0} y={rowY + 17} fontSize={13} fontWeight={700} fill="#013978">{r.region}</text>
-                        <rect x={x0} y={rowY + 4} width={w} height={20} rx={4} fill={COLORES[i % COLORES.length]} />
-                        <text x={x0 + w + 8} y={rowY + 19} fontSize={13} fontWeight={800} fill="#000000">{r.count}</text>
-                      </g>
-                    )
-                  })}
-                </svg>
-              </div>
-            )}
-          </div>
           <input value={search} onChange={e => setSearch(e.target.value)} placeholder={t('ph.buscarCliente')}
             style={{ ...inputStyle, maxWidth: 400, marginBottom: 16 }} />
 
