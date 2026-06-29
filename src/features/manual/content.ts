@@ -47,6 +47,7 @@ export const SECCIONES: Seccion[] = [
       { nombre: 'PQRS por Tipo', desc: 'Conteo por tipo: Petición, Queja, Reclamo, Sugerencia (y cuántas abiertas de cada uno).' },
       { nombre: 'Resumen General', desc: 'Empresas Activas, Contactos Principales, Productos Activos, Oportunidades Ganadas y PQRS Urgentes.' },
       { nombre: 'Clientes por Ciudad', desc: 'Barras horizontales con la cantidad de clientes en cada ciudad.' },
+      { nombre: 'Clientes por Región', desc: 'Barras horizontales con la cantidad de clientes en cada región (reconoce Colombia, Perú y Ecuador; si una empresa no tiene región guardada, la deduce desde su ciudad). Colores corporativos intercalados.' },
     ],
     especiales: [
       'Cada tarjeta es un acceso directo: al hacer clic, te lleva al módulo correspondiente.',
@@ -64,17 +65,24 @@ export const SECCIONES: Seccion[] = [
       { nombre: 'Razón Social / Nombre Comercial', desc: 'Nombre legal y comercial.' },
       { nombre: 'Actividad', desc: 'Actividad económica (desde Referencias).' },
       { nombre: 'Teléfono / Correo / Sitio Web', desc: 'Datos de contacto.' },
-      { nombre: 'Ubicación', desc: 'Dirección, Ciudad, País, Código Postal.' },
+      { nombre: 'Ubicación', desc: 'Dirección, País, Región, Departamento (Provincia), Ciudad y Código Postal.' },
+      { nombre: 'País', desc: 'Primer campo de la ubicación. Manda la cascada: al elegirlo se ajustan los desplegables de Región, Departamento (Provincia) y Ciudad a ese país (Colombia, Perú o Ecuador, con datos oficiales DANE/INEI/INEC).' },
+      { nombre: 'Región → Departamento (Provincia) → Ciudad', desc: 'Cascada: eliges Región y se cargan sus Departamentos (Provincias); eliges ese y se cargan sus Ciudades. En Perú equivale a Departamento → Provincia → Distrito; en Ecuador a Provincia → Cantón → Parroquia.' },
       { nombre: 'Condición de Pago / Moneda', desc: 'Términos comerciales.' },
       { nombre: 'Situación', desc: 'Activo, Inactivo, Prospecto.' },
       { nombre: 'Código de Acceso PQRS', desc: 'Permite a la empresa radicar PQRS desde el formulario público.' },
     ],
     comoUsar: [
       'Clic en “+ Nuevo” para crear; llena los campos y Guardar.',
+      'En Ubicación, elige primero el País y luego baja por la cascada Región → Departamento (Provincia) → Ciudad.',
       'En la lista: Ver (lectura), Editar o Eliminar.',
       'Dentro del registro puedes ver sus Contactos, Cotizaciones, Oportunidades y Tickets.',
     ],
-    especiales: ['Bitácora de seguimiento para registrar la gestión con cada empresa.'],
+    especiales: [
+      'La Ubicación funciona por CASCADA y por país: Colombia (Región/Departamento/Ciudad), Perú (Departamento/Provincia/Distrito) y Ecuador (Provincia/Cantón/Parroquia), pero los 3 campos siempre se llaman Región, Departamento (Provincia) y Ciudad.',
+      'Empresas cargadas antes de la cascada conservan su ciudad; el sistema deduce su región automáticamente.',
+      'Bitácora de seguimiento para registrar la gestión con cada empresa.',
+    ],
   },
   {
     id: 'contactos', titulo: 'Contactos', icono: '👤', grupo: 'modulo',
@@ -129,6 +137,8 @@ export const SECCIONES: Seccion[] = [
     ],
     especiales: [
       'Visibilidad: solo el usuario “directorlatam” ve TODAS las oportunidades; los demás ven todas menos las creadas por directorlatam.',
+      'La lista se ordena por % de Probabilidad de menor a mayor.',
+      'La columna “Estimado USA” se muestra en dólares (US$); el “Estimado COP” en pesos (COP).',
       'Documentos exigidos y bitácora de seguimiento dentro del registro.',
     ],
   },
