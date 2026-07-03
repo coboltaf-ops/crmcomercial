@@ -1,4 +1,4 @@
-import type { Metadata } from "next"
+import type { Metadata, Viewport } from "next"
 import "./globals.css"
 import { UpdateNotice } from "@/shared/components/UpdateNotice"
 
@@ -12,6 +12,12 @@ const fontVars = {
 export const metadata: Metadata = {
   title: "CRM Comercial",
   description: "Sistema de Gestión de Relaciones Comerciales",
+}
+
+// Escalado correcto en celular/tablet (diseño adaptativo).
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
 }
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

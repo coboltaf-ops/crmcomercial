@@ -248,3 +248,33 @@ div[style*="rgba(255,255,255,0.05)"] * {
 .login-screen img {
   background: #f3f4f6 !important;
 }
+
+/* ═══════════════════════════════════════════════════════════
+   RESPONSIVE — Adaptación a celular / tablet (comerciales en movimiento)
+   ═══════════════════════════════════════════════════════════ */
+@media (max-width: 820px) {
+  /* Formularios: todas las rejillas de varias columnas pasan a 1 columna */
+  [style*="grid-template-columns"] {
+    grid-template-columns: 1fr !important;
+  }
+  /* Tablas anchas: su contenedor se desliza horizontalmente (no se cortan) */
+  div:has(> table) {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+  }
+  /* Menos padding en el área principal para aprovechar la pantalla */
+  main {
+    padding: 12px !important;
+  }
+  /* Inputs a 16px: evita el zoom automático de iOS al enfocar un campo */
+  input, textarea, select {
+    font-size: 16px !important;
+  }
+}
+
+/* En pantallas MUY pequeñas (celular en vertical), aún más compacto */
+@media (max-width: 480px) {
+  main {
+    padding: 8px !important;
+  }
+}

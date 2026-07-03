@@ -111,6 +111,11 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
   const inputRef = useRef<HTMLInputElement>(null)
   const recognitionRef = useRef<unknown>(null)
 
+  // En celular/tablet, arrancar con el menú lateral colapsado (más espacio para el contenido)
+  useEffect(() => {
+    if (typeof window !== 'undefined' && window.innerWidth < 820) setCollapsed(true)
+  }, [])
+
   useEffect(() => { if (!user) router.push('/login') }, [user, router])
 
   // Sincronizar códigos de acceso de clientes al servidor para validación en formulario público
