@@ -280,23 +280,19 @@ div[style*="rgba(255,255,255,0.05)"] * {
   [style*="gridColumn"], [style*="grid-column"] {
     grid-column: auto !important;
   }
-  /* Tablas: el texto de las celdas ENVUELVE en vez de cortarse */
-  table {
-    width: 100% !important;
-    table-layout: auto !important;
-  }
+  /* Tablas de lista: NO se aplastan ni se vuelven verticales.
+     Las celdas van en una sola línea y el contenedor se DESLIZA horizontalmente,
+     así se ve todo el contenido deslizando el dedo (nada cortado). */
   th, td {
-    white-space: normal !important;
-    word-break: break-word !important;
-    overflow-wrap: anywhere !important;
+    white-space: nowrap !important;
     text-overflow: clip !important;
-    max-width: none !important;
     overflow: visible !important;
   }
-  /* Si aún así una tabla no cabe, su contenedor se desliza (no se corta) */
+  /* El contenedor directo de la tabla se desliza (vence el overflow:hidden en línea) */
   div:has(> table) {
     overflow-x: auto !important;
     -webkit-overflow-scrolling: touch;
+    max-width: 100% !important;
   }
   /* Menos padding en el área principal para aprovechar la pantalla */
   main {
