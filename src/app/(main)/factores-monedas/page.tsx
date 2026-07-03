@@ -72,11 +72,11 @@ export default function FactoresMonedasPage() {
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
               <div>
                 <label style={labelStyle}>Nro *</label>
-                <input value={selected.codigo} readOnly style={inputRO} />
+                {verLectura ? <div className="ver-box">{selected.codigo || '—'}</div> : <input value={selected.codigo} readOnly style={inputRO} />}
               </div>
               <div>
                 <label style={labelStyle}>Fecha Registro</label>
-                <input value={fDate(selected.fecha_registro || today)} readOnly style={inputRO} />
+                {verLectura ? <div className="ver-box">{fDate(selected.fecha_registro || today) || '—'}</div> : <input value={fDate(selected.fecha_registro || today)} readOnly style={inputRO} />}
               </div>
               <div>
                 <label style={labelStyle}>Factor Pesos a US$</label>
@@ -88,10 +88,12 @@ export default function FactoresMonedasPage() {
               </div>
               <div>
                 <label style={labelStyle}>Situación</label>
-                <select value={selected.situacion} onChange={e => setSelected({ ...selected, situacion: e.target.value })} style={inputStyle}>
-                  <option value="Activo">Activo</option>
-                  <option value="Inactivo">Inactivo</option>
-                </select>
+                {verLectura ? <div className="ver-box">{selected.situacion || '—'}</div> : (
+                  <select value={selected.situacion} onChange={e => setSelected({ ...selected, situacion: e.target.value })} style={inputStyle}>
+                    <option value="Activo">Activo</option>
+                    <option value="Inactivo">Inactivo</option>
+                  </select>
+                )}
               </div>
             </div>
           </fieldset>

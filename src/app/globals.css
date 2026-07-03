@@ -249,6 +249,25 @@ div[style*="rgba(255,255,255,0.05)"] * {
   background: #f3f4f6 !important;
 }
 
+/* ═══ Modo VER (solo lectura): caja que muestra el valor COMPLETO envolviendo
+   el texto (nunca lo corta). Se ve casi igual a un campo, en computador y celular. ═══ */
+.ver-box {
+  width: 100%;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: #ffffff !important;
+  border: 1px solid #1e3a8a !important;
+  color: #000000 !important;
+  font-weight: 600;
+  font-size: 14px;
+  min-height: 38px;
+  line-height: 1.4;
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  box-sizing: border-box;
+}
+
 /* ═══════════════════════════════════════════════════════════
    RESPONSIVE — Adaptación a celular / tablet (comerciales en movimiento)
    ═══════════════════════════════════════════════════════════ */
@@ -257,7 +276,24 @@ div[style*="rgba(255,255,255,0.05)"] * {
   [style*="grid-template-columns"] {
     grid-template-columns: 1fr !important;
   }
-  /* Tablas anchas: su contenedor se desliza horizontalmente (no se cortan) */
+  /* Los campos que ocupaban varias columnas ('span') ya no fuerzan ancho extra */
+  [style*="gridColumn"], [style*="grid-column"] {
+    grid-column: auto !important;
+  }
+  /* Tablas: el texto de las celdas ENVUELVE en vez de cortarse */
+  table {
+    width: 100% !important;
+    table-layout: auto !important;
+  }
+  th, td {
+    white-space: normal !important;
+    word-break: break-word !important;
+    overflow-wrap: anywhere !important;
+    text-overflow: clip !important;
+    max-width: none !important;
+    overflow: visible !important;
+  }
+  /* Si aún así una tabla no cabe, su contenedor se desliza (no se corta) */
   div:has(> table) {
     overflow-x: auto !important;
     -webkit-overflow-scrolling: touch;
@@ -269,6 +305,14 @@ div[style*="rgba(255,255,255,0.05)"] * {
   /* Inputs a 16px: evita el zoom automático de iOS al enfocar un campo */
   input, textarea, select {
     font-size: 16px !important;
+  }
+  /* Modo Ver (solo lectura): las cajas de contenido ENVUELVEN el texto completo */
+  .ver-box {
+    white-space: pre-wrap !important;
+    word-break: break-word !important;
+    overflow-wrap: anywhere !important;
+    height: auto !important;
+    min-height: 40px !important;
   }
 }
 

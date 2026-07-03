@@ -141,53 +141,53 @@ export default function ProductosPage() {
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 16 }}>
             <div>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.categoria')} *</label>
-              <select value={selected.categoria} onChange={e => setSelected({ ...selected, categoria: e.target.value })} required style={inputStyle}>
+              {verLectura ? <div className="ver-box">{selected.categoria || '—'}</div> : <select value={selected.categoria} onChange={e => setSelected({ ...selected, categoria: e.target.value })} required style={inputStyle}>
                 <option value="">Seleccione...</option>
                 {(refData.categoria_productos || []).filter(c => c.situacion).map(c => (
                   <option key={c.id} value={c.descripcion}>{c.descripcion}</option>
                 ))}
-              </select>
+              </select>}
             </div>
             <div>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.codigo')}</label>
-              <input value={selected.codigo} readOnly style={{ ...inputStyle, opacity: 0.5 }} />
+              {verLectura ? <div className="ver-box">{selected.codigo || '—'}</div> : <input value={selected.codigo} readOnly style={{ ...inputStyle, opacity: 0.5 }} />}
             </div>
             <div>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.fechaRegistro')}</label>
-              <input value={fDate(selected.fecha_registro || today)} readOnly style={{ ...inputStyle, opacity: 0.5, cursor: 'not-allowed' }} />
+              {verLectura ? <div className="ver-box">{fDate(selected.fecha_registro || today) || '—'}</div> : <input value={fDate(selected.fecha_registro || today)} readOnly style={{ ...inputStyle, opacity: 0.5, cursor: 'not-allowed' }} />}
             </div>
             <div style={{ gridColumn: 'span 3' }}>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.descripcion')} *</label>
-              <input value={selected.descripcion} onChange={e => setSelected({ ...selected, descripcion: e.target.value })} required style={inputStyle} />
+              {verLectura ? <div className="ver-box">{selected.descripcion || '—'}</div> : <input value={selected.descripcion} onChange={e => setSelected({ ...selected, descripcion: e.target.value })} required style={inputStyle} />}
             </div>
             <div>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.unidadMedida')}</label>
-              <select value={selected.unidad_medida} onChange={e => setSelected({ ...selected, unidad_medida: e.target.value })} style={inputStyle}>
+              {verLectura ? <div className="ver-box">{selected.unidad_medida || '—'}</div> : <select value={selected.unidad_medida} onChange={e => setSelected({ ...selected, unidad_medida: e.target.value })} style={inputStyle}>
                 <option value="">Seleccione...</option>
                 {(refData.unidad_medida || []).filter(u => u.situacion).map(u => (
                   <option key={u.id} value={u.descripcion}>{u.descripcion}</option>
                 ))}
-              </select>
+              </select>}
             </div>
             <div>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.precioUnitario')} *</label>
-              <input type="number" step="1" min="0" value={selected.precio_unitario || ''} onChange={e => setSelected({ ...selected, precio_unitario: Math.round(parseFloat(e.target.value)) || 0 })} required style={inputStyle} />
+              {verLectura ? <div className="ver-box">{`${monedaSimbolo(selected.tipo_moneda)}${fmtMoney(selected.precio_unitario)}` || '—'}</div> : <input type="number" step="1" min="0" value={selected.precio_unitario || ''} onChange={e => setSelected({ ...selected, precio_unitario: Math.round(parseFloat(e.target.value)) || 0 })} required style={inputStyle} />}
             </div>
             <div>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.moneda')}</label>
-              <select value={selected.tipo_moneda} onChange={e => setSelected({ ...selected, tipo_moneda: e.target.value })} style={inputStyle}>
+              {verLectura ? <div className="ver-box">{selected.tipo_moneda || '—'}</div> : <select value={selected.tipo_moneda} onChange={e => setSelected({ ...selected, tipo_moneda: e.target.value })} style={inputStyle}>
                 {refOptions('tipo_moneda').map(o => <option key={o} value={o}>{o}</option>)}
-              </select>
+              </select>}
             </div>
             <div>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.situacion')}</label>
-              <select value={selected.situacion} onChange={e => setSelected({ ...selected, situacion: e.target.value })} style={inputStyle}>
+              {verLectura ? <div className="ver-box">{selected.situacion || '—'}</div> : <select value={selected.situacion} onChange={e => setSelected({ ...selected, situacion: e.target.value })} style={inputStyle}>
                 {refOptions('situacion_lista').map(o => <option key={o} value={o}>{o}</option>)}
-              </select>
+              </select>}
             </div>
             <div style={{ gridColumn: 'span 3' }}>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.observaciones')}</label>
-              <textarea value={selected.observaciones} onChange={e => setSelected({ ...selected, observaciones: e.target.value })} rows={3} style={{ ...inputStyle, resize: 'vertical' }} />
+              {verLectura ? <div className="ver-box">{selected.observaciones || '—'}</div> : <textarea value={selected.observaciones} onChange={e => setSelected({ ...selected, observaciones: e.target.value })} rows={3} style={{ ...inputStyle, resize: 'vertical' }} />}
             </div>
           </div>
           </fieldset>

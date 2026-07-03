@@ -303,19 +303,19 @@ export default function OportunidadesPage() {
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: 14, marginBottom: 20 }}>
             <div>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.nroOportunidad')} *</label>
-              <input value={selected.codigo} readOnly style={{ ...inputStyle, opacity: 0.5 }} />
+              {verLectura ? <div className="ver-box">{selected.codigo || '—'}</div> : <input value={selected.codigo} readOnly style={{ ...inputStyle, opacity: 0.5 }} />}
             </div>
             <div>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.fechaRegistro')}</label>
-              <input value={fDate(selected.fecha_registro || today)} readOnly style={{ ...inputStyle, opacity: 0.5, cursor: 'not-allowed' }} />
+              {verLectura ? <div className="ver-box">{fDate(selected.fecha_registro || today) || '—'}</div> : <input value={fDate(selected.fecha_registro || today)} readOnly style={{ ...inputStyle, opacity: 0.5, cursor: 'not-allowed' }} />}
             </div>
             <div>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.codigo')}</label>
-              <input value={selected.codigo_interno} onChange={e => setSelected({ ...selected, codigo_interno: e.target.value.toUpperCase() })} style={inputStyle} />
+              {verLectura ? <div className="ver-box">{selected.codigo_interno || '—'}</div> : <input value={selected.codigo_interno} onChange={e => setSelected({ ...selected, codigo_interno: e.target.value.toUpperCase() })} style={inputStyle} />}
             </div>
             <div style={{ gridColumn: 'span 4' }}>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.cliente')} *</label>
-              <select value={selected.cliente_id} onChange={e => {
+              {verLectura ? <div className="ver-box">{selected.cliente_nombre || '—'}</div> : (<select value={selected.cliente_id} onChange={e => {
                 const cli = allClientes.find(c => c.id === e.target.value)
                 setSelected({ ...selected, cliente_id: e.target.value, cliente_nombre: cli?.razon_social || '' })
               }} required style={inputStyle}>
@@ -337,50 +337,50 @@ export default function OportunidadesPage() {
                     return <option key={c.id} value={c.id} style={optStyle}>{c.razon_social}{suf}</option>
                   })
                 })()}
-              </select>
+              </select>)}
             </div>
             <div style={{ gridColumn: 'span 4' }}>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.proyecto')} *</label>
-              <textarea value={selected.proyecto} onChange={e => setSelected({ ...selected, proyecto: e.target.value.toUpperCase() })} required rows={2} style={{ ...inputStyle, resize: 'vertical' }} />
+              {verLectura ? <div className="ver-box">{selected.proyecto || '—'}</div> : <textarea value={selected.proyecto} onChange={e => setSelected({ ...selected, proyecto: e.target.value.toUpperCase() })} required rows={2} style={{ ...inputStyle, resize: 'vertical' }} />}
             </div>
             <div>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.ciudad')}</label>
-              <select value={selected.ciudad} onChange={e => setSelected({ ...selected, ciudad: e.target.value })} style={inputStyle}>
+              {verLectura ? <div className="ver-box">{selected.ciudad || '—'}</div> : (<select value={selected.ciudad} onChange={e => setSelected({ ...selected, ciudad: e.target.value })} style={inputStyle}>
                 <option value="">{t("campo.seleccionar")}</option>
                 {refOptions('ciudad').map(o => <option key={o} value={o}>{o}</option>)}
-              </select>
+              </select>)}
             </div>
             <div>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.pais')}</label>
-              <select value={selected.pais} onChange={e => setSelected({ ...selected, pais: e.target.value })} style={inputStyle}>
+              {verLectura ? <div className="ver-box">{selected.pais || '—'}</div> : (<select value={selected.pais} onChange={e => setSelected({ ...selected, pais: e.target.value })} style={inputStyle}>
                 <option value="">{t("campo.seleccionar")}</option>
                 {refOptions('pais').map(o => <option key={o} value={o}>{o}</option>)}
-              </select>
+              </select>)}
             </div>
             <div>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>Estimado COP *</label>
-              <MoneyInput value={selected.estimado_cop || 0} onChange={n => setSelected({ ...selected, estimado_cop: n })} required placeholder="0" style={inputStyle} />
+              {verLectura ? <div className="ver-box">{fmtMoney(selected.estimado_cop || 0) || '—'}</div> : <MoneyInput value={selected.estimado_cop || 0} onChange={n => setSelected({ ...selected, estimado_cop: n })} required placeholder="0" style={inputStyle} />}
             </div>
             <div>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>Estimado USA *</label>
-              <MoneyInput value={selected.monto_estimado || 0} onChange={n => setSelected({ ...selected, monto_estimado: n })} required placeholder="0" style={inputStyle} />
+              {verLectura ? <div className="ver-box">{fmtMoney(selected.monto_estimado || 0) || '—'}</div> : <MoneyInput value={selected.monto_estimado || 0} onChange={n => setSelected({ ...selected, monto_estimado: n })} required placeholder="0" style={inputStyle} />}
             </div>
             <div>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{idioma === 'en' ? 'Opportunity Stage' : 'Etapa Oportunidad'}</label>
-              <select value={selected.etapa || ''} onChange={e => setSelected({ ...selected, etapa: e.target.value })} style={inputStyle}>
+              {verLectura ? <div className="ver-box">{(selected.etapa || '') || '—'}</div> : (<select value={selected.etapa || ''} onChange={e => setSelected({ ...selected, etapa: e.target.value })} style={inputStyle}>
                 <option value="">{idioma === 'en' ? 'Select...' : 'Seleccionar...'}</option>
                 {refOptions('etapa_oportunidad').map(o => <option key={o} value={o}>{o}</option>)}
-              </select>
+              </select>)}
             </div>
             <div>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.situacion')} *</label>
-              <select value={selected.situacion} onChange={e => setSelected({ ...selected, situacion: e.target.value })} required style={inputStyle}>
+              {verLectura ? <div className="ver-box">{selected.situacion || '—'}</div> : (<select value={selected.situacion} onChange={e => setSelected({ ...selected, situacion: e.target.value })} required style={inputStyle}>
                 {refOptions('situacion_oportunidad').map(o => <option key={o} value={o}>{o}</option>)}
-              </select>
+              </select>)}
             </div>
             <div>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.responsable')}</label>
-              <select value={selected.responsable || ''} onChange={e => setSelected({ ...selected, responsable: e.target.value })} style={inputStyle}>
+              {verLectura ? <div className="ver-box">{(selected.responsable || '') || '—'}</div> : (<select value={selected.responsable || ''} onChange={e => setSelected({ ...selected, responsable: e.target.value })} style={inputStyle}>
                 <option value="">{idioma === 'en' ? 'Select...' : 'Seleccionar...'}</option>
                 {selected.responsable && !vendedores.some(v => `${v.nombre} ${v.apellido}`.trim() === selected.responsable) && (
                   <option value={selected.responsable}>{selected.responsable}</option>
@@ -389,7 +389,7 @@ export default function OportunidadesPage() {
                   const nombre = `${v.nombre} ${v.apellido}`.trim()
                   return <option key={v.id} value={nombre}>{nombre}</option>
                 })}
-              </select>
+              </select>)}
             </div>
           </div>
 
@@ -398,15 +398,15 @@ export default function OportunidadesPage() {
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: 14, marginBottom: 20 }}>
             <div>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.probabilidad')}</label>
-              <input type="number" step="0.01" min="0" max="100" value={selected.probable_pct ?? ''} onChange={e => { const v = e.target.value; setSelected({ ...selected, probable_pct: v === '' ? undefined : (parseFloat(v) || 0) }) }} style={inputStyle} />
+              {verLectura ? <div className="ver-box">{(selected.probable_pct ?? '') || '—'}</div> : <input type="number" step="0.01" min="0" max="100" value={selected.probable_pct ?? ''} onChange={e => { const v = e.target.value; setSelected({ ...selected, probable_pct: v === '' ? undefined : (parseFloat(v) || 0) }) }} style={inputStyle} />}
             </div>
             <div>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.parcialDolarProbable')}</label>
-              <input value={fmtMoney(der.parcial_probable)} readOnly style={inputReadonly} />
+              {verLectura ? <div className="ver-box">{fmtMoney(der.parcial_probable) || '—'}</div> : <input value={fmtMoney(der.parcial_probable)} readOnly style={inputReadonly} />}
             </div>
             <div>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.adjudicacionMMAAAA')} *</label>
-              <input value={selected.adjudicacion} onChange={e => {
+              {verLectura ? <div className="ver-box">{selected.adjudicacion || '—'}</div> : (<input value={selected.adjudicacion} onChange={e => {
                 const digits = e.target.value.replace(/\D/g, '').slice(0, 6)
                 let mm = digits.slice(0, 2)
                 const yyyy = digits.slice(2, 6)
@@ -417,11 +417,11 @@ export default function OportunidadesPage() {
                 }
                 const formatted = yyyy ? `${mm}/${yyyy}` : mm
                 setSelected({ ...selected, adjudicacion: formatted })
-              }} placeholder="MM/AAAA" maxLength={7} inputMode="numeric" style={inputStyle} />
+              }} placeholder="MM/AAAA" maxLength={7} inputMode="numeric" style={inputStyle} />)}
             </div>
             <div>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.mgc')} *</label>
-              <input
+              {verLectura ? <div className="ver-box">{(selected.mgc || '') || '—'}</div> : (<input
                 type="number"
                 step="0.01"
                 min="0"
@@ -435,27 +435,27 @@ export default function OportunidadesPage() {
                 }}
                 required
                 style={inputStyle}
-              />
+              />)}
             </div>
             <div>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.ejecucionAnyo')}</label>
-              <input type="number" step="1" min="0" max="100" value={selected.ejecucion_anyo_pct ?? ''} onChange={e => { const v = e.target.value; setSelected({ ...selected, ejecucion_anyo_pct: v === '' ? undefined : (parseFloat(v) || 0) }) }} style={inputStyle} />
+              {verLectura ? <div className="ver-box">{(selected.ejecucion_anyo_pct ?? '') || '—'}</div> : <input type="number" step="1" min="0" max="100" value={selected.ejecucion_anyo_pct ?? ''} onChange={e => { const v = e.target.value; setSelected({ ...selected, ejecucion_anyo_pct: v === '' ? undefined : (parseFloat(v) || 0) }) }} style={inputStyle} />}
             </div>
             <div>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{idioma === 'en' ? 'Year Partial $' : 'Parcial Año $'}</label>
-              <input value={fmtMoney(der.parcial_anyo)} readOnly style={inputReadonly} />
+              {verLectura ? <div className="ver-box">{fmtMoney(der.parcial_anyo) || '—'}</div> : <input value={fmtMoney(der.parcial_anyo)} readOnly style={inputReadonly} />}
             </div>
             <div>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{idioma === 'en' ? 'Year Partial €' : 'Parcial Año €'}</label>
-              <input value={fmtMoney(der.parcial_euros_anyo)} readOnly style={inputReadonly} />
+              {verLectura ? <div className="ver-box">{fmtMoney(der.parcial_euros_anyo) || '—'}</div> : <input value={fmtMoney(der.parcial_euros_anyo)} readOnly style={inputReadonly} />}
             </div>
             <div>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{idioma === 'en' ? 'MG Year Partial $' : 'MG Parcial Año $'}</label>
-              <input value={fmtMoney(der.mg_parcial_anyo)} readOnly style={inputReadonly} />
+              {verLectura ? <div className="ver-box">{fmtMoney(der.mg_parcial_anyo) || '—'}</div> : <input value={fmtMoney(der.mg_parcial_anyo)} readOnly style={inputReadonly} />}
             </div>
             <div>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{idioma === 'en' ? 'MG Partial €' : 'MG Parcial €'}</label>
-              <input value={fmtMoney(der.mg_parcial_euros_anyo)} readOnly style={inputReadonly} />
+              {verLectura ? <div className="ver-box">{fmtMoney(der.mg_parcial_euros_anyo) || '—'}</div> : <input value={fmtMoney(der.mg_parcial_euros_anyo)} readOnly style={inputReadonly} />}
             </div>
           </div>
 
@@ -464,37 +464,37 @@ export default function OportunidadesPage() {
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: 14, marginBottom: 20 }}>
             <div>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.fechaInicioConsultas')}</label>
-              <input type="date" value={selected.fecha_inicio_consultas} onChange={e => setSelected({ ...selected, fecha_inicio_consultas: e.target.value })} style={inputStyle} />
+              {verLectura ? <div className="ver-box">{(selected.fecha_inicio_consultas ? fDate(selected.fecha_inicio_consultas) : '') || '—'}</div> : <input type="date" value={selected.fecha_inicio_consultas} onChange={e => setSelected({ ...selected, fecha_inicio_consultas: e.target.value })} style={inputStyle} />}
             </div>
             <div>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.fechaFinalConsultas')}</label>
-              <input type="date" value={selected.fecha_final_consultas} onChange={e => setSelected({ ...selected, fecha_final_consultas: e.target.value })} style={inputStyle} />
+              {verLectura ? <div className="ver-box">{(selected.fecha_final_consultas ? fDate(selected.fecha_final_consultas) : '') || '—'}</div> : <input type="date" value={selected.fecha_final_consultas} onChange={e => setSelected({ ...selected, fecha_final_consultas: e.target.value })} style={inputStyle} />}
             </div>
             <div>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.fechaPresentarOferta')}</label>
-              <input type="date" value={selected.fecha_presentar_oferta} onChange={e => setSelected({ ...selected, fecha_presentar_oferta: e.target.value })} style={inputStyle} />
+              {verLectura ? <div className="ver-box">{(selected.fecha_presentar_oferta ? fDate(selected.fecha_presentar_oferta) : '') || '—'}</div> : <input type="date" value={selected.fecha_presentar_oferta} onChange={e => setSelected({ ...selected, fecha_presentar_oferta: e.target.value })} style={inputStyle} />}
             </div>
             <div>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.fechaRealPresentacion')}</label>
-              <input type="date" value={selected.fecha_real_presentacion_oferta} onChange={e => setSelected({ ...selected, fecha_real_presentacion_oferta: e.target.value })} style={inputStyle} />
+              {verLectura ? <div className="ver-box">{(selected.fecha_real_presentacion_oferta ? fDate(selected.fecha_real_presentacion_oferta) : '') || '—'}</div> : <input type="date" value={selected.fecha_real_presentacion_oferta} onChange={e => setSelected({ ...selected, fecha_real_presentacion_oferta: e.target.value })} style={inputStyle} />}
             </div>
             <div>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.montoRealOferta')}</label>
-              <input type="number" step="1" min="0" value={selected.monto_real_oferta || ''} onChange={e => setSelected({ ...selected, monto_real_oferta: Math.round(parseFloat(e.target.value)) || 0 })} style={inputStyle} />
+              {verLectura ? <div className="ver-box">{(selected.monto_real_oferta || '') || '—'}</div> : <input type="number" step="1" min="0" value={selected.monto_real_oferta || ''} onChange={e => setSelected({ ...selected, monto_real_oferta: Math.round(parseFloat(e.target.value)) || 0 })} style={inputStyle} />}
             </div>
             <div>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.fechaEsperadaVeredicto')}</label>
-              <input type="date" value={selected.fecha_esperada_veredicto} onChange={e => setSelected({ ...selected, fecha_esperada_veredicto: e.target.value })} style={inputStyle} />
+              {verLectura ? <div className="ver-box">{(selected.fecha_esperada_veredicto ? fDate(selected.fecha_esperada_veredicto) : '') || '—'}</div> : <input type="date" value={selected.fecha_esperada_veredicto} onChange={e => setSelected({ ...selected, fecha_esperada_veredicto: e.target.value })} style={inputStyle} />}
             </div>
             <div>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.veredicto')}</label>
-              <select value={selected.veredicto} onChange={e => setSelected({ ...selected, veredicto: e.target.value })} style={inputStyle}>
+              {verLectura ? <div className="ver-box">{selected.veredicto || '—'}</div> : (<select value={selected.veredicto} onChange={e => setSelected({ ...selected, veredicto: e.target.value })} style={inputStyle}>
                 {refOptions('veredicto_oferta').map(o => <option key={o} value={o}>{o}</option>)}
-              </select>
+              </select>)}
             </div>
             <div>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.empresaGanadora')}</label>
-              <input value={selected.empresa_ganadora} onChange={e => setSelected({ ...selected, empresa_ganadora: e.target.value })} style={inputStyle} />
+              {verLectura ? <div className="ver-box">{selected.empresa_ganadora || '—'}</div> : <input value={selected.empresa_ganadora} onChange={e => setSelected({ ...selected, empresa_ganadora: e.target.value })} style={inputStyle} />}
             </div>
           </div>
 
@@ -518,19 +518,19 @@ export default function OportunidadesPage() {
                   <tr key={doc.id} style={{ background: i % 2 === 0 ? 'rgba(255,255,255,0.02)' : 'transparent' }}>
                     <td style={{ padding: '6px 10px', borderBottom: '1px solid rgba(255,255,255,0.06)', color: '#013978', fontSize: 12, textAlign: 'center', fontFamily: 'monospace' }}>{i + 1}</td>
                     <td style={{ padding: '6px 10px', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
-                      <input value={doc.documento} readOnly title="Documento bloqueado tras crearse" style={{ ...inputStyle, opacity: 0.7, cursor: 'not-allowed', padding: '6px 10px' }} />
+                      {verLectura ? <div className="ver-box">{doc.documento || '—'}</div> : <input value={doc.documento} readOnly title="Documento bloqueado tras crearse" style={{ ...inputStyle, opacity: 0.7, cursor: 'not-allowed', padding: '6px 10px' }} />}
                     </td>
                     <td style={{ padding: '6px 10px', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
-                      <input type="date" value={doc.fecha_procesado} onChange={e => {
+                      {verLectura ? <div className="ver-box">{(doc.fecha_procesado ? fDate(doc.fecha_procesado) : '') || '—'}</div> : (<input type="date" value={doc.fecha_procesado} onChange={e => {
                         const nuevos = (selected.documentos_exigidos || []).map(d => d.id === doc.id ? { ...d, fecha_procesado: e.target.value } : d)
                         setSelected({ ...selected, documentos_exigidos: nuevos })
-                      }} style={{ ...inputStyle, padding: '6px 10px' }} />
+                      }} style={{ ...inputStyle, padding: '6px 10px' }} />)}
                     </td>
                     <td style={{ padding: '6px 10px', borderBottom: '1px solid rgba(255,255,255,0.06)', textAlign: 'center' }}>
-                      <input type="checkbox" checked={doc.listo} onChange={e => {
+                      {verLectura ? <div className="ver-box">{doc.listo ? '✓' : '—'}</div> : (<input type="checkbox" checked={doc.listo} onChange={e => {
                         const nuevos = (selected.documentos_exigidos || []).map(d => d.id === doc.id ? { ...d, listo: e.target.checked } : d)
                         setSelected({ ...selected, documentos_exigidos: nuevos })
-                      }} style={{ width: 18, height: 18, cursor: 'pointer' }} />
+                      }} style={{ width: 18, height: 18, cursor: 'pointer' }} />)}
                     </td>
                     <td style={{ padding: '6px 10px', borderBottom: '1px solid rgba(255,255,255,0.06)', textAlign: 'center', color: 'rgba(255,255,255,0.4)', fontSize: 11 }}>
                       🔒 bloqueado
@@ -541,7 +541,7 @@ export default function OportunidadesPage() {
                   <tr style={{ background: 'rgba(34,197,94,0.05)' }}>
                     <td style={{ padding: '6px 10px', borderTop: '1px solid rgba(34,197,94,0.2)', color: '#013978', fontSize: 12, textAlign: 'center', fontFamily: 'monospace' }}>{(selected.documentos_exigidos || []).length + 1}</td>
                     <td style={{ padding: '6px 10px', borderTop: '1px solid rgba(34,197,94,0.2)' }}>
-                      <input
+                      {verLectura ? <div className="ver-box">{nuevoDocTexto || '—'}</div> : (<input
                         value={nuevoDocTexto}
                         onChange={e => setNuevoDocTexto(e.target.value)}
                         placeholder="Escriba el documento exigido y pulse Agregar..."
@@ -563,7 +563,7 @@ export default function OportunidadesPage() {
                           }
                         }}
                         style={{ ...inputStyle, padding: '6px 10px' }}
-                      />
+                      />)}
                     </td>
                     <td style={{ padding: '6px 10px', borderTop: '1px solid rgba(34,197,94,0.2)', color: 'rgba(255,255,255,0.4)', fontSize: 11, textAlign: 'center' }}>—</td>
                     <td style={{ padding: '6px 10px', borderTop: '1px solid rgba(34,197,94,0.2)', textAlign: 'center', color: 'rgba(255,255,255,0.4)', fontSize: 11 }}>—</td>
@@ -605,7 +605,7 @@ export default function OportunidadesPage() {
 
           <div style={{ marginBottom: 14 }}>
             <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.observaciones')}</label>
-            <textarea value={selected.observaciones} onChange={e => setSelected({ ...selected, observaciones: e.target.value })} rows={3} style={{ ...inputStyle, resize: 'vertical' }} />
+            {verLectura ? <div className="ver-box">{selected.observaciones || '—'}</div> : <textarea value={selected.observaciones} onChange={e => setSelected({ ...selected, observaciones: e.target.value })} rows={3} style={{ ...inputStyle, resize: 'vertical' }} />}
           </div>
           </fieldset>
           {verLectura && (

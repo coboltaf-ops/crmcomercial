@@ -481,66 +481,66 @@ export default function ClientesPage() {
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 16 }}>
             <div>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.codigo')}</label>
-              <input value={selected.codigo} readOnly style={{ ...inputStyle, opacity: 0.5 }} />
+              {verLectura ? <div className="ver-box">{selected.codigo || '—'}</div> : <input value={selected.codigo} readOnly style={{ ...inputStyle, opacity: 0.5 }} />}
             </div>
             <div>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.fechaRegistro')}</label>
-              <input value={fDate(selected.fecha_registro || today)} readOnly style={{ ...inputStyle, opacity: 0.5, cursor: 'not-allowed' }} />
+              {verLectura ? <div className="ver-box">{fDate(selected.fecha_registro || today) || '—'}</div> : <input value={fDate(selected.fecha_registro || today)} readOnly style={{ ...inputStyle, opacity: 0.5, cursor: 'not-allowed' }} />}
             </div>
             <div>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.tipoIdentificacion')}</label>
-              <select value={selected.tipo_identificacion} onChange={e => setSelected({ ...selected, tipo_identificacion: e.target.value })} style={inputStyle}>
+              {verLectura ? <div className="ver-box">{selected.tipo_identificacion || '—'}</div> : <select value={selected.tipo_identificacion} onChange={e => setSelected({ ...selected, tipo_identificacion: e.target.value })} style={inputStyle}>
                 {refOptions('tipo_identificacion').map(o => <option key={o} value={o}>{o}</option>)}
-              </select>
+              </select>}
             </div>
             <div>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.nroDocumento')} *</label>
-              <input value={selected.nro_documento} onChange={e => setSelected({ ...selected, nro_documento: e.target.value })} required style={inputStyle} />
+              {verLectura ? <div className="ver-box">{selected.nro_documento || '—'}</div> : <input value={selected.nro_documento} onChange={e => setSelected({ ...selected, nro_documento: e.target.value })} required style={inputStyle} />}
             </div>
             <div style={{ gridColumn: 'span 2' }}>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.razonSocial')} *</label>
-              <input value={selected.razon_social} onChange={e => setSelected({ ...selected, razon_social: e.target.value.toUpperCase() })} required style={inputStyle} />
+              {verLectura ? <div className="ver-box">{selected.razon_social || '—'}</div> : <input value={selected.razon_social} onChange={e => setSelected({ ...selected, razon_social: e.target.value.toUpperCase() })} required style={inputStyle} />}
             </div>
             <div>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.nombreComercial')}</label>
-              <input value={selected.nombre_comercial} onChange={e => setSelected({ ...selected, nombre_comercial: e.target.value.toUpperCase() })} style={inputStyle} />
+              {verLectura ? <div className="ver-box">{selected.nombre_comercial || '—'}</div> : <input value={selected.nombre_comercial} onChange={e => setSelected({ ...selected, nombre_comercial: e.target.value.toUpperCase() })} style={inputStyle} />}
             </div>
             <div>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.actividad')}</label>
-              <select value={selected.actividad} onChange={e => setSelected({ ...selected, actividad: e.target.value })} style={inputStyle}>
+              {verLectura ? <div className="ver-box">{selected.actividad || '—'}</div> : <select value={selected.actividad} onChange={e => setSelected({ ...selected, actividad: e.target.value })} style={inputStyle}>
                 <option value="">{t("campo.seleccionar")}</option>
                 {refOptions('actividad_cliente').map(o => <option key={o} value={o}>{o}</option>)}
-              </select>
+              </select>}
             </div>
             <div>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.telefono')}</label>
-              <input value={selected.telefono} onChange={e => setSelected({ ...selected, telefono: e.target.value })} style={inputStyle} />
+              {verLectura ? <div className="ver-box">{selected.telefono || '—'}</div> : <input value={selected.telefono} onChange={e => setSelected({ ...selected, telefono: e.target.value })} style={inputStyle} />}
             </div>
             <div>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.email')}</label>
-              <input type="email" value={selected.email} onChange={e => setSelected({ ...selected, email: e.target.value })} style={inputStyle} />
+              {verLectura ? <div className="ver-box">{selected.email || '—'}</div> : <input type="email" value={selected.email} onChange={e => setSelected({ ...selected, email: e.target.value })} style={inputStyle} />}
             </div>
             <div>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.sitioWeb')}</label>
-              <input value={selected.sitio_web} onChange={e => setSelected({ ...selected, sitio_web: e.target.value })} style={inputStyle} />
+              {verLectura ? <div className="ver-box">{selected.sitio_web || '—'}</div> : <input value={selected.sitio_web} onChange={e => setSelected({ ...selected, sitio_web: e.target.value })} style={inputStyle} />}
             </div>
             <div>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.condicionPago')}</label>
-              <select value={selected.condicion_pago} onChange={e => setSelected({ ...selected, condicion_pago: e.target.value })} style={inputStyle}>
+              {verLectura ? <div className="ver-box">{selected.condicion_pago || '—'}</div> : <select value={selected.condicion_pago} onChange={e => setSelected({ ...selected, condicion_pago: e.target.value })} style={inputStyle}>
                 {refOptions('condiciones_pago').map(o => <option key={o} value={o}>{o}</option>)}
-              </select>
+              </select>}
             </div>
             <div>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.moneda')}</label>
-              <select value={selected.tipo_moneda} onChange={e => setSelected({ ...selected, tipo_moneda: e.target.value })} style={inputStyle}>
+              {verLectura ? <div className="ver-box">{selected.tipo_moneda || '—'}</div> : <select value={selected.tipo_moneda} onChange={e => setSelected({ ...selected, tipo_moneda: e.target.value })} style={inputStyle}>
                 {refOptions('tipo_moneda').map(o => <option key={o} value={o}>{o}</option>)}
-              </select>
+              </select>}
             </div>
             <div>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.situacion')}</label>
-              <select value={selected.situacion} onChange={e => setSelected({ ...selected, situacion: e.target.value })} style={inputStyle}>
+              {verLectura ? <div className="ver-box">{selected.situacion || '—'}</div> : <select value={selected.situacion} onChange={e => setSelected({ ...selected, situacion: e.target.value })} style={inputStyle}>
                 {refOptions('situacion_cliente').map(o => <option key={o} value={o}>{o}</option>)}
-              </select>
+              </select>}
             </div>
           </div>
 
@@ -550,40 +550,40 @@ export default function ClientesPage() {
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 16 }}>
               <div style={{ gridColumn: 'span 3' }}>
                 <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.direccion')}</label>
-                <input value={selected.direccion} onChange={e => setSelected({ ...selected, direccion: e.target.value })} style={inputStyle} />
+                {verLectura ? <div className="ver-box">{selected.direccion || '—'}</div> : <input value={selected.direccion} onChange={e => setSelected({ ...selected, direccion: e.target.value })} style={inputStyle} />}
               </div>
               <div>
                 <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.pais')}</label>
-                <select value={paisEff} onChange={e => { const v = e.target.value; setSelected({ ...selected, pais: v, region: '', departamento: '', ciudad: '' }) }} style={inputStyle}>
+                {verLectura ? <div className="ver-box">{paisEff || '—'}</div> : <select value={paisEff} onChange={e => { const v = e.target.value; setSelected({ ...selected, pais: v, region: '', departamento: '', ciudad: '' }) }} style={inputStyle}>
                   {paisEff && !PAISES_UBIC.includes(paisEff) && <option value={paisEff}>{paisEff}</option>}
                   {PAISES_UBIC.map(o => <option key={o} value={o}>{o}</option>)}
-                </select>
+                </select>}
               </div>
               <div>
                 <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>Región</label>
-                <select value={regionEff} onChange={e => { const v = e.target.value; const same = v === regionEff; setSelected({ ...selected, region: v, departamento: same ? deptoEff : '', ciudad: same ? selected.ciudad : '' }) }} style={inputStyle}>
+                {verLectura ? <div className="ver-box">{regionEff || '—'}</div> : <select value={regionEff} onChange={e => { const v = e.target.value; const same = v === regionEff; setSelected({ ...selected, region: v, departamento: same ? deptoEff : '', ciudad: same ? selected.ciudad : '' }) }} style={inputStyle}>
                   <option value="">{t("campo.seleccionar")}</option>
                   {nivel1De(paisEff).map(o => <option key={o} value={o}>{o}</option>)}
-                </select>
+                </select>}
               </div>
               <div>
                 <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>Departamento (Provincia)</label>
-                <select value={deptoEff} onChange={e => { const v = e.target.value; const same = v === deptoEff; setSelected({ ...selected, region: regionEff, departamento: v, ciudad: same ? selected.ciudad : '' }) }} disabled={!regionEff} style={{ ...inputStyle, opacity: regionEff ? 1 : 0.5 }}>
+                {verLectura ? <div className="ver-box">{deptoEff || '—'}</div> : <select value={deptoEff} onChange={e => { const v = e.target.value; const same = v === deptoEff; setSelected({ ...selected, region: regionEff, departamento: v, ciudad: same ? selected.ciudad : '' }) }} disabled={!regionEff} style={{ ...inputStyle, opacity: regionEff ? 1 : 0.5 }}>
                   <option value="">{t("campo.seleccionar")}</option>
                   {nivel2De(paisEff, regionEff).map(o => <option key={o} value={o}>{o}</option>)}
-                </select>
+                </select>}
               </div>
               <div>
                 <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.ciudad')}</label>
-                <select value={selected.ciudad} onChange={e => setSelected({ ...selected, region: regionEff, departamento: deptoEff, ciudad: e.target.value })} disabled={!deptoEff} style={{ ...inputStyle, opacity: deptoEff ? 1 : 0.5 }}>
+                {verLectura ? <div className="ver-box">{selected.ciudad || '—'}</div> : <select value={selected.ciudad} onChange={e => setSelected({ ...selected, region: regionEff, departamento: deptoEff, ciudad: e.target.value })} disabled={!deptoEff} style={{ ...inputStyle, opacity: deptoEff ? 1 : 0.5 }}>
                   <option value="">{t("campo.seleccionar")}</option>
                   {selected.ciudad && !ciudadesDepto.includes(selected.ciudad) && <option value={selected.ciudad}>{selected.ciudad}</option>}
                   {ciudadesDepto.map(o => <option key={o} value={o}>{o}</option>)}
-                </select>
+                </select>}
               </div>
               <div>
                 <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.codigoPostal')}</label>
-                <input value={selected.codigo_postal || ''} onChange={e => setSelected({ ...selected, codigo_postal: e.target.value })} style={inputStyle} />
+                {verLectura ? <div className="ver-box">{(selected.codigo_postal || '') || '—'}</div> : <input value={selected.codigo_postal || ''} onChange={e => setSelected({ ...selected, codigo_postal: e.target.value })} style={inputStyle} />}
               </div>
             </div>
           </div>
@@ -593,7 +593,7 @@ export default function ClientesPage() {
             <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
               <div style={{ flex: 1 }}>
                 <label style={{ color: '#f97316', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{idioma === 'en' ? 'Public PQRS Access Code' : 'Código de Acceso PQRS Público'}</label>
-                <input value={selected.codigo_acceso || ''} readOnly style={{ ...inputStyle, fontFamily: 'monospace', fontSize: 16, fontWeight: 700, letterSpacing: 2, opacity: 0.8 }} />
+                {verLectura ? <div className="ver-box">{(selected.codigo_acceso || '') || '—'}</div> : <input value={selected.codigo_acceso || ''} readOnly style={{ ...inputStyle, fontFamily: 'monospace', fontSize: 16, fontWeight: 700, letterSpacing: 2, opacity: 0.8 }} />}
               </div>
               <button type="button" onClick={() => setSelected({ ...selected, codigo_acceso: generarCodigoAcceso() })}
                 style={{ ...btnStyle, background: '#ea580c', color: '#ffffff', border: '1px solid #f97316', fontSize: 12, marginTop: 18 }}>Regenerar</button>
@@ -604,7 +604,7 @@ export default function ClientesPage() {
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 16, marginTop: 16 }}>
             <div style={{ gridColumn: 'span 3' }}>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.observaciones')}</label>
-              <textarea value={selected.observaciones} onChange={e => setSelected({ ...selected, observaciones: e.target.value })} rows={3} style={{ ...inputStyle, resize: 'vertical' }} />
+              {verLectura ? <div className="ver-box">{selected.observaciones || '—'}</div> : <textarea value={selected.observaciones} onChange={e => setSelected({ ...selected, observaciones: e.target.value })} rows={3} style={{ ...inputStyle, resize: 'vertical' }} />}
             </div>
           </div>
           </fieldset>

@@ -96,64 +96,64 @@ export default function ProveedoresPage() {
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 16 }}>
               <div>
                 <label style={labelStyle}>Nro Proveedor *</label>
-                <input value={selected.codigo} readOnly style={inputRO} />
+                {verLectura ? <div className="ver-box">{selected.codigo || '—'}</div> : <input value={selected.codigo} readOnly style={inputRO} />}
               </div>
               <div>
                 <label style={labelStyle}>Fecha Registro</label>
-                <input value={fDate(selected.fecha_registro || today)} readOnly style={inputRO} />
+                {verLectura ? <div className="ver-box">{fDate(selected.fecha_registro || today) || '—'}</div> : <input value={fDate(selected.fecha_registro || today)} readOnly style={inputRO} />}
               </div>
               <div>
                 <label style={labelStyle}>Calificación</label>
-                <select value={selected.calificacion} onChange={e => setSelected({ ...selected, calificacion: e.target.value })} style={inputStyle}>
+                {verLectura ? <div className="ver-box">{selected.calificacion || '—'}</div> : <select value={selected.calificacion} onChange={e => setSelected({ ...selected, calificacion: e.target.value })} style={inputStyle}>
                   <option value="">Seleccionar...</option>
                   {refOptions('calificacion_proveedor', CALIFICACION_DEFAULT).map(o => <option key={o} value={o}>{o}</option>)}
-                </select>
+                </select>}
               </div>
               <div style={{ gridColumn: 'span 2' }}>
                 <label style={labelStyle}>Nombre *</label>
-                <input value={selected.nombre} onChange={e => setSelected({ ...selected, nombre: e.target.value.toUpperCase() })} required placeholder="Nombre del proveedor..." style={inputStyle} />
+                {verLectura ? <div className="ver-box">{selected.nombre || '—'}</div> : <input value={selected.nombre} onChange={e => setSelected({ ...selected, nombre: e.target.value.toUpperCase() })} required placeholder="Nombre del proveedor..." style={inputStyle} />}
               </div>
               <div>
                 <label style={labelStyle}>Tipo ID</label>
-                <select value={selected.tipo_id} onChange={e => setSelected({ ...selected, tipo_id: e.target.value })} style={inputStyle}>
+                {verLectura ? <div className="ver-box">{selected.tipo_id || '—'}</div> : <select value={selected.tipo_id} onChange={e => setSelected({ ...selected, tipo_id: e.target.value })} style={inputStyle}>
                   {refOptions('tipo_identificacion', TIPO_ID_DEFAULT).map(o => <option key={o} value={o}>{o}</option>)}
-                </select>
+                </select>}
               </div>
               <div>
                 <label style={labelStyle}>Nro Documento</label>
-                <input value={selected.nro_documento} onChange={e => setSelected({ ...selected, nro_documento: e.target.value })} placeholder="Número de documento..." style={inputStyle} />
+                {verLectura ? <div className="ver-box">{selected.nro_documento || '—'}</div> : <input value={selected.nro_documento} onChange={e => setSelected({ ...selected, nro_documento: e.target.value })} placeholder="Número de documento..." style={inputStyle} />}
               </div>
               <div>
                 <label style={labelStyle}>Correo</label>
-                <input type="email" value={selected.correo} onChange={e => setSelected({ ...selected, correo: e.target.value })} placeholder="correo@ejemplo.com" style={inputStyle} />
+                {verLectura ? <div className="ver-box">{selected.correo || '—'}</div> : <input type="email" value={selected.correo} onChange={e => setSelected({ ...selected, correo: e.target.value })} placeholder="correo@ejemplo.com" style={inputStyle} />}
               </div>
               <div>
                 <label style={labelStyle}>Tel Oficina</label>
-                <input value={selected.tel_oficina} onChange={e => setSelected({ ...selected, tel_oficina: e.target.value })} placeholder="Teléfono oficina..." style={inputStyle} />
+                {verLectura ? <div className="ver-box">{selected.tel_oficina || '—'}</div> : <input value={selected.tel_oficina} onChange={e => setSelected({ ...selected, tel_oficina: e.target.value })} placeholder="Teléfono oficina..." style={inputStyle} />}
               </div>
               <div>
                 <label style={labelStyle}>Celular Oficina</label>
-                <input value={selected.celular_oficina} onChange={e => setSelected({ ...selected, celular_oficina: e.target.value })} placeholder="Celular oficina..." style={inputStyle} />
+                {verLectura ? <div className="ver-box">{selected.celular_oficina || '—'}</div> : <input value={selected.celular_oficina} onChange={e => setSelected({ ...selected, celular_oficina: e.target.value })} placeholder="Celular oficina..." style={inputStyle} />}
               </div>
               <div>
                 <label style={labelStyle}>Persona Contacto</label>
-                <input value={selected.persona_contacto} onChange={e => setSelected({ ...selected, persona_contacto: e.target.value.toUpperCase() })} placeholder="Persona de contacto..." style={inputStyle} />
+                {verLectura ? <div className="ver-box">{selected.persona_contacto || '—'}</div> : <input value={selected.persona_contacto} onChange={e => setSelected({ ...selected, persona_contacto: e.target.value.toUpperCase() })} placeholder="Persona de contacto..." style={inputStyle} />}
               </div>
               <div>
                 <label style={labelStyle}>Proveedor Desde</label>
-                <input type="date" value={selected.proveedor_desde} onChange={e => setSelected({ ...selected, proveedor_desde: e.target.value })} style={inputStyle} />
+                {verLectura ? <div className="ver-box">{selected.proveedor_desde || '—'}</div> : <input type="date" value={selected.proveedor_desde} onChange={e => setSelected({ ...selected, proveedor_desde: e.target.value })} style={inputStyle} />}
               </div>
               <div>
                 <label style={labelStyle}>Actividad</label>
-                <select value={selected.actividad} onChange={e => setSelected({ ...selected, actividad: e.target.value })} style={inputStyle}>
+                {verLectura ? <div className="ver-box">{selected.actividad || '—'}</div> : <select value={selected.actividad} onChange={e => setSelected({ ...selected, actividad: e.target.value })} style={inputStyle}>
                   <option value="">Seleccionar...</option>
                   {selected.actividad && !refOptions('actividad_proveedor', []).includes(selected.actividad) && <option value={selected.actividad}>{selected.actividad}</option>}
                   {refOptions('actividad_proveedor', []).map(o => <option key={o} value={o}>{o}</option>)}
-                </select>
+                </select>}
               </div>
               <div style={{ gridColumn: 'span 2' }}>
                 <label style={labelStyle}>Representante Legal</label>
-                <input value={selected.representante_legal} onChange={e => setSelected({ ...selected, representante_legal: e.target.value.toUpperCase() })} placeholder="Representante legal..." style={inputStyle} />
+                {verLectura ? <div className="ver-box">{selected.representante_legal || '—'}</div> : <input value={selected.representante_legal} onChange={e => setSelected({ ...selected, representante_legal: e.target.value.toUpperCase() })} placeholder="Representante legal..." style={inputStyle} />}
               </div>
             </div>
 
@@ -162,27 +162,27 @@ export default function ProveedoresPage() {
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: 16 }}>
               <div style={{ gridColumn: 'span 2' }}>
                 <label style={labelStyle}>Dirección</label>
-                <input value={selected.direccion} onChange={e => setSelected({ ...selected, direccion: e.target.value })} placeholder="Dirección..." style={inputStyle} />
+                {verLectura ? <div className="ver-box">{selected.direccion || '—'}</div> : <input value={selected.direccion} onChange={e => setSelected({ ...selected, direccion: e.target.value })} placeholder="Dirección..." style={inputStyle} />}
               </div>
               <div>
                 <label style={labelStyle}>Ciudad</label>
-                <select value={selected.ciudad} onChange={e => setSelected({ ...selected, ciudad: e.target.value })} style={inputStyle}>
+                {verLectura ? <div className="ver-box">{selected.ciudad || '—'}</div> : <select value={selected.ciudad} onChange={e => setSelected({ ...selected, ciudad: e.target.value })} style={inputStyle}>
                   <option value="">Seleccionar...</option>
                   {selected.ciudad && !refOptions('ciudad', CIUDAD_DEFAULT).includes(selected.ciudad) && <option value={selected.ciudad}>{selected.ciudad}</option>}
                   {refOptions('ciudad', CIUDAD_DEFAULT).map(o => <option key={o} value={o}>{o}</option>)}
-                </select>
+                </select>}
               </div>
               <div>
                 <label style={labelStyle}>País</label>
-                <select value={selected.pais} onChange={e => setSelected({ ...selected, pais: e.target.value })} style={inputStyle}>
+                {verLectura ? <div className="ver-box">{selected.pais || '—'}</div> : <select value={selected.pais} onChange={e => setSelected({ ...selected, pais: e.target.value })} style={inputStyle}>
                   <option value="">Seleccionar...</option>
                   {selected.pais && !refOptions('pais', PAIS_DEFAULT).includes(selected.pais) && <option value={selected.pais}>{selected.pais}</option>}
                   {refOptions('pais', PAIS_DEFAULT).map(o => <option key={o} value={o}>{o}</option>)}
-                </select>
+                </select>}
               </div>
               <div>
                 <label style={labelStyle}>Código Postal</label>
-                <input value={selected.codigo_postal} onChange={e => setSelected({ ...selected, codigo_postal: e.target.value })} placeholder="Código postal..." style={inputStyle} />
+                {verLectura ? <div className="ver-box">{selected.codigo_postal || '—'}</div> : <input value={selected.codigo_postal} onChange={e => setSelected({ ...selected, codigo_postal: e.target.value })} placeholder="Código postal..." style={inputStyle} />}
               </div>
             </div>
 
@@ -190,13 +190,13 @@ export default function ProveedoresPage() {
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 16, marginTop: 16 }}>
               <div style={{ gridColumn: 'span 2' }}>
                 <label style={labelStyle}>Observaciones</label>
-                <textarea value={selected.observaciones} onChange={e => setSelected({ ...selected, observaciones: e.target.value })} rows={3} placeholder="Observaciones..." style={{ ...inputStyle, resize: 'vertical' }} />
+                {verLectura ? <div className="ver-box">{selected.observaciones || '—'}</div> : <textarea value={selected.observaciones} onChange={e => setSelected({ ...selected, observaciones: e.target.value })} rows={3} placeholder="Observaciones..." style={{ ...inputStyle, resize: 'vertical' }} />}
               </div>
               <div>
                 <label style={labelStyle}>Situación</label>
-                <select value={selected.situacion} onChange={e => setSelected({ ...selected, situacion: e.target.value })} style={inputStyle}>
+                {verLectura ? <div className="ver-box">{selected.situacion || '—'}</div> : <select value={selected.situacion} onChange={e => setSelected({ ...selected, situacion: e.target.value })} style={inputStyle}>
                   {refOptions('situacion_proveedor', SITUACION_DEFAULT).map(o => <option key={o} value={o}>{o}</option>)}
-                </select>
+                </select>}
               </div>
             </div>
           </fieldset>

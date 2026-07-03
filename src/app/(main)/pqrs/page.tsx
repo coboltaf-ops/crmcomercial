@@ -269,21 +269,21 @@ export default function PQRSPage() {
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 16 }}>
             <div>
               <label style={{ color: '#ffffff', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{idioma === 'en' ? 'Code' : 'Código'}</label>
-              <input value={selected.codigo} readOnly style={{ ...inputStyle, opacity: 0.5 }} />
+              {verLectura ? <div className="ver-box">{selected.codigo || '—'}</div> : <input value={selected.codigo} readOnly style={{ ...inputStyle, opacity: 0.5 }} />}
             </div>
             <div>
               <label style={{ color: '#ffffff', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{idioma === 'en' ? 'Date' : 'Fecha'}</label>
-              <input type="date" value={selected.fecha_registro} onChange={e => setSelected({ ...selected, fecha_registro: e.target.value })} style={inputStyle} />
+              {verLectura ? <div className="ver-box">{fDate(selected.fecha_registro) || '—'}</div> : <input type="date" value={selected.fecha_registro} onChange={e => setSelected({ ...selected, fecha_registro: e.target.value })} style={inputStyle} />}
             </div>
             <div>
               <label style={{ color: '#ffffff', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{idioma === 'en' ? 'Type *' : 'Tipo *'}</label>
-              <select value={selected.tipo} onChange={e => setSelected({ ...selected, tipo: e.target.value })} style={inputStyle}>
+              {verLectura ? <div className="ver-box">{selected.tipo || '—'}</div> : <select value={selected.tipo} onChange={e => setSelected({ ...selected, tipo: e.target.value })} style={inputStyle}>
                 {refOptions('tipo_pqrs').map(o => <option key={o} value={o}>{o}</option>)}
-              </select>
+              </select>}
             </div>
             <div style={{ gridColumn: 'span 2' }}>
               <label style={{ color: '#ffffff', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{idioma === 'en' ? 'Company *' : 'Empresa *'}</label>
-              <select value={selected.cliente_id} onChange={e => {
+              {verLectura ? <div className="ver-box">{selected.cliente_nombre || '—'}</div> : <select value={selected.cliente_id} onChange={e => {
                 const cli = clientes.find(c => c.id === e.target.value)
                 setSelected({ ...selected, cliente_id: e.target.value, cliente_nombre: cli?.razon_social || '', contacto_id: '', contacto_nombre: '' })
               }} required style={inputStyle}>
@@ -292,11 +292,11 @@ export default function PQRSPage() {
                   <option value={selected.cliente_id}>{selected.cliente_nombre || (idioma === 'en' ? '(record company)' : '(empresa del registro)')}</option>
                 )}
                 {clientes.map(c => <option key={c.id} value={c.id}>{c.razon_social}</option>)}
-              </select>
+              </select>}
             </div>
             <div>
               <label style={{ color: '#ffffff', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{idioma === 'en' ? 'Contact' : 'Contacto'}</label>
-              <select value={selected.contacto_id} onChange={e => {
+              {verLectura ? <div className="ver-box">{selected.contacto_nombre || '—'}</div> : <select value={selected.contacto_id} onChange={e => {
                 const con = contactosDelCliente.find(c => c.id === e.target.value)
                 setSelected({ ...selected, contacto_id: e.target.value, contacto_nombre: con ? `${con.nombre} ${con.apellido}` : '' })
               }} style={inputStyle}>
@@ -305,55 +305,55 @@ export default function PQRSPage() {
                   <option value={selected.contacto_id}>{selected.contacto_nombre || (idioma === 'en' ? '(record contact)' : '(contacto del registro)')}</option>
                 )}
                 {contactosDelCliente.map(c => <option key={c.id} value={c.id}>{c.nombre} {c.apellido}</option>)}
-              </select>
+              </select>}
             </div>
             <div style={{ gridColumn: 'span 3' }}>
               <label style={{ color: '#ffffff', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{idioma === 'en' ? 'Subject' : 'Asunto'}</label>
-              <input value={selected.asunto} onChange={e => setSelected({ ...selected, asunto: e.target.value })} placeholder={idioma === 'en' ? 'PQRS subject...' : 'Asunto del PQRS...'} style={inputStyle} />
+              {verLectura ? <div className="ver-box">{selected.asunto || '—'}</div> : <input value={selected.asunto} onChange={e => setSelected({ ...selected, asunto: e.target.value })} placeholder={idioma === 'en' ? 'PQRS subject...' : 'Asunto del PQRS...'} style={inputStyle} />}
             </div>
             <div>
               <label style={{ color: '#ffffff', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{idioma === 'en' ? 'Company Notice Date' : 'Fecha Aviso Empresa'}</label>
-              <input type="date" value={selected.fecha_aviso} onChange={e => setSelected({ ...selected, fecha_aviso: e.target.value })} style={inputStyle} />
+              {verLectura ? <div className="ver-box">{fDate(selected.fecha_aviso) || '—'}</div> : <input type="date" value={selected.fecha_aviso} onChange={e => setSelected({ ...selected, fecha_aviso: e.target.value })} style={inputStyle} />}
             </div>
             <div>
               <label style={{ color: '#ffffff', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{idioma === 'en' ? 'Notice Time' : 'Hora Aviso'}</label>
-              <input type="time" value={selected.hora_aviso} onChange={e => setSelected({ ...selected, hora_aviso: e.target.value })} style={inputStyle} />
+              {verLectura ? <div className="ver-box">{selected.hora_aviso || '—'}</div> : <input type="time" value={selected.hora_aviso} onChange={e => setSelected({ ...selected, hora_aviso: e.target.value })} style={inputStyle} />}
             </div>
             <div>
               <label style={{ color: '#ffffff', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{idioma === 'en' ? 'Reporting Person' : 'Persona que Avisa'}</label>
-              <input value={selected.persona_avisa} onChange={e => setSelected({ ...selected, persona_avisa: e.target.value })} placeholder={idioma === 'en' ? 'Name of reporter...' : 'Nombre de quien avisa...'} style={inputStyle} />
+              {verLectura ? <div className="ver-box">{selected.persona_avisa || '—'}</div> : <input value={selected.persona_avisa} onChange={e => setSelected({ ...selected, persona_avisa: e.target.value })} placeholder={idioma === 'en' ? 'Name of reporter...' : 'Nombre de quien avisa...'} style={inputStyle} />}
             </div>
             <div>
               <label style={{ color: '#ffffff', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{idioma === 'en' ? 'Reporter Mobile' : 'Móvil que Avisa'}</label>
-              <input value={selected.movil_avisa} onChange={e => setSelected({ ...selected, movil_avisa: e.target.value })} placeholder={idioma === 'en' ? 'Mobile phone...' : 'Teléfono móvil...'} style={inputStyle} />
+              {verLectura ? <div className="ver-box">{selected.movil_avisa || '—'}</div> : <input value={selected.movil_avisa} onChange={e => setSelected({ ...selected, movil_avisa: e.target.value })} placeholder={idioma === 'en' ? 'Mobile phone...' : 'Teléfono móvil...'} style={inputStyle} />}
             </div>
             <div>
               <label style={{ color: '#ffffff', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{idioma === 'en' ? 'Receiving Person' : 'Persona que Recibe'}</label>
-              <input value={selected.persona_caso} onChange={e => setSelected({ ...selected, persona_caso: e.target.value })} placeholder={idioma === 'en' ? 'Name of receiver...' : 'Nombre de quien recibe...'} style={inputStyle} />
+              {verLectura ? <div className="ver-box">{selected.persona_caso || '—'}</div> : <input value={selected.persona_caso} onChange={e => setSelected({ ...selected, persona_caso: e.target.value })} placeholder={idioma === 'en' ? 'Name of receiver...' : 'Nombre de quien recibe...'} style={inputStyle} />}
             </div>
             <div>
               <label style={{ color: '#ffffff', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{idioma === 'en' ? 'Receiver Mobile' : 'Móvil Recibe'}</label>
-              <input value={selected.movil_caso} onChange={e => setSelected({ ...selected, movil_caso: e.target.value })} placeholder={idioma === 'en' ? 'Mobile phone...' : 'Teléfono móvil...'} style={inputStyle} />
+              {verLectura ? <div className="ver-box">{selected.movil_caso || '—'}</div> : <input value={selected.movil_caso} onChange={e => setSelected({ ...selected, movil_caso: e.target.value })} placeholder={idioma === 'en' ? 'Mobile phone...' : 'Teléfono móvil...'} style={inputStyle} />}
             </div>
             <div>
               <label style={{ color: '#ffffff', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{idioma === 'en' ? 'Responsible' : 'Responsable'}</label>
-              <input value={selected.responsable} onChange={e => setSelected({ ...selected, responsable: e.target.value })} placeholder={idioma === 'en' ? 'Case owner...' : 'Responsable del caso...'} style={inputStyle} />
+              {verLectura ? <div className="ver-box">{selected.responsable || '—'}</div> : <input value={selected.responsable} onChange={e => setSelected({ ...selected, responsable: e.target.value })} placeholder={idioma === 'en' ? 'Case owner...' : 'Responsable del caso...'} style={inputStyle} />}
             </div>
             <div style={{ gridColumn: 'span 3' }}>
               <label style={{ color: '#ffffff', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{idioma === 'en' ? 'Incident Detail' : 'Detalle de la Incidencia'}</label>
-              <textarea value={selected.detalle_incidencia} onChange={e => setSelected({ ...selected, detalle_incidencia: e.target.value })} rows={4} style={{ ...inputStyle, resize: 'vertical' }} placeholder={idioma === 'en' ? 'Describe the incident...' : 'Describir la incidencia...'} />
+              {verLectura ? <div className="ver-box">{selected.detalle_incidencia || '—'}</div> : <textarea value={selected.detalle_incidencia} onChange={e => setSelected({ ...selected, detalle_incidencia: e.target.value })} rows={4} style={{ ...inputStyle, resize: 'vertical' }} placeholder={idioma === 'en' ? 'Describe the incident...' : 'Describir la incidencia...'} />}
             </div>
             <div>
               <label style={{ color: '#ffffff', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{idioma === 'en' ? 'Priority' : 'Prioridad'}</label>
-              <select value={selected.prioridad} onChange={e => setSelected({ ...selected, prioridad: e.target.value })} style={inputStyle}>
+              {verLectura ? <div className="ver-box">{selected.prioridad || '—'}</div> : <select value={selected.prioridad} onChange={e => setSelected({ ...selected, prioridad: e.target.value })} style={inputStyle}>
                 {refOptions('prioridad_pqrs').map(o => <option key={o} value={o}>{o}</option>)}
-              </select>
+              </select>}
             </div>
             <div>
               <label style={{ color: '#ffffff', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{idioma === 'en' ? 'Status' : 'Situación'}</label>
-              <select value={selected.situacion} onChange={e => setSelected({ ...selected, situacion: e.target.value })} style={inputStyle}>
+              {verLectura ? <div className="ver-box">{selected.situacion || '—'}</div> : <select value={selected.situacion} onChange={e => setSelected({ ...selected, situacion: e.target.value })} style={inputStyle}>
                 {refOptions('situacion_pqrs').map(o => <option key={o} value={o}>{o}</option>)}
-              </select>
+              </select>}
             </div>
           </div>
           </fieldset>

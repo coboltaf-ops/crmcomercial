@@ -521,17 +521,17 @@ export default function CotizacionesPage() {
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 16, marginBottom: 20 }}>
             <div>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.codigo')}</label>
-              <input value={selected.codigo} readOnly style={{ ...inputStyle, opacity: 0.5 }} />
+              {verLectura ? <div className="ver-box">{selected.codigo || '—'}</div> : <input value={selected.codigo} readOnly style={{ ...inputStyle, opacity: 0.5 }} />}
             </div>
             <div style={{ gridColumn: 'span 3' }}>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.empresa')} *</label>
-              <select value={selected.cliente_id} onChange={e => {
+              {verLectura ? <div className="ver-box">{selected.cliente_nombre || '—'}</div> : <select value={selected.cliente_id} onChange={e => {
                 const cli = clientes.find(c => c.id === e.target.value)
                 setSelected({ ...selected, cliente_id: e.target.value, cliente_nombre: cli?.razon_social || '', contacto_id: '', contacto_nombre: '', oportunidad_id: '', oportunidad_nombre: '' })
               }} required style={inputStyle}>
                 <option value="">Seleccionar empresa...</option>
                 {clientes.map(c => <option key={c.id} value={c.id}>{c.razon_social}</option>)}
-              </select>
+              </select>}
             </div>
             {selected.cliente_id && (() => {
               const cli =
@@ -559,71 +559,71 @@ export default function CotizacionesPage() {
             })()}
             <div>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.contacto')}</label>
-              <select value={selected.contacto_id} onChange={e => {
+              {verLectura ? <div className="ver-box">{selected.contacto_nombre || '—'}</div> : <select value={selected.contacto_id} onChange={e => {
                 const con = contactosDelCliente.find(c => c.id === e.target.value)
                 setSelected({ ...selected, contacto_id: e.target.value, contacto_nombre: con ? `${con.nombre} ${con.apellido}` : '' })
               }} style={inputStyle}>
                 <option value="">{t("campo.seleccionar")}</option>
                 {contactosDelCliente.map(c => <option key={c.id} value={c.id}>{c.nombre} {c.apellido}</option>)}
-              </select>
+              </select>}
             </div>
             <div>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{idioma === 'en' ? 'Quotation Type' : 'Tipo de Cotización'} *</label>
-              <select value={selected.categoria || ''} onChange={e => setSelected({ ...selected, categoria: e.target.value })} required style={inputStyle}>
+              {verLectura ? <div className="ver-box">{selected.categoria || '—'}</div> : <select value={selected.categoria || ''} onChange={e => setSelected({ ...selected, categoria: e.target.value })} required style={inputStyle}>
                 <option value="">Seleccione...</option>
                 {refOptions('categoria_productos').map(o => <option key={o} value={o}>{o}</option>)}
-              </select>
+              </select>}
             </div>
             <div>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.fechaRegistro')}</label>
-              <input value={fDate(selected.fecha_registro || today)} readOnly style={{ ...inputStyle, opacity: 0.5, cursor: 'not-allowed' }} />
+              {verLectura ? <div className="ver-box">{fDate(selected.fecha_registro || today) || '—'}</div> : <input value={fDate(selected.fecha_registro || today)} readOnly style={{ ...inputStyle, opacity: 0.5, cursor: 'not-allowed' }} />}
             </div>
             <div>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.fechaEmision')}</label>
-              <input type="date" value={selected.fecha_emision} onChange={e => setSelected({ ...selected, fecha_emision: e.target.value })} style={inputStyle} />
+              {verLectura ? <div className="ver-box">{fDate(selected.fecha_emision) || '—'}</div> : <input type="date" value={selected.fecha_emision} onChange={e => setSelected({ ...selected, fecha_emision: e.target.value })} style={inputStyle} />}
             </div>
             <div>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.fechaVencimiento')}</label>
-              <input type="date" value={selected.fecha_vencimiento} onChange={e => setSelected({ ...selected, fecha_vencimiento: e.target.value })} style={inputStyle} />
+              {verLectura ? <div className="ver-box">{fDate(selected.fecha_vencimiento) || '—'}</div> : <input type="date" value={selected.fecha_vencimiento} onChange={e => setSelected({ ...selected, fecha_vencimiento: e.target.value })} style={inputStyle} />}
             </div>
             <div>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.oportunidad')}</label>
-              <select value={selected.oportunidad_id} onChange={e => {
+              {verLectura ? <div className="ver-box">{selected.oportunidad_nombre || '—'}</div> : <select value={selected.oportunidad_id} onChange={e => {
                 const opo = oportunidades.find(o => o.id === e.target.value)
                 setSelected({ ...selected, oportunidad_id: e.target.value, oportunidad_nombre: opo?.proyecto || '' })
               }} style={inputStyle}>
                 <option value="">Ninguna</option>
                 {(oposDelCliente.length > 0 ? oposDelCliente : oportunidades).map(o => <option key={o.id} value={o.id}>{o.proyecto}</option>)}
-              </select>
+              </select>}
             </div>
             <div>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.condicionPagoCorta')}</label>
-              <select value={selected.condicion_pago} onChange={e => setSelected({ ...selected, condicion_pago: e.target.value })} style={inputStyle}>
+              {verLectura ? <div className="ver-box">{selected.condicion_pago || '—'}</div> : <select value={selected.condicion_pago} onChange={e => setSelected({ ...selected, condicion_pago: e.target.value })} style={inputStyle}>
                 {refOptions('condiciones_pago').map(o => <option key={o} value={o}>{o}</option>)}
-              </select>
+              </select>}
             </div>
             <div>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.moneda')}</label>
-              <select value={selected.tipo_moneda} onChange={e => setSelected({ ...selected, tipo_moneda: e.target.value })} style={inputStyle}>
+              {verLectura ? <div className="ver-box">{selected.tipo_moneda || '—'}</div> : <select value={selected.tipo_moneda} onChange={e => setSelected({ ...selected, tipo_moneda: e.target.value })} style={inputStyle}>
                 {refOptions('tipo_moneda').map(o => <option key={o} value={o}>{o}</option>)}
-              </select>
+              </select>}
             </div>
             <div>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>% IVA</label>
-              <input type="number" step="0.01" min="0" value={selected.pct_impuesto} onChange={e => setSelected({ ...selected, pct_impuesto: parseFloat(e.target.value) || 0 })} style={inputStyle} />
+              {verLectura ? <div className="ver-box">{selected.pct_impuesto || '—'}</div> : <input type="number" step="0.01" min="0" value={selected.pct_impuesto} onChange={e => setSelected({ ...selected, pct_impuesto: parseFloat(e.target.value) || 0 })} style={inputStyle} />}
             </div>
             <div>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.vendedor')}</label>
-              <select value={selected.vendedor} onChange={e => setSelected({ ...selected, vendedor: e.target.value })} style={inputStyle}>
+              {verLectura ? <div className="ver-box">{selected.vendedor || '—'}</div> : <select value={selected.vendedor} onChange={e => setSelected({ ...selected, vendedor: e.target.value })} style={inputStyle}>
                 <option value="">{t("campo.seleccionar")}</option>
                 {vendedores.map(v => <option key={v.id} value={`${v.nombre} ${v.apellido}`}>{v.codigo} - {v.nombre} {v.apellido}</option>)}
-              </select>
+              </select>}
             </div>
             <div>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.situacion')}</label>
-              <select value={selected.situacion} onChange={e => setSelected({ ...selected, situacion: e.target.value })} style={inputStyle}>
+              {verLectura ? <div className="ver-box">{selected.situacion || '—'}</div> : <select value={selected.situacion} onChange={e => setSelected({ ...selected, situacion: e.target.value })} style={inputStyle}>
                 {refOptions('situacion_cotizacion').map(o => <option key={o} value={o}>{o}</option>)}
-              </select>
+              </select>}
             </div>
           </div>
 
@@ -751,7 +751,7 @@ export default function CotizacionesPage() {
 
           <div style={{ gridColumn: 'span 3', marginBottom: 16 }}>
             <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.observaciones')}</label>
-            <textarea value={selected.observaciones} onChange={e => setSelected({ ...selected, observaciones: e.target.value })} rows={3} style={{ ...inputStyle, resize: 'vertical' }} />
+            {verLectura ? <div className="ver-box">{selected.observaciones || '—'}</div> : <textarea value={selected.observaciones} onChange={e => setSelected({ ...selected, observaciones: e.target.value })} rows={3} style={{ ...inputStyle, resize: 'vertical' }} />}
           </div>
 
           </fieldset>

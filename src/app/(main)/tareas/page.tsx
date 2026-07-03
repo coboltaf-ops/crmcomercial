@@ -222,54 +222,54 @@ export default function TareasPage() {
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 16 }}>
             <div>
               <label style={labelStyle}>{tr('lbl.codigo')}</label>
-              <input value={selected.codigo} readOnly style={{ ...inputStyle, opacity: 0.5 }} />
+              {verLectura ? <div className="ver-box">{selected.codigo || '—'}</div> : <input value={selected.codigo} readOnly style={{ ...inputStyle, opacity: 0.5 }} />}
             </div>
             <div>
               <label style={labelStyle}>{tr('lbl.fechaRegistro')}</label>
-              <input value={fDate(selected.fecha_registro || todayCO())} readOnly style={{ ...inputStyle, opacity: 0.5, cursor: 'not-allowed' }} />
+              {verLectura ? <div className="ver-box">{fDate(selected.fecha_registro || todayCO()) || '—'}</div> : <input value={fDate(selected.fecha_registro || todayCO())} readOnly style={{ ...inputStyle, opacity: 0.5, cursor: 'not-allowed' }} />}
             </div>
             <div>
               <label style={labelStyle}>{tr('lbl.fechaAsignacionTask')} *</label>
-              <input type="date" value={selected.fecha_asignacion} onChange={e => setSelected({ ...selected, fecha_asignacion: e.target.value })} required style={inputStyle} />
+              {verLectura ? <div className="ver-box">{fDate(selected.fecha_asignacion) || '—'}</div> : <input type="date" value={selected.fecha_asignacion} onChange={e => setSelected({ ...selected, fecha_asignacion: e.target.value })} required style={inputStyle} />}
             </div>
             <div>
               <label style={labelStyle}>{tr('lbl.horaAsignacion')}</label>
-              <input type="time" value={selected.hora_asignacion} onChange={e => setSelected({ ...selected, hora_asignacion: e.target.value })} style={inputStyle} />
+              {verLectura ? <div className="ver-box">{selected.hora_asignacion || '—'}</div> : <input type="time" value={selected.hora_asignacion} onChange={e => setSelected({ ...selected, hora_asignacion: e.target.value })} style={inputStyle} />}
             </div>
             <div>
               <label style={labelStyle}>{tr('lbl.personaQueAsigna')} *</label>
-              <select value={selected.persona_asigna} onChange={e => setSelected({ ...selected, persona_asigna: e.target.value })} required style={inputStyle}>
+              {verLectura ? <div className="ver-box">{selected.persona_asigna || '—'}</div> : <select value={selected.persona_asigna} onChange={e => setSelected({ ...selected, persona_asigna: e.target.value })} required style={inputStyle}>
                 <option value="">Seleccionar...</option>
                 {personas.map(p => <option key={p} value={p}>{p}</option>)}
-              </select>
+              </select>}
             </div>
             <div>
               <label style={labelStyle}>{tr('lbl.personaQueEjecuta')} *</label>
-              <select value={selected.persona_ejecuta} onChange={e => setSelected({ ...selected, persona_ejecuta: e.target.value })} required style={inputStyle}>
+              {verLectura ? <div className="ver-box">{selected.persona_ejecuta || '—'}</div> : <select value={selected.persona_ejecuta} onChange={e => setSelected({ ...selected, persona_ejecuta: e.target.value })} required style={inputStyle}>
                 <option value="">Seleccionar...</option>
                 {personas.map(p => <option key={p} value={p}>{p}</option>)}
-              </select>
+              </select>}
             </div>
             <div>
               <label style={labelStyle}>{tr('lbl.fechaRequeridaFin')} *</label>
-              <input type="date" value={selected.fecha_requerida_fin} onChange={e => setSelected({ ...selected, fecha_requerida_fin: e.target.value })} required style={inputStyle} />
+              {verLectura ? <div className="ver-box">{fDate(selected.fecha_requerida_fin) || '—'}</div> : <input type="date" value={selected.fecha_requerida_fin} onChange={e => setSelected({ ...selected, fecha_requerida_fin: e.target.value })} required style={inputStyle} />}
             </div>
             <div>
               <label style={labelStyle}>{tr('lbl.fechaRealFin')}</label>
-              <input type="date" value={selected.fecha_real_fin} onChange={e => setSelected({ ...selected, fecha_real_fin: e.target.value })} style={inputStyle} />
+              {verLectura ? <div className="ver-box">{fDate(selected.fecha_real_fin) || '—'}</div> : <input type="date" value={selected.fecha_real_fin} onChange={e => setSelected({ ...selected, fecha_real_fin: e.target.value })} style={inputStyle} />}
             </div>
             <div>
               <label style={labelStyle}>{tr('lbl.situacion')} *</label>
-              <select value={selected.situacion} onChange={e => setSelected({ ...selected, situacion: e.target.value })} required style={inputStyle}>
+              {verLectura ? <div className="ver-box">{selected.situacion || '—'}</div> : <select value={selected.situacion} onChange={e => setSelected({ ...selected, situacion: e.target.value })} required style={inputStyle}>
                 {situaciones.map(s => <option key={s.id} value={s.nombre}>{s.nombre}</option>)}
-              </select>
+              </select>}
             </div>
             <div />
             <div style={{ gridColumn: 'span 3' }}>
               <label style={labelStyle}>{tr('lbl.descripcion')} *</label>
-              <textarea value={selected.descripcion} onChange={e => setSelected({ ...selected, descripcion: e.target.value })} required rows={4}
+              {verLectura ? <div className="ver-box">{selected.descripcion || '—'}</div> : <textarea value={selected.descripcion} onChange={e => setSelected({ ...selected, descripcion: e.target.value })} required rows={4}
                 placeholder="Describa la tarea con detalle..."
-                style={{ ...inputStyle, resize: 'vertical', minHeight: 100 }} />
+                style={{ ...inputStyle, resize: 'vertical', minHeight: 100 }} />}
             </div>
           </div>
           </fieldset>
