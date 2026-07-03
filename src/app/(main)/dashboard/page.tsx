@@ -282,7 +282,7 @@ export default function DashboardPage() {
             <p style={{ color: '#000000', fontSize: 13 }}>No hay oportunidades registradas</p>
           ) : (
             <div style={{ overflowX: 'auto', paddingTop: 8 }}>
-              <svg width={Math.max(opoPorEtapa.length * 110, 240)} height={216} style={{ display: 'block' }}>
+              <svg width={Math.max(opoPorEtapa.length * 110, 240)} height={216} viewBox={`0 0 ${Math.max(opoPorEtapa.length * 110, 240)} 216`} preserveAspectRatio="xMinYMin meet" style={{ display: 'block' }}>
                 {opoPorEtapa.map((e, i) => {
                   const slot = 110, barW = 48, chartH = 135, topPad = 34
                   const h = Math.max(6, Math.round((e.monto / maxEtapaMonto) * chartH))
@@ -403,7 +403,7 @@ export default function DashboardPage() {
           <p style={{ color: '#000000', fontSize: 13 }}>No hay proyectos registrados</p>
         ) : (
           <div style={{ overflowX: 'auto' }}>
-            <svg width={880} height={proyPorSituacion.length * 72 + 12} style={{ display: 'block' }}>
+            <svg viewBox={`0 0 880 ${proyPorSituacion.length * 72 + 12}`} preserveAspectRatio="xMinYMin meet" style={{ display: 'block', width: '100%', minWidth: 620, maxWidth: 880, height: 'auto' }}>
               {proyPorSituacion.map((p, i) => {
                 const rowY = i * 72 + 10
                 const x0 = 175, maxW = 300
@@ -432,7 +432,7 @@ export default function DashboardPage() {
           <p style={{ color: '#000000', fontSize: 13 }}>No hay clientes registrados</p>
         ) : (
           <div style={{ overflowX: 'auto' }}>
-            <svg width={600} height={clientesPorCiudad.length * 32 + 10} style={{ display: 'block', maxWidth: '100%' }}>
+            <svg viewBox={`0 0 600 ${clientesPorCiudad.length * 32 + 10}`} preserveAspectRatio="xMinYMin meet" style={{ display: 'block', width: '100%', maxWidth: 600, height: 'auto' }}>
               {clientesPorCiudad.map((c, i) => {
                 const COLORES = ['#1e3a8a', '#15803d', '#38bdf8', '#4ade80'] // azul oscuro, verde oscuro, azul celeste, verde claro
                 const rowY = i * 32 + 6
@@ -458,7 +458,7 @@ export default function DashboardPage() {
           <p style={{ color: '#000000', fontSize: 13 }}>No hay clientes registrados</p>
         ) : (
           <div style={{ overflowX: 'auto' }}>
-            <svg width={640} height={clientesPorRegion.length * 32 + 10} style={{ display: 'block', maxWidth: '100%' }}>
+            <svg viewBox={`0 0 640 ${clientesPorRegion.length * 32 + 10}`} preserveAspectRatio="xMinYMin meet" style={{ display: 'block', width: '100%', maxWidth: 640, height: 'auto' }}>
               {clientesPorRegion.map((r, i) => {
                 const COLORES = ['#1e3a8a', '#38bdf8', '#dc2626', '#ec4899', '#1d4ed8', '#7dd3fc', '#b91c1c', '#f9a8d4']
                 const rowY = i * 32 + 6
