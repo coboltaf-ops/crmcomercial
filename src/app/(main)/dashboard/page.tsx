@@ -125,6 +125,7 @@ export default function DashboardPage() {
 
   // Factor US$ → Euro (del registro activo más reciente de Factores). Euro = US$ / factor.
   const factorUsdEur = factores.filter(f => f.situacion === 'Activo').slice(-1)[0]?.factor_usd_euro || 0
+  const factorPesosUsd = factores.filter(f => f.situacion === 'Activo').slice(-1)[0]?.factor_pesos_usd || 0
   const usd = (n: number) => `US$ ${fmtMoney(n)}`
   const eur = (n: number) => factorUsdEur > 0 ? `Euro ${fmtMoney(n / factorUsdEur)}` : 'Euro —'
 
@@ -243,6 +244,36 @@ export default function DashboardPage() {
   const maxProyMonto = Math.max(1, ...proyPorSituacion.flatMap(p => [p.aprobado, p.cobrado]))
   const totalProyAprobado = proyPorSituacion.reduce((s, p) => s + p.aprobado, 0)
   const totalProyCobrado = proyPorSituacion.reduce((s, p) => s + p.cobrado, 0)
+
+  // Cotizaciones por situación — cantidad y valor (unificado a COP)
+  const esConstruccionCot = (cat?: string) => (cat || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').includes('construc')
+  const cotTotal = (c: any) => {
+    const subtotal = (c.detalles || []).reduce((s: number, d: any) => s + (d.subtotal || 0), 0)
+    if (esConstruccionCot(c.categoria)) {
+      const utilidad = subtotal * ((c.aiu_utilidad_pct || 0) / 100)
+      const aiuTotal = subtotal * (((c.aiu_admin_pct || 0) + (c.aiu_imprev_pct || 0) + (c.aiu_utilidad_pct || 0)) / 100)
+      return subtotal + aiuTotal + utilidad * ((c.pct_impuesto || 0) / 100)
+    }
+    return subtotal + subtotal * ((c.pct_impuesto || 0) / 100)
+  }
+  const cotAColombia = (c: any) => {
+    const t = cotTotal(c)
+    const m = (c.tipo_moneda || '').toLowerCase()
+    if (m.includes('dol') || m.includes('usd') || m === 'us$') return t * (factorPesosUsd || 1)
+    if (m.includes('eur')) return t * (factorUsdEur || 1) * (factorPesosUsd || 1)
+    return t
+  }
+  const cotSitMap: Record<string, { count: number; valor: number }> = {}
+  cotizaciones.forEach(c => {
+    const s = (c.situacion || '').trim() || 'Sin situación'
+    if (!cotSitMap[s]) cotSitMap[s] = { count: 0, valor: 0 }
+    cotSitMap[s].count++
+    cotSitMap[s].valor += cotAColombia(c)
+  })
+  const cotPorSituacion = Object.entries(cotSitMap).map(([situacion, v]) => ({ situacion, ...v })).sort((a, b) => b.valor - a.valor)
+  const maxCotValor = Math.max(1, ...cotPorSituacion.map(c => c.valor))
+  const totalCotValor = cotPorSituacion.reduce((s, c) => s + c.valor, 0)
+  const cop = (n: number) => `COP ${fmtMoney(n)}`
 
   return (
     <div>
@@ -417,6 +448,35 @@ export default function DashboardPage() {
                     <text x={x0 + wA + 8} y={rowY + 22} fontSize={12} fontWeight={900} fill="#000000">{usd(p.aprobado)} · {eur(p.aprobado)}</text>
                     <rect x={x0} y={rowY + 34} width={wC} height={22} rx={4} fill="#15803d" />
                     <text x={x0 + wC + 8} y={rowY + 50} fontSize={12} fontWeight={900} fill="#000000">{usd(p.cobrado)} · {eur(p.cobrado)}</text>
+                  </g>
+                )
+              })}
+            </svg>
+          </div>
+        )}
+      </div>
+
+      {/* Gráfico: Cotizaciones por Situación (barras horizontales) */}
+      <div className="dash-card" onClick={() => router.push('/cotizaciones')} title="Ir a Cotizaciones" style={{ ...cardStyle, marginBottom: 24, cursor: 'pointer' }}>
+        <h2 style={{ color: '#000000', fontSize: 16, fontWeight: 600, marginBottom: 8 }}>📋 Cotizaciones por Situación</h2>
+        <p style={{ color: '#000000', fontSize: 13, marginBottom: 12 }}>{cotizaciones.length} cotizaciones · Valor total: <b>{cop(totalCotValor)}</b></p>
+        {cotPorSituacion.length === 0 ? (
+          <p style={{ color: '#000000', fontSize: 13 }}>No hay cotizaciones registradas</p>
+        ) : (
+          <div style={{ overflowX: 'auto' }}>
+            <svg viewBox={`0 0 660 ${cotPorSituacion.length * 46 + 10}`} preserveAspectRatio="xMinYMin meet" style={{ display: 'block', width: '100%', maxWidth: 660, height: 'auto' }}>
+              {cotPorSituacion.map((c, i) => {
+                const COT_COLOR: Record<string, string> = { 'Aprobada': '#15803d', 'Enviada': '#1d4ed8', 'Borrador': '#64748b', 'En Construcción': '#94a3b8', 'Rechazada': '#dc2626', 'Anulada': '#b91c1c', 'Vencida': '#ea580c' }
+                const rowY = i * 46 + 8
+                const x0 = 200, maxW = 300
+                const w = Math.max(3, Math.round((c.valor / maxCotValor) * maxW))
+                const color = COT_COLOR[c.situacion] || '#1e3a8a'
+                return (
+                  <g key={c.situacion}>
+                    <text x={0} y={rowY + 18} fontSize={14} fontWeight={800} fill="#000000">{c.situacion}</text>
+                    <text x={0} y={rowY + 34} fontSize={12} fontWeight={700} fill="#334155">{c.count} cotización{c.count === 1 ? '' : 'es'}</text>
+                    <rect x={x0} y={rowY + 6} width={w} height={24} rx={4} fill={color} />
+                    <text x={x0 + w + 8} y={rowY + 23} fontSize={12} fontWeight={900} fill="#000000">{cop(c.valor)}</text>
                   </g>
                 )
               })}
