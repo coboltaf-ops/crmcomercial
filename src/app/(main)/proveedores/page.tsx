@@ -233,7 +233,7 @@ export default function ProveedoresPage() {
       <ModuleHeader title="Proveedores" subtitle="Gestión de proveedores" />
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16, gap: 12, flexWrap: 'wrap' }}>
         <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Buscar por código, nombre, documento o contacto..." style={{ ...inputStyle, maxWidth: 380 }} />
-        {permisos.editar && (
+        {permisos.crear && (
           <button onClick={() => { setSelected(emptyProveedor(nextConsecutivo('PRV-', proveedores.map(p => p.codigo)).codigo)); setVerLectura(false); setIsForm(true) }} style={{ ...btnStyle, background: '#1e3a8a', color: '#ffffff' }}>+ Nuevo Proveedor</button>
         )}
       </div>

@@ -209,7 +209,7 @@ export default function ProyectosPage() {
       <ModuleHeader title="Proyectos" subtitle="Gestión de proyectos" />
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16, gap: 12, flexWrap: 'wrap' }}>
         <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Buscar por código, cliente o responsable..." style={{ ...inputStyle, maxWidth: 360 }} />
-        {permisos.editar && (
+        {permisos.crear && (
           <button onClick={() => { setSelected(emptyProyecto(nextConsecutivo('PRY-', proyectos.map(p => p.codigo)).codigo, `${currentUser?.nombre || ''} ${currentUser?.apellido || ''}`.trim())); setVerLectura(false); setIsForm(true) }} style={{ ...btnStyle, background: '#1e3a8a', color: '#ffffff' }}>+ Nuevo Proyecto</button>
         )}
       </div>

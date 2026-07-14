@@ -48,7 +48,7 @@ export default function UsuariosPage() {
     return {
       id: '', nombre: '', apellido: '', usuario: '', clave: '', correo: '',
       rol: firstNonAdmin?.nombre || 'Ventas', situacion: 'Activo',
-      permisos: firstNonAdmin?.permisos || MODULOS_CRM.map(m => ({ modulo: m.id, leer: true, editar: false, eliminar: false })),
+      permisos: firstNonAdmin?.permisos || MODULOS_CRM.map(m => ({ modulo: m.id, leer: true, crear: false, editar: false, eliminar: false })),
     }
   }
 
@@ -85,7 +85,7 @@ export default function UsuariosPage() {
     addRol({
       id: crypto.randomUUID(),
       nombre: nuevoRolNombre.trim(),
-      permisos: MODULOS_CRM.map(m => ({ modulo: m.id, leer: true, editar: false, eliminar: false })),
+      permisos: MODULOS_CRM.map(m => ({ modulo: m.id, leer: true, crear: false, editar: false, eliminar: false })),
     })
     setNuevoRolNombre('')
     setShowNewRol(false)

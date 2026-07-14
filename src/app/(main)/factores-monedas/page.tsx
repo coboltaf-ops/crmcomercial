@@ -116,7 +116,7 @@ export default function FactoresMonedasPage() {
     <div>
       <ModuleHeader title="Factores Conversión Monedas" subtitle="Factores de conversión de monedas" />
       <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', marginBottom: 16 }}>
-        {permisos.editar && (
+        {permisos.crear && (
           <button onClick={() => { setSelected(emptyFactor(nextConsecutivo('FCM-', factores.map(f => f.codigo)).codigo)); setVerLectura(false); setIsForm(true) }} style={{ ...btnStyle, background: '#1e3a8a', color: '#ffffff' }}>+ Nuevos Factores</button>
         )}
       </div>

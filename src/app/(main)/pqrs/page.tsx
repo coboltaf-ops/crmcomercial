@@ -404,7 +404,7 @@ export default function PQRSPage() {
               <span style={{ position: 'absolute', top: -8, right: -8, background: '#dc2626', color: '#fff', borderRadius: '50%', width: 22, height: 22, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 11, fontWeight: 800 }}>{externas.length}</span>
             </button>
           )}
-          {permisos.editar && tab === 'registros' && (
+          {permisos.crear && tab === 'registros' && (
             <button onClick={() => { { const nc = nextConsecutivo('PQRS-', pqrs.map(p => p.codigo)); setSelected(emptyPQRS(nc.codigo, nc.nro, `${currentUser?.nombre || ''} ${currentUser?.apellido || ''}`)) }; setIsForm(true) }} style={{ ...btnStyle, background: '#0f1b3d', color: '#ffffff' }}>+ {idioma === 'en' ? 'New PQRS' : 'Nueva PQRS'}</button>
           )}
         </div>

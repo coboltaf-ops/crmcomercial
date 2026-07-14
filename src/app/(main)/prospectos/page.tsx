@@ -422,7 +422,7 @@ export default function ProspectosPage() {
               <span style={{ position: 'absolute', top: -8, right: -8, background: '#dc2626', color: '#fff', borderRadius: '50%', width: 22, height: 22, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 11, fontWeight: 700 }}>{externas.length}</span>
             </button>
           )}
-          {permisos.editar && tab === 'registros' && (
+          {permisos.crear && tab === 'registros' && (
             <button onClick={() => { setSelected(emptyProspecto(nextConsecutivo('PRS-', prospectos.map(p => p.codigo)).codigo)); setIsForm(true) }} style={{ ...btnStyle, background: '#1e3a8a', color: '#ffffff' }}>{t('page.prospectos.btnNuevo')}</button>
           )}
         </div>

@@ -225,7 +225,7 @@ export default function ProductosPage() {
     <div>
       <ModuleHeader title={t('page.productos.title')} subtitle={t('page.productos.subtitle')} />
 
-      {permisos.editar && tab === 'registros' && (
+      {permisos.crear && tab === 'registros' && (
         <div style={{ marginBottom: 20 }}>
           <button onClick={() => { setSelected(emptyProducto(nextConsecutivo('PROD-', productos.map(p => p.codigo)).codigo)); setIsForm(true) }} style={{ ...btnStyle, background: '#1e3a8a', color: '#ffffff' }}>{t('page.productos.btnNuevo')}</button>
         </div>

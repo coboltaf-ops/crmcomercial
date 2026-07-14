@@ -406,7 +406,7 @@ export default function TareasPage() {
               Kanban
             </button>
           </div>
-          {permisos.editar && (
+          {permisos.crear && (
             <button onClick={() => { setSelected(emptyTarea(nextConsecutivo('TAR-', tareas.map(t => t.codigo)).codigo)); setVerLectura(false); setVista('form') }}
               style={{ ...btnStyle, background: '#1e3a8a', color: '#fff' }}>{tr('page.tareas.btnNuevo')}</button>
           )}

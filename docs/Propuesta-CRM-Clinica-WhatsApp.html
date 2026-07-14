@@ -1,0 +1,533 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Propuesta CRM Clínica + WhatsApp</title>
+<style>
+  @page { size: A4; margin: 0; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+  body { font-family:-apple-system,"Helvetica Neue",Arial,sans-serif; color:#334155; }
+  .page { width:210mm; min-height:297mm; padding:18mm 16mm 12mm; position:relative; display:flex; flex-direction:column; break-after:page; }
+  .page:last-child { break-after:auto; }
+  .bd { flex:1; }
+  .foot { margin-top:6mm; border-top:1px solid #e2e8f0; padding-top:6px; display:flex; justify-content:space-between; font-size:8pt; color:#94a3b8; }
+
+  /* Portada */
+  .cover { width:210mm; min-height:297mm; background:linear-gradient(150deg,#0a3947 0%,#124e5c 55%,#0d4451 100%); color:#fff; padding:26mm 22mm; display:flex; flex-direction:column; break-after:page; }
+  .cover .ico { font-size:34pt; margin-bottom:26mm; }
+  .cover .kicker { font-size:9pt; letter-spacing:3px; font-weight:700; color:#7fd4d8; margin-bottom:14px; }
+  .cover h1 { font-size:29pt; line-height:1.14; font-weight:800; margin-bottom:14px; }
+  .cover .lead { font-size:12pt; line-height:1.5; color:#cfe6e8; max-width:150mm; }
+  .cover .badge { display:inline-block; margin-top:20px; background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.25); color:#eaf6f7; font-size:9.5pt; font-weight:700; padding:9px 16px; border-radius:22px; }
+  .cover .sp { flex:1; }
+  .cover .rule { border-top:1px solid rgba(255,255,255,.28); margin-bottom:14px; }
+  .cover .name { font-size:15pt; font-weight:800; margin-bottom:6px; }
+  .cover .role { font-size:9.5pt; color:#ffffff; line-height:1.5; font-weight:600; }
+  .cover .contact { font-size:9.5pt; color:#ffffff; font-weight:700; margin-top:9px; letter-spacing:.2px; }
+  .cover .doc { font-size:8.5pt; color:#ffffff; font-weight:600; margin-top:9px; }
+
+  .pill { display:inline-block; padding:5px 13px; border-radius:6px; font-size:8.5pt; font-weight:800; letter-spacing:1.5px; color:#fff; margin-bottom:14px; }
+  .p-blue{background:#1d4ed8;} .p-orange{background:#b45309;} .p-teal{background:#0f766e;} .p-green{background:#15803d;} .p-slate{background:#0e5c6f;}
+
+  h2.navy { color:#123f5a; font-size:20pt; font-weight:800; margin-bottom:14px; }
+  h2.teal { color:#0e6273; font-size:22pt; font-weight:800; margin-bottom:14px; }
+  h2 .light { color:#94a3b8; font-size:13pt; font-weight:600; }
+  h3 { color:#123f5a; font-size:12.5pt; font-weight:800; margin:14px 0 7px; }
+  p { font-size:10pt; line-height:1.55; margin-bottom:8px; }
+  strong, b { color:#123f5a; font-weight:700; }
+  ul, ol { margin:6px 0 8px 18px; }
+  li { font-size:10pt; line-height:1.5; margin-bottom:5px; }
+
+  .box { border-radius:10px; padding:12px 16px; margin:9px 0; font-size:9.5pt; line-height:1.5; }
+  .box p, .box li { font-size:9.5pt; margin-bottom:5px; }
+  .box .t { display:block; font-weight:800; margin-bottom:6px; }
+  .box-quote { background:#e8f6f8; border-left:4px solid #0e6273; }
+  .box-info { background:#eff6ff; border:1px solid #bfdbfe; } .box-info .t{ color:#1d4ed8; }
+  .box-warn { background:#fef2f2; border:1px solid #fecaca; } .box-warn .t{ color:#b91c1c; }
+  .box-ok { background:#ecfdf5; border:1px solid #a7f3d0; } .box-ok .t{ color:#15803d; }
+
+  table.tbl { width:100%; border-collapse:collapse; margin:8px 0; font-size:9pt; }
+  table.tbl th { background:#0e5c6f; color:#fff; text-align:left; padding:8px 10px; font-weight:700; }
+  table.tbl td { padding:8px 10px; border-bottom:1px solid #e6ebf0; vertical-align:top; color:#3b4a5a; }
+  table.tbl td b { color:#123f5a; }
+
+  .layer { display:flex; align-items:center; gap:14px; border-radius:10px; padding:12px 18px; margin-bottom:10px; color:#fff; }
+  .layer .n { font-size:26pt; font-weight:800; opacity:.45; width:32px; text-align:center; }
+  .layer .tt { font-weight:800; font-size:11.5pt; margin-bottom:2px; }
+  .layer .dd { font-size:9pt; opacity:.96; line-height:1.4; }
+  .L1{background:#1d4ed8;} .L2{background:#6d28d9;} .L3{background:#0f766e;} .L4{background:#b45309;} .L5{background:#15803d;}
+
+  .cards { display:flex; gap:12px; margin:12px 0; }
+  .card { flex:1; border-radius:10px; padding:14px 15px; color:#fff; }
+  .card h4 { font-size:10.5pt; margin-bottom:6px; color:#fff; }
+  .card p { font-size:8.8pt; color:#fff; opacity:.96; line-height:1.45; margin:0; }
+  .c-teal{background:#0f766e;} .c-blue{background:#1d4ed8;} .c-orange{background:#b45309;} .c-green{background:#15803d;} .c-slate{background:#334155;}
+
+  .mods { display:flex; flex-wrap:wrap; gap:10px; margin:12px 0; }
+  .mod { flex:1 1 30%; min-width:52mm; border:1px solid #e2e8f0; border-left:4px solid #15803d; border-radius:8px; padding:11px 13px; }
+  .mod .mi { font-size:15pt; }
+  .mod .mt { font-weight:800; color:#123f5a; font-size:10pt; margin:3px 0; }
+  .mod .md { font-size:8.6pt; color:#475569; line-height:1.4; }
+
+  .step { display:flex; gap:12px; margin-bottom:13px; }
+  .step .num { flex:0 0 26px; height:26px; border-radius:50%; background:#15803d; color:#fff; font-weight:800; font-size:10pt; display:flex; align-items:center; justify-content:center; }
+  .step .c { flex:1; }
+  .step .st { font-weight:800; color:#123f5a; font-size:10.5pt; margin-bottom:5px; }
+  .chat { background:#e9e2d9; border:1px solid #d8cec1; border-radius:12px; padding:10px 12px; margin:4px 0; }
+  .bub { max-width:82%; padding:7px 11px; border-radius:11px; font-size:9pt; line-height:1.4; margin-bottom:7px; }
+  .bub:last-child{ margin-bottom:0; }
+  .in { background:#fff; border-top-left-radius:3px; box-shadow:0 1px 1px rgba(0,0,0,.06); }
+  .out { background:#dcf8c6; margin-left:auto; border-top-right-radius:3px; }
+  .who { font-size:7pt; font-weight:800; color:#0e6273; letter-spacing:.4px; margin-bottom:2px; text-transform:uppercase; }
+  .crmnote { font-size:8.4pt; color:#0e6273; background:#e8f6f8; border-radius:6px; padding:5px 10px; margin-top:6px; line-height:1.4; }
+  .crmnote b { color:#123f5a; }
+
+  .two { display:flex; gap:14px; margin:12px 0; }
+  .two > div { flex:1; border:1px solid #e2e8f0; border-radius:10px; overflow:hidden; }
+  .two .hd { padding:9px 14px; color:#fff; font-weight:800; font-size:10.5pt; }
+  .two .cc { padding:12px 14px; }
+  .two ul { margin:0 0 0 16px; } .two li { font-size:9pt; margin-bottom:5px; }
+
+  .kpis { display:flex; gap:12px; margin:12px 0; }
+  .kpi { flex:1; border:1px solid #e2e8f0; border-radius:10px; padding:14px; text-align:center; }
+  .kpi .big { font-size:20pt; font-weight:800; color:#15803d; }
+  .kpi .lb { font-size:8.6pt; color:#475569; line-height:1.35; margin-top:4px; }
+
+  .fase { display:flex; gap:12px; align-items:stretch; margin-bottom:9px; }
+  .fase .tag { flex:0 0 30mm; background:#0e5560; color:#fff; border-radius:8px; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:10pt; text-align:center; }
+  .fase.f5 .tag { background:#15803d; }
+  .fase .desc { flex:1; border:1px solid #e2e8f0; border-radius:8px; padding:10px 14px; font-size:9.3pt; line-height:1.45; }
+  .fase .desc b{ color:#123f5a; }
+</style>
+</head>
+<body>
+
+<!-- ============ PORTADA ============ -->
+<section class="cover">
+  <div class="ico">🩺</div>
+  <div class="kicker">PROPUESTA DE SOLUCIÓN TECNOLÓGICA</div>
+  <h1>Unificación de WhatsApp,<br>CRM Clínico, Tienda de Pedidos<br>e Integración de Dependencias</h1>
+  <div class="lead">Consolidación de líneas de atención, chatbot de enrutamiento por áreas, gestión de pacientes y citas, y un canal de ventas con inventario, pedidos y envíos — todo sobre WhatsApp, para el sector salud.</div>
+  <div class="badge">Sector Salud · Confidencial</div>
+  <div class="sp"></div>
+  <div class="rule"></div>
+  <div class="name">Ing. José E. Palomares</div>
+  <div class="role">Desarrollador y Consultor de Sistemas y Marketing · Especializado en Desarrollos con Inteligencia Artificial · Gerente TI de CSL Digital</div>
+  <div class="contact">✉️ coboltaf@gmail.com&nbsp;&nbsp;·&nbsp;&nbsp;📱 312 221 5819&nbsp;&nbsp;·&nbsp;&nbsp;📍 Medellín, Colombia</div>
+  <div class="doc">CSL Digital · Documento de recomendación profesional · Julio de 2026</div>
+</section>
+
+<!-- ============ RESUMEN EJECUTIVO ============ -->
+<section class="page">
+  <div class="bd">
+    <h2 class="navy">Resumen Ejecutivo</h2>
+    <div class="box box-quote">
+      La clínica necesita <b>unificar varias líneas de WhatsApp</b> (dispersas entre WhatsApp Business y WhatsApp normal) en una sola plataforma, para que un mensaje entrante se dirija automáticamente al área correcta y el paciente sepa siempre con quién habla — con miras a una gestión integral de pacientes, cotizaciones, citas, PQRS <b>y, ahora, pedidos de productos</b>.
+    </div>
+    <p>Este documento responde a esa necesidad en tres partes, y añade una <b>cuarta capa de alto impacto</b>:</p>
+    <div class="cards">
+      <div class="card c-blue"><h4>1 · Qué buscan</h4><p>El problema real de la clínica y lo que quieren lograr con la tecnología.</p></div>
+      <div class="card c-orange"><h4>2 · Qué hay</h4><p>Cómo funciona WhatsApp a nivel técnico y las soluciones que existen hoy en el mercado.</p></div>
+      <div class="card c-teal"><h4>3 · Qué se propone</h4><p>La arquitectura recomendada, el plan por fases y la propuesta a la medida.</p></div>
+    </div>
+    <div class="box box-ok">
+      <span class="t">✨ La capa que sorprende — Parte 4</span>
+      Convertir ese mismo WhatsApp en un <b>canal de ventas</b>: el paciente pide productos del inventario de la clínica, cotiza, paga y elige <b>envío a domicilio o recogida en clínica</b>, todo dentro del chat y con <b>inventario en tiempo real</b>.
+    </div>
+    <h3>Conclusión en una línea</h3>
+    <p>El proyecto es <b>robusto pero totalmente realizable</b>. La parte de WhatsApp la resuelve un proveedor oficial (BSP) sobre la <b>API de Meta</b>; el verdadero valor está en el <b>CRM + chatbot de enrutamiento + agendamiento de citas + tienda con inventario y pedidos</b>, que puede construirse como un producto propio: un <b>“CRM Clínica / Salud”</b>, replicable y a la medida del sector.</p>
+    <p>Dado que en nuestras consultorías con frecuencia encontramos <b>sistemas y procesos desarticulados y sin integración</b>, este informe no se limita a resolver el WhatsApp: propone <b>integrar toda una gestión clínica</b> —dependencias, pacientes, citas, cotizaciones, pedidos y PQRS— en una sola solución.</p>
+    <div class="box box-info">
+      <span class="t">💡 Recomendación central</span>
+      Consolidar todas las líneas en <b>un solo número principal sobre la API de WhatsApp</b>, con áreas manejadas como “colas” internas dentro del CRM. Menos números = menor costo, una sola marca y una operación más limpia.
+    </div>
+  </div>
+  <div class="foot"><span>Propuesta · CRM Clínico + Tienda por WhatsApp</span><span>Ing. José E. Palomares · CSL Digital</span></div>
+</section>
+
+<!-- ============ PARTE 1 ============ -->
+<section class="page">
+  <div class="bd">
+    <span class="pill p-blue">PARTE 1</span>
+    <h2 class="teal">Qué buscan</h2>
+    <h3>La situación actual de la clínica</h3>
+    <p>Hoy la clínica atiende a sus pacientes por WhatsApp, pero de forma <b>fragmentada</b>:</p>
+    <ul>
+      <li><b>Una línea principal</b> asociada a la Plataforma de WhatsApp Business (API), por donde los pacientes solicitan sus citas.</li>
+      <li><b>Varias líneas adicionales</b>, cada una con número distinto, para áreas como <b>Enfermería, Patología y Programación de cirugías</b>, que funcionan desde el WhatsApp normal y se usan casi siempre para mensajes de salida.</li>
+    </ul>
+    <h3>El dolor</h3>
+    <p>Las líneas están <b>desconectadas entre sí</b>: no hay una vista unificada del paciente, no se puede enrutar un mensaje al área correcta de forma ordenada, y la operación depende de teléfonos sueltos por dependencia.</p>
+    <h3>Lo que la clínica quiere lograr</h3>
+    <ol>
+      <li><b>Unificar</b> todas las líneas de WhatsApp en una sola plataforma con varios agentes.</li>
+      <li>Que al llegar un mensaje, un <b>chatbot lo redirija automáticamente al área</b> del requerimiento (Citas, Enfermería, Patología, Cirugías…).</li>
+      <li>Que en sentido contrario, cuando la clínica escribe, <b>el paciente sepa qué área le está contactando</b>.</li>
+      <li>A futuro: un <b>CRM con pacientes e historia clínica</b>, recepción de solicitudes, <b>cotizaciones</b>, <b>PQRS (incidencias y sugerencias)</b>, <b>agendamiento de citas</b> y <b>pedidos de productos</b> con envío o recogida.</li>
+    </ol>
+    <div class="box box-info">
+      <span class="t">🎯 En resumen</span>
+      Buscan pasar de “varios WhatsApp sueltos” a <b>una sola central de atención inteligente</b> conectada a un CRM que gestione todo el ciclo del paciente — desde la cita hasta el pedido.
+    </div>
+  </div>
+  <div class="foot"><span>Parte 1 · Qué buscan</span><span>Ing. José E. Palomares · CSL Digital</span></div>
+</section>
+
+<!-- ============ PARTE 2 ============ -->
+<section class="page">
+  <div class="bd">
+    <span class="pill p-orange">PARTE 2</span>
+    <h2 class="teal">Qué hay</h2>
+    <h3>La “trampa” técnica de WhatsApp (importante entenderla)</h3>
+    <p>Un número de WhatsApp solo puede vivir <b>en un lugar a la vez</b>: o en el WhatsApp normal, o en el WhatsApp Business (app), o en la <b>API de WhatsApp (Cloud API de Meta)</b>. No en dos.</p>
+    <p>Para unificar varias líneas en una sola plataforma con varios agentes, el camino oficial y único es llevar esos números a la <b>API de WhatsApp</b> y conectarlos a una <b>plataforma de bandeja compartida (inbox multiagente / omnicanal)</b>.</p>
+    <div class="box box-warn">
+      <span class="t">⚠️ Implicación clave que se les debe advertir</span>
+      Al migrar una línea del WhatsApp normal a la API, <b>ese número deja de usarse desde el celular/app</b> — se maneja solo desde la plataforma web. Además, enviar un mensaje de salida a un paciente que <b>no ha escrito en las últimas 24 horas</b> requiere una <b>“plantilla” aprobada por Meta y tiene costo por conversación</b>. Como esas líneas son casi todas de salida, hay que dimensionar el volumen.
+    </div>
+    <h3>Aclaración que corrige un error común</h3>
+    <p><b>No se necesita un número por dependencia.</b> Con la API de WhatsApp: <b>un solo número principal + muchos agentes/áreas atendiendo detrás</b>. El número es la “puerta”; las áreas son “colas” internas dentro del CRM. En la API cada número es una línea y cada conversación se cobra → menos números significa menos costo y menos gestión.</p>
+    <h3>Las opciones que existen en el mercado</h3>
+    <table class="tbl">
+      <tr><th>Nivel</th><th>Herramientas</th><th>Para quién</th></tr>
+      <tr><td><b>Fácil y económico</b></td><td>Kommo, Callbell, Wati</td><td>Si quieren algo rápido, en español, sin desarrollo.</td></tr>
+      <tr><td><b>Robusto multi-número / omnicanal</b></td><td>Respond.io, 360dialog (BSP oficial), Take Blip, Gupshup</td><td>Si el volumen es alto y quieren automatización seria.</td></tr>
+      <tr><td><b>Control total de datos</b></td><td>Chatwoot (open source, servidor propio)</td><td>Si pesa la privacidad de datos de pacientes.</td></tr>
+      <tr><td><b>A la medida</b></td><td>API de Meta + integración a su sistema</td><td>Si quieren conexión con su software de citas / historia clínica / tienda.</td></tr>
+    </table>
+  </div>
+  <div class="foot"><span>Parte 2 · Qué hay</span><span>Ing. José E. Palomares · CSL Digital</span></div>
+</section>
+
+<!-- ============ PARTE 3 ============ -->
+<section class="page">
+  <div class="bd">
+    <span class="pill p-teal">PARTE 3</span>
+    <h2 class="teal">Qué se propone</h2>
+    <h3>La solución recomendada</h3>
+    <p>Consolidar la operación sobre la <b>Cloud API de Meta con un solo número público</b>, conectado a una plataforma multiagente, y con las áreas gestionadas como <b>colas internas</b>. Tres caminos posibles:</p>
+    <ul>
+      <li><b>Opción A (recomendada):</b> 1 número público único. Llega el mensaje → el chatbot detecta el área → lo enruta a la cola correcta → el agente de esa área responde. Una sola marca, el más barato.</li>
+      <li><b>Opción B:</b> varios números (los actuales) migrados a la API y unificados en el mismo CRM. Solo vale la pena si esos números ya están posicionados con los pacientes.</li>
+      <li><b>Opción C (híbrido, realista):</b> 1 número principal nuevo + conservar los 2–3 números ya conocidos, todos cayendo en el mismo CRM.</li>
+    </ul>
+    <h3>“Que el paciente sepa qué área le escribe” — sin números aparte</h3>
+    <p>Con un solo número, <b>cada mensaje de salida se marca con el área</b>. Ejemplo:</p>
+    <div class="box box-info">🏥 <i>Clínica X · Área de Enfermería:</i> “Buenos días, le confirmamos su cita…”</div>
+    <p>El CRM etiqueta la conversación por departamento y el encabezado identifica el área. El paciente siempre sabe con quién habla, sin necesidad de cinco números.</p>
+    <h3>Arquitectura propuesta — 4 capas</h3>
+    <div class="layer L1"><div class="n">1</div><div><div class="tt">Canal — WhatsApp</div><div class="dd">Cloud API de Meta con 1 número (o híbrido). La “puerta” de entrada y salida.</div></div></div>
+    <div class="layer L2"><div class="n">2</div><div><div class="tt">Chatbot / Enrutador</div><div class="dd">Clasifica el requerimiento y lo manda al área. Menú por opciones + IA de respaldo que entiende texto libre.</div></div></div>
+    <div class="layer L3"><div class="n">3</div><div><div class="tt">CRM (el núcleo)</div><div class="dd">Pacientes, consentimientos, historial de conversaciones, cotizaciones, pedidos e inventario, PQRS y — con cuidado — historia clínica.</div></div></div>
+    <div class="layer L4"><div class="n">4</div><div><div class="tt">Agendamiento</div><div class="dd">Doctores, disponibilidad, fechas/horas, reservas, recordatorios y confirmaciones automáticas.</div></div></div>
+    <div class="box box-info"><span class="t">🗣️ PQRS — Incidencias y Sugerencias</span>El CRM incluye un módulo de <b>PQRS</b> (Peticiones, Quejas, Reclamos y Sugerencias): el paciente reporta una <b>incidencia</b> o deja una <b>sugerencia</b> —incluso por el mismo WhatsApp— y el sistema la <b>registra, clasifica y enruta al área responsable</b>, con prioridad y seguimiento hasta su cierre.</div>
+  </div>
+  <div class="foot"><span>Parte 3 · Qué se propone</span><span>Ing. José E. Palomares · CSL Digital</span></div>
+</section>
+
+<!-- ============ PARTE 3 · STACK ============ -->
+<section class="page">
+  <div class="bd">
+    <span class="pill p-teal">QUÉ SE PROPONE</span>
+    <h2 class="navy">El stack de herramientas</h2>
+    <div class="box box-quote">Qué se debe usar exactamente en cada parte de la solución — y, muy importante, la diferencia entre los tres “WhatsApp”, que es donde nace la confusión.</div>
+    <h3>Primero: los tres WhatsApp NO son lo mismo</h3>
+    <table class="tbl">
+      <tr><th>Versión</th><th>Para qué sirve</th><th>¿Sirve aquí?</th></tr>
+      <tr><td><b>WhatsApp normal</b></td><td>Uso personal. Un número, un celular.</td><td>❌ No permite multiagente ni chatbot.</td></tr>
+      <tr><td><b>WhatsApp Business (app)</b></td><td>Un negocio pequeño, un dispositivo, catálogo básico.</td><td>❌ No unifica varias líneas ni varios agentes.</td></tr>
+      <tr><td><b>WhatsApp Business Platform (API / Cloud API de Meta)</b></td><td>Empresas: varios agentes por número, chatbot, automatización, integración con CRM.</td><td>✅ Esta es la que se usa en este proyecto.</td></tr>
+    </table>
+    <div class="box box-info"><span class="t">📌 En claro</span>La operación NO va sobre el WhatsApp normal ni sobre la app de WhatsApp Business, sino sobre la <b>API de WhatsApp (Cloud API de Meta)</b>, contratada a través de un <b>proveedor oficial (BSP)</b>.</div>
+    <h3>El stack completo — componente por componente</h3>
+    <table class="tbl">
+      <tr><th>Componente</th><th>Herramienta a usar</th><th>Nota</th></tr>
+      <tr><td><b>Canal de mensajería</b></td><td>WhatsApp Cloud API (Meta) vía un BSP: 360dialog, Meta directo, Gupshup</td><td>El número se administra desde la plataforma, no desde un celular.</td></tr>
+      <tr><td><b>Bandeja multiagente</b></td><td>Respond.io o Kommo (rápidas, en español) · Chatwoot (datos propios)</td><td>Donde atienden los agentes, organizados por área (colas).</td></tr>
+      <tr><td><b>Chatbot / enrutador</b></td><td>Menú por opciones + IA (Claude) de respaldo</td><td>Clasifica el mensaje y lo dirige al área correcta.</td></tr>
+      <tr><td><b>CRM de pacientes</b></td><td>Sistema a la medida (“CRM Clínica/Salud”)</td><td>Pacientes, consentimientos, historial, cotizaciones, pedidos, inventario, PQRS.</td></tr>
+      <tr><td><b>Agendamiento</b></td><td>Módulo de agenda a la medida</td><td>Doctores, fechas, horas, recordatorios automáticos.</td></tr>
+      <tr><td><b>Llamadas de voz</b></td><td>Telefonía tradicional / celular aparte</td><td>La API es para mensajes, no para llamadas.</td></tr>
+    </table>
+    <div class="box box-warn"><span class="t">📞 Sobre las llamadas — importante</span>La API de WhatsApp está pensada para mensajería (texto, plantillas, multimedia), <b>no para llamadas de voz</b> tradicionales. Si las áreas necesitan atender o hacer llamadas, se mantiene una <b>línea telefónica / celular aparte</b> para ese fin, mientras que toda la <b>conversación por chat</b> se unifica en la plataforma.</div>
+  </div>
+  <div class="foot"><span>Qué se propone · El stack de herramientas</span><span>Ing. José E. Palomares · CSL Digital</span></div>
+</section>
+
+<!-- ============ PARTE 3 · SALUD + FASES ============ -->
+<section class="page">
+  <div class="bd">
+    <span class="pill p-teal">PARTE 3</span>
+    <h2 class="teal">Qué se propone <span class="light">— continuación</span></h2>
+    <h3>Consideración crítica del sector salud</h3>
+    <div class="box box-warn">
+      <span class="t">🔒 Datos sensibles — no pasar por alto</span>
+      La historia clínica está protegida por el <b>Habeas Data (Ley 1581 de 2012)</b> y la confidencialidad de la historia clínica.
+      <ul>
+        <li><b>Regla de oro:</b> NO enviar historia clínica por WhatsApp. WhatsApp sirve para agendar, recordar, cotizar, <b>vender productos</b> y orientar — no para datos clínicos detallados.</li>
+        <li>Obtener <b>consentimiento</b> del paciente para contactarlo por WhatsApp.</li>
+        <li>Respetar <b>plantillas aprobadas + ventana de 24 h</b> para los mensajes de salida.</li>
+      </ul>
+    </div>
+    <h3>Plan de implementación por fases</h3>
+    <p>Entregando valor desde el primer momento, sin construir todo de una vez:</p>
+    <div class="fase"><div class="tag">Fase 1</div><div class="desc"><b>CRM de pacientes + WhatsApp unificado (1 número) + chatbot de enrutamiento por áreas.</b> Resuelve cerca del 70% del dolor de la clínica.</div></div>
+    <div class="fase"><div class="tag">Fase 2</div><div class="desc"><b>Recepción de solicitudes, cotizaciones y PQRS</b> (incidencias, quejas y sugerencias).</div></div>
+    <div class="fase"><div class="tag">Fase 3</div><div class="desc"><b>Agendamiento de citas</b> (doctores / fechas / horas) + recordatorios y confirmaciones automáticas.</div></div>
+    <div class="fase"><div class="tag">Fase 4</div><div class="desc"><b>Módulo de historia clínica</b>, con toda la normativa y seguridad requeridas.</div></div>
+    <div class="fase f5"><div class="tag">Fase 5</div><div class="desc"><b>Tienda y Pedidos por WhatsApp</b> — inventario en tiempo real, catálogo, pedidos, pagos y envío o recogida en clínica. <i>(Se detalla en la Parte 4.)</i></div></div>
+    <div class="box box-ok"><span class="t">✅ Enfoque de arranque recomendado</span>Elegir 2–3 candidatas de plataforma y pedir <b>demo / piloto de 15 días</b> con la línea principal antes de migrar todas — y comenzar por la <b>Fase 1</b> (enrutamiento) para mostrar resultados rápido.</div>
+  </div>
+  <div class="foot"><span>Parte 3 · Qué se propone</span><span>Ing. José E. Palomares · CSL Digital</span></div>
+</section>
+
+<!-- ============ PARTE 4 · INTRO + MÓDULOS ============ -->
+<section class="page">
+  <div class="bd">
+    <span class="pill p-green">PARTE 4</span>
+    <h2 class="teal">Tienda y Pedidos por WhatsApp</h2>
+    <div class="box box-quote">
+      Imagine que el mismo WhatsApp por el que hoy piden una cita, mañana también les permita <b>pedir sus insumos, productos de cuidado o kits post-operatorios</b> — con <b>stock en tiempo real</b>, cotización automática, pago en línea y entrega a domicilio o recogida en clínica. <b>Sin llamadas, sin filas, 24/7.</b>
+    </div>
+    <p>Esta capa convierte la atención en un <b>canal de ventas</b>. El paciente conversa como si estuviera en una tienda, y por detrás el CRM controla el <b>inventario</b>, arma la <b>cotización</b>, registra el <b>pedido</b>, confirma el <b>pago</b> y gestiona el <b>envío o la recogida</b> — todo trazable y unido a la ficha del paciente.</p>
+    <h3>Los nuevos módulos que se integran al CRM</h3>
+    <div class="mods">
+      <div class="mod"><div class="mi">📦</div><div class="mt">Inventario</div><div class="md">Existencias en tiempo real, por producto, lote y vencimiento. Nunca se vende lo que no hay.</div></div>
+      <div class="mod"><div class="mi">🛒</div><div class="mt">Catálogo de venta</div><div class="md">Productos disponibles con precio, foto y descripción, que el bot muestra dentro del chat.</div></div>
+      <div class="mod"><div class="mi">🧾</div><div class="mt">Pedidos</div><div class="md">Cada solicitud se vuelve un pedido trazable: borrador → confirmado → pagado → despachado → entregado.</div></div>
+      <div class="mod"><div class="mi">🚚</div><div class="mt">Envíos / Logística</div><div class="md">Reglas de envío por zona, costo y tiempos; o recogida en clínica con aviso “listo”.</div></div>
+      <div class="mod"><div class="mi">💳</div><div class="mt">Pagos</div><div class="md">Cotización y link de pago; el pedido avanza solo cuando el pago se confirma.</div></div>
+      <div class="mod"><div class="mi">🔔</div><div class="mt">Notificaciones</div><div class="md">El paciente recibe por WhatsApp cada cambio de estado: cotización, pago, despacho y entrega.</div></div>
+    </div>
+    <h3>Cómo se conecta con la arquitectura</h3>
+    <p>No es un sistema aparte: estos módulos viven <b>dentro del CRM (capa 3)</b> y son orquestados por el mismo <b>chatbot (capa 2)</b> sobre el mismo <b>número de WhatsApp (capa 1)</b>. Una sola conversación, una sola marca, un solo lugar donde queda todo.</p>
+    <div class="layer L5"><div class="n">5</div><div><div class="tt">Comercio — Tienda &amp; Pedidos</div><div class="dd">Inventario, catálogo, pedidos, pagos y envíos. Se apoya en el CRM y se controla desde el chat.</div></div></div>
+  </div>
+  <div class="foot"><span>Parte 4 · Tienda y Pedidos por WhatsApp</span><span>Ing. José E. Palomares · CSL Digital</span></div>
+</section>
+
+<!-- ============ PARTE 4 · STORYBOARD 1 ============ -->
+<section class="page">
+  <div class="bd">
+    <span class="pill p-green">PARTE 4 · EL RECORRIDO</span>
+    <h2 class="navy">El recorrido que vive el cliente</h2>
+    <p>Un pedido completo, de principio a fin, <b>sin salir del chat</b>. Así se ve — y lo que pasa por detrás en el CRM:</p>
+
+    <div class="step">
+      <div class="num">1</div>
+      <div class="c">
+        <div class="st">El paciente escribe y el bot lo lleva a la Tienda</div>
+        <div class="chat">
+          <div class="bub out"><div class="who">Paciente</div>Hola, necesito comprar gasas y un kit post-cirugía 🙏</div>
+          <div class="bub in"><div class="who">Clínica · Tienda</div>¡Hola, Ana! 🛒 Con gusto le muestro lo que tenemos disponible hoy.</div>
+        </div>
+        <div class="crmnote"><b>En el CRM:</b> se identifica al paciente por su número y se abre un <b>pedido en borrador</b> asociado a su ficha.</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="num">2</div>
+      <div class="c">
+        <div class="st">El bot muestra solo lo que hay en inventario</div>
+        <div class="chat">
+          <div class="bub in"><div class="who">Clínica · Tienda</div>Disponibles ahora:<br>• Gasas estériles x10 — $8.000 (stock: 40)<br>• Kit post-cirugía — $95.000 (stock: 7)<br>• Solución salina 500ml — $6.500 (stock: 22)</div>
+        </div>
+        <div class="crmnote"><b>En el CRM:</b> el catálogo se filtra por <b>existencias &gt; 0 en tiempo real</b>. Lo agotado no se ofrece.</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="num">3</div>
+      <div class="c">
+        <div class="st">El cliente arma su pedido</div>
+        <div class="chat">
+          <div class="bub out"><div class="who">Paciente</div>2 gasas y 1 kit post-cirugía</div>
+          <div class="bub in"><div class="who">Clínica · Tienda</div>Anotado ✅ ¿Desea agregar algo más o cotizamos?</div>
+        </div>
+        <div class="crmnote"><b>En el CRM:</b> se hace una <b>reserva temporal de stock</b> de esos ítems para no vender de más mientras decide.</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="num">4</div>
+      <div class="c">
+        <div class="st">Cotización automática</div>
+        <div class="chat">
+          <div class="bub in"><div class="who">Clínica · Tienda</div>Su cotización:<br>• 2 × Gasas — $16.000<br>• 1 × Kit post-cirugía — $95.000<br>Subtotal: <b>$111.000</b> · Envío estimado: $9.000<br>Total: <b>$120.000</b></div>
+        </div>
+        <div class="crmnote"><b>En el CRM:</b> el total se calcula con <b>precios y reglas de envío vigentes</b>; queda registrado en el pedido.</div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>Parte 4 · El recorrido del cliente</span><span>Ing. José E. Palomares · CSL Digital</span></div>
+</section>
+
+<!-- ============ PARTE 4 · STORYBOARD 2 ============ -->
+<section class="page">
+  <div class="bd">
+    <span class="pill p-green">PARTE 4 · EL RECORRIDO</span>
+    <h2 class="navy">El recorrido que vive el cliente <span class="light">— cierre</span></h2>
+
+    <div class="step">
+      <div class="num">5</div>
+      <div class="c">
+        <div class="st">Elige envío a domicilio o recogida en clínica</div>
+        <div class="chat">
+          <div class="bub in"><div class="who">Clínica · Tienda</div>¿Prefiere <b>envío a domicilio</b> 🚚 o <b>recoger en la clínica</b> 🏪?</div>
+          <div class="bub out"><div class="who">Paciente</div>Envío a domicilio, por favor</div>
+        </div>
+        <div class="crmnote"><b>En el CRM:</b> se aplica la <b>política de envío por zona</b> (costo y tiempo) y se pide/confirma la dirección.</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="num">6</div>
+      <div class="c">
+        <div class="st">Pago en línea</div>
+        <div class="chat">
+          <div class="bub in"><div class="who">Clínica · Tienda</div>Aquí está su link de pago seguro por <b>$120.000</b> 👉 pagos.clinica.co/xxxx</div>
+          <div class="bub out"><div class="who">Paciente</div>¡Listo, ya pagué! ✅</div>
+        </div>
+        <div class="crmnote"><b>En el CRM:</b> al confirmarse el pago, el pedido pasa a <b>“Pagado”</b> y se <b>descuenta el inventario en firme</b> (cero sobreventa).</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="num">7</div>
+      <div class="c">
+        <div class="st">Preparación y despacho</div>
+        <div class="chat">
+          <div class="bub in"><div class="who">Clínica · Tienda</div>📦 Su pedido está en preparación.<br>🚚 ¡Despachado! Guía #COL-48213 · llega hoy 3–6 pm.</div>
+        </div>
+        <div class="crmnote"><b>En el CRM:</b> se registra el <b>movimiento de salida</b> de inventario y el estado avanza a <b>“Despachado”</b>, con la guía notificada por WhatsApp.</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="num">8</div>
+      <div class="c">
+        <div class="st">Entrega y postventa</div>
+        <div class="chat">
+          <div class="bub in"><div class="who">Clínica · Tienda</div>✅ Pedido entregado. ¿Cómo estuvo la experiencia? Del 1 al 5 ⭐</div>
+          <div class="bub out"><div class="who">Paciente</div>5 ⭐ ¡Excelente y rapidísimo!</div>
+        </div>
+        <div class="crmnote"><b>En el CRM:</b> el pedido se <b>cierra</b>, queda en el historial del paciente y se abre una <b>oportunidad de recompra</b> para el futuro.</div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>Parte 4 · El recorrido del cliente</span><span>Ing. José E. Palomares · CSL Digital</span></div>
+</section>
+
+<!-- ============ PARTE 4 · INVENTARIO + ENVÍO ============ -->
+<section class="page">
+  <div class="bd">
+    <span class="pill p-green">PARTE 4</span>
+    <h2 class="navy">Control de inventario y entrega</h2>
+    <h3>Control de inventario — el corazón que evita errores</h3>
+    <ul>
+      <li><b>Existencias en tiempo real:</b> el catálogo solo muestra lo disponible → nunca se vende lo que no hay.</li>
+      <li><b>Reserva al confirmar y descuento al pagar:</b> el stock se aparta al armar el pedido y se descuenta en firme con el pago → <b>cero sobreventa</b>.</li>
+      <li><b>Alertas de stock bajo</b> y punto de reorden, para reponer a tiempo.</li>
+      <li><b>Lote y vencimiento</b> (clave en salud): se controla qué lote sale y qué está por vencer.</li>
+      <li><b>Kardex de movimientos</b> (entradas y salidas) con trazabilidad total.</li>
+    </ul>
+    <table class="tbl">
+      <tr><th>Producto</th><th>Entrada</th><th>Salida</th><th>Saldo</th><th>Estado</th></tr>
+      <tr><td><b>Kit post-cirugía</b></td><td>+20</td><td>−13</td><td>7</td><td>Stock bajo ⚠️</td></tr>
+      <tr><td><b>Gasas estériles x10</b></td><td>+60</td><td>−20</td><td>40</td><td>OK ✅</td></tr>
+      <tr><td><b>Solución salina 500ml</b></td><td>+30</td><td>−8</td><td>22</td><td>OK ✅</td></tr>
+    </table>
+    <h3>Envío a domicilio o recogida en clínica</h3>
+    <div class="two">
+      <div>
+        <div class="hd" style="background:#15803d;">🚚 Envío a domicilio</div>
+        <div class="cc"><ul>
+          <li>Zonas y costos configurables.</li>
+          <li>Envío gratis sobre un monto (ej. compras &gt; $150.000).</li>
+          <li>Tiempos de entrega por zona.</li>
+          <li>Guía y seguimiento notificados por WhatsApp.</li>
+        </ul></div>
+      </div>
+      <div>
+        <div class="hd" style="background:#1d4ed8;">🏪 Recoger en clínica</div>
+        <div class="cc"><ul>
+          <li>Sin costo de envío.</li>
+          <li>Aviso “Listo para recoger” por WhatsApp.</li>
+          <li>Horario y punto de entrega indicados.</li>
+          <li>Ideal para pacientes que ya asisten a la clínica.</li>
+        </ul></div>
+      </div>
+    </div>
+    <div class="box box-info"><span class="t">💡 Todo bajo las políticas de la clínica</span>Las reglas de envío, montos, zonas y horarios de recogida se <b>configuran una vez</b> y el chatbot las aplica solo, igual para todos los pacientes.</div>
+  </div>
+  <div class="foot"><span>Parte 4 · Inventario y entrega</span><span>Ing. José E. Palomares · CSL Digital</span></div>
+</section>
+
+<!-- ============ PARTE 4 · POR QUÉ IMPACTA ============ -->
+<section class="page">
+  <div class="bd">
+    <span class="pill p-green">PARTE 4</span>
+    <h2 class="navy">Por qué impacta</h2>
+    <div class="kpis">
+      <div class="kpi"><div class="big">24/7</div><div class="lb">Pedidos a cualquier hora, sin depender de una persona.</div></div>
+      <div class="kpi"><div class="big">0</div><div class="lb">Sobreventa: inventario en tiempo real.</div></div>
+      <div class="kpi"><div class="big">1</div><div class="lb">Sola conversación: pedir, pagar y recibir.</div></div>
+      <div class="kpi"><div class="big">100%</div><div class="lb">Trazable: del chat al despacho, todo en el CRM.</div></div>
+    </div>
+    <div class="cards">
+      <div class="card c-green"><h4>Nuevo canal de ingresos</h4><p>Vender productos sobre un WhatsApp que los pacientes ya usan, sin apps nuevas ni fricción.</p></div>
+      <div class="card c-blue"><h4>Menos llamadas y filas</h4><p>El bot atiende, cotiza y cobra solo. El personal se enfoca en lo clínico.</p></div>
+      <div class="card c-teal"><h4>Experiencia “wow”</h4><p>Pedir por chat como en una tienda moderna: rápido, claro y con seguimiento.</p></div>
+    </div>
+    <h3>Lo que diferencia esta solución</h3>
+    <ul>
+      <li><b>Todo integrado:</b> el pedido nace en el chat y termina en la ficha del paciente, sin copiar datos entre sistemas.</li>
+      <li><b>Inventario que no miente:</b> se ofrece solo lo que existe y se descuenta al pagar.</li>
+      <li><b>Pensado para salud:</b> lote, vencimiento, consentimiento y normativa de datos desde el diseño.</li>
+      <li><b>Una sola marca:</b> mismo número, mismo tono, con el área siempre identificada.</li>
+    </ul>
+    <div class="box box-ok"><span class="t">✅ En una frase</span>La clínica pasa de “responder mensajes” a <b>vender, cobrar y despachar por WhatsApp</b> — con el inventario y el paciente siempre bajo control.</div>
+  </div>
+  <div class="foot"><span>Parte 4 · Por qué impacta</span><span>Ing. José E. Palomares · CSL Digital</span></div>
+</section>
+
+<!-- ============ NUESTRA PROPUESTA ============ -->
+<section class="page">
+  <div class="bd">
+    <span class="pill p-teal">NUESTRA PROPUESTA</span>
+    <h2 class="navy">Cómo podemos ayudarles</h2>
+    <div class="box box-quote">Este proyecto encaja de forma natural con soluciones que ya desarrollamos y operamos: sistemas <b>CRM a la medida</b> con <b>Inteligencia Artificial integrada</b>. La parte de WhatsApp/API la aporta un proveedor oficial (BSP); nosotros nos concentramos en lo que dominamos y da el valor real: <b>CRM + chatbot + agenda + tienda con inventario y pedidos</b>.</div>
+    <h3>Lo que ofrecemos</h3>
+    <ul>
+      <li>Diseño e implementación de un <b>“CRM Clínica / Salud”</b> a la medida: pacientes, conversaciones unificadas, enrutamiento por áreas y agendamiento de citas.</li>
+      <li><b>Chatbot inteligente</b> (menú + IA) para clasificar y dirigir cada requerimiento al área correcta.</li>
+      <li><b>Tienda y pedidos por WhatsApp</b> con <b>inventario en tiempo real</b>, cotización, pago y <b>envío o recogida en clínica</b>.</li>
+      <li><b>Módulo de PQRS</b> — recepción de peticiones, quejas, reclamos, <b>incidencias y sugerencias</b> de los clientes, clasificadas y enrutadas al área responsable, con seguimiento hasta el cierre (también por WhatsApp).</li>
+      <li>Integración con la <b>Cloud API de WhatsApp</b> a través de un proveedor oficial.</li>
+      <li>Implementación <b>por fases</b>, entregando resultados desde la Fase 1.</li>
+      <li>Diseño con la <b>normativa de datos de salud</b> incorporada desde el inicio (Habeas Data y confidencialidad clínica).</li>
+    </ul>
+    <h3>Por qué con nosotros</h3>
+    <div class="cards">
+      <div class="card c-teal"><h4>Experiencia real</h4><p>Ya construimos y operamos sistemas CRM con IA integrada en producción.</p></div>
+      <div class="card c-blue"><h4>A la medida</h4><p>No una herramienta rígida: una solución adaptada a la operación de la clínica.</p></div>
+      <div class="card c-orange"><h4>Acompañamiento</h4><p>Implementación por fases, con soporte cercano y visión de producto.</p></div>
+    </div>
+    <h3>Próximos pasos — para afinar la propuesta</h3>
+    <ol>
+      <li><b>Tamaño / volumen:</b> ¿cuántos pacientes y cuántos mensajes al día, aproximadamente?</li>
+      <li><b>Agendamiento e inventario:</b> ¿ya tienen software de citas / inventario que integrar, o se construye desde cero?</li>
+      <li><b>Alcance del piloto:</b> ¿arrancamos por el enrutamiento (Fase 1) o quieren ver también la tienda de pedidos?</li>
+    </ol>
+    <div class="box box-info"><span class="t">🚀 Siguiente acción sugerida</span>Agendar una sesión de 30 minutos para definir volumen, alcance del piloto e integraciones, y presentar un plan de la <b>Fase 1</b> con tiempos.</div>
+    <div style="border-top:2px solid #123f5a; margin-top:18px; padding-top:12px;">
+      <div style="font-size:15pt; font-weight:800; color:#123f5a;">Ing. José E. Palomares</div>
+      <div style="font-size:9.5pt; color:#475569; margin-top:4px;">Desarrollador y Consultor de Sistemas y Marketing · Especializado en Desarrollos con Inteligencia Artificial · <b>Gerente TI de CSL Digital</b></div>
+    </div>
+  </div>
+  <div class="foot"><span>Nuestra propuesta</span><span>Ing. José E. Palomares · CSL Digital · Julio 2026</span></div>
+</section>
+
+</body>
+</html>
