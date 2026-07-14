@@ -279,7 +279,7 @@ export default function ContactosPage() {
       <ModuleHeader title={t('page.contactos.title')} subtitle={t('page.contactos.subtitle')} />
 
       {permisos.crear && tab === 'registros' && (
-        <div style={{ marginBottom: 20 }}>
+        <div style={{ marginBottom: 20, display: 'flex', justifyContent: 'flex-end' }}>
           <button onClick={() => { setSelected(emptyContacto(nextConsecutivo('CON-', contactos.map(c => c.codigo)).codigo)); setIsForm(true) }} style={{ ...btnStyle, background: '#1e3a8a', color: '#ffffff' }}>{t('page.contactos.btnNuevo')}</button>
         </div>
       )}

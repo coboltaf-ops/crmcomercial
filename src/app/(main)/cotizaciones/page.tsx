@@ -795,7 +795,7 @@ export default function CotizacionesPage() {
       <ModuleHeader title={t('page.cotizaciones.title')} subtitle={t('page.cotizaciones.subtitle')} />
 
       {permisos.crear && tab === 'registros' && (
-        <div style={{ marginBottom: 20 }}>
+        <div style={{ marginBottom: 20, display: 'flex', justifyContent: 'flex-end' }}>
           <button onClick={() => { { const nc = nextConsecutivo('COT-', cotizaciones.map(c => c.codigo)); setSelected(emptyCotizacion(nc.codigo, nc.nro, `${currentUser?.nombre || ''} ${currentUser?.apellido || ''}`)) }; setIsForm(true) }} style={{ ...btnStyle, background: '#1e3a8a', color: '#ffffff' }}>{t('page.cotizaciones.btnNuevo')}</button>
         </div>
       )}

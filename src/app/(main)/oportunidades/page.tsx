@@ -648,7 +648,7 @@ export default function OportunidadesPage() {
       <ModuleHeader title={t('page.oportunidades.title')} subtitle={t('page.oportunidades.subtitle')} />
 
       {permisos.crear && tab === 'registros' && (
-        <div style={{ marginBottom: 20 }}>
+        <div style={{ marginBottom: 20, display: 'flex', justifyContent: 'flex-end' }}>
           <button onClick={() => { setSelected(emptyOportunidad(nextConsecutivo('OPP-', oportunidades.map(o => o.codigo)).codigo, '')); setIsForm(true) }} style={{ ...btnStyle, background: '#0f1b3d', color: '#ffffff' }}>{t('page.oportunidades.btnNuevo')}</button>
         </div>
       )}

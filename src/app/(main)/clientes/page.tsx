@@ -652,7 +652,7 @@ export default function ClientesPage() {
       <ModuleHeader title={t('page.clientes.title')} subtitle={t('page.clientes.subtitle')} />
 
       {permisos.crear && tab === 'registros' && (
-        <div style={{ marginBottom: 20 }}>
+        <div style={{ marginBottom: 20, display: 'flex', justifyContent: 'flex-end' }}>
           <button onClick={() => { setSelected(emptyCliente(nextConsecutivo('CLI-', clientes.map(c => c.codigo)).codigo)); setIsForm(true) }} style={{ ...btnStyle, background: '#1e3a8a', color: '#ffffff' }}>{t('page.clientes.btnNuevo')}</button>
         </div>
       )}
