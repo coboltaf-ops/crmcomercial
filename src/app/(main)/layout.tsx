@@ -48,7 +48,7 @@ const MENU_EN: Record<string, string> = {
   tareas: 'Tasks',
   referencias: 'References',
   'factores-monedas': 'Currency Conversion Factors',
-  manual: 'Manual',
+  manual: 'CRM Comercial Manual',
   usuarios: 'Users',
   'email-marketing': 'Email Marketing',
   flujos: 'Automations',

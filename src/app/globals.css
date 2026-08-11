@@ -28,6 +28,14 @@ div {
   background: #FFFFFF !important;
 }
 
+/* Manual CRM Comercial — tarjetas y banner de color intenso.
+   Las clases (mayor especificidad que el selector 'div') ganan al fondo blanco global. */
+.manual-hero { background: linear-gradient(135deg, #1e3a8a 0%, #0f766e 100%) !important; }
+.manual-hero h1, .manual-hero p { color: #ffffff !important; }
+.manual-card-front { background: var(--card-bg, #1e3a8a) !important; }
+.manual-card-front span { color: #ffffff !important; }
+.manual-back-title { color: var(--card-bg, #1e3a8a) !important; }
+
 /* Textos por defecto en azul oscuro (fondo blanco) */
 p, span, a, li {
   color: #013978 !important;

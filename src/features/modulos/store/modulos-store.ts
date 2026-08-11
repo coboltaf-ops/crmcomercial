@@ -17,6 +17,7 @@ interface ModulosState {
 
 const defaultModulos: Modulo[] = [
   // ── Módulos Principales ──
+  { id: 'manual', label: 'Manual uso CRM Comercial', icon: '📖', href: '/manual', activo: true, grupo: 'principal' },
   { id: 'dashboard', label: 'Dashboard', icon: '📊', href: '/dashboard', activo: true, grupo: 'principal' },
   { id: 'clientes', label: 'Empresas', icon: '🏢', href: '/clientes', activo: true, grupo: 'principal' },
   { id: 'contactos', label: 'Contactos', icon: '👤', href: '/contactos', activo: true, grupo: 'principal' },
@@ -31,7 +32,6 @@ const defaultModulos: Modulo[] = [
   { id: 'tareas', label: 'Tareas', icon: '✅', href: '/tareas', activo: true, grupo: 'principal' },
   { id: 'referencias', label: 'Referencias', icon: '⚙️', href: '/referencias', activo: true, grupo: 'principal' },
   { id: 'factores-monedas', label: 'Factores Conversión Monedas', icon: '💱', href: '/factores-monedas', activo: true, grupo: 'principal' },
-  { id: 'manual', label: 'Manual', icon: '📘', href: '/manual', activo: true, grupo: 'principal' },
 
   // ── Configuración ──
   { id: 'usuarios', label: 'Usuarios', icon: '🔐', href: '/usuarios', activo: true, grupo: 'configuracion' },
