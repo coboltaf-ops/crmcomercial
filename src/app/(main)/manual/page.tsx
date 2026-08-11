@@ -18,7 +18,20 @@ type Tarjeta = {
 
 // Grupo 1 — Módulos operativos (visibles para todos)
 const TARJETAS_OPERATIVAS: Tarjeta[] = [
-  { id: 'introduccion', titulo: 'Introducción', icono: '📘', color: '#4338ca' },
+  {
+    id: 'introduccion', titulo: 'Introducción', icono: '📘', color: '#4338ca',
+    intro: 'En toda empresa, una de las áreas con mayor responsabilidad para hacer sostenible el negocio en el tiempo es el Área Comercial. Casi el 100% de sus acciones apuntan a tres momentos clave del proceso, y un CRM le da la visión completa y controlada del seguimiento y el manejo de las relaciones con los clientes.',
+    puntos: [
+      '1) ATRAER — Mercadeo: captar nuevos clientes con estrategias que unen lo digital con lo tradicional.',
+      '2) VENDER — Ventas: mostrar lo que se ofrece y la experiencia de la empresa, cotizar trabajos o emitir ofertas definidas por el cliente, y así cerrar los negocios. Esas ventas cerradas son los ingresos que le permiten a la empresa continuar su vida en el mundo de los negocios.',
+      '3) SERVIR — Servicio al Cliente: lo más difícil no es vender y cumplir un cupo, sino mantener muy bien atendido al cliente, atendiendo cada requerimiento o incidencia de forma profesional y lo más rápido posible.',
+    ],
+    notas: [
+      'El resultado de atender bien: comentarios y recomendaciones favorables que posicionan a la empresa como un referente en el mundo empresarial.',
+      'Por eso el CRM: reúne Mercadeo + Ventas + Servicio al Cliente en un solo lugar, con la visión completa y controlada de la relación con cada cliente.',
+      'Tip país — Este CRM está adecuado a Colombia: montos en Pesos (COP) y ubicación con la estructura del país (Región → Departamento → Ciudad).',
+    ],
+  },
   {
     id: 'clientes', titulo: 'Clientes', icono: '🏢', color: '#1d4ed8',
     intro: 'Aquí se registran las empresas que son Clientes de la Empresa. El campo clave es el Tipo de Cliente.',
