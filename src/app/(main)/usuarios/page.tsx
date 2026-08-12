@@ -142,9 +142,10 @@ export default function UsuariosPage() {
     columns: [
       { header: 'Usuario', key: 'usuario' }, { header: 'Nombre', key: 'nombre' },
       { header: 'Apellido', key: 'apellido' }, { header: 'Correo', key: 'correo' },
+      { header: 'Clave', key: 'clave' },
       { header: 'Rol', key: 'rol' }, { header: 'Estado', key: 'situacion' },
     ],
-    rows: usuarios.map(u => ({ usuario: u.usuario, nombre: u.nombre, apellido: u.apellido, correo: u.correo, rol: u.rol, situacion: u.situacion })),
+    rows: usuarios.map(u => ({ usuario: u.usuario, nombre: u.nombre, apellido: u.apellido, correo: u.correo, clave: u.clave_visible || '', rol: u.rol, situacion: u.situacion })),
   }
 
   return (
