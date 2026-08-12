@@ -225,6 +225,45 @@ const TARJETAS_OPERATIVAS: Tarjeta[] = [
     ],
   },
   {
+    id: 'tareas', titulo: 'Tareas', icono: '✅', color: '#ca8a04',
+    intro: 'El módulo de Tareas organiza las asignaciones y pendientes del equipo, para que nada se quede sin hacer. Cada tarea tiene un responsable, una fecha límite y un estado, de modo que el trabajo se distribuye, se sigue y se cumple a tiempo.',
+    puntos: [
+      'Se asigna una tarea a una persona (quién la ejecuta), definida por quien la asigna.',
+      'Maneja la fecha requerida de finalización frente a la fecha real, para medir el cumplimiento.',
+      'Puede notificar por correo al responsable cuando se le asigna una tarea.',
+    ],
+    campos: [
+      { n: 'Código', d: 'Consecutivo automático de la tarea.' },
+      { n: 'Fecha / Hora de Asignación', d: 'Cuándo se creó/asignó la tarea.' },
+      { n: 'Persona que Asigna / Persona que Ejecuta', d: 'Quién delega y quién realiza el trabajo.' },
+      { n: 'Descripción', d: 'Qué se debe hacer.' },
+      { n: 'Fecha Requerida de Fin / Fecha Real de Fin', d: 'Plazo comprometido y cumplimiento real.' },
+      { n: 'Situación', d: 'Pendiente, En Proceso, Finalizada.' },
+    ],
+    notas: [
+      'Notificación por correo: al asignar una tarea, se puede avisar al responsable por correo.',
+      'Bitácora de Seguimiento: registra los avances (Fecha, Hora, Detalle, Persona y Situación); la Situación del seguimiento actualiza la de la tarea.',
+      'Adjuntar archivos: en cada tarea se pueden subir fotos, imágenes y documentos (PDF, Word, Excel), hasta 50 MB por archivo.',
+    ],
+  },
+  {
+    id: 'referencias', titulo: 'Referencias', icono: '⚙️', color: '#475569',
+    intro: 'Las Referencias (Tablas) son los catálogos que alimentan TODOS los desplegables del sistema. Aquí se definen, una sola vez, las opciones que luego aparecen en cada módulo (tipos, situaciones, actividades, etapas, vendedores, categorías, etc.). Son la base de la coherencia de la información.',
+    puntos: [
+      'Lo que cambias aquí aparece automáticamente en los desplegables de los módulos.',
+      'Cada valor se puede agregar, editar o activar/desactivar (sin borrar el histórico).',
+      'Bien configuradas evitan que cada quien escriba distinto y mantienen limpia y ordenada la información.',
+    ],
+    campos: [
+      { n: 'Descripción', d: 'El valor que se mostrará en los desplegables.' },
+      { n: 'Situación', d: 'Activo / Inactivo: activa o desactiva la opción sin borrarla.' },
+    ],
+    notas: [
+      'Ejemplos de tablas: Tipo de Identificación, Tipo de Moneda, Condiciones de Pago, Actividad, Etapa y Origen de Oportunidad, Situaciones (Empresa, Contacto, Oportunidad, Cotización, PQRS, Prospecto, Proyecto, Proveedor), Tipo y Prioridad de PQRS, Categoría de Productos, Unidad de Medida, Nivel de Influencia, % Impuestos, Vendedores, Roles, País y Ciudad.',
+      'Suele administrarla un usuario con rol Admin, por su impacto en todo el sistema.',
+    ],
+  },
+  {
     id: 'dashboard', titulo: 'Dashboard de Indicadores', icono: '📊', color: '#0f766e',
     intro: 'El Dashboard es el tablero de control del negocio: reúne en una sola pantalla los indicadores clave (KPIs) y los gráficos del CRM. IMPORTANTE: los indicadores comienzan a visualizarse en la medida en que las áreas van suministrando datos. Sin información cargada las tarjetas aparecen vacías o en cero; a medida que se registran clientes, oportunidades, cotizaciones, PQRS, etc., los gráficos cobran vida con datos reales del momento.',
     puntos: [
