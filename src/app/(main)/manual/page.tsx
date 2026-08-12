@@ -284,17 +284,6 @@ const TARJETAS_ADMIN: Tarjeta[] = [
     ],
   },
   {
-    id: 'datos-personal', titulo: 'Datos Personal de Empresa', icono: '👥', color: '#7c2d12',
-    intro: 'El personal / colaboradores de la Empresa se administra a través de Usuarios y Claves: cada persona del equipo que usa el CRM tiene su cuenta con su Rol y permisos. El Representante Legal de la empresa se registra en Datos Empresa. SOLO lo gestiona un usuario con Rol Admin.',
-    puntos: [
-      'Cada colaborador que va a usar el CRM se da de alta creando su Usuario y asignándole un Rol (en Usuarios y Claves / Roles).',
-      'Así se controla quién accede al sistema y qué puede hacer cada persona del equipo.',
-    ],
-    notas: [
-      'SOLO ROL ADMIN: la gestión del personal (sus usuarios y accesos) es exclusiva del Rol Admin.',
-    ],
-  },
-  {
     id: 'usuarios-claves', titulo: 'Usuarios y Claves', icono: '🔐', color: '#9f1239',
     intro: 'Módulo donde se crean y administran los Usuarios del sistema y sus Claves de acceso. Cada persona del equipo que va a usar el CRM tiene su propio usuario con una clave segura. SOLO un usuario con Rol Admin puede gestionarlo.',
     campos: [
