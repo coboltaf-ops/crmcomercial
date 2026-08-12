@@ -248,19 +248,19 @@ const TARJETAS_OPERATIVAS: Tarjeta[] = [
   },
   {
     id: 'referencias', titulo: 'Referencias', icono: '⚙️', color: '#475569',
-    intro: 'Las Referencias (Tablas) son los catálogos que alimentan TODOS los desplegables del sistema. Aquí se definen, una sola vez, las opciones que luego aparecen en cada módulo (tipos, situaciones, actividades, etapas, vendedores, categorías, etc.). Son la base de la coherencia de la información.',
+    intro: 'El módulo de Referencias está dedicado a almacenar los datos que se usan en otros módulos para desplegar sus opciones — por ejemplo Condiciones de Pago, Tipo de Identificación, Tipo de Moneda, Actividad del Cliente, etc. Son la base de la coherencia de la información, y solo pueden ser actualizadas y administradas por el Administrador del sistema.',
     puntos: [
       'Lo que cambias aquí aparece automáticamente en los desplegables de los módulos.',
       'Cada valor se puede agregar, editar o activar/desactivar (sin borrar el histórico).',
       'Bien configuradas evitan que cada quien escriba distinto y mantienen limpia y ordenada la información.',
     ],
     campos: [
-      { n: 'Descripción', d: 'El valor que se mostrará en los desplegables.' },
+      { n: 'Descripción', d: 'El valor/opción que se mostrará en el desplegable del módulo correspondiente. (Es el campo común a TODAS las tablas.)' },
       { n: 'Situación', d: 'Activo / Inactivo: activa o desactiva la opción sin borrarla.' },
     ],
     notas: [
-      'Ejemplos de tablas: Tipo de Identificación, Tipo de Moneda, Condiciones de Pago, Actividad, Etapa y Origen de Oportunidad, Situaciones (Empresa, Contacto, Oportunidad, Cotización, PQRS, Prospecto, Proyecto, Proveedor), Tipo y Prioridad de PQRS, Categoría de Productos, Unidad de Medida, Nivel de Influencia, % Impuestos, Vendedores, Roles, País y Ciudad.',
-      'Suele administrarla un usuario con rol Admin, por su impacto en todo el sistema.',
+      'Qué alimenta cada grupo de tablas: Comercial (Tipo de Identificación, Tipo de Moneda, Condiciones de Pago, % Impuestos) · Actividades (de Empresa/Cliente y de Proveedor) · Estados/Situación (Empresa, Contacto, Oportunidad, Cotización, Prospecto, Proyecto, Proveedor y PQRS) · Ventas (Etapa y Origen de Oportunidad, Vendedores) · Productos (Categoría y Unidad de Medida) · Contactos (Nivel de Influencia) · PQRS (Tipo y Prioridad) · Prospectos (Origen) · Ubicación (País y Ciudad) · Seguridad (Roles). Todas comparten los mismos campos: Descripción y Situación.',
+      'IMPORTANTE: solo el Administrador del sistema puede actualizar y administrar estas tablas, por su impacto en todo el sistema.',
     ],
   },
   {
