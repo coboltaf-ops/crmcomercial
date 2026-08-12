@@ -226,7 +226,7 @@ const TARJETAS_OPERATIVAS: Tarjeta[] = [
   },
   {
     id: 'tareas', titulo: 'Tareas', icono: '✅', color: '#ca8a04',
-    intro: 'El módulo de Tareas organiza las asignaciones y pendientes del equipo, para que nada se quede sin hacer. Cada tarea tiene un responsable, una fecha límite y un estado, de modo que el trabajo se distribuye, se sigue y se cumple a tiempo.',
+    intro: 'El objetivo principal del módulo de Tareas es que las personas del núcleo de Ventas, Mercadeo y Servicio al Cliente puedan asignar y recibir asignaciones de tareas, para ejecutarlas y cumplirlas en una fecha específica. Así el trabajo del equipo se distribuye, se sigue y nada queda sin hacer.',
     puntos: [
       'Se asigna una tarea a una persona (quién la ejecuta), definida por quien la asigna.',
       'Maneja la fecha requerida de finalización frente a la fecha real, para medir el cumplimiento.',
