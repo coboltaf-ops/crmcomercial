@@ -499,7 +499,7 @@ export default function ManualPage() {
       {isAdmin && (
         <>
           <h2 style={{ color: '#013978', fontSize: 18, fontWeight: 800, marginTop: 32 }}>
-            Administración <span style={{ fontSize: 12, fontWeight: 700, color: '#9f1239', background: '#fee2e2', padding: '3px 10px', borderRadius: 12, marginLeft: 8 }}>Solo Admin</span>
+            Administración / Configuración <span style={{ fontSize: 12, fontWeight: 700, color: '#9f1239', background: '#fee2e2', padding: '3px 10px', borderRadius: 12, marginLeft: 8 }}>Solo Admin</span>
           </h2>
           <div style={grid}>
             {TARJETAS_ADMIN.map(t => <Tile key={t.id} t={t} />)}
