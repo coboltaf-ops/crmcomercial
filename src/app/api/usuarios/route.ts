@@ -12,11 +12,16 @@ function autorizado(req: NextRequest): boolean {
 
 // GET — listar usuarios (PROTEGIDO: requiere sesión)
 export async function GET(req: NextRequest) {
-  if (!autorizado(req)) {
+  const token = req.cookies.get('palomares_session')?.value
+  const sesion = verifySession(token)
+  if (!sesion) {
     return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
   }
-  const data = await readList(KV_KEY)
-  return NextResponse.json(data)
+  const data = await readList<Record<string, unknown>>(KV_KEY)
+  // Las claves (cifrada y visible) SOLO se entregan a sesiones con rol Admin.
+  const esAdmin = String(sesion.rol || '').toLowerCase() === 'admin'
+  const salida = esAdmin ? data : data.map((u) => ({ ...u, clave: '', clave_visible: '' }))
+  return NextResponse.json(salida)
 }
 
 // POST — guardar la lista (PROTEGIDO + cifra las claves nuevas)
@@ -36,12 +41,16 @@ export async function POST(req: NextRequest) {
       console.error('[api/usuarios] BLOQUEADO: intento de vaciar la lista de usuarios')
       return NextResponse.json({ error: 'Bloqueado: no se permite vaciar la lista de usuarios' }, { status: 409 })
     }
-    // Cifra las claves que aún estén en texto plano; deja intactas las ya cifradas.
+    // Cifra las claves nuevas para el login; y guarda una copia VISIBLE (texto plano)
+    // SOLO para que un Admin pueda consultarla dentro del módulo de Usuarios.
     const segura = data.map((u: Record<string, unknown>) => {
       const clave = u.clave as string | undefined
+      const esPlano = !!(clave && !isHashed(clave))
+      const prev = actual.find((a) => (a as { id?: string }).id === (u as { id?: string }).id) as { clave_visible?: string } | undefined
       return {
         ...u,
-        clave: clave && !isHashed(clave) ? hashPassword(clave) : clave,
+        clave: esPlano ? hashPassword(clave as string) : clave,
+        clave_visible: esPlano ? clave : ((u.clave_visible as string) ?? prev?.clave_visible ?? ''),
       }
     })
     await writeList(KV_KEY, segura)

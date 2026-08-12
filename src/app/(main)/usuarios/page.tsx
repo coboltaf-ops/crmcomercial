@@ -25,6 +25,7 @@ export default function UsuariosPage() {
   const [selected, setSelected] = useState<Usuario | null>(null)
   const [isForm, setIsForm] = useState(false)
   const [tab, setTab] = useState<'usuarios' | 'roles' | 'reportes'>('usuarios')
+  const [verClave, setVerClave] = useState<Record<string, boolean>>({})
   const [selectedRolId, setSelectedRolId] = useState(roles[0]?.id || '')
   const [nuevoRolNombre, setNuevoRolNombre] = useState('')
   const [showNewRol, setShowNewRol] = useState(false)
@@ -182,7 +183,7 @@ export default function UsuariosPage() {
           <table style={{ width: '100%', borderCollapse: 'collapse' }}>
             <thead>
               <tr>
-                {['Usuario', 'Nombre', 'Apellido', 'Correo', 'Rol', 'Estado', 'Acciones'].map(h => (
+                {['Usuario', 'Nombre', 'Apellido', 'Correo', 'Clave', 'Rol', 'Estado', 'Acciones'].map(h => (
                   <th key={h} style={{ padding: '12px 14px', background: '#1e3a8a', color: '#fff', fontSize: 12, textAlign: 'left' }}>{h}</th>
                 ))}
               </tr>
@@ -196,6 +197,13 @@ export default function UsuariosPage() {
                     <td style={{ padding: '10px 14px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 13 }}>{u.nombre}</td>
                     <td style={{ padding: '10px 14px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 13 }}>{u.apellido}</td>
                     <td style={{ padding: '10px 14px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 13 }}>{u.correo}</td>
+                    <td style={{ padding: '10px 14px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 13, whiteSpace: 'nowrap' }}>
+                      {u.clave_visible
+                        ? (verClave[u.id]
+                            ? <span style={{ fontFamily: 'monospace' }}>{u.clave_visible} <button type="button" onClick={() => setVerClave(v => ({ ...v, [u.id]: false }))} style={{ ...btnStyle, padding: '1px 6px', fontSize: 11, background: '#e2e8f0', color: '#013978', border: '1px solid #cbd5e1' }}>🙈</button></span>
+                            : <span>•••••• <button type="button" onClick={() => setVerClave(v => ({ ...v, [u.id]: true }))} style={{ ...btnStyle, padding: '1px 6px', fontSize: 11, background: '#e2e8f0', color: '#013978', border: '1px solid #cbd5e1' }}>👁</button></span>)
+                        : <span style={{ color: '#94a3b8', fontSize: 11 }} title="Restablece la clave (Editar) para poder verla">🔒 restablecer</span>}
+                    </td>
                     <td style={{ padding: '10px 14px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 13 }}>{u.rol}</td>
                     <td style={{ padding: '10px 14px', borderBottom: '1px solid #e2e8f0' }}>
                       <span style={{ padding: '3px 10px', borderRadius: 20, fontSize: 11, fontWeight: 600, background: est.bg, color: est.color, border: est.border }}>{u.situacion}</span>

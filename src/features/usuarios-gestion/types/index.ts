@@ -12,6 +12,7 @@ export interface Usuario {
   apellido: string
   usuario: string
   clave: string
+  clave_visible?: string
   correo: string
   rol: string
   situacion: string
