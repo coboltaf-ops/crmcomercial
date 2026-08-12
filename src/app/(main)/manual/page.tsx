@@ -247,23 +247,6 @@ const TARJETAS_OPERATIVAS: Tarjeta[] = [
     ],
   },
   {
-    id: 'referencias', titulo: 'Referencias', icono: '⚙️', color: '#475569',
-    intro: 'El módulo de Referencias está dedicado a almacenar los datos que se usan en otros módulos para desplegar sus opciones — por ejemplo Condiciones de Pago, Tipo de Identificación, Tipo de Moneda, Actividad del Cliente, etc. Son la base de la coherencia de la información, y solo pueden ser actualizadas y administradas por el Administrador del sistema.',
-    puntos: [
-      'Lo que cambias aquí aparece automáticamente en los desplegables de los módulos.',
-      'Cada valor se puede agregar, editar o activar/desactivar (sin borrar el histórico).',
-      'Bien configuradas evitan que cada quien escriba distinto y mantienen limpia y ordenada la información.',
-    ],
-    campos: [
-      { n: 'Descripción', d: 'El valor/opción que se mostrará en el desplegable del módulo correspondiente. (Es el campo común a TODAS las tablas.)' },
-      { n: 'Situación', d: 'Activo / Inactivo: activa o desactiva la opción sin borrarla.' },
-    ],
-    notas: [
-      'Qué alimenta cada grupo de tablas: Comercial (Tipo de Identificación, Tipo de Moneda, Condiciones de Pago, % Impuestos) · Actividades (de Empresa/Cliente y de Proveedor) · Estados/Situación (Empresa, Contacto, Oportunidad, Cotización, Prospecto, Proyecto, Proveedor y PQRS) · Ventas (Etapa y Origen de Oportunidad, Vendedores) · Productos (Categoría y Unidad de Medida) · Contactos (Nivel de Influencia) · PQRS (Tipo y Prioridad) · Prospectos (Origen) · Ubicación (País y Ciudad) · Seguridad (Roles). Todas comparten los mismos campos: Descripción y Situación.',
-      'IMPORTANTE: solo el Administrador del sistema puede actualizar y administrar estas tablas, por su impacto en todo el sistema.',
-    ],
-  },
-  {
     id: 'dashboard', titulo: 'Dashboard de Indicadores', icono: '📊', color: '#0f766e',
     intro: 'El Dashboard es el tablero de control del negocio: reúne en una sola pantalla los indicadores clave (KPIs) y los gráficos del CRM. IMPORTANTE: los indicadores comienzan a visualizarse en la medida en que las áreas van suministrando datos. Sin información cargada las tarjetas aparecen vacías o en cero; a medida que se registran clientes, oportunidades, cotizaciones, PQRS, etc., los gráficos cobran vida con datos reales del momento.',
     puntos: [
@@ -287,6 +270,23 @@ const TARJETAS_ADMIN: Tarjeta[] = [
   { id: 'datos-personal', titulo: 'Datos Personal de Empresa', icono: '👥', color: '#7c2d12' },
   { id: 'usuarios-claves', titulo: 'Usuarios y Claves', icono: '🔐', color: '#9f1239' },
   { id: 'roles', titulo: 'Roles', icono: '🛡️', color: '#1e3a8a' },
+  {
+    id: 'referencias', titulo: 'Referencias', icono: '⚙️', color: '#475569',
+    intro: 'El módulo de Referencias está dedicado a almacenar los datos que se usan en otros módulos para desplegar sus opciones — por ejemplo Condiciones de Pago, Tipo de Identificación, Tipo de Moneda, Actividad del Cliente, etc. Son la base de la coherencia de la información, y solo pueden ser actualizadas y administradas por el Administrador del sistema.',
+    puntos: [
+      'Lo que cambias aquí aparece automáticamente en los desplegables de los módulos.',
+      'Cada valor se puede agregar, editar o activar/desactivar (sin borrar el histórico).',
+      'Bien configuradas evitan que cada quien escriba distinto y mantienen limpia y ordenada la información.',
+    ],
+    campos: [
+      { n: 'Descripción', d: 'El valor/opción que se mostrará en el desplegable del módulo correspondiente. (Es el campo común a TODAS las tablas.)' },
+      { n: 'Situación', d: 'Activo / Inactivo: activa o desactiva la opción sin borrarla.' },
+    ],
+    notas: [
+      'Qué alimenta cada grupo de tablas: Comercial (Tipo de Identificación, Tipo de Moneda, Condiciones de Pago, % Impuestos) · Actividades (de Empresa/Cliente y de Proveedor) · Estados/Situación (Empresa, Contacto, Oportunidad, Cotización, Prospecto, Proyecto, Proveedor y PQRS) · Ventas (Etapa y Origen de Oportunidad, Vendedores) · Productos (Categoría y Unidad de Medida) · Contactos (Nivel de Influencia) · PQRS (Tipo y Prioridad) · Prospectos (Origen) · Ubicación (País y Ciudad) · Seguridad (Roles). Todas comparten los mismos campos: Descripción y Situación.',
+      'IMPORTANTE: solo el Administrador del sistema puede actualizar y administrar estas tablas, por su impacto en todo el sistema.',
+    ],
+  },
 ]
 
 // ── Mini-gráficos de EJEMPLO para la tarjeta Dashboard (datos de muestra) ──
