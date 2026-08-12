@@ -287,6 +287,19 @@ const TARJETAS_ADMIN: Tarjeta[] = [
       'IMPORTANTE: solo el Administrador del sistema puede actualizar y administrar estas tablas, por su impacto en todo el sistema.',
     ],
   },
+  {
+    id: 'factores-monedas', titulo: 'Factores Conversión Monedas', icono: '💱', color: '#0d9488',
+    intro: 'Registra los factores para convertir entre monedas, usados en los cálculos del sistema (por ejemplo, para mostrar montos equivalentes en otra moneda).',
+    campos: [
+      { n: 'Nro / Fecha Registro', d: 'Consecutivo automático (FCM-XXXXX) y fecha del día.' },
+      { n: 'Factor Pesos a US$', d: 'Cuántos pesos equivalen a un dólar (ej. 4000).' },
+      { n: 'Factor US$ a Euro', d: 'Cuántos euros equivale un dólar (ej. 0.92).' },
+      { n: 'Situación', d: 'Activo / Inactivo.' },
+    ],
+    notas: [
+      'Configuración que administra normalmente el Administrador del sistema.',
+    ],
+  },
 ]
 
 // ── Mini-gráficos de EJEMPLO para la tarjeta Dashboard (datos de muestra) ──
