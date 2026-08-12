@@ -323,7 +323,7 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
             <>
               <div style={{ height: 1, background: 'rgba(255,255,255,0.1)', margin: '8px 4px' }} />
               <button onClick={() => setConfigOpen(!configOpen)}
-                title={collapsed ? (idioma === 'en' ? 'Settings' : 'Configuración') : undefined}
+                title={collapsed ? (idioma === 'en' ? 'Administration / Settings' : 'Administración / Configuración') : undefined}
                 style={{
                   display: 'flex', alignItems: 'center', gap: 12,
                   padding: collapsed ? '10px 0' : '10px 12px',
@@ -338,7 +338,7 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
                 <span style={{ fontSize: 18, flexShrink: 0 }}>⚙️</span>
                 {!collapsed && (
                   <>
-                    <span style={{ flex: 1 }}>{idioma === 'en' ? 'Settings' : 'Configuración'}</span>
+                    <span style={{ flex: 1 }}>{idioma === 'en' ? 'Administration / Settings' : 'Administración / Configuración'}</span>
                     <span style={{ fontSize: 10, transition: 'transform 0.2s', transform: configOpen ? 'rotate(180deg)' : 'rotate(0deg)' }}>▼</span>
                   </>
                 )}

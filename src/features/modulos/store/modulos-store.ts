@@ -30,8 +30,8 @@ const defaultModulos: Modulo[] = [
   { id: 'pqrs', label: 'PQRS', icon: '📩', href: '/pqrs', activo: true, grupo: 'principal' },
   { id: 'correos', label: 'Correos Enviados', icon: '📧', href: '/correos', activo: true, grupo: 'principal' },
   { id: 'tareas', label: 'Tareas', icon: '✅', href: '/tareas', activo: true, grupo: 'principal' },
-  { id: 'referencias', label: 'Referencias', icon: '⚙️', href: '/referencias', activo: true, grupo: 'principal' },
-  { id: 'factores-monedas', label: 'Factores Conversión Monedas', icon: '💱', href: '/factores-monedas', activo: true, grupo: 'principal' },
+  { id: 'referencias', label: 'Referencias', icon: '⚙️', href: '/referencias', activo: true, grupo: 'configuracion' },
+  { id: 'factores-monedas', label: 'Factores Conversión Monedas', icon: '💱', href: '/factores-monedas', activo: true, grupo: 'configuracion' },
 
   // ── Configuración ──
   { id: 'usuarios', label: 'Usuarios', icon: '🔐', href: '/usuarios', activo: true, grupo: 'configuracion' },
