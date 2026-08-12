@@ -266,10 +266,66 @@ const TARJETAS_OPERATIVAS: Tarjeta[] = [
 
 // Grupo 2 — Administración (SOLO visibles para usuarios con Rol Admin)
 const TARJETAS_ADMIN: Tarjeta[] = [
-  { id: 'datos-empresa', titulo: 'Datos Empresa', icono: '🏛️', color: '#334155' },
-  { id: 'datos-personal', titulo: 'Datos Personal de Empresa', icono: '👥', color: '#7c2d12' },
-  { id: 'usuarios-claves', titulo: 'Usuarios y Claves', icono: '🔐', color: '#9f1239' },
-  { id: 'roles', titulo: 'Roles', icono: '🛡️', color: '#1e3a8a' },
+  {
+    id: 'datos-empresa', titulo: 'Datos Empresa', icono: '🏛️', color: '#334155',
+    intro: 'Aquí se registran y actualizan los datos de la propia Empresa: identificación, contacto, representante legal y el LOGO que aparece en el inicio de sesión y en los documentos. Es una configuración que SOLO maneja un usuario con Rol Admin.',
+    campos: [
+      { n: 'Nombre', d: 'Razón social de la empresa.' },
+      { n: 'Tipo Identificación / Nro Documento', d: 'Documento tributario (RUC/NIT) y su número.' },
+      { n: 'Representante Legal', d: 'Nombre del representante de la empresa.' },
+      { n: 'Correo / Teléfono / Móvil / Página Web', d: 'Datos de contacto de la empresa.' },
+      { n: 'Logo', d: 'Imagen que se muestra en el login y en los documentos (se sube y se redimensiona automáticamente).' },
+      { n: 'Dirección / Ciudad / País / Código Postal', d: 'Ubicación de la empresa.' },
+      { n: 'Situación', d: 'Activo / Inactivo.' },
+    ],
+    notas: [
+      'SOLO ROL ADMIN: esta configuración la gestiona únicamente un usuario con Rol Admin.',
+      'El logo que se carga aquí es el que ven todos en la pantalla de inicio de sesión.',
+    ],
+  },
+  {
+    id: 'datos-personal', titulo: 'Datos Personal de Empresa', icono: '👥', color: '#7c2d12',
+    intro: 'Registro del personal / colaboradores de la Empresa: las personas que trabajan en ella y que luego pueden tener acceso al sistema. Es la base humana sobre la que se crean los Usuarios y se asignan los Roles. SOLO lo maneja un usuario con Rol Admin.',
+    puntos: [
+      'Sirve para tener identificado al equipo interno (nombres, cargos y datos de contacto).',
+      'Se conecta con Usuarios y Claves: a partir del personal se crean las cuentas de acceso al CRM.',
+    ],
+    notas: [
+      'SOLO ROL ADMIN: la gestión del personal de la empresa es exclusiva del Rol Admin.',
+    ],
+  },
+  {
+    id: 'usuarios-claves', titulo: 'Usuarios y Claves', icono: '🔐', color: '#9f1239',
+    intro: 'Módulo donde se crean y administran los Usuarios del sistema y sus Claves de acceso. Cada persona del equipo que va a usar el CRM tiene su propio usuario con una clave segura. SOLO un usuario con Rol Admin puede gestionarlo.',
+    campos: [
+      { n: 'Nombre / Apellido', d: 'Datos de la persona usuaria.' },
+      { n: 'Usuario', d: 'Nombre de acceso (login).' },
+      { n: 'Clave', d: 'Contraseña de acceso; se guarda cifrada, nunca en texto plano.' },
+      { n: 'Correo', d: 'Correo del usuario.' },
+      { n: 'Rol', d: 'Perfil que define sus permisos (Admin, Ventas, Soporte, Gerencia…).' },
+      { n: 'Situación', d: 'Activo / Inactivo: activa o bloquea el acceso del usuario.' },
+    ],
+    notas: [
+      'Seguridad: las claves se guardan cifradas y el login se valida en el servidor.',
+      'SOLO ROL ADMIN: crear, editar o desactivar usuarios y cambiar claves es exclusivo del Rol Admin.',
+    ],
+  },
+  {
+    id: 'roles', titulo: 'Roles', icono: '🛡️', color: '#1e3a8a',
+    intro: 'Los Roles definen QUÉ puede hacer cada usuario en el sistema. Cada rol tiene permisos por módulo (Leer, Crear, Editar, Eliminar), de modo que cada persona ve y hace solo lo que le corresponde. Se administran dentro del módulo de Usuarios (pestaña Roles) y SOLO por un usuario con Rol Admin.',
+    puntos: [
+      'Roles por defecto: Admin (acceso total), Ventas, Soporte y Gerencia — y se pueden crear nuevos.',
+      'Cada rol define permisos por módulo: Leer, Crear, Editar y Eliminar.',
+      'Al asignar un rol a un usuario, este hereda automáticamente esos permisos.',
+    ],
+    campos: [
+      { n: 'Nombre del Rol', d: 'Identifica el perfil (ej. Ventas, Soporte).' },
+      { n: 'Permisos por Módulo', d: 'Leer / Crear / Editar / Eliminar en cada módulo del CRM.' },
+    ],
+    notas: [
+      'SOLO ROL ADMIN: la creación y edición de roles y permisos es exclusiva del Rol Admin.',
+    ],
+  },
   {
     id: 'referencias', titulo: 'Referencias', icono: '⚙️', color: '#475569',
     intro: 'El módulo de Referencias está dedicado a almacenar los datos que se usan en otros módulos para desplegar sus opciones — por ejemplo Condiciones de Pago, Tipo de Identificación, Tipo de Moneda, Actividad del Cliente, etc. Son la base de la coherencia de la información, y solo pueden ser actualizadas y administradas por el Administrador del sistema.',
