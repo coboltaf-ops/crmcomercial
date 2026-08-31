@@ -1,0 +1,482 @@
+[
+  {
+    "id": "admin-1",
+    "nombre": "Admin",
+    "apellido": "CRM",
+    "usuario": "admin",
+    "clave": "scrypt$eb95dab5096535758384ea1f8299d0a4$76a269b1347e99ecb069fbe22d60438db395de3775edc0f773e3d9ffe3b501a211fed00b869118412f51f5046f425d93aabce0a1040508fa459e56fcca34a572",
+    "correo": "admin@grupomilagros.com.co",
+    "rol": "Admin",
+    "situacion": "Activo",
+    "permisos": [
+      {
+        "modulo": "dashboard",
+        "leer": true,
+        "editar": true,
+        "eliminar": true
+      },
+      {
+        "modulo": "agente",
+        "leer": true,
+        "editar": true,
+        "eliminar": true
+      },
+      {
+        "modulo": "clientes",
+        "leer": true,
+        "editar": true,
+        "eliminar": true
+      },
+      {
+        "modulo": "contactos",
+        "leer": true,
+        "editar": true,
+        "eliminar": true
+      },
+      {
+        "modulo": "oportunidades",
+        "leer": true,
+        "editar": true,
+        "eliminar": true
+      },
+      {
+        "modulo": "productos",
+        "leer": true,
+        "editar": true,
+        "eliminar": true
+      },
+      {
+        "modulo": "cotizaciones",
+        "leer": true,
+        "editar": true,
+        "eliminar": true
+      },
+      {
+        "modulo": "prospectos",
+        "leer": true,
+        "editar": true,
+        "eliminar": true
+      },
+      {
+        "modulo": "pqrs",
+        "leer": true,
+        "editar": true,
+        "eliminar": true
+      },
+      {
+        "modulo": "tareas",
+        "leer": true,
+        "editar": true,
+        "eliminar": true
+      },
+      {
+        "modulo": "personal",
+        "leer": true,
+        "editar": true,
+        "eliminar": true
+      },
+      {
+        "modulo": "centros-costo",
+        "leer": true,
+        "editar": true,
+        "eliminar": true
+      },
+      {
+        "modulo": "referencias",
+        "leer": true,
+        "editar": true,
+        "eliminar": true
+      },
+      {
+        "modulo": "lineas-servicio",
+        "leer": true,
+        "editar": true,
+        "eliminar": true
+      }
+    ]
+  },
+  {
+    "id": "jpalomares-maestro",
+    "nombre": "Jose",
+    "apellido": "Palomares",
+    "usuario": "jpalomares",
+    "clave": "scrypt$9de84256a3e222ab2aa789a85fb061d9$14afc60ecd55cc783d8ec84c81dea1e3144155571ff7fa71110cfd61d850116f094e9bc4ba17e0a02afdfdc87b96a237e3b9e288e8f915b299de3b9ff66ffa2c",
+    "correo": "jpalomares@grupomilagros.com.co",
+    "rol": "Admin",
+    "situacion": "Activo",
+    "permisos": [
+      {
+        "modulo": "dashboard",
+        "leer": true,
+        "editar": true,
+        "eliminar": true
+      },
+      {
+        "modulo": "agente",
+        "leer": true,
+        "editar": true,
+        "eliminar": true
+      },
+      {
+        "modulo": "clientes",
+        "leer": true,
+        "editar": true,
+        "eliminar": true
+      },
+      {
+        "modulo": "contactos",
+        "leer": true,
+        "editar": true,
+        "eliminar": true
+      },
+      {
+        "modulo": "oportunidades",
+        "leer": true,
+        "editar": true,
+        "eliminar": true
+      },
+      {
+        "modulo": "productos",
+        "leer": true,
+        "editar": true,
+        "eliminar": true
+      },
+      {
+        "modulo": "cotizaciones",
+        "leer": true,
+        "editar": true,
+        "eliminar": true
+      },
+      {
+        "modulo": "prospectos",
+        "leer": true,
+        "editar": true,
+        "eliminar": true
+      },
+      {
+        "modulo": "pqrs",
+        "leer": true,
+        "editar": true,
+        "eliminar": true
+      },
+      {
+        "modulo": "tareas",
+        "leer": true,
+        "editar": true,
+        "eliminar": true
+      },
+      {
+        "modulo": "personal",
+        "leer": true,
+        "editar": true,
+        "eliminar": true
+      },
+      {
+        "modulo": "centros-costo",
+        "leer": true,
+        "editar": true,
+        "eliminar": true
+      },
+      {
+        "modulo": "referencias",
+        "leer": true,
+        "editar": true,
+        "eliminar": true
+      },
+      {
+        "modulo": "lineas-servicio",
+        "leer": true,
+        "editar": true,
+        "eliminar": true
+      }
+    ]
+  },
+  {
+    "id": "u-jlopez",
+    "nombre": "Juan Carlos",
+    "apellido": "Lopez",
+    "usuario": "jlopez",
+    "clave": "scrypt$ed2aa26eb10ca7514c4a4f9e405d1376$07d8e2cd7e4a7bc967f173022f5f9a580268c257cc1f98d0c2c19022de9747f9c8e27fbcca270e1394c989c77b59f6f45717305f0581c1ab1eaf359dacf9b5bf",
+    "correo": "jlopez@grupomilagros.com.co",
+    "rol": "Ventas",
+    "situacion": "Activo",
+    "permisos": [
+      {
+        "modulo": "dashboard",
+        "leer": true,
+        "editar": false,
+        "eliminar": false
+      },
+      {
+        "modulo": "agente",
+        "leer": true,
+        "editar": false,
+        "eliminar": false
+      },
+      {
+        "modulo": "clientes",
+        "leer": true,
+        "editar": true,
+        "eliminar": false
+      },
+      {
+        "modulo": "contactos",
+        "leer": true,
+        "editar": true,
+        "eliminar": false
+      },
+      {
+        "modulo": "oportunidades",
+        "leer": true,
+        "editar": true,
+        "eliminar": false
+      },
+      {
+        "modulo": "productos",
+        "leer": true,
+        "editar": false,
+        "eliminar": false
+      },
+      {
+        "modulo": "cotizaciones",
+        "leer": true,
+        "editar": true,
+        "eliminar": false
+      },
+      {
+        "modulo": "prospectos",
+        "leer": true,
+        "editar": true,
+        "eliminar": false
+      },
+      {
+        "modulo": "pqrs",
+        "leer": true,
+        "editar": false,
+        "eliminar": false
+      },
+      {
+        "modulo": "tareas",
+        "leer": true,
+        "editar": false,
+        "eliminar": false
+      },
+      {
+        "modulo": "personal",
+        "leer": true,
+        "editar": false,
+        "eliminar": false
+      },
+      {
+        "modulo": "centros-costo",
+        "leer": true,
+        "editar": false,
+        "eliminar": false
+      },
+      {
+        "modulo": "referencias",
+        "leer": true,
+        "editar": false,
+        "eliminar": false
+      },
+      {
+        "modulo": "lineas-servicio",
+        "leer": true,
+        "editar": false,
+        "eliminar": false
+      }
+    ]
+  },
+  {
+    "id": "u-mjaramillo",
+    "nombre": "Maria Teresa",
+    "apellido": "Jaramillo",
+    "usuario": "mjaramillo",
+    "clave": "scrypt$5f7e47da08c248b7dc54bba270386ecb$c0fb4850617818786e6f2958b64c3600447e5aae038c84ce4f849e25762ea20f3332ae699d5bb850c33a55f20665e77dd5a00725306280629f8b041f90cec65e",
+    "correo": "mjaramillo@grupomilagros.com.co",
+    "rol": "Administración",
+    "situacion": "Activo",
+    "permisos": [
+      {
+        "modulo": "dashboard",
+        "leer": true,
+        "editar": true,
+        "eliminar": false
+      },
+      {
+        "modulo": "agente",
+        "leer": true,
+        "editar": true,
+        "eliminar": false
+      },
+      {
+        "modulo": "clientes",
+        "leer": true,
+        "editar": true,
+        "eliminar": true
+      },
+      {
+        "modulo": "contactos",
+        "leer": true,
+        "editar": true,
+        "eliminar": true
+      },
+      {
+        "modulo": "oportunidades",
+        "leer": true,
+        "editar": true,
+        "eliminar": true
+      },
+      {
+        "modulo": "productos",
+        "leer": true,
+        "editar": true,
+        "eliminar": true
+      },
+      {
+        "modulo": "cotizaciones",
+        "leer": true,
+        "editar": true,
+        "eliminar": true
+      },
+      {
+        "modulo": "prospectos",
+        "leer": true,
+        "editar": true,
+        "eliminar": true
+      },
+      {
+        "modulo": "pqrs",
+        "leer": true,
+        "editar": true,
+        "eliminar": true
+      },
+      {
+        "modulo": "tareas",
+        "leer": true,
+        "editar": true,
+        "eliminar": true
+      },
+      {
+        "modulo": "personal",
+        "leer": true,
+        "editar": true,
+        "eliminar": false
+      },
+      {
+        "modulo": "centros-costo",
+        "leer": true,
+        "editar": true,
+        "eliminar": true
+      },
+      {
+        "modulo": "referencias",
+        "leer": true,
+        "editar": true,
+        "eliminar": false
+      },
+      {
+        "modulo": "lineas-servicio",
+        "leer": true,
+        "editar": true,
+        "eliminar": false
+      }
+    ]
+  },
+  {
+    "id": "u-hareas",
+    "nombre": "Humberto",
+    "apellido": "Areas",
+    "usuario": "hareas",
+    "clave": "scrypt$5cc39b71651660e0995c83f97409bee1$8763cf9e98308c0a69b8312cbd940b0b2983b887a50fee947a2f0ce9f9f16f330cf01a569ea02a3f5dec7a41a5ebe82d139b9d0f570a618f638c13c0374956c8",
+    "correo": "hareas@grupomilagros.com.co",
+    "rol": "Servicio Cliente",
+    "situacion": "Activo",
+    "permisos": [
+      {
+        "modulo": "dashboard",
+        "leer": true,
+        "editar": false,
+        "eliminar": false
+      },
+      {
+        "modulo": "agente",
+        "leer": true,
+        "editar": false,
+        "eliminar": false
+      },
+      {
+        "modulo": "clientes",
+        "leer": true,
+        "editar": false,
+        "eliminar": false
+      },
+      {
+        "modulo": "contactos",
+        "leer": true,
+        "editar": true,
+        "eliminar": false
+      },
+      {
+        "modulo": "oportunidades",
+        "leer": true,
+        "editar": false,
+        "eliminar": false
+      },
+      {
+        "modulo": "productos",
+        "leer": true,
+        "editar": false,
+        "eliminar": false
+      },
+      {
+        "modulo": "cotizaciones",
+        "leer": true,
+        "editar": false,
+        "eliminar": false
+      },
+      {
+        "modulo": "prospectos",
+        "leer": true,
+        "editar": false,
+        "eliminar": false
+      },
+      {
+        "modulo": "pqrs",
+        "leer": true,
+        "editar": true,
+        "eliminar": false
+      },
+      {
+        "modulo": "tareas",
+        "leer": true,
+        "editar": false,
+        "eliminar": false
+      },
+      {
+        "modulo": "personal",
+        "leer": true,
+        "editar": false,
+        "eliminar": false
+      },
+      {
+        "modulo": "centros-costo",
+        "leer": true,
+        "editar": false,
+        "eliminar": false
+      },
+      {
+        "modulo": "referencias",
+        "leer": true,
+        "editar": false,
+        "eliminar": false
+      },
+      {
+        "modulo": "lineas-servicio",
+        "leer": true,
+        "editar": false,
+        "eliminar": false
+      }
+    ]
+  }
+]
