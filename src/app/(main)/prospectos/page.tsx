@@ -75,7 +75,7 @@ export default function ProspectosPage() {
 
   useEffect(() => {
     if (pendingSearch) setSearch(pendingSearch)
-    if (pendingAction === 'nuevo') { setSelected(emptyProspecto(nextConsecutivo('PRS-', prospectos.map(p => p.codigo)).codigo)); setIsForm(true) }
+    if (pendingAction === 'nuevo') { setSelected(emptyProspecto(nextConsecutivo('PRS-', prospectos.map(p => p.codigo)).codigo, usuarioGlobal ? (PAISES_ACTIVOS[0]?.codigo || 'Colombia') : paisUsuario)); setIsForm(true) }
     if (pendingSearch || pendingAction) clearPending()
     loadExternas()
     const intervalId = setInterval(loadExternas, 15000)
@@ -120,6 +120,7 @@ export default function ProspectosPage() {
   const refOptions = (table: string) => (refData[table as keyof typeof refData] || []).filter(r => r.situacion).map(r => r.descripcion)
 
   const filtered = prospectos.filter(p => {
+    if (usuarioGlobal && filtroPais && p.pais !== filtroPais) return false
     const s = search.toLowerCase()
     return !s || p.nombre.toLowerCase().includes(s) || p.apellido.toLowerCase().includes(s) ||
       p.empresa.toLowerCase().includes(s) || p.codigo.toLowerCase().includes(s)
@@ -188,7 +189,7 @@ export default function ProspectosPage() {
       { label: t('lbl.origenProspecto'), value: viewDetail.origen_prospecto },
       { label: t('lbl.actividad'), value: viewDetail.actividad },
       { label: t('lbl.ciudad'), value: viewDetail.ciudad },
-      { label: t('lbl.pais'), value: viewDetail.pais },
+      { label: t('lbl.pais'), value: etiquetaPais(viewDetail.pais) },
       { label: t('lbl.situacion'), value: viewDetail.situacion },
       { label: t('lbl.fechaRegistro'), value: fDate(viewDetail.fecha_registro) },
       { label: t('lbl.detalleRequerimiento'), value: viewDetail.detalle_requerimiento },
@@ -359,11 +360,14 @@ export default function ProspectosPage() {
               </select>}
             </div>
             <div>
-              <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.pais')}</label>
-              {verLectura ? <div className="ver-box">{selected.pais || '—'}</div> : <select value={selected.pais} onChange={e => setSelected({ ...selected, pais: e.target.value })} style={inputStyle}>
-                <option value="">{t("campo.seleccionar")}</option>
-                {refOptions('pais').map(o => <option key={o} value={o}>{o}</option>)}
-              </select>}
+              <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.pais')}{usuarioGlobal && !verLectura && <span style={{ color: '#dc2626' }}> *</span>}</label>
+              {verLectura ? <div className="ver-box">{etiquetaPais(selected.pais) || '—'}</div> : usuarioGlobal ? (
+                <select value={selected.pais} onChange={e => setSelected({ ...selected, pais: e.target.value })} style={inputStyle}>
+                  {PAISES_ACTIVOS.map(p => <option key={p.codigo} value={p.codigo}>{p.bandera} {p.nombre}</option>)}
+                </select>
+              ) : (
+                <div style={{ ...inputStyle, opacity: 0.7, background: '#f1f5f9', color: '#64748b' }}>{etiquetaPais(selected.pais)}</div>
+              )}
             </div>
             <div style={{ gridColumn: 'span 3' }}>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.detalleRequerimiento')}</label>
@@ -427,7 +431,7 @@ export default function ProspectosPage() {
             </button>
           )}
           {permisos.crear && tab === 'registros' && (
-            <button onClick={() => { setSelected(emptyProspecto(nextConsecutivo('PRS-', prospectos.map(p => p.codigo)).codigo)); setIsForm(true) }} style={{ ...btnStyle, background: '#1e3a8a', color: '#ffffff' }}>{t('page.prospectos.btnNuevo')}</button>
+            <button onClick={() => { setSelected(emptyProspecto(nextConsecutivo('PRS-', prospectos.map(p => p.codigo)).codigo, usuarioGlobal ? (PAISES_ACTIVOS[0]?.codigo || 'Colombia') : paisUsuario)); setIsForm(true) }} style={{ ...btnStyle, background: '#1e3a8a', color: '#ffffff' }}>{t('page.prospectos.btnNuevo')}</button>
           )}
         </div>
       </div>
@@ -462,15 +466,21 @@ export default function ProspectosPage() {
             </div>
           )}
 
-          <div style={{ display: 'flex', gap: 10, marginBottom: 16 }}>
+          <div style={{ display: 'flex', gap: 10, marginBottom: 16, alignItems: 'center', flexWrap: 'wrap' }}>
             <input value={search} onChange={e => setSearch(e.target.value)} placeholder={t('ph.buscarProspecto')} style={{ ...inputStyle, maxWidth: 400 }} />
+            {usuarioGlobal && (
+              <select value={filtroPais} onChange={e => setFiltroPais(e.target.value)} style={{ ...inputStyle, maxWidth: 260, width: 'auto' }}>
+                <option value="">🌎 {idioma === 'en' ? 'All countries' : 'Todos los países'}</option>
+                {PAISES_ACTIVOS.map(p => <option key={p.codigo} value={p.codigo}>{p.bandera} {p.nombre}</option>)}
+              </select>
+            )}
           </div>
 
           <div style={{ borderRadius: 12, border: '1px solid #1e3a8a', overflow: 'hidden' }}>
             <table style={{ width: '100%', borderCollapse: 'collapse' }}>
               <thead>
                 <tr>
-                  {[t('lbl.codigo'), t('lbl.nombre'), t('lbl.empresa'), t('lbl.correo'), t('lbl.movil'), idioma === 'en' ? 'Source' : 'Origen', t('lbl.situacion'), idioma === 'en' ? 'Actions' : 'Acciones'].map(h => (
+                  {[t('lbl.codigo'), t('lbl.nombre'), t('lbl.empresa'), t('lbl.correo'), t('lbl.movil'), idioma === 'en' ? 'Source' : 'Origen', t('lbl.pais'), t('lbl.situacion'), idioma === 'en' ? 'Actions' : 'Acciones'].map(h => (
                     <th key={h} style={{ padding: '12px 14px', background: '#1e3a8a', color: '#fff', fontSize: 12, textAlign: 'left' }}>{h}</th>
                   ))}
                 </tr>
@@ -484,6 +494,7 @@ export default function ProspectosPage() {
                     <td style={{ padding: '10px 14px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 13 }}>{p.correo}</td>
                     <td style={{ padding: '10px 14px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 13 }}>{p.nro_movil}</td>
                     <td style={{ padding: '10px 14px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 13 }}>{p.origen_prospecto}</td>
+                    <td style={{ padding: '10px 14px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 13, whiteSpace: 'nowrap' }}>{etiquetaPais(p.pais)}</td>
                     <td style={{ padding: '10px 14px', borderBottom: '1px solid #e2e8f0' }}>
                       <span style={{ padding: '3px 10px', borderRadius: 20, fontSize: 11, fontWeight: 600, ...statusStyle(p.situacion) }}>{ts(p.situacion)}</span>
                     </td>
@@ -499,7 +510,7 @@ export default function ProspectosPage() {
                     </td>
                   </tr>
                 ))}
-                {filtered.length === 0 && <tr><td colSpan={8} style={{ padding: 32, textAlign: 'center', color: '#013978', fontSize: 14 }}>No hay prospectos registrados</td></tr>}
+                {filtered.length === 0 && <tr><td colSpan={9} style={{ padding: 32, textAlign: 'center', color: '#013978', fontSize: 14 }}>No hay prospectos registrados</td></tr>}
               </tbody>
             </table>
           </div>

@@ -61,12 +61,12 @@ const emptyDetalle = (): DetalleCotizacion => ({
   cantidad: 1, precio_unitario: 0, unidad_medida: 'Unidad', descuento_pct: 0, subtotal: 0,
 })
 
-const emptyCotizacion = (codigo: string, nro: number, responsable: string): Cotizacion => ({
+const emptyCotizacion = (codigo: string, nro: number, responsable: string, pais: string): Cotizacion => ({
   id: '', codigo, nro, fecha_emision: today,
   fecha_vencimiento: '', cliente_id: '', cliente_nombre: '', contacto_id: '', contacto_nombre: '',
   oportunidad_id: '', oportunidad_nombre: '', categoria: '', tipo_moneda: 'Pesos Colombianos',
   condicion_pago: 'Contado', pct_impuesto: 19, aiu_activo: false, aiu_admin_pct: 0, aiu_imprev_pct: 0, aiu_utilidad_pct: 0, aiu_base_iva: 'utilidad', observaciones: '', detalles: [emptyDetalle()],
-  situacion: 'En Construcción', responsable, vendedor: '', fecha_registro: today, seguimientos: [],
+  situacion: 'En Construcción', responsable, vendedor: '', fecha_registro: today, seguimientos: [], pais,
 })
 
 // El AIU aplica cuando el Tipo de Cotización es "Construcción" (sin/ con tilde, may/min).
@@ -96,6 +96,8 @@ export default function CotizacionesPage() {
   const idioma = useIdioma()
   const permisos = usePermisos('cotizaciones')
   const currentUser = useCurrentUserStore(s => s.user)
+  const paisUsuario = currentUser?.pais || ''
+  const usuarioGlobal = esGlobal(paisUsuario)
   const { cotizaciones, addCotizacion, updateCotizacion, deleteCotizacion } = useCotizacionesStore()
   const loadCotizaciones = useCotizacionesStore(s => s.loadCotizaciones)
   const allClientes = useClientesStore(s => s.clientes)
@@ -114,6 +116,7 @@ export default function CotizacionesPage() {
   const [verLectura, setVerLectura] = useState(false)
   const [tab, setTab] = useState<'registros' | 'reportes'>('registros')
   const [search, setSearch] = useState('')
+  const [filtroPais, setFiltroPais] = useState('')  // solo lo usan usuarios GLOBAL
   const [searchProd, setSearchProd] = useState('')
   const [showProductos, setShowProductos] = useState(false)
   const { pendingSearch, pendingAction, clearPending } = useAsistenteStore()
@@ -122,7 +125,7 @@ export default function CotizacionesPage() {
   useEffect(() => { loadCotizaciones() }, [loadCotizaciones])
   useEffect(() => {
     if (pendingSearch) setSearch(pendingSearch)
-    if (pendingAction === 'nuevo') { const nc = nextConsecutivo('COT-', cotizaciones.map(c => c.codigo)); setSelected(emptyCotizacion(nc.codigo, nc.nro, `${currentUser?.nombre} ${currentUser?.apellido}`)); setIsForm(true) }
+    if (pendingAction === 'nuevo') { const nc = nextConsecutivo('COT-', cotizaciones.map(c => c.codigo)); setSelected(emptyCotizacion(nc.codigo, nc.nro, `${currentUser?.nombre} ${currentUser?.apellido}`, usuarioGlobal ? (PAISES_ACTIVOS[0]?.codigo || 'Colombia') : paisUsuario)); setIsForm(true) }
     if (pendingSearch || pendingAction) clearPending()
   }, [])
 
@@ -140,8 +143,9 @@ export default function CotizacionesPage() {
   const [sending, setSending] = useState(false)
 
   const filtered = cotizaciones.filter(c =>
-    !search || c.codigo.toLowerCase().includes(search.toLowerCase()) ||
-    c.cliente_nombre.toLowerCase().includes(search.toLowerCase())
+    (!usuarioGlobal || !filtroPais || c.pais === filtroPais) &&
+    (!search || c.codigo.toLowerCase().includes(search.toLowerCase()) ||
+    c.cliente_nombre.toLowerCase().includes(search.toLowerCase()))
   )
 
   const recalcDetalle = (d: DetalleCotizacion): DetalleCotizacion => {
@@ -626,6 +630,19 @@ export default function CotizacionesPage() {
                 {refOptions('situacion_cotizacion').map(o => <option key={o} value={o}>{o}</option>)}
               </select>}
             </div>
+            {/* País: bloqueado para usuarios de un país (el servidor lo sella); editable para GLOBAL */}
+            <div>
+              <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{idioma === 'en' ? 'Country' : 'País'}{usuarioGlobal && !verLectura && <span style={{ color: '#dc2626' }}> *</span>}</label>
+              {verLectura ? (
+                <div className="ver-box">{etiquetaPais(selected.pais)}</div>
+              ) : usuarioGlobal ? (
+                <select value={selected.pais || ''} onChange={e => setSelected({ ...selected, pais: e.target.value })} style={inputStyle}>
+                  {PAISES_ACTIVOS.map(p => <option key={p.codigo} value={p.codigo}>{p.bandera} {p.nombre}</option>)}
+                </select>
+              ) : (
+                <div style={{ ...inputStyle, background: '#f1f5f9', color: '#64748b' }}>{etiquetaPais(selected.pais)}</div>
+              )}
+            </div>
           </div>
 
           {/* Buscar y agregar producto */}
@@ -797,7 +814,7 @@ export default function CotizacionesPage() {
 
       {permisos.crear && tab === 'registros' && (
         <div style={{ marginBottom: 20, display: 'flex', justifyContent: 'flex-end' }}>
-          <button onClick={() => { { const nc = nextConsecutivo('COT-', cotizaciones.map(c => c.codigo)); setSelected(emptyCotizacion(nc.codigo, nc.nro, `${currentUser?.nombre || ''} ${currentUser?.apellido || ''}`)) }; setIsForm(true) }} style={{ ...btnStyle, background: '#1e3a8a', color: '#ffffff' }}>{t('page.cotizaciones.btnNuevo')}</button>
+          <button onClick={() => { { const nc = nextConsecutivo('COT-', cotizaciones.map(c => c.codigo)); setSelected(emptyCotizacion(nc.codigo, nc.nro, `${currentUser?.nombre || ''} ${currentUser?.apellido || ''}`, usuarioGlobal ? (PAISES_ACTIVOS[0]?.codigo || 'Colombia') : paisUsuario)) }; setIsForm(true) }} style={{ ...btnStyle, background: '#1e3a8a', color: '#ffffff' }}>{t('page.cotizaciones.btnNuevo')}</button>
         </div>
       )}
 
@@ -808,8 +825,16 @@ export default function CotizacionesPage() {
 
       {tab === 'registros' && (
         <>
-          <input value={search} onChange={e => setSearch(e.target.value)} placeholder={t('ph.buscarCotizacion')}
-            style={{ ...inputStyle, maxWidth: 400, marginBottom: 16 }} />
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16, flexWrap: 'wrap' }}>
+            <input value={search} onChange={e => setSearch(e.target.value)} placeholder={t('ph.buscarCotizacion')}
+              style={{ ...inputStyle, maxWidth: 400 }} />
+            {usuarioGlobal && (
+              <select value={filtroPais} onChange={e => setFiltroPais(e.target.value)} style={{ ...inputStyle, maxWidth: 240 }}>
+                <option value="">🌎 {idioma === 'en' ? 'All countries' : 'Todos los países'}</option>
+                {PAISES_ACTIVOS.map(p => <option key={p.codigo} value={p.codigo}>{p.bandera} {p.nombre}</option>)}
+              </select>
+            )}
+          </div>
           <div style={{ borderRadius: 12, border: '1px solid #1e3a8a', overflow: 'hidden' }}>
             <table style={{ width: '100%', borderCollapse: 'collapse' }}>
               <thead><tr>
@@ -829,7 +854,7 @@ export default function CotizacionesPage() {
                       <td style={{ padding: '10px 14px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 13 }}>{cli?.nro_documento || ''}</td>
                       <td style={{ padding: '10px 14px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 13 }}>{c.categoria || ''}</td>
                       <td style={{ padding: '10px 14px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 13 }}>{cli?.ciudad || ''}</td>
-                      <td style={{ padding: '10px 14px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 13 }}>{cli?.pais || ''}</td>
+                      <td style={{ padding: '10px 14px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 13, whiteSpace: 'nowrap' }}>{etiquetaPais(c.pais)}</td>
                       <td style={{ padding: '10px 14px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 13 }}>{fDate(c.fecha_emision)}</td>
                       <td style={{ padding: '10px 14px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 13 }}>{fDate(c.fecha_vencimiento)}</td>
                       <td style={{ padding: '10px 14px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 13, textAlign: 'center' }}>{c.detalles.length}</td>

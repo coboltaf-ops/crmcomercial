@@ -32,6 +32,8 @@ const emptyProyecto = (codigo: string, responsable: string, pais: string): Proye
 
 export default function ProyectosPage() {
   const currentUser = useCurrentUserStore(s => s.user)
+  const paisUsuario = currentUser?.pais || ''
+  const usuarioGlobal = esGlobal(paisUsuario)
   const permisos = usePermisos('proyectos')
   const { proyectos, addProyecto, updateProyecto, deleteProyecto } = useProyectosStore()
   const loadProyectos = useProyectosStore(s => s.loadProyectos)
@@ -44,6 +46,7 @@ export default function ProyectosPage() {
   const [isForm, setIsForm] = useState(false)
   const [verLectura, setVerLectura] = useState(false)
   const [search, setSearch] = useState('')
+  const [filtroPais, setFiltroPais] = useState('')  // solo lo usan usuarios GLOBAL
 
   const refOptions = (table: string, fallback: string[]) => {
     const opts = (refData[table as keyof typeof refData] || []).filter(r => r.situacion).map(r => r.descripcion)
@@ -55,13 +58,15 @@ export default function ProyectosPage() {
     usuario_nombre: `${currentUser?.nombre || ''} ${currentUser?.apellido || ''}`.trim(),
     rol: currentUser?.rol || '',
     modulo: 'proyectos',
+    pais: currentUser?.pais || '',
   })
 
   const filtered = proyectos.filter(p =>
-    !search || p.codigo.toLowerCase().includes(search.toLowerCase()) ||
+    (!usuarioGlobal || !filtroPais || p.pais === filtroPais) &&
+    (!search || p.codigo.toLowerCase().includes(search.toLowerCase()) ||
     p.codigo_proyecto.toLowerCase().includes(search.toLowerCase()) ||
     p.cliente_nombre.toLowerCase().includes(search.toLowerCase()) ||
-    p.responsable.toLowerCase().includes(search.toLowerCase())
+    p.responsable.toLowerCase().includes(search.toLowerCase()))
   )
 
   const handleSave = (e: React.FormEvent) => {
@@ -126,6 +131,16 @@ export default function ProyectosPage() {
               <div>
                 <label style={labelStyle}>Responsable del Proyecto</label>
                 {verLectura ? <div className="ver-box">{selected.responsable || '—'}</div> : <input value={selected.responsable} onChange={e => setSelected({ ...selected, responsable: e.target.value })} placeholder="Responsable..." style={inputStyle} />}
+              </div>
+              <div>
+                <label style={labelStyle}>País{usuarioGlobal && ' *'}</label>
+                {verLectura ? <div className="ver-box">{etiquetaPais(selected.pais)}</div> : usuarioGlobal ? (
+                  <select value={selected.pais || ''} onChange={e => setSelected({ ...selected, pais: e.target.value })} style={inputStyle}>
+                    {PAISES_ACTIVOS.map(p => <option key={p.codigo} value={p.codigo}>{p.bandera} {p.nombre}</option>)}
+                  </select>
+                ) : (
+                  <div style={{ ...inputStyle, background: '#f1f5f9', color: '#64748b' }}>{etiquetaPais(selected.pais)}</div>
+                )}
               </div>
               <div style={{ gridColumn: 'span 3' }}>
                 <label style={labelStyle}>Descripción Detallada del Proyecto</label>
@@ -210,8 +225,14 @@ export default function ProyectosPage() {
       <ModuleHeader title="Proyectos" subtitle="Gestión de proyectos" />
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16, gap: 12, flexWrap: 'wrap' }}>
         <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Buscar por código, cliente o responsable..." style={{ ...inputStyle, maxWidth: 360 }} />
+        {usuarioGlobal && (
+          <select value={filtroPais} onChange={e => setFiltroPais(e.target.value)} style={{ ...inputStyle, maxWidth: 220 }}>
+            <option value="">🌎 Todos los países</option>
+            {PAISES_ACTIVOS.map(p => <option key={p.codigo} value={p.codigo}>{p.bandera} {p.nombre}</option>)}
+          </select>
+        )}
         {permisos.crear && (
-          <button onClick={() => { setSelected(emptyProyecto(nextConsecutivo('PRY-', proyectos.map(p => p.codigo)).codigo, `${currentUser?.nombre || ''} ${currentUser?.apellido || ''}`.trim())); setVerLectura(false); setIsForm(true) }} style={{ ...btnStyle, background: '#1e3a8a', color: '#ffffff' }}>+ Nuevo Proyecto</button>
+          <button onClick={() => { setSelected(emptyProyecto(nextConsecutivo('PRY-', proyectos.map(p => p.codigo)).codigo, `${currentUser?.nombre || ''} ${currentUser?.apellido || ''}`.trim(), usuarioGlobal ? (PAISES_ACTIVOS[0]?.codigo || 'Colombia') : paisUsuario)); setVerLectura(false); setIsForm(true) }} style={{ ...btnStyle, background: '#1e3a8a', color: '#ffffff' }}>+ Nuevo Proyecto</button>
         )}
       </div>
 
@@ -219,7 +240,7 @@ export default function ProyectosPage() {
         <table style={{ width: '100%', borderCollapse: 'collapse' }}>
           <thead>
             <tr>
-              {['Nro', 'Código', 'Cliente', 'Responsable', 'Monto Aprobado', 'Situación', 'Acciones'].map(h => (
+              {['Nro', 'Código', 'Cliente', 'Responsable', 'País', 'Monto Aprobado', 'Situación', 'Acciones'].map(h => (
                 <th key={h} style={{ padding: '12px 14px', background: '#1e3a8a', color: '#fff', fontSize: 12, textAlign: 'left' }}>{h}</th>
               ))}
             </tr>
@@ -231,6 +252,7 @@ export default function ProyectosPage() {
                 <td style={{ padding: '8px 12px', borderBottom: '1px solid #e2e8f0', color: '#000', fontSize: 13, fontWeight: 600 }}>{p.codigo_proyecto || '—'}</td>
                 <td style={{ padding: '8px 12px', borderBottom: '1px solid #e2e8f0', color: '#000', fontSize: 13 }}>{p.cliente_nombre || '—'}</td>
                 <td style={{ padding: '8px 12px', borderBottom: '1px solid #e2e8f0', color: '#000', fontSize: 13 }}>{p.responsable || '—'}</td>
+                <td style={{ padding: '8px 12px', borderBottom: '1px solid #e2e8f0', color: '#000', fontSize: 13, whiteSpace: 'nowrap' }}>{etiquetaPais(p.pais)}</td>
                 <td style={{ padding: '8px 12px', borderBottom: '1px solid #e2e8f0', color: '#000', fontSize: 13, textAlign: 'right' }}>{fmtMoney(p.monto_aprobado || 0)}</td>
                 <td style={{ padding: '8px 12px', borderBottom: '1px solid #e2e8f0' }}><span style={situColor(p.situacion)}>{p.situacion}</span></td>
                 <td style={{ padding: '8px 12px', borderBottom: '1px solid #e2e8f0' }}>
@@ -242,7 +264,7 @@ export default function ProyectosPage() {
                 </td>
               </tr>
             ))}
-            {filtered.length === 0 && <tr><td colSpan={7} style={{ padding: 32, textAlign: 'center', color: '#013978', fontSize: 14 }}>No hay proyectos registrados</td></tr>}
+            {filtered.length === 0 && <tr><td colSpan={8} style={{ padding: 32, textAlign: 'center', color: '#013978', fontSize: 14 }}>No hay proyectos registrados</td></tr>}
           </tbody>
         </table>
       </div>

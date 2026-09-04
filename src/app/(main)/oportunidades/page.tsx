@@ -356,11 +356,14 @@ export default function OportunidadesPage() {
               </select>)}
             </div>
             <div>
-              <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.pais')}</label>
-              {verLectura ? <div className="ver-box">{selected.pais || '—'}</div> : (<select value={selected.pais} onChange={e => setSelected({ ...selected, pais: e.target.value })} style={inputStyle}>
-                <option value="">{t("campo.seleccionar")}</option>
-                {refOptions('pais').map(o => <option key={o} value={o}>{o}</option>)}
-              </select>)}
+              <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.pais')}{usuarioGlobal && !verLectura && <span style={{ color: '#dc2626' }}> *</span>}</label>
+              {verLectura ? <div className="ver-box">{etiquetaPais(selected.pais) || '—'}</div> : usuarioGlobal ? (
+                <select value={selected.pais} onChange={e => setSelected({ ...selected, pais: e.target.value })} style={inputStyle}>
+                  {PAISES_ACTIVOS.map(p => <option key={p.codigo} value={p.codigo}>{p.bandera} {p.nombre}</option>)}
+                </select>
+              ) : (
+                <div style={{ ...inputStyle, opacity: 0.7, background: '#f1f5f9', color: '#64748b' }}>{etiquetaPais(selected.pais)}</div>
+              )}
             </div>
             <div>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>Estimado COP *</label>
@@ -654,7 +657,7 @@ export default function OportunidadesPage() {
 
       {permisos.crear && tab === 'registros' && (
         <div style={{ marginBottom: 20, display: 'flex', justifyContent: 'flex-end' }}>
-          <button onClick={() => { setSelected(emptyOportunidad(nextConsecutivo('OPP-', oportunidades.map(o => o.codigo)).codigo, '')); setIsForm(true) }} style={{ ...btnStyle, background: '#0f1b3d', color: '#ffffff' }}>{t('page.oportunidades.btnNuevo')}</button>
+          <button onClick={() => { setSelected(emptyOportunidad(nextConsecutivo('OPP-', oportunidades.map(o => o.codigo)).codigo, '', usuarioGlobal ? (PAISES_ACTIVOS[0]?.codigo || 'Colombia') : paisUsuario)); setIsForm(true) }} style={{ ...btnStyle, background: '#0f1b3d', color: '#ffffff' }}>{t('page.oportunidades.btnNuevo')}</button>
         </div>
       )}
 
@@ -665,8 +668,16 @@ export default function OportunidadesPage() {
 
       {tab === 'registros' && (
         <>
-          <input value={search} onChange={e => setSearch(e.target.value)} placeholder={t('ph.buscarOportunidad')}
-            style={{ ...inputStyle, maxWidth: 500, marginBottom: 16 }} />
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16, flexWrap: 'wrap' }}>
+            <input value={search} onChange={e => setSearch(e.target.value)} placeholder={t('ph.buscarOportunidad')}
+              style={{ ...inputStyle, maxWidth: 500 }} />
+            {usuarioGlobal && (
+              <select value={filtroPais} onChange={e => setFiltroPais(e.target.value)} style={{ ...inputStyle, maxWidth: 260, width: 'auto' }}>
+                <option value="">🌎 {idioma === 'en' ? 'All countries' : 'Todos los países'}</option>
+                {PAISES_ACTIVOS.map(p => <option key={p.codigo} value={p.codigo}>{p.bandera} {p.nombre}</option>)}
+              </select>
+            )}
+          </div>
           <div style={{ borderRadius: 12, border: '1px solid #1e3a8a', overflow: 'hidden', overflowX: 'auto' }}>
             <table style={{ width: '100%', borderCollapse: 'collapse' }}>
               <thead><tr>
@@ -696,7 +707,7 @@ export default function OportunidadesPage() {
                       })()}
                     </td>
                     <td style={{ padding: '10px 14px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 13 }}>{o.ciudad || '-'}</td>
-                    <td style={{ padding: '10px 14px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 13 }}>{o.pais || '-'}</td>
+                    <td style={{ padding: '10px 14px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 13, whiteSpace: 'nowrap' }}>{etiquetaPais(o.pais)}</td>
                     <td style={{ padding: '10px 14px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 13, fontWeight: 600, textAlign: 'right' }}>US$ {fmtMoney(o.monto_estimado || 0)}</td>
                     <td style={{ padding: '10px 14px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 13, textAlign: 'center' }}>{o.probable_pct || 0}%</td>
                     <td style={{ padding: '10px 14px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 13 }}>{o.adjudicacion || '-'}</td>

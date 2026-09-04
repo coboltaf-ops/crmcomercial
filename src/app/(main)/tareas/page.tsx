@@ -11,14 +11,15 @@ import DocumentosPanel from '@/shared/components/documentos-panel'
 import ReportPanel from '@/shared/components/report-panel'
 import { Seguimiento } from '@/shared/types/seguimiento'
 import { useT, useIdioma, useTStatus } from '@/shared/i18n/use-t'
+import { PAISES_ACTIVOS, esGlobal, etiquetaPais } from '@/shared/lib/paises'
 
 function todayCO() { return new Date().toLocaleDateString('en-CA', { timeZone: 'America/Bogota' }) }
 function fDate(d: string) { if (!d) return '—'; const [y, m, dd] = d.split('-'); return `${dd}/${m}/${y}` }
 
-const emptyTarea = (codigo: string): Tarea => ({
+const emptyTarea = (codigo: string, pais: string): Tarea => ({
   id: '', codigo, fecha_asignacion: todayCO(), hora_asignacion: '',
   persona_asigna: '', persona_ejecuta: '', fecha_requerida_fin: '', fecha_real_fin: '',
-  descripcion: '', situacion: 'Pendiente', fecha_registro: todayCO(), seguimientos: [],
+  descripcion: '', situacion: 'Pendiente', fecha_registro: todayCO(), seguimientos: [], pais,
 })
 
 const colorMap: Record<string, { bg: string; color: string; border: string }> = {
@@ -52,11 +53,16 @@ export default function TareasPage() {
   const [verLectura, setVerLectura] = useState(false)
   const [search, setSearch] = useState('')
   const [filtroSituacion, setFiltroSituacion] = useState('')
+  const [filtroPais, setFiltroPais] = useState('')  // solo lo usan usuarios GLOBAL
 
   // Kanban drag
   const [dragId, setDragId] = useState<string | null>(null)
 
   if (!user) return null
+
+  const currentUser = user
+  const paisUsuario = currentUser?.pais || ''
+  const usuarioGlobal = esGlobal(paisUsuario)
 
   const personas = vendedores.filter(v => v.situacion).map(v => `${v.nombre} ${v.apellido}`)
 
@@ -84,6 +90,7 @@ export default function TareasPage() {
   }
 
   const filtered = tareas.filter(t => {
+    if (usuarioGlobal && filtroPais && t.pais !== filtroPais) return false
     if (filtroSituacion && t.situacion !== filtroSituacion) return false
     if (search) {
       const s = search.toLowerCase()
@@ -97,6 +104,7 @@ export default function TareasPage() {
     usuario_nombre: `${user?.nombre || ''} ${user?.apellido || ''}`.trim(),
     rol: user?.rol || '',
     modulo: 'tareas',
+    pais: currentUser?.pais || '',
   })
 
   const handleSave = async (e: React.FormEvent) => {
@@ -264,7 +272,18 @@ export default function TareasPage() {
                 {situaciones.map(s => <option key={s.id} value={s.nombre}>{s.nombre}</option>)}
               </select>}
             </div>
-            <div />
+            <div>
+              <label style={labelStyle}>{idi === 'en' ? 'Country' : 'País'}{usuarioGlobal && ' *'}</label>
+              {verLectura ? <div className="ver-box">{etiquetaPais(selected.pais) || '—'}</div> : (
+                usuarioGlobal ? (
+                  <select value={selected.pais || ''} onChange={e => setSelected({ ...selected, pais: e.target.value })} style={inputStyle}>
+                    {PAISES_ACTIVOS.map(p => <option key={p.codigo} value={p.codigo}>{p.bandera} {p.nombre}</option>)}
+                  </select>
+                ) : (
+                  <div style={{ ...inputStyle, opacity: 0.6, cursor: 'not-allowed' }}>{etiquetaPais(selected.pais)}</div>
+                )
+              )}
+            </div>
             <div style={{ gridColumn: 'span 3' }}>
               <label style={labelStyle}>{tr('lbl.descripcion')} *</label>
               {verLectura ? <div className="ver-box">{selected.descripcion || '—'}</div> : <textarea value={selected.descripcion} onChange={e => setSelected({ ...selected, descripcion: e.target.value })} required rows={4}
@@ -407,7 +426,7 @@ export default function TareasPage() {
             </button>
           </div>
           {permisos.crear && (
-            <button onClick={() => { setSelected(emptyTarea(nextConsecutivo('TAR-', tareas.map(t => t.codigo)).codigo)); setVerLectura(false); setVista('form') }}
+            <button onClick={() => { setSelected(emptyTarea(nextConsecutivo('TAR-', tareas.map(t => t.codigo)).codigo, usuarioGlobal ? (PAISES_ACTIVOS[0]?.codigo || 'Colombia') : paisUsuario)); setVerLectura(false); setVista('form') }}
               style={{ ...btnStyle, background: '#1e3a8a', color: '#fff' }}>{tr('page.tareas.btnNuevo')}</button>
           )}
         </div>
@@ -435,6 +454,12 @@ export default function TareasPage() {
               <option value="">Todas las situaciones</option>
               {situaciones.map(s => <option key={s.id} value={s.nombre}>{s.nombre}</option>)}
             </select>
+            {usuarioGlobal && (
+              <select value={filtroPais} onChange={e => setFiltroPais(e.target.value)} style={{ ...inputStyle, width: 'auto', maxWidth: 200 }}>
+                <option value="">🌎 {idi === 'en' ? 'All countries' : 'Todos los países'}</option>
+                {PAISES_ACTIVOS.map(p => <option key={p.codigo} value={p.codigo}>{p.bandera} {p.nombre}</option>)}
+              </select>
+            )}
           </div>
 
           {/* Tabla */}
@@ -449,7 +474,7 @@ export default function TareasPage() {
               <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                 <thead>
                   <tr style={{ background: 'rgba(255,255,255,0.08)' }}>
-                    {[tr('lbl.codigo'), idi === 'en' ? 'Assigned' : 'F. Asignación', idi === 'en' ? 'Assigns' : 'Asigna', idi === 'en' ? 'Executes' : 'Ejecuta', idi === 'en' ? 'Required' : 'F. Requerida', idi === 'en' ? 'Actual End' : 'F. Real Fin', tr('lbl.descripcion'), tr('lbl.situacion'), idi === 'en' ? 'Actions' : 'Acciones'].map(h => (
+                    {[tr('lbl.codigo'), idi === 'en' ? 'Assigned' : 'F. Asignación', idi === 'en' ? 'Assigns' : 'Asigna', idi === 'en' ? 'Executes' : 'Ejecuta', idi === 'en' ? 'Required' : 'F. Requerida', idi === 'en' ? 'Actual End' : 'F. Real Fin', tr('lbl.descripcion'), tr('lbl.situacion'), idi === 'en' ? 'Country' : 'País', idi === 'en' ? 'Actions' : 'Acciones'].map(h => (
                       <th key={h} style={{ padding: '12px 14px', textAlign: 'left', color: '#013978', fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: 0.5, borderBottom: '1px solid #e2e8f0' }}>{h}</th>
                     ))}
                   </tr>
@@ -465,6 +490,7 @@ export default function TareasPage() {
                       <td style={{ padding: '10px 14px', color: t.fecha_real_fin ? '#22c55e' : 'rgba(255,255,255,0.3)', fontSize: 13 }}>{fDate(t.fecha_real_fin)}</td>
                       <td style={{ padding: '10px 14px', color: '#013978', fontSize: 12, maxWidth: 200, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{t.descripcion}</td>
                       <td style={{ padding: '10px 14px' }}><span style={situacionBadge(t.situacion)}>{t.situacion}</span></td>
+                      <td style={{ padding: '10px 14px', color: '#013978', fontSize: 13, whiteSpace: 'nowrap' }}>{etiquetaPais(t.pais)}</td>
                       <td style={{ padding: '10px 14px' }}>
                         <div style={{ display: 'flex', gap: 4 }}>
                           <button onClick={() => { setSelected(t); setVerLectura(true); setVista('form') }}

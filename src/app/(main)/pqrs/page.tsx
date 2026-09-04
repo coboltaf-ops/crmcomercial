@@ -27,20 +27,22 @@ interface PQRSExterna {
 
 const today = todayColombia()
 
-const emptyPQRS = (codigo: string, nro: number, responsable: string): PQRS => ({
+const emptyPQRS = (codigo: string, nro: number, responsable: string, pais: string): PQRS => ({
   id: '', codigo, nro, tipo: 'Petición',
   prioridad: 'Media', cliente_id: '', cliente_nombre: '', contacto_id: '', contacto_nombre: '',
   asunto: '', descripcion: '',
   fecha_aviso: today, hora_aviso: '', persona_avisa: '', movil_avisa: '',
   persona_caso: '', movil_caso: '', detalle_incidencia: '',
   responsable, fecha_registro: today, fecha_cierre: '',
-  seguimientos: [], situacion: 'Abierta',
+  seguimientos: [], situacion: 'Abierta', pais,
 })
 
 export default function PQRSPage() {
   const idioma = useIdioma()
   const permisos = usePermisos('pqrs')
   const currentUser = useCurrentUserStore(s => s.user)
+  const paisUsuario = currentUser?.pais || ''
+  const usuarioGlobal = esGlobal(paisUsuario)
   const { pqrs, addPQRS, updatePQRS, deletePQRS } = usePQRSStore()
   const loadPQRS = usePQRSStore(s => s.loadPQRS)
   const empresa = useEmpresaStore(s => s.empresas[0])
@@ -54,13 +56,14 @@ export default function PQRSPage() {
   const [viewDetail, setViewDetail] = useState<PQRS | null>(null)
   const [tab, setTab] = useState<'registros' | 'reportes'>('registros')
   const [search, setSearch] = useState('')
+  const [filtroPais, setFiltroPais] = useState('')  // solo lo usan usuarios GLOBAL
   const [externas, setExternas] = useState<PQRSExterna[]>([])
   const [showExternas, setShowExternas] = useState(false)
   const [loadingExternas, setLoadingExternas] = useState(false)
   const { pendingSearch, pendingAction, clearPending } = useAsistenteStore()
   useEffect(() => {
     if (pendingSearch) setSearch(pendingSearch)
-    if (pendingAction === 'nuevo') { const nc = nextConsecutivo('PQR-', pqrs.map(p => p.codigo)); setSelected(emptyPQRS(nc.codigo, nc.nro, `${currentUser?.nombre} ${currentUser?.apellido}`)); setIsForm(true) }
+    if (pendingAction === 'nuevo') { const nc = nextConsecutivo('PQR-', pqrs.map(p => p.codigo)); setSelected(emptyPQRS(nc.codigo, nc.nro, `${currentUser?.nombre} ${currentUser?.apellido}`, usuarioGlobal ? (PAISES_ACTIVOS[0]?.codigo || 'Colombia') : paisUsuario)); setIsForm(true) }
     if (pendingSearch || pendingAction) clearPending()
   }, [])
 
@@ -93,6 +96,7 @@ export default function PQRSPage() {
       persona_caso: usuario, movil_caso: '',
       detalle_incidencia: ext.detalle_incidencia,
       responsable: usuario,
+      pais: usuarioGlobal ? (PAISES_ACTIVOS[0]?.codigo || 'Colombia') : paisUsuario,
       fecha_registro: ext.fecha || todayColombia(), fecha_cierre: '',
       seguimientos: [{
         id: crypto.randomUUID(), fecha: new Date().toISOString(),
@@ -114,8 +118,9 @@ export default function PQRSPage() {
     setShowExternas(false)
   }
   const filtered = pqrs.filter(p =>
-    !search || p.codigo.toLowerCase().includes(search.toLowerCase()) ||
-    p.cliente_nombre.toLowerCase().includes(search.toLowerCase())
+    (!(usuarioGlobal && filtroPais) || p.pais === filtroPais) &&
+    (!search || p.codigo.toLowerCase().includes(search.toLowerCase()) ||
+    p.cliente_nombre.toLowerCase().includes(search.toLowerCase()))
   )
 
   const auditParams = () => ({
@@ -123,6 +128,7 @@ export default function PQRSPage() {
     usuario_nombre: `${currentUser?.nombre || ''} ${currentUser?.apellido || ''}`.trim(),
     rol: currentUser?.rol || '',
     modulo: 'pqrs',
+    pais: currentUser?.pais || '',
   })
 
   const handleSave = (e: React.FormEvent) => {
@@ -282,6 +288,17 @@ export default function PQRSPage() {
                 {refOptions('tipo_pqrs').map(o => <option key={o} value={o}>{o}</option>)}
               </select>}
             </div>
+            {/* País: bloqueado para usuarios de un país (el servidor lo sella); editable para GLOBAL */}
+            <div>
+              <label style={{ color: '#ffffff', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{idioma === 'en' ? 'Country' : 'País'}{usuarioGlobal && !verLectura && <span style={{ color: '#dc2626' }}> *</span>}</label>
+              {verLectura ? <div className="ver-box">{etiquetaPais(selected.pais)}</div> : usuarioGlobal ? (
+                <select value={selected.pais || ''} onChange={e => setSelected({ ...selected, pais: e.target.value })} style={inputStyle}>
+                  {PAISES_ACTIVOS.map(p => <option key={p.codigo} value={p.codigo}>{p.bandera} {p.nombre}</option>)}
+                </select>
+              ) : (
+                <div style={{ ...inputStyle, opacity: 0.7 }}>{etiquetaPais(selected.pais)}</div>
+              )}
+            </div>
             <div style={{ gridColumn: 'span 2' }}>
               <label style={{ color: '#ffffff', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{idioma === 'en' ? 'Company *' : 'Empresa *'}</label>
               {verLectura ? <div className="ver-box">{selected.cliente_nombre || '—'}</div> : <select value={selected.cliente_id} onChange={e => {
@@ -406,7 +423,7 @@ export default function PQRSPage() {
             </button>
           )}
           {permisos.crear && tab === 'registros' && (
-            <button onClick={() => { { const nc = nextConsecutivo('PQRS-', pqrs.map(p => p.codigo)); setSelected(emptyPQRS(nc.codigo, nc.nro, `${currentUser?.nombre || ''} ${currentUser?.apellido || ''}`)) }; setIsForm(true) }} style={{ ...btnStyle, background: '#0f1b3d', color: '#ffffff' }}>+ {idioma === 'en' ? 'New PQRS' : 'Nueva PQRS'}</button>
+            <button onClick={() => { { const nc = nextConsecutivo('PQRS-', pqrs.map(p => p.codigo)); setSelected(emptyPQRS(nc.codigo, nc.nro, `${currentUser?.nombre || ''} ${currentUser?.apellido || ''}`, usuarioGlobal ? (PAISES_ACTIVOS[0]?.codigo || 'Colombia') : paisUsuario)) }; setIsForm(true) }} style={{ ...btnStyle, background: '#0f1b3d', color: '#ffffff' }}>+ {idioma === 'en' ? 'New PQRS' : 'Nueva PQRS'}</button>
           )}
         </div>
       </div>
@@ -464,12 +481,20 @@ export default function PQRSPage() {
 
       {tab === 'registros' && (
         <>
-          <input value={search} onChange={e => setSearch(e.target.value)} placeholder={idioma === 'en' ? 'Search by code or company...' : 'Buscar por código o empresa...'}
-            style={{ ...inputStyle, maxWidth: 400, marginBottom: 16 }} />
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16, flexWrap: 'wrap' }}>
+            <input value={search} onChange={e => setSearch(e.target.value)} placeholder={idioma === 'en' ? 'Search by code or company...' : 'Buscar por código o empresa...'}
+              style={{ ...inputStyle, maxWidth: 400 }} />
+            {usuarioGlobal && (
+              <select value={filtroPais} onChange={e => setFiltroPais(e.target.value)} style={{ ...inputStyle, maxWidth: 220 }}>
+                <option value="">🌎 {idioma === 'en' ? 'All countries' : 'Todos los países'}</option>
+                {PAISES_ACTIVOS.map(p => <option key={p.codigo} value={p.codigo}>{p.bandera} {p.nombre}</option>)}
+              </select>
+            )}
+          </div>
           <div style={{ borderRadius: 12, border: '1px solid rgba(255,255,255,0.15)', overflow: 'hidden' }}>
             <table style={{ width: '100%', borderCollapse: 'collapse' }}>
               <thead><tr>
-                {(idioma === 'en' ? ['Code', 'Type', 'Priority', 'Company', 'Responsible', 'Status', 'Actions'] : ['Código', 'Tipo', 'Prioridad', 'Empresa', 'Responsable', 'Situación', 'Acciones']).map(h => (
+                {(idioma === 'en' ? ['Code', 'Type', 'Priority', 'Company', 'Country', 'Responsible', 'Status', 'Actions'] : ['Código', 'Tipo', 'Prioridad', 'Empresa', 'País', 'Responsable', 'Situación', 'Acciones']).map(h => (
                   <th key={h} style={{ padding: '12px 14px', background: '#1e3a5f', color: '#fff', fontSize: 12, textAlign: 'left' }}>{h}</th>
                 ))}
               </tr></thead>
@@ -482,6 +507,7 @@ export default function PQRSPage() {
                       <span style={{ padding: '3px 10px', borderRadius: 20, fontSize: 11, fontWeight: 600, ...prioridadStyle(p.prioridad) }}>{p.prioridad}</span>
                     </td>
                     <td style={{ padding: '10px 14px', borderBottom: '1px solid rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.7)', fontSize: 13 }}>{p.cliente_nombre}</td>
+                    <td style={{ padding: '10px 14px', borderBottom: '1px solid rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.7)', fontSize: 13, whiteSpace: 'nowrap' }}>{etiquetaPais(p.pais)}</td>
                     <td style={{ padding: '10px 14px', borderBottom: '1px solid rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.7)', fontSize: 13 }}>{p.responsable}</td>
                     <td style={{ padding: '10px 14px', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
                       <span style={{ padding: '3px 10px', borderRadius: 20, fontSize: 11, fontWeight: 600, ...statusStyle(p.situacion) }}>{p.situacion}</span>
@@ -495,7 +521,7 @@ export default function PQRSPage() {
                     </td>
                   </tr>
                 ))}
-                {filtered.length === 0 && <tr><td colSpan={7} style={{ padding: 32, textAlign: 'center', color: 'rgba(255,255,255,0.5)', fontSize: 14 }}>{idioma === 'en' ? 'No PQRS records' : 'No hay PQRS registradas'}</td></tr>}
+                {filtered.length === 0 && <tr><td colSpan={8} style={{ padding: 32, textAlign: 'center', color: 'rgba(255,255,255,0.5)', fontSize: 14 }}>{idioma === 'en' ? 'No PQRS records' : 'No hay PQRS registradas'}</td></tr>}
               </tbody>
             </table>
           </div>

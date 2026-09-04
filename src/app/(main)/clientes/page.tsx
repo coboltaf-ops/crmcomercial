@@ -19,6 +19,7 @@ import SeguimientoPanel from '@/shared/components/seguimiento-panel'
 import DocumentosPanel from '@/shared/components/documentos-panel'
 import { useAsistenteStore } from '@/shared/stores/asistente-store'
 import { useT, useIdioma, useTStatus } from '@/shared/i18n/use-t'
+import { PAISES_ACTIVOS, esGlobal, etiquetaPais } from '@/shared/lib/paises'
 
 // ── Ubicación multi-país (Colombia, Perú, Ecuador) embebida — evita imports que fallan en Vercel/Turbopack ──
 type UbicPais = { l1: string; l2: string; l3: string; tree: Record<string, Record<string, string[]>> }
@@ -45,10 +46,10 @@ import { buildWhatsAppLink, isValidPhone } from '@/shared/lib/whatsapp'
 
 const today = todayColombia()
 
-const emptyCliente = (codigo: string): Cliente => ({
+const emptyCliente = (codigo: string, pais: string): Cliente => ({
   id: '', codigo, tipo_identificacion: 'NIT',
   nro_documento: '', razon_social: '', nombre_comercial: '', actividad: '',
-  direccion: '', region: '', departamento: '', ciudad: '', pais: 'Colombia', codigo_postal: '', telefono: '', email: '', sitio_web: '',
+  direccion: '', region: '', departamento: '', ciudad: '', pais, codigo_postal: '', telefono: '', email: '', sitio_web: '',
   condicion_pago: 'Contado', tipo_moneda: 'Pesos Colombianos', observaciones: '',
   situacion: 'Activo', fecha_registro: today, seguimientos: [], codigo_acceso: generarCodigoAcceso(),
 })
@@ -59,6 +60,9 @@ export default function ClientesPage() {
   const idioma = useIdioma()
   const permisos = usePermisos('clientes')
   const currentUser = useCurrentUserStore(s => s.user)
+  const paisUsuario = currentUser?.pais || ''
+  const usuarioGlobal = esGlobal(paisUsuario)
+  const paisNuevo = usuarioGlobal ? (PAISES_ACTIVOS[0]?.codigo || 'Colombia') : paisUsuario
   const router = useRouter()
   const { clientes, addCliente, updateCliente, deleteCliente } = useClientesStore()
   const loadClientes = useClientesStore(s => s.loadClientes)
@@ -76,11 +80,12 @@ export default function ClientesPage() {
   const [tab, setTab] = useState<'registros' | 'reportes'>('registros')
   const [detailTab, setDetailTab] = useState<'info' | 'contactos' | 'cotizaciones' | 'oportunidades' | 'tickets'>('info')
   const [search, setSearch] = useState('')
+  const [filtroPais, setFiltroPais] = useState('')  // solo lo usan usuarios GLOBAL
   const { pendingSearch, pendingAction, clearPending } = useAsistenteStore()
   const searchParams = useSearchParams()
   useEffect(() => {
     if (pendingSearch) setSearch(pendingSearch)
-    if (pendingAction === 'nuevo') { setSelected(emptyCliente(nextConsecutivo('CLI-', clientes.map(c => c.codigo)).codigo)); setIsForm(true) }
+    if (pendingAction === 'nuevo') { setSelected(emptyCliente(nextConsecutivo('CLI-', clientes.map(c => c.codigo)).codigo, paisNuevo)); setIsForm(true) }
     if (pendingSearch || pendingAction) clearPending()
   }, [])
 
@@ -106,9 +111,10 @@ export default function ClientesPage() {
   }, [searchParams, clientes])
 
   const filtered = clientes.filter(c =>
-    !search || c.razon_social.toLowerCase().includes(search.toLowerCase()) ||
+    (!usuarioGlobal || !filtroPais || c.pais === filtroPais) &&
+    (!search || c.razon_social.toLowerCase().includes(search.toLowerCase()) ||
     c.codigo.toLowerCase().includes(search.toLowerCase()) ||
-    c.nro_documento.includes(search)
+    c.nro_documento.includes(search))
   )
 
   const auditParams = () => ({
@@ -554,10 +560,13 @@ export default function ClientesPage() {
               </div>
               <div>
                 <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.pais')}</label>
-                {verLectura ? <div className="ver-box">{paisEff || '—'}</div> : <select value={paisEff} onChange={e => { const v = e.target.value; setSelected({ ...selected, pais: v, region: '', departamento: '', ciudad: '' }) }} style={inputStyle}>
-                  {paisEff && !PAISES_UBIC.includes(paisEff) && <option value={paisEff}>{paisEff}</option>}
-                  {PAISES_UBIC.map(o => <option key={o} value={o}>{o}</option>)}
-                </select>}
+                {verLectura ? <div className="ver-box">{etiquetaPais(selected.pais) || '—'}</div> : usuarioGlobal ? (
+                  <select value={paisEff} onChange={e => { const v = e.target.value; setSelected({ ...selected, pais: v, region: '', departamento: '', ciudad: '' }) }} style={inputStyle}>
+                    {PAISES_ACTIVOS.map(p => <option key={p.codigo} value={p.codigo}>{p.bandera} {p.nombre}</option>)}
+                  </select>
+                ) : (
+                  <div style={{ ...inputStyle, opacity: 0.7, background: '#f1f5f9', color: '#64748b' }}>{etiquetaPais(selected.pais)}</div>
+                )}
               </div>
               <div>
                 <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>Región</label>
@@ -653,7 +662,7 @@ export default function ClientesPage() {
 
       {permisos.crear && tab === 'registros' && (
         <div style={{ marginBottom: 20, display: 'flex', justifyContent: 'flex-end' }}>
-          <button onClick={() => { setSelected(emptyCliente(nextConsecutivo('CLI-', clientes.map(c => c.codigo)).codigo)); setIsForm(true) }} style={{ ...btnStyle, background: '#1e3a8a', color: '#ffffff' }}>{t('page.clientes.btnNuevo')}</button>
+          <button onClick={() => { setSelected(emptyCliente(nextConsecutivo('CLI-', clientes.map(c => c.codigo)).codigo, paisNuevo)); setIsForm(true) }} style={{ ...btnStyle, background: '#1e3a8a', color: '#ffffff' }}>{t('page.clientes.btnNuevo')}</button>
         </div>
       )}
 
@@ -664,8 +673,16 @@ export default function ClientesPage() {
 
       {tab === 'registros' && (
         <>
-          <input value={search} onChange={e => setSearch(e.target.value)} placeholder={t('ph.buscarCliente')}
-            style={{ ...inputStyle, maxWidth: 400, marginBottom: 16 }} />
+          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', alignItems: 'center', marginBottom: 16 }}>
+            <input value={search} onChange={e => setSearch(e.target.value)} placeholder={t('ph.buscarCliente')}
+              style={{ ...inputStyle, maxWidth: 400 }} />
+            {usuarioGlobal && (
+              <select value={filtroPais} onChange={e => setFiltroPais(e.target.value)} style={{ ...inputStyle, maxWidth: 220 }}>
+                <option value="">🌎 Todos</option>
+                {PAISES_ACTIVOS.map(p => <option key={p.codigo} value={p.codigo}>{p.bandera} {p.nombre}</option>)}
+              </select>
+            )}
+          </div>
 
           <div style={{ borderRadius: 12, border: '1px solid #1e3a8a', overflow: 'hidden' }}>
             <table style={{ width: '100%', borderCollapse: 'collapse' }}>
@@ -685,7 +702,7 @@ export default function ClientesPage() {
                     <td style={{ padding: '10px 14px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 13 }}>{c.nro_documento}</td>
                     <td style={{ padding: '10px 14px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 13 }}>{c.direccion}</td>
                     <td style={{ padding: '10px 14px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 13 }}>{c.ciudad}</td>
-                    <td style={{ padding: '10px 14px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 13 }}>{c.pais}</td>
+                    <td style={{ padding: '10px 14px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 13 }}>{etiquetaPais(c.pais)}</td>
                     <td style={{ padding: '10px 14px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 13 }}>{c.telefono}</td>
                     <td style={{ padding: '10px 14px', borderBottom: '1px solid #e2e8f0' }}>
                       <span style={{ padding: '3px 10px', borderRadius: 20, fontSize: 11, fontWeight: 600, ...statusStyle(c.situacion) }}>{ts(c.situacion)}</span>

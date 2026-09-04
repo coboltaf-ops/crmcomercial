@@ -17,20 +17,21 @@ const today = todayColombia()
 const TIPO_ID_DEFAULT = ['NIT', 'Cédula', 'Pasaporte', 'RUC']
 const CALIFICACION_DEFAULT = ['Excelente', 'Bueno', 'Regular', 'Malo']
 const SITUACION_DEFAULT = ['Activo', 'Inactivo']
-const PAIS_DEFAULT = ['Colombia']
 const CIUDAD_DEFAULT = ['Bogotá', 'Medellín', 'Cali', 'Barranquilla']
 
-const emptyProveedor = (codigo: string): Proveedor => ({
+const emptyProveedor = (codigo: string, pais: string): Proveedor => ({
   id: '', codigo, fecha_registro: today,
   nombre: '', tipo_id: 'NIT', nro_documento: '', correo: '',
   tel_oficina: '', celular_oficina: '', persona_contacto: '',
   calificacion: '', actividad: '', proveedor_desde: '', representante_legal: '',
-  direccion: '', ciudad: '', pais: 'Colombia', codigo_postal: '',
+  direccion: '', ciudad: '', pais, codigo_postal: '',
   observaciones: '', situacion: 'Activo', seguimientos: [],
 })
 
 export default function ProveedoresPage() {
   const currentUser = useCurrentUserStore(s => s.user)
+  const paisUsuario = currentUser?.pais || ''
+  const usuarioGlobal = esGlobal(paisUsuario)
   const permisos = usePermisos('proveedores')
   const { proveedores, addProveedor, updateProveedor, deleteProveedor } = useProveedoresStore()
   const loadProveedores = useProveedoresStore(s => s.loadProveedores)
@@ -41,6 +42,7 @@ export default function ProveedoresPage() {
   const [isForm, setIsForm] = useState(false)
   const [verLectura, setVerLectura] = useState(false)
   const [search, setSearch] = useState('')
+  const [filtroPais, setFiltroPais] = useState('')  // solo lo usan usuarios GLOBAL
 
   const refOptions = (table: string, fallback: string[]) => {
     const opts = (refData[table as keyof typeof refData] || []).filter(r => r.situacion).map(r => r.descripcion)
@@ -55,10 +57,11 @@ export default function ProveedoresPage() {
   })
 
   const filtered = proveedores.filter(p =>
-    !search || p.codigo.toLowerCase().includes(search.toLowerCase()) ||
+    (!usuarioGlobal || !filtroPais || p.pais === filtroPais) &&
+    (!search || p.codigo.toLowerCase().includes(search.toLowerCase()) ||
     (p.nombre || '').toLowerCase().includes(search.toLowerCase()) ||
     (p.nro_documento || '').includes(search) ||
-    (p.persona_contacto || '').toLowerCase().includes(search.toLowerCase())
+    (p.persona_contacto || '').toLowerCase().includes(search.toLowerCase()))
   )
 
   const handleSave = (e: React.FormEvent) => {
@@ -174,12 +177,14 @@ export default function ProveedoresPage() {
                 </select>}
               </div>
               <div>
-                <label style={labelStyle}>País</label>
-                {verLectura ? <div className="ver-box">{selected.pais || '—'}</div> : <select value={selected.pais} onChange={e => setSelected({ ...selected, pais: e.target.value })} style={inputStyle}>
-                  <option value="">Seleccionar...</option>
-                  {selected.pais && !refOptions('pais', PAIS_DEFAULT).includes(selected.pais) && <option value={selected.pais}>{selected.pais}</option>}
-                  {refOptions('pais', PAIS_DEFAULT).map(o => <option key={o} value={o}>{o}</option>)}
-                </select>}
+                <label style={labelStyle}>País{usuarioGlobal && !verLectura && <span style={{ color: '#dc2626' }}> *</span>}</label>
+                {verLectura ? <div className="ver-box">{etiquetaPais(selected.pais) || '—'}</div> : usuarioGlobal ? (
+                  <select value={selected.pais} onChange={e => setSelected({ ...selected, pais: e.target.value })} style={inputStyle}>
+                    {PAISES_ACTIVOS.map(p => <option key={p.codigo} value={p.codigo}>{p.bandera} {p.nombre}</option>)}
+                  </select>
+                ) : (
+                  <div style={{ ...inputStyle, opacity: 0.7, background: '#f1f5f9', color: '#64748b' }}>{etiquetaPais(selected.pais)}</div>
+                )}
               </div>
               <div>
                 <label style={labelStyle}>Código Postal</label>
@@ -233,9 +238,17 @@ export default function ProveedoresPage() {
     <div>
       <ModuleHeader title="Proveedores" subtitle="Gestión de proveedores" />
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16, gap: 12, flexWrap: 'wrap' }}>
-        <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Buscar por código, nombre, documento o contacto..." style={{ ...inputStyle, maxWidth: 380 }} />
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap', flex: 1 }}>
+          <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Buscar por código, nombre, documento o contacto..." style={{ ...inputStyle, maxWidth: 380 }} />
+          {usuarioGlobal && (
+            <select value={filtroPais} onChange={e => setFiltroPais(e.target.value)} style={{ ...inputStyle, maxWidth: 260, width: 'auto' }}>
+              <option value="">🌎 Todos los países</option>
+              {PAISES_ACTIVOS.map(p => <option key={p.codigo} value={p.codigo}>{p.bandera} {p.nombre}</option>)}
+            </select>
+          )}
+        </div>
         {permisos.crear && (
-          <button onClick={() => { setSelected(emptyProveedor(nextConsecutivo('PRV-', proveedores.map(p => p.codigo)).codigo)); setVerLectura(false); setIsForm(true) }} style={{ ...btnStyle, background: '#1e3a8a', color: '#ffffff' }}>+ Nuevo Proveedor</button>
+          <button onClick={() => { setSelected(emptyProveedor(nextConsecutivo('PRV-', proveedores.map(p => p.codigo)).codigo, usuarioGlobal ? (PAISES_ACTIVOS[0]?.codigo || 'Colombia') : paisUsuario)); setVerLectura(false); setIsForm(true) }} style={{ ...btnStyle, background: '#1e3a8a', color: '#ffffff' }}>+ Nuevo Proveedor</button>
         )}
       </div>
 
@@ -243,7 +256,7 @@ export default function ProveedoresPage() {
         <table style={{ width: '100%', borderCollapse: 'collapse' }}>
           <thead>
             <tr>
-              {['Nro', 'Nombre', 'Documento', 'Contacto', 'Celular', 'Calificación', 'Situación', 'Acciones'].map(h => (
+              {['Nro', 'Nombre', 'Documento', 'Contacto', 'Celular', 'Calificación', 'País', 'Situación', 'Acciones'].map(h => (
                 <th key={h} style={{ padding: '12px 14px', background: '#1e3a8a', color: '#fff', fontSize: 12, textAlign: 'left' }}>{h}</th>
               ))}
             </tr>
@@ -257,6 +270,7 @@ export default function ProveedoresPage() {
                 <td style={{ padding: '8px 12px', borderBottom: '1px solid #e2e8f0', color: '#000', fontSize: 13 }}>{p.persona_contacto || '—'}</td>
                 <td style={{ padding: '8px 12px', borderBottom: '1px solid #e2e8f0', color: '#000', fontSize: 13 }}>{p.celular_oficina || '—'}</td>
                 <td style={{ padding: '8px 12px', borderBottom: '1px solid #e2e8f0', color: '#000', fontSize: 13 }}>{p.calificacion || '—'}</td>
+                <td style={{ padding: '8px 12px', borderBottom: '1px solid #e2e8f0', color: '#000', fontSize: 13, whiteSpace: 'nowrap' }}>{etiquetaPais(p.pais)}</td>
                 <td style={{ padding: '8px 12px', borderBottom: '1px solid #e2e8f0' }}><span style={situColor(p.situacion)}>{p.situacion}</span></td>
                 <td style={{ padding: '8px 12px', borderBottom: '1px solid #e2e8f0' }}>
                   <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap' }}>
@@ -267,7 +281,7 @@ export default function ProveedoresPage() {
                 </td>
               </tr>
             ))}
-            {filtered.length === 0 && <tr><td colSpan={8} style={{ padding: 32, textAlign: 'center', color: '#013978', fontSize: 14 }}>No hay proveedores registrados</td></tr>}
+            {filtered.length === 0 && <tr><td colSpan={9} style={{ padding: 32, textAlign: 'center', color: '#013978', fontSize: 14 }}>No hay proveedores registrados</td></tr>}
           </tbody>
         </table>
       </div>

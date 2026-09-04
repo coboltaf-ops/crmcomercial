@@ -72,7 +72,8 @@ export default function ContactosPage() {
     const matchSearch = !search || c.nombre.toLowerCase().includes(search.toLowerCase()) ||
       c.apellido.toLowerCase().includes(search.toLowerCase()) || c.codigo.toLowerCase().includes(search.toLowerCase())
     const matchCliente = !filterCliente || c.cliente_id === filterCliente
-    return matchSearch && matchCliente
+    const matchPais = !usuarioGlobal || !filtroPais || c.pais === filtroPais
+    return matchSearch && matchCliente && matchPais
   })
 
   const auditParams = () => ({
@@ -237,6 +238,16 @@ export default function ContactosPage() {
                 {refOptions('situacion_contacto').map(o => <option key={o} value={o}>{o}</option>)}
               </select>}
             </div>
+            <div>
+              <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.pais')}{usuarioGlobal && !verLectura && <span style={{ color: '#dc2626' }}> *</span>}</label>
+              {verLectura ? <div className="ver-box">{etiquetaPais(selected.pais) || '—'}</div> : usuarioGlobal ? (
+                <select value={selected.pais || ''} onChange={e => setSelected({ ...selected, pais: e.target.value })} style={inputStyle}>
+                  {PAISES_ACTIVOS.map(p => <option key={p.codigo} value={p.codigo}>{p.bandera} {p.nombre}</option>)}
+                </select>
+              ) : (
+                <div style={{ ...inputStyle, opacity: 0.7, background: '#f1f5f9', color: '#64748b' }}>{etiquetaPais(selected.pais)}</div>
+              )}
+            </div>
             <div style={{ gridColumn: 'span 3' }}>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.observaciones')}</label>
               {verLectura ? <div className="ver-box">{selected.observaciones || '—'}</div> : <textarea value={selected.observaciones} onChange={e => setSelected({ ...selected, observaciones: e.target.value })} rows={3} style={{ ...inputStyle, resize: 'vertical' }} />}
@@ -301,13 +312,19 @@ export default function ContactosPage() {
               <option value="">Todas las empresas</option>
               {clientes.map(c => <option key={c.id} value={c.id}>{c.razon_social}</option>)}
             </select>
+            {usuarioGlobal && (
+              <select value={filtroPais} onChange={e => setFiltroPais(e.target.value)} style={{ ...inputStyle, maxWidth: 200 }}>
+                <option value="">🌎 {idioma === 'en' ? 'All countries' : 'Todos'}</option>
+                {PAISES_ACTIVOS.map(p => <option key={p.codigo} value={p.codigo}>{p.bandera} {p.nombre}</option>)}
+              </select>
+            )}
           </div>
 
           <div style={{ borderRadius: 12, border: '1px solid #1e3a8a', overflow: 'hidden' }}>
             <table style={{ width: '100%', borderCollapse: 'collapse' }}>
               <thead>
                 <tr>
-                  {[t('lbl.codigo'), t('lbl.nombre'), t('lbl.empresa'), t('lbl.cargo'), t('lbl.telefono'), t('lbl.email'), t('lbl.situacion'), idioma === 'en' ? 'Actions' : 'Acciones'].map(h => (
+                  {[t('lbl.codigo'), t('lbl.nombre'), t('lbl.empresa'), t('lbl.cargo'), t('lbl.telefono'), t('lbl.email'), t('lbl.pais'), t('lbl.situacion'), idioma === 'en' ? 'Actions' : 'Acciones'].map(h => (
                     <th key={h} style={{ padding: '12px 14px', background: '#1e3a8a', color: '#fff', fontSize: 12, textAlign: 'left' }}>{h}</th>
                   ))}
                 </tr>
@@ -323,6 +340,7 @@ export default function ContactosPage() {
                     <td style={{ padding: '10px 14px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 13 }}>{c.cargo}</td>
                     <td style={{ padding: '10px 14px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 13 }}>{c.telefono || c.celular}</td>
                     <td style={{ padding: '10px 14px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 13 }}>{c.email}</td>
+                    <td style={{ padding: '10px 14px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 13 }}>{etiquetaPais(c.pais)}</td>
                     <td style={{ padding: '10px 14px', borderBottom: '1px solid #e2e8f0' }}>
                       <span style={{ padding: '3px 10px', borderRadius: 20, fontSize: 11, fontWeight: 600, ...statusStyle(c.situacion) }}>{ts(c.situacion)}</span>
                     </td>
@@ -339,7 +357,7 @@ export default function ContactosPage() {
                     </td>
                   </tr>
                 ))}
-                {filtered.length === 0 && <tr><td colSpan={8} style={{ padding: 32, textAlign: 'center', color: '#013978', fontSize: 14 }}>No hay contactos registrados</td></tr>}
+                {filtered.length === 0 && <tr><td colSpan={9} style={{ padding: 32, textAlign: 'center', color: '#013978', fontSize: 14 }}>No hay contactos registrados</td></tr>}
               </tbody>
             </table>
           </div>

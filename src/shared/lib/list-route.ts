@@ -19,6 +19,23 @@ import { filtrarPorPais, puedeAccederRegistro } from '@/shared/lib/paises'
 
 const noStore = { 'Cache-Control': 'no-store, no-cache, must-revalidate, max-age=0' }
 
+/**
+ * INTERRUPTOR DE AISLAMIENTO POR PAÍS (crmcomercial).
+ *
+ * false  → El país es solo una ETIQUETA informativa/filtro opcional en la UI.
+ *          Nadie pierde acceso: un usuario de Colombia ve TODOS los registros
+ *          (incluidos clientes/prospectos ubicados en otros países), porque el
+ *          equipo comercial de Colombia gestiona cuentas de varios países.
+ *          Los datos NO se sellan ni se bloquean por país.  ← estado actual.
+ *
+ * true   → Aislamiento real "un país por usuario": cada usuario ve/edita solo
+ *          su país (GLOBAL/Admin ve todo). Activar SOLO cuando existan usuarios
+ *          de otras operaciones (p.ej. un usuario de Perú que deba ver solo Perú).
+ *
+ * Cambiar este valor NO altera ningún dato: solo cambia qué se muestra/permite.
+ */
+const AISLAR_POR_PAIS = false
+
 type WithId = { id?: string | number; pais?: string }
 
 interface ListOptions {
@@ -33,7 +50,9 @@ interface ListOptions {
 }
 
 export function makeListHandlers(KV_KEY: string, options: ListOptions = {}) {
-  const { scopePais = false } = options
+  // El aislamiento solo aplica si el interruptor global está encendido.
+  // Con AISLAR_POR_PAIS=false, el país queda como etiqueta (no oculta ni bloquea).
+  const scopePais = AISLAR_POR_PAIS && (options.scopePais ?? false)
 
   async function GET(req: NextRequest) {
     const data = await readList<WithId>(KV_KEY)
