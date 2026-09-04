@@ -52,7 +52,7 @@ export default function LoginPage() {
               <div style={{ width: 140, height: 140, borderRadius: 16, background: 'rgba(255,255,255,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#ffffff', fontSize: 48, fontWeight: 700, margin: '0 auto' }}>C</div>
             )}
           </div>
-          <h1 style={{ fontSize: 28, fontWeight: 800, color: '#ffffff', marginBottom: 4 }}>{empresa?.nombre || 'CRM Comercial'}</h1>
+          <h1 style={{ fontSize: 26, fontWeight: 800, color: '#ffffff', marginBottom: 4 }}>GESTIÓN COMERCIAL NORTON</h1>
           <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: 14 }}>Inicia sesión en tu cuenta</p>
         </div>
         <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>

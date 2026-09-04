@@ -34,7 +34,7 @@ const noStore = { 'Cache-Control': 'no-store, no-cache, must-revalidate, max-age
  *
  * Cambiar este valor NO altera ningún dato: solo cambia qué se muestra/permite.
  */
-const AISLAR_POR_PAIS = false
+const AISLAR_POR_PAIS = true
 
 type WithId = { id?: string | number; pais?: string }
 
