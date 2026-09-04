@@ -1,0 +1,38 @@
+[
+  {
+    "id": "7f13e2c0-e6e0-4bcf-8946-881bffc05f46",
+    "radicado": "RAD-20260406-0001",
+    "fecha": "2026-04-06",
+    "tipo": "Reclamo",
+    "prioridad": "Alta",
+    "cliente_id": "dd65853e-3e2c-494f-afa1-adf4844a63b6",
+    "cliente_codigo": "CLI-001",
+    "cliente_nombre": "Grupo Empresarial Andino S.A.S.",
+    "fecha_aviso": "2026-04-06",
+    "hora_aviso": "22:56",
+    "persona_avisa": "Fernandito",
+    "movil_avisa": "314 5643214",
+    "detalle_incidencia": "Los productos que enviaron Llegaron en mal Estado",
+    "fecha_registro": "2026-04-06",
+    "hora_registro": "11:07 p. m.",
+    "importada": true
+  },
+  {
+    "id": "1d30a459-edb9-4979-bcf0-531eb7e41d5e",
+    "radicado": "RAD-20260406-0002",
+    "fecha": "2026-04-06",
+    "tipo": "Reclamo",
+    "prioridad": "Urgente",
+    "cliente_id": "ea2549bd-b3f4-4f4e-ae06-8c765caea6aa",
+    "cliente_codigo": "CLI-004",
+    "cliente_nombre": "Soluciones Industriales Quito Cía. Ltda.",
+    "fecha_aviso": "2026-04-06",
+    "hora_aviso": "23:30",
+    "persona_avisa": "Horacio Duarte",
+    "movil_avisa": "311 5678120",
+    "detalle_incidencia": "Ahora si quedo Bien ",
+    "fecha_registro": "2026-04-06",
+    "hora_registro": "11:19 p. m.",
+    "importada": true
+  }
+]

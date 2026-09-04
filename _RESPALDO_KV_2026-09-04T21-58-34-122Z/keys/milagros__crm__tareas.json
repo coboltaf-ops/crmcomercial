@@ -1,0 +1,66 @@
+[
+  {
+    "id_tarea": "TAR-00001",
+    "titulo": "Renovar contrato de vigilancia del Banco Confianza",
+    "asignado_a": "Marta Rincón",
+    "situacion": "Pendiente",
+    "prioridad": "Media",
+    "fecha_vencimiento": "2026-08-10"
+  },
+  {
+    "id_tarea": "TAR-00002",
+    "titulo": "Instalar 8 cámaras en Centro Comercial Plaza Central",
+    "asignado_a": "Wilson Álvarez",
+    "situacion": "En Proceso",
+    "prioridad": "Media",
+    "fecha_vencimiento": "2026-07-25"
+  },
+  {
+    "id_tarea": "TAR-00003",
+    "titulo": "Enviar cotización de escoltas a Constructora Andina",
+    "asignado_a": "Marta Rincón",
+    "situacion": "En Proceso",
+    "prioridad": "Media",
+    "fecha_vencimiento": "2026-07-22"
+  },
+  {
+    "id_tarea": "TAR-00004",
+    "titulo": "Programar rondas nocturnas en Bodegas del Valle",
+    "asignado_a": "Óscar Delgado",
+    "situacion": "Pendiente",
+    "prioridad": "Media",
+    "fecha_vencimiento": "2026-07-28"
+  },
+  {
+    "id_tarea": "TAR-00005",
+    "titulo": "Atender reclamo de cámara del parqueadero",
+    "asignado_a": "Wilson Álvarez",
+    "situacion": "Completada",
+    "prioridad": "Media",
+    "fecha_vencimiento": "2026-07-15"
+  },
+  {
+    "id_tarea": "TAR-00006",
+    "titulo": "Capacitación de guardas nuevos",
+    "asignado_a": "Jairo Peña",
+    "situacion": "Pendiente",
+    "prioridad": "Media",
+    "fecha_vencimiento": "2026-08-05"
+  },
+  {
+    "id_tarea": "TAR-00007",
+    "titulo": "Conciliar nómina de julio",
+    "asignado_a": "Sandra Molina",
+    "situacion": "Completada",
+    "prioridad": "Media",
+    "fecha_vencimiento": "2026-07-05"
+  },
+  {
+    "id_tarea": "TAR-00008",
+    "titulo": "Visita comercial a Universidad del Saber",
+    "asignado_a": "Marta Rincón",
+    "situacion": "En Proceso",
+    "prioridad": "Media",
+    "fecha_vencimiento": "2026-07-30"
+  }
+]

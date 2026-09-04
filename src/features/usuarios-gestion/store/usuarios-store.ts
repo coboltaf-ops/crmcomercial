@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import { Usuario, PERMISOS_DEFAULT } from '../types'
+import { PAIS_GLOBAL } from '@/shared/lib/paises'
 
 interface UsuariosState {
   usuarios: Usuario[]
@@ -18,6 +19,7 @@ const defaultAdmin: Usuario = {
   clave: 'admin123',
   correo: 'admin@crmcomercial.com',
   rol: 'Admin',
+  pais: PAIS_GLOBAL,
   situacion: 'Activo',
   permisos: PERMISOS_DEFAULT['Admin'],
 }

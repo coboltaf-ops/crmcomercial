@@ -1,0 +1,42 @@
+[
+  {
+    "id_cliente": "901334",
+    "razon_social": "Cadena Belleza Total S.A.S.",
+    "cupo_credito": 900000000,
+    "condicion_pago": 45,
+    "vendedor": "Juan Carlos Lopez",
+    "canal": "Retail"
+  },
+  {
+    "id_cliente": "900145",
+    "razon_social": "Distribuidora Bella Imagen",
+    "cupo_credito": 800000000,
+    "condicion_pago": 30,
+    "vendedor": "Juan Carlos Lopez",
+    "canal": "Distribuidores"
+  },
+  {
+    "id_cliente": "890900",
+    "razon_social": "Supermercados La Economía",
+    "cupo_credito": 600000000,
+    "condicion_pago": 60,
+    "vendedor": "Maria Teresa Jaramillo",
+    "canal": "Retail"
+  },
+  {
+    "id_cliente": "901445",
+    "razon_social": "Mundo Estética & Color",
+    "cupo_credito": 400000000,
+    "condicion_pago": 30,
+    "vendedor": "Juan Carlos Lopez",
+    "canal": "B2B"
+  },
+  {
+    "id_cliente": "900556",
+    "razon_social": "Almacenes La Fragancia",
+    "cupo_credito": 500000000,
+    "condicion_pago": 45,
+    "vendedor": "Maria Teresa Jaramillo",
+    "canal": "Retail"
+  }
+]

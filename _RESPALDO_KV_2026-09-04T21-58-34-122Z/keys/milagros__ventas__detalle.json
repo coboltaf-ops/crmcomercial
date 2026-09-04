@@ -1,0 +1,170 @@
+[
+  {
+    "id_factura": "FV-001",
+    "id_producto": "PRD-00001",
+    "cantidad": 12000,
+    "valor_linea": 222000000,
+    "fecha": "2026-07-21"
+  },
+  {
+    "id_factura": "FV-001",
+    "id_producto": "PRD-00002",
+    "cantidad": 8000,
+    "valor_linea": 159200000,
+    "fecha": "2026-07-21"
+  },
+  {
+    "id_factura": "FV-001",
+    "id_producto": "PRD-00011",
+    "cantidad": 5000,
+    "valor_linea": 82500000,
+    "fecha": "2026-07-21"
+  },
+  {
+    "id_factura": "FV-002",
+    "id_producto": "PRD-00003",
+    "cantidad": 4000,
+    "valor_linea": 340000000,
+    "fecha": "2026-07-20"
+  },
+  {
+    "id_factura": "FV-002",
+    "id_producto": "PRD-00009",
+    "cantidad": 6000,
+    "valor_linea": 192000000,
+    "fecha": "2026-07-20"
+  },
+  {
+    "id_factura": "FV-002",
+    "id_producto": "PRD-00013",
+    "cantidad": 15000,
+    "valor_linea": 148500000,
+    "fecha": "2026-07-20"
+  },
+  {
+    "id_factura": "FV-003",
+    "id_producto": "PRD-00005",
+    "cantidad": 9000,
+    "valor_linea": 112500000,
+    "fecha": "2026-07-18"
+  },
+  {
+    "id_factura": "FV-003",
+    "id_producto": "PRD-00006",
+    "cantidad": 8000,
+    "valor_linea": 100000000,
+    "fecha": "2026-07-18"
+  },
+  {
+    "id_factura": "FV-003",
+    "id_producto": "PRD-00008",
+    "cantidad": 3000,
+    "valor_linea": 73500000,
+    "fecha": "2026-07-18"
+  },
+  {
+    "id_factura": "FV-004",
+    "id_producto": "PRD-00010",
+    "cantidad": 5000,
+    "valor_linea": 140000000,
+    "fecha": "2026-07-15"
+  },
+  {
+    "id_factura": "FV-004",
+    "id_producto": "PRD-00015",
+    "cantidad": 9000,
+    "valor_linea": 76500000,
+    "fecha": "2026-07-15"
+  },
+  {
+    "id_factura": "FV-004",
+    "id_producto": "PRD-00007",
+    "cantidad": 4000,
+    "valor_linea": 63600000,
+    "fecha": "2026-07-15"
+  },
+  {
+    "id_factura": "FV-005",
+    "id_producto": "PRD-00001",
+    "cantidad": 14000,
+    "valor_linea": 259000000,
+    "fecha": "2026-07-10"
+  },
+  {
+    "id_factura": "FV-005",
+    "id_producto": "PRD-00014",
+    "cantidad": 10000,
+    "valor_linea": 145000000,
+    "fecha": "2026-07-10"
+  },
+  {
+    "id_factura": "FV-005",
+    "id_producto": "PRD-00013",
+    "cantidad": 12000,
+    "valor_linea": 118800000,
+    "fecha": "2026-07-10"
+  },
+  {
+    "id_factura": "FV-006",
+    "id_producto": "PRD-00004",
+    "cantidad": 6000,
+    "valor_linea": 252000000,
+    "fecha": "2026-07-04"
+  },
+  {
+    "id_factura": "FV-006",
+    "id_producto": "PRD-00002",
+    "cantidad": 7000,
+    "valor_linea": 139300000,
+    "fecha": "2026-07-04"
+  },
+  {
+    "id_factura": "FV-007",
+    "id_producto": "PRD-00003",
+    "cantidad": 3500,
+    "valor_linea": 297500000,
+    "fecha": "2026-06-28"
+  },
+  {
+    "id_factura": "FV-007",
+    "id_producto": "PRD-00009",
+    "cantidad": 5000,
+    "valor_linea": 160000000,
+    "fecha": "2026-06-28"
+  },
+  {
+    "id_factura": "FV-007",
+    "id_producto": "PRD-00010",
+    "cantidad": 3000,
+    "valor_linea": 84000000,
+    "fecha": "2026-06-28"
+  },
+  {
+    "id_factura": "FV-008",
+    "id_producto": "PRD-00005",
+    "cantidad": 2500,
+    "valor_linea": 31250000,
+    "fecha": "2026-04-12"
+  },
+  {
+    "id_factura": "FV-008",
+    "id_producto": "PRD-00007",
+    "cantidad": 2000,
+    "valor_linea": 31800000,
+    "fecha": "2026-04-12"
+  },
+  {
+    "id_factura": "FV-009",
+    "id_producto": "PRD-00008",
+    "cantidad": 1800,
+    "valor_linea": 44100000,
+    "fecha": "2026-03-20"
+  },
+  {
+    "id_factura": "FV-009",
+    "id_producto": "PRD-00011",
+    "cantidad": 2200,
+    "valor_linea": 36300000,
+    "fecha": "2026-03-20"
+  }
+]

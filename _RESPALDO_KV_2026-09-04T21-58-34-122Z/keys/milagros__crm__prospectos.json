@@ -1,0 +1,122 @@
+[
+  {
+    "id_prospecto": "PRO-00001",
+    "empresa": "PELUQUERÍA D'CARLOS",
+    "contacto": "CARLOS VÉLEZ",
+    "actividad": "PELUQUERÍA Y BARBERÍA",
+    "ciudad": "Medellín",
+    "origen": "Feria comercial",
+    "situacion": "Nuevo",
+    "fecha_registro": "2026-07-03"
+  },
+  {
+    "id_prospecto": "PRO-00002",
+    "empresa": "STUDIO MAKEUP BY VANESSA",
+    "contacto": "VANESSA OSORIO",
+    "actividad": "MAQUILLAJE PROFESIONAL / ESTÉTICA",
+    "ciudad": "Bogotá",
+    "origen": "Instagram",
+    "situacion": "En contacto",
+    "fecha_registro": "2026-07-04"
+  },
+  {
+    "id_prospecto": "PRO-00003",
+    "empresa": "FARMACIA LA REBAJA NORTE",
+    "contacto": "MIGUEL SÁNCHEZ",
+    "actividad": "FARMACIA / DROGUERÍA",
+    "ciudad": "Cali",
+    "origen": "Referido",
+    "situacion": "Calificado",
+    "fecha_registro": "2026-07-05"
+  },
+  {
+    "id_prospecto": "PRO-00004",
+    "empresa": "DROGUERÍA SALUD TOTAL",
+    "contacto": "ÁNGELA PINEDA",
+    "actividad": "DROGUERÍA",
+    "ciudad": "Barranquilla",
+    "origen": "Llamada",
+    "situacion": "Nuevo",
+    "fecha_registro": "2026-07-06"
+  },
+  {
+    "id_prospecto": "PRO-00005",
+    "empresa": "CLÍNICA ESTÉTICA RENACER",
+    "contacto": "DIEGO BETANCUR",
+    "actividad": "CLÍNICA ESTÉTICA",
+    "ciudad": "Medellín",
+    "origen": "Web",
+    "situacion": "En contacto",
+    "fecha_registro": "2026-07-07"
+  },
+  {
+    "id_prospecto": "PRO-00006",
+    "empresa": "CENTRO MÉDICO VIDA SANA",
+    "contacto": "PATRICIA GÓMEZ",
+    "actividad": "CLÍNICA MÉDICA",
+    "ciudad": "Bucaramanga",
+    "origen": "Feria comercial",
+    "situacion": "Calificado",
+    "fecha_registro": "2026-07-08"
+  },
+  {
+    "id_prospecto": "PRO-00007",
+    "empresa": "SPA & BELLEZA AURORA",
+    "contacto": "LORENA RAMÍREZ",
+    "actividad": "SPA Y ESTÉTICA",
+    "ciudad": "Cartagena",
+    "origen": "Instagram",
+    "situacion": "Nuevo",
+    "fecha_registro": "2026-07-09"
+  },
+  {
+    "id_prospecto": "PRO-00008",
+    "empresa": "SALÓN GLAM STUDIO",
+    "contacto": "ANDREA CÁRDENAS",
+    "actividad": "SALÓN DE BELLEZA",
+    "ciudad": "Pereira",
+    "origen": "Referido",
+    "situacion": "En contacto",
+    "fecha_registro": "2026-07-10"
+  },
+  {
+    "id_prospecto": "PRO-00009",
+    "empresa": "BARBERÍA THE GENTLEMAN",
+    "contacto": "JULIÁN MORENO",
+    "actividad": "BARBERÍA",
+    "ciudad": "Cúcuta",
+    "origen": "Web",
+    "situacion": "Calificado",
+    "fecha_registro": "2026-07-11"
+  },
+  {
+    "id_prospecto": "PRO-00010",
+    "empresa": "DROGUERÍA Y PERFUMERÍA EL SOL",
+    "contacto": "SANDRA ORTIZ",
+    "actividad": "DROGUERÍA / PERFUMERÍA",
+    "ciudad": "Ibagué",
+    "origen": "Llamada",
+    "situacion": "Nuevo",
+    "fecha_registro": "2026-07-12"
+  },
+  {
+    "id_prospecto": "PRO-00011",
+    "empresa": "CLÍNICA DERMATOLÓGICA PIEL VIVA",
+    "contacto": "RICARDO NÚÑEZ",
+    "actividad": "CLÍNICA DERMATOLÓGICA",
+    "ciudad": "Bogotá",
+    "origen": "Referido",
+    "situacion": "En contacto",
+    "fecha_registro": "2026-07-13"
+  },
+  {
+    "id_prospecto": "PRO-00012",
+    "empresa": "ACADEMIA DE ESTÉTICA BELLEZA REAL",
+    "contacto": "MÓNICA HERRERA",
+    "actividad": "ACADEMIA DE ESTÉTICA",
+    "ciudad": "Manizales",
+    "origen": "Feria comercial",
+    "situacion": "Calificado",
+    "fecha_registro": "2026-07-14"
+  }
+]

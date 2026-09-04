@@ -16,6 +16,7 @@ import { fDate, todayColombia } from '@/shared/lib/format-date'
 import { nextConsecutivo } from '@/shared/lib/consecutivo'
 import ReportPanel from '@/shared/components/report-panel'
 import { useIdioma } from '@/shared/i18n/use-t'
+import { PAISES_ACTIVOS, esGlobal, etiquetaPais } from '@/shared/lib/paises'
 
 interface PQRSExterna {
   id: string; radicado: string; fecha: string; tipo: string; prioridad: string

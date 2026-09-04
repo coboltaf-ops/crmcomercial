@@ -1,0 +1,44 @@
+[
+  {
+    "id": "acb21379-17fa-463b-8196-298edaab0293",
+    "codigo": "TAR-00001",
+    "fecha_asignacion": "2026-04-08",
+    "hora_asignacion": "22:45",
+    "persona_asigna": "GERARDO FLOREZ",
+    "persona_ejecuta": "JOSE PALOMARES",
+    "fecha_requerida_fin": "2026-04-17",
+    "fecha_real_fin": "",
+    "descripcion": "Debes traer los documentos actualizados de la Empresa que vamos a Atender Rut Cartas Bancarias y Documento de Creación Empres",
+    "situacion": "Completada",
+    "fecha_registro": "2026-04-08",
+    "seguimientos": []
+  },
+  {
+    "id": "b1b372ad-abed-4a22-9d6a-c5569a9f6d35",
+    "codigo": "TAR-00001",
+    "fecha_asignacion": "2026-04-08",
+    "hora_asignacion": "22:45",
+    "persona_asigna": "GERARDO FLOREZ",
+    "persona_ejecuta": "JOSE PALOMARES",
+    "fecha_requerida_fin": "2026-05-17",
+    "fecha_real_fin": "",
+    "descripcion": "Debes traer los documentos actualizados de la Empresa que vamos a Atender Rut Cartas Bancarias y Documento de Creación Empres",
+    "situacion": "Pendiente",
+    "fecha_registro": "2026-04-08",
+    "seguimientos": []
+  },
+  {
+    "id": "2ca095a7-0224-4011-bc64-3eb442c0834f",
+    "codigo": "TAR-00002",
+    "fecha_asignacion": "2026-04-30",
+    "hora_asignacion": "20:30",
+    "persona_asigna": "GERARDO FLOREZ",
+    "persona_ejecuta": "MARIA ELISA TOVAR",
+    "fecha_requerida_fin": "2026-05-25",
+    "fecha_real_fin": "",
+    "descripcion": "Traer los Planos donde se harán los Mantenimientos de la Oferta de Telefonía ",
+    "situacion": "En Proceso",
+    "fecha_registro": "2026-04-30",
+    "seguimientos": []
+  }
+]

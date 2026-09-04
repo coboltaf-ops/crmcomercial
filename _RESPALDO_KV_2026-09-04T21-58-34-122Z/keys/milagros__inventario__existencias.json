@@ -1,0 +1,205 @@
+[
+  {
+    "id_existencia": "EX-PRD-00001-P",
+    "id_producto": "PRD-00001",
+    "bodega": "Bodega Principal",
+    "cantidad": 29400,
+    "fecha_corte": "2026-07-22"
+  },
+  {
+    "id_existencia": "EX-PRD-00001-S",
+    "id_producto": "PRD-00001",
+    "bodega": "Bodega Norte",
+    "cantidad": 12600,
+    "fecha_corte": "2026-07-22"
+  },
+  {
+    "id_existencia": "EX-PRD-00002-P",
+    "id_producto": "PRD-00002",
+    "bodega": "Bodega Principal",
+    "cantidad": 21700,
+    "fecha_corte": "2026-07-22"
+  },
+  {
+    "id_existencia": "EX-PRD-00002-S",
+    "id_producto": "PRD-00002",
+    "bodega": "Bodega Norte",
+    "cantidad": 9300,
+    "fecha_corte": "2026-07-22"
+  },
+  {
+    "id_existencia": "EX-PRD-00003-P",
+    "id_producto": "PRD-00003",
+    "bodega": "Bodega Principal",
+    "cantidad": 6650,
+    "fecha_corte": "2026-07-22"
+  },
+  {
+    "id_existencia": "EX-PRD-00003-S",
+    "id_producto": "PRD-00003",
+    "bodega": "Bodega Norte",
+    "cantidad": 2850,
+    "fecha_corte": "2026-07-22"
+  },
+  {
+    "id_existencia": "EX-PRD-00004-P",
+    "id_producto": "PRD-00004",
+    "bodega": "Bodega Principal",
+    "cantidad": 1680,
+    "fecha_corte": "2026-07-22"
+  },
+  {
+    "id_existencia": "EX-PRD-00004-S",
+    "id_producto": "PRD-00004",
+    "bodega": "Bodega Norte",
+    "cantidad": 720,
+    "fecha_corte": "2026-07-22"
+  },
+  {
+    "id_existencia": "EX-PRD-00005-P",
+    "id_producto": "PRD-00005",
+    "bodega": "Bodega Principal",
+    "cantidad": 12600,
+    "fecha_corte": "2026-07-22"
+  },
+  {
+    "id_existencia": "EX-PRD-00005-S",
+    "id_producto": "PRD-00005",
+    "bodega": "Bodega Norte",
+    "cantidad": 5400,
+    "fecha_corte": "2026-07-22"
+  },
+  {
+    "id_existencia": "EX-PRD-00006-P",
+    "id_producto": "PRD-00006",
+    "bodega": "Bodega Principal",
+    "cantidad": 10150,
+    "fecha_corte": "2026-07-22"
+  },
+  {
+    "id_existencia": "EX-PRD-00006-S",
+    "id_producto": "PRD-00006",
+    "bodega": "Bodega Norte",
+    "cantidad": 4350,
+    "fecha_corte": "2026-07-22"
+  },
+  {
+    "id_existencia": "EX-PRD-00007-P",
+    "id_producto": "PRD-00007",
+    "bodega": "Bodega Principal",
+    "cantidad": 2520,
+    "fecha_corte": "2026-07-22"
+  },
+  {
+    "id_existencia": "EX-PRD-00007-S",
+    "id_producto": "PRD-00007",
+    "bodega": "Bodega Norte",
+    "cantidad": 1080,
+    "fecha_corte": "2026-07-22"
+  },
+  {
+    "id_existencia": "EX-PRD-00008-P",
+    "id_producto": "PRD-00008",
+    "bodega": "Bodega Principal",
+    "cantidad": 11760,
+    "fecha_corte": "2026-07-22"
+  },
+  {
+    "id_existencia": "EX-PRD-00008-S",
+    "id_producto": "PRD-00008",
+    "bodega": "Bodega Norte",
+    "cantidad": 5040,
+    "fecha_corte": "2026-07-22"
+  },
+  {
+    "id_existencia": "EX-PRD-00009-P",
+    "id_producto": "PRD-00009",
+    "bodega": "Bodega Principal",
+    "cantidad": 7840,
+    "fecha_corte": "2026-07-22"
+  },
+  {
+    "id_existencia": "EX-PRD-00009-S",
+    "id_producto": "PRD-00009",
+    "bodega": "Bodega Norte",
+    "cantidad": 3360,
+    "fecha_corte": "2026-07-22"
+  },
+  {
+    "id_existencia": "EX-PRD-00010-P",
+    "id_producto": "PRD-00010",
+    "bodega": "Bodega Principal",
+    "cantidad": 5460,
+    "fecha_corte": "2026-07-22"
+  },
+  {
+    "id_existencia": "EX-PRD-00010-S",
+    "id_producto": "PRD-00010",
+    "bodega": "Bodega Norte",
+    "cantidad": 2340,
+    "fecha_corte": "2026-07-22"
+  },
+  {
+    "id_existencia": "EX-PRD-00011-P",
+    "id_producto": "PRD-00011",
+    "bodega": "Bodega Principal",
+    "cantidad": 6440,
+    "fecha_corte": "2026-07-22"
+  },
+  {
+    "id_existencia": "EX-PRD-00011-S",
+    "id_producto": "PRD-00011",
+    "bodega": "Bodega Norte",
+    "cantidad": 2760,
+    "fecha_corte": "2026-07-22"
+  },
+  {
+    "id_existencia": "EX-PRD-00012-P",
+    "id_producto": "PRD-00012",
+    "bodega": "Bodega Principal",
+    "cantidad": 0,
+    "fecha_corte": "2026-07-22"
+  },
+  {
+    "id_existencia": "EX-PRD-00013-P",
+    "id_producto": "PRD-00013",
+    "bodega": "Bodega Principal",
+    "cantidad": 47600,
+    "fecha_corte": "2026-07-22"
+  },
+  {
+    "id_existencia": "EX-PRD-00013-S",
+    "id_producto": "PRD-00013",
+    "bodega": "Bodega Norte",
+    "cantidad": 20400,
+    "fecha_corte": "2026-07-22"
+  },
+  {
+    "id_existencia": "EX-PRD-00014-P",
+    "id_producto": "PRD-00014",
+    "bodega": "Bodega Principal",
+    "cantidad": 15400,
+    "fecha_corte": "2026-07-22"
+  },
+  {
+    "id_existencia": "EX-PRD-00014-S",
+    "id_producto": "PRD-00014",
+    "bodega": "Bodega Norte",
+    "cantidad": 6600,
+    "fecha_corte": "2026-07-22"
+  },
+  {
+    "id_existencia": "EX-PRD-00015-P",
+    "id_producto": "PRD-00015",
+    "bodega": "Bodega Principal",
+    "cantidad": 24500,
+    "fecha_corte": "2026-07-22"
+  },
+  {
+    "id_existencia": "EX-PRD-00015-S",
+    "id_producto": "PRD-00015",
+    "bodega": "Bodega Norte",
+    "cantidad": 10500,
+    "fecha_corte": "2026-07-22"
+  }
+]

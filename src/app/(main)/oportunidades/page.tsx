@@ -20,14 +20,15 @@ import SeguimientoPanel from '@/shared/components/seguimiento-panel'
 import DocumentosPanel from '@/shared/components/documentos-panel'
 import { Seguimiento } from '@/shared/types/seguimiento'
 import { useT, useIdioma, useTStatus } from '@/shared/i18n/use-t'
+import { PAISES_ACTIVOS, esGlobal, etiquetaPais } from '@/shared/lib/paises'
 
 const today = todayColombia()
 
-const emptyOportunidad = (codigo: string, responsable: string): Oportunidad => ({
+const emptyOportunidad = (codigo: string, responsable: string, pais: string): Oportunidad => ({
   id: '', codigo,
   proyecto: '', cliente_id: '', cliente_nombre: '',
   contacto_id: '', contacto_nombre: '',
-  ciudad: '', pais: '', fecha_presupuesto: today, monto_estimado: 0, estimado_cop: 0,
+  ciudad: '', pais, fecha_presupuesto: today, monto_estimado: 0, estimado_cop: 0,
   tipo_moneda: 'Pesos Colombianos', situacion: 'Abierta',
   probable_pct: 0, adjudicacion: '', mgc: 0,
   ejecucion_anyo_pct: 0, parcial_euros_anyo: 0,
@@ -46,6 +47,8 @@ export default function OportunidadesPage() {
   const idioma = useIdioma()
   const permisos = usePermisos('oportunidades')
   const currentUser = useCurrentUserStore(s => s.user)
+  const paisUsuario = currentUser?.pais || ''
+  const usuarioGlobal = esGlobal(paisUsuario)
   const { oportunidades, addOportunidad, updateOportunidad, deleteOportunidad } = useOportunidadesStore()
   const loadOportunidades = useOportunidadesStore(s => s.loadOportunidades)
   const clientes = useClientesStore(s => s.clientes).filter(c => {
@@ -64,6 +67,7 @@ export default function OportunidadesPage() {
   const [correoModal, setCorreoModal] = useState<{ to: string; ref: string } | null>(null)
   const [tab, setTab] = useState<'registros' | 'reportes'>('registros')
   const [search, setSearch] = useState('')
+  const [filtroPais, setFiltroPais] = useState('')  // solo lo usan usuarios GLOBAL
   const [nuevoDocTexto, setNuevoDocTexto] = useState('')
   const searchParams = useSearchParams()
   const router = useRouter()
@@ -98,9 +102,10 @@ export default function OportunidadesPage() {
   const visibles = oportunidades.filter(o => esDirector || !esDeDirector(o))
 
   const filtered = visibles.filter(o =>
-    !search || o.proyecto.toLowerCase().includes(search.toLowerCase()) ||
+    (!usuarioGlobal || !filtroPais || o.pais === filtroPais) &&
+    (!search || o.proyecto.toLowerCase().includes(search.toLowerCase()) ||
     o.codigo.toLowerCase().includes(search.toLowerCase()) ||
-    o.cliente_nombre.toLowerCase().includes(search.toLowerCase())
+    o.cliente_nombre.toLowerCase().includes(search.toLowerCase()))
   ).sort((a, b) => (a.probable_pct ?? 0) - (b.probable_pct ?? 0))
 
   // Cálculos derivados
@@ -173,7 +178,7 @@ export default function OportunidadesPage() {
               { l: t('lbl.codigo'), v: viewDetail.codigo_interno || '-' },
               { l: t('lbl.cliente'), v: clienteNode },
               { l: t('lbl.ciudad'), v: viewDetail.ciudad || '-' },
-              { l: t('lbl.pais'), v: viewDetail.pais || '-' },
+              { l: t('lbl.pais'), v: etiquetaPais(viewDetail.pais) || '-' },
               { l: 'Estimado COP', v: `COP ${fmtMoney(viewDetail.estimado_cop || 0)}` },
               { l: 'Estimado USA', v: `US$ ${fmtMoney(viewDetail.monto_estimado || 0)}` },
               { l: t('lbl.situacion'), v: viewDetail.situacion },

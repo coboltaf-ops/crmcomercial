@@ -1,0 +1,94 @@
+[
+  {
+    "id": "2026-05-10_21-05-14_f80q",
+    "fecha": "2026-05-10",
+    "hora": "21:05:14",
+    "total": 6,
+    "registros": [
+      {
+        "id": "2c93b32b-b817-4259-bd79-412f171694f3",
+        "codigo": "TAR-00001",
+        "fecha_asignacion": "2026-04-19",
+        "hora_asignacion": "09:00",
+        "persona_asigna": "JUAN PABLO RAMIREZ",
+        "persona_ejecuta": "LUIS RODRIGUEZ",
+        "fecha_requerida_fin": "2026-04-29",
+        "fecha_real_fin": "",
+        "descripcion": "INSTALACIÓN DE 4 CÁMARAS IP CCTV EN SEDE NORTE DEL CLIENTE. INCLUYE CABLEADO, CONFIGURACIÓN DE NVR Y PRUEBAS DE MONITOREO REMOTO.",
+        "situacion": "En Proceso",
+        "fecha_registro": "2026-04-19",
+        "seguimientos": []
+      },
+      {
+        "id": "20c031bc-7f47-4183-8bf5-1fcb0ef8160b",
+        "codigo": "TAR-00002",
+        "fecha_asignacion": "2026-04-21",
+        "hora_asignacion": "10:30",
+        "persona_asigna": "LUIS RODRIGUEZ",
+        "persona_ejecuta": "JOSE E PALOMARES",
+        "fecha_requerida_fin": "2026-04-27",
+        "fecha_real_fin": "",
+        "descripcion": "CAPACITACIÓN TÉCNICA AL EQUIPO DE SUPERVISORES SOBRE USO DE PLATAFORMA DE RASTREO GPS Y PROTOCOLOS DE RESPUESTA ANTE ALERTAS.",
+        "situacion": "En Proceso",
+        "fecha_registro": "2026-04-21",
+        "seguimientos": []
+      },
+      {
+        "id": "c8ce8d3d-0521-4466-955e-48dcf64c6e82",
+        "codigo": "TAR-00003",
+        "fecha_asignacion": "2026-04-02",
+        "hora_asignacion": "08:00",
+        "persona_asigna": "LUIS RODRÍGUEZ",
+        "persona_ejecuta": "LUIS RODRÍGUEZ",
+        "fecha_requerida_fin": "2026-04-12",
+        "fecha_real_fin": "2026-04-14",
+        "descripcion": "REVISIÓN MENSUAL DE PÓLIZAS DE RESPONSABILIDAD CIVIL (RSE) DE CLIENTES ACTIVOS CON CONTRATOS VIGENTES SUPERIORES A $50M.",
+        "situacion": "Completada",
+        "fecha_registro": "2026-04-02",
+        "seguimientos": []
+      },
+      {
+        "id": "f5535cc4-21a2-47c7-9871-bc55cf5c1069",
+        "codigo": "TAR-00004",
+        "fecha_asignacion": "2026-04-07",
+        "hora_asignacion": "14:15",
+        "persona_asigna": "JUAN PABLO RAMIREZ",
+        "persona_ejecuta": "JOSE E PALOMARES",
+        "fecha_requerida_fin": "2026-04-15",
+        "fecha_real_fin": "2026-04-17",
+        "descripcion": "PREPARACIÓN Y ENVÍO DE COTIZACIÓN FORMAL PARA PROSPECTO ABC INDUSTRIAL (VIGILANCIA ARMADA 24/7 + CCTV).",
+        "situacion": "Completada",
+        "fecha_registro": "2026-04-07",
+        "seguimientos": []
+      },
+      {
+        "id": "eb9cae5a-1b69-4d23-93b0-b42fde005560",
+        "codigo": "TAR-00005",
+        "fecha_asignacion": "2026-04-02",
+        "hora_asignacion": "11:00",
+        "persona_asigna": "LUIS RODRÍGUEZ",
+        "persona_ejecuta": "LUIS RODRÍGUEZ",
+        "fecha_requerida_fin": "2026-04-17",
+        "fecha_real_fin": "",
+        "descripcion": "VISITA TÉCNICA DE MANTENIMIENTO PREVENTIVO A SISTEMA DE ALARMAS DEL CLIENTE PQR LOGISTICS SEDE MEDELLÍN.",
+        "situacion": "Pendiente",
+        "fecha_registro": "2026-04-02",
+        "seguimientos": []
+      },
+      {
+        "id": "dd2b6328-5576-4b44-ae1f-e037a49ad931",
+        "codigo": "TAR-00006",
+        "fecha_asignacion": "2026-04-10",
+        "hora_asignacion": "07:30",
+        "persona_asigna": "MARCO ARIAS",
+        "persona_ejecuta": "JUAN PABLO RAMIREZ",
+        "fecha_requerida_fin": "2026-04-19",
+        "fecha_real_fin": "",
+        "descripcion": "AUDITORÍA OPERATIVA AL PERSONAL DE VIGILANCIA DE LA ZONA SUR: VERIFICACIÓN DE TURNOS, DOTACIÓN Y CUMPLIMIENTO DE PROTOCOLOS.",
+        "situacion": "En Proceso",
+        "fecha_registro": "2026-04-10",
+        "seguimientos": []
+      }
+    ]
+  }
+]

@@ -1,0 +1,42 @@
+[
+  {
+    "id_factura": "V-1001",
+    "id_cliente": "901334",
+    "fecha_emision": "2026-07-02",
+    "fecha_vencimiento": "2026-08-16",
+    "valor_factura": 980000000,
+    "valor_abonado": 0
+  },
+  {
+    "id_factura": "V-1002",
+    "id_cliente": "900145",
+    "fecha_emision": "2026-07-08",
+    "fecha_vencimiento": "2026-08-07",
+    "valor_factura": 760000000,
+    "valor_abonado": 100000000
+  },
+  {
+    "id_factura": "V-1003",
+    "id_cliente": "890900",
+    "fecha_emision": "2026-03-01",
+    "fecha_vencimiento": "2026-04-30",
+    "valor_factura": 540000000,
+    "valor_abonado": 0
+  },
+  {
+    "id_factura": "V-1004",
+    "id_cliente": "901445",
+    "fecha_emision": "2026-06-15",
+    "fecha_vencimiento": "2026-07-15",
+    "valor_factura": 460000000,
+    "valor_abonado": 50000000
+  },
+  {
+    "id_factura": "V-1005",
+    "id_cliente": "900556",
+    "fecha_emision": "2026-07-12",
+    "fecha_vencimiento": "2026-08-26",
+    "valor_factura": 360000000,
+    "valor_abonado": 0
+  }
+]

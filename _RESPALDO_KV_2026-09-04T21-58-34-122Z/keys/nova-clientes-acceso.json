@@ -1,0 +1,188 @@
+[
+  {
+    "id": "cli-001",
+    "codigo": "CLI-001",
+    "razon_social": "CORPORACIÓN PARQUE ARVÍ",
+    "codigo_acceso": "ACC-CUMSKJ"
+  },
+  {
+    "id": "cli-002",
+    "codigo": "CLI-002",
+    "razon_social": "ZONAPAGOS S.A.S.",
+    "codigo_acceso": "ACC-ACBKC6"
+  },
+  {
+    "id": "cli-003",
+    "codigo": "CLI-003",
+    "razon_social": "FUNDACIÓN EL CÓNDOR",
+    "codigo_acceso": "ACC-M8RE8R"
+  },
+  {
+    "id": "cli-004",
+    "codigo": "CLI-004",
+    "razon_social": "ÓVALO HOME S.A.S.",
+    "codigo_acceso": "ACC-ABZGRK"
+  },
+  {
+    "id": "cli-005",
+    "codigo": "CLI-005",
+    "razon_social": "AUTARCHY S.A.S.",
+    "codigo_acceso": "ACC-38NULK"
+  },
+  {
+    "id": "cli-006",
+    "codigo": "CLI-006",
+    "razon_social": "COMITÉ DE CLÍNICAS VETERINARIAS DE COLOMBIA",
+    "codigo_acceso": "ACC-F4U58S"
+  },
+  {
+    "id": "cli-007",
+    "codigo": "CLI-007",
+    "razon_social": "MINA LA MARGARITA S.A.S.",
+    "codigo_acceso": "ACC-6GFHTH"
+  },
+  {
+    "id": "cli-008",
+    "codigo": "CLI-008",
+    "razon_social": "INDUMAR S.A.S.",
+    "codigo_acceso": "ACC-NTGJ2X"
+  },
+  {
+    "id": "cli-009",
+    "codigo": "CLI-009",
+    "razon_social": "SUS INSUMOS S.A.S.",
+    "codigo_acceso": "ACC-YSA6VM"
+  },
+  {
+    "id": "cli-010",
+    "codigo": "CLI-010",
+    "razon_social": "BELQUIM S.A.S.",
+    "codigo_acceso": "ACC-EGARSD"
+  },
+  {
+    "id": "cli-011",
+    "codigo": "CLI-011",
+    "razon_social": "ORANGE GLOBE S.A.S.",
+    "codigo_acceso": "ACC-VFL94P"
+  },
+  {
+    "id": "cli-012",
+    "codigo": "CLI-012",
+    "razon_social": "TINCOL S.A.S.",
+    "codigo_acceso": "ACC-AC3L7X"
+  },
+  {
+    "id": "cli-013",
+    "codigo": "CLI-013",
+    "razon_social": "TE FÍO S.A.S.",
+    "codigo_acceso": "ACC-55N6MQ"
+  },
+  {
+    "id": "cli-014",
+    "codigo": "CLI-014",
+    "razon_social": "PCS PROMOTORA COMERCIO SOCIAL S.A.S.",
+    "codigo_acceso": "ACC-EW8JDL"
+  },
+  {
+    "id": "cli-015",
+    "codigo": "CLI-015",
+    "razon_social": "ALL PROTECTION ASESORES EN SEGUROS LTDA.",
+    "codigo_acceso": "ACC-C9F959"
+  },
+  {
+    "id": "cli-016",
+    "codigo": "CLI-016",
+    "razon_social": "CONFECCIONES BETANIA S.A.S.",
+    "codigo_acceso": "ACC-T8RKHZ"
+  },
+  {
+    "id": "cli-017",
+    "codigo": "CLI-017",
+    "razon_social": "DISTRIBUCIONES EL PROGRESO S.A.S.",
+    "codigo_acceso": "ACC-WFEWF7"
+  },
+  {
+    "id": "cli-018",
+    "codigo": "CLI-018",
+    "razon_social": "CAFÉ DE LA MONTAÑA S.A.S.",
+    "codigo_acceso": "ACC-EWHPLU"
+  },
+  {
+    "id": "cli-019",
+    "codigo": "CLI-019",
+    "razon_social": "CONSTRUCTORA SIERRA VERDE S.A.S.",
+    "codigo_acceso": "ACC-YRGTFP"
+  },
+  {
+    "id": "cli-020",
+    "codigo": "CLI-020",
+    "razon_social": "AGROVALLE INSUMOS S.A.S.",
+    "codigo_acceso": "ACC-E2J3MU"
+  },
+  {
+    "id": "cli-021",
+    "codigo": "CLI-021",
+    "razon_social": "DISTRIBUIDORA TEXTIL ANDINA S.A.S.",
+    "codigo_acceso": "ACC-B66RPR"
+  },
+  {
+    "id": "cli-022",
+    "codigo": "CLI-022",
+    "razon_social": "LOGÍSTICA EXPRESS CAPITAL S.A.S.",
+    "codigo_acceso": "ACC-WGP2J2"
+  },
+  {
+    "id": "cli-023",
+    "codigo": "CLI-023",
+    "razon_social": "AGROINDUSTRIAS DEL VALLE S.A.S.",
+    "codigo_acceso": "ACC-C3HH8C"
+  },
+  {
+    "id": "cli-024",
+    "codigo": "CLI-024",
+    "razon_social": "CONFECCIONES PACÍFICO LTDA",
+    "codigo_acceso": "ACC-S7DWAL"
+  },
+  {
+    "id": "cli-025",
+    "codigo": "CLI-025",
+    "razon_social": "TECNOSOLUCIONES CALI S.A.S.",
+    "codigo_acceso": "ACC-9Z6RJU"
+  },
+  {
+    "id": "cli-026",
+    "codigo": "CLI-026",
+    "razon_social": "INMOBILIARIA COLINAS DE ENVIGADO S.A.S.",
+    "codigo_acceso": "ACC-CPX3QG"
+  },
+  {
+    "id": "cli-027",
+    "codigo": "CLI-027",
+    "razon_social": "CONSULTORÍA FINANCIERA SUR S.A.S.",
+    "codigo_acceso": "ACC-4LL7WF"
+  },
+  {
+    "id": "cli-028",
+    "codigo": "CLI-028",
+    "razon_social": "MANUFACTURAS METÁLICAS ITAGÜÍ S.A.S.",
+    "codigo_acceso": "ACC-Q59TJ9"
+  },
+  {
+    "id": "cli-029",
+    "codigo": "CLI-029",
+    "razon_social": "ALIMENTOS FRESCOS DEL SUR S.A.S.",
+    "codigo_acceso": "ACC-DDW798"
+  },
+  {
+    "id": "cli-030",
+    "codigo": "CLI-030",
+    "razon_social": "CAFÉ Y AROMAS DEL EJE S.A.S.",
+    "codigo_acceso": "ACC-YSH97Q"
+  },
+  {
+    "id": "cli-031",
+    "codigo": "CLI-031",
+    "razon_social": "COMERCIALIZADORA RISARALDA S.A.S.",
+    "codigo_acceso": "ACC-ANGZEN"
+  }
+]

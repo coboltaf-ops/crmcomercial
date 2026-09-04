@@ -21,6 +21,7 @@ export interface Contacto {
   es_principal: boolean
   observaciones: string
   situacion: string
+  pais?: string
   creado_por?: string
   creado_por_usuario?: string
   creado_en?: string

@@ -1,0 +1,388 @@
+[
+  {
+    "id": "admin-1",
+    "nombre": "ADMIN",
+    "apellido": "CRM",
+    "usuario": "admin",
+    "clave": "scrypt$5c98acba28712ce169b23c19fdbd9cb4$fdd020d60e7e3d0327838b4793094fc0935099b762856507077051b4690596a3d9d651ec44dedf9fee668cafe07d2be643a8ece093e1a75f6a17d929b237b93d",
+    "correo": "admin@crmcomercial.com",
+    "rol": "Admin",
+    "situacion": "Activo",
+    "permisos": [
+      {
+        "modulo": "dashboard",
+        "leer": true,
+        "editar": true,
+        "eliminar": true
+      },
+      {
+        "modulo": "clientes",
+        "leer": true,
+        "editar": true,
+        "eliminar": true
+      },
+      {
+        "modulo": "contactos",
+        "leer": true,
+        "editar": true,
+        "eliminar": true
+      },
+      {
+        "modulo": "oportunidades",
+        "leer": true,
+        "editar": true,
+        "eliminar": true
+      },
+      {
+        "modulo": "productos",
+        "leer": true,
+        "editar": true,
+        "eliminar": true
+      },
+      {
+        "modulo": "cotizaciones",
+        "leer": true,
+        "editar": true,
+        "eliminar": true
+      },
+      {
+        "modulo": "prospectos",
+        "leer": true,
+        "editar": true,
+        "eliminar": true
+      },
+      {
+        "modulo": "pqrs",
+        "leer": true,
+        "editar": true,
+        "eliminar": true
+      },
+      {
+        "modulo": "tareas",
+        "leer": true,
+        "editar": true,
+        "eliminar": true
+      },
+      {
+        "modulo": "proyectos",
+        "leer": true,
+        "editar": true,
+        "eliminar": true
+      },
+      {
+        "modulo": "pagos",
+        "leer": true,
+        "editar": true,
+        "eliminar": true
+      },
+      {
+        "modulo": "referencias",
+        "leer": true,
+        "editar": true,
+        "eliminar": true
+      }
+    ],
+    "clave_visible": "Norton-RGGK"
+  },
+  {
+    "id": "comer01-1",
+    "nombre": "ADRIANA ",
+    "apellido": "CESPEDES",
+    "usuario": "comer01",
+    "clave": "scrypt$e94f052ae70540f4b5e8eb4e4d665243$d4fca780b495beddc56473843d3c47184cfed10c60faf7e62e336fd32b2e07bd086bd2af787b0de4e09972e313d9d8ec563134b845e1febae897954eb5cdaa6f",
+    "correo": "comer01@crmcomercial.com",
+    "rol": "Ventas",
+    "situacion": "Activo",
+    "permisos": [
+      {
+        "modulo": "dashboard",
+        "leer": true,
+        "editar": false,
+        "eliminar": false
+      },
+      {
+        "modulo": "clientes",
+        "leer": true,
+        "editar": true,
+        "eliminar": true,
+        "crear": true
+      },
+      {
+        "modulo": "contactos",
+        "leer": true,
+        "editar": true,
+        "eliminar": true,
+        "crear": true
+      },
+      {
+        "modulo": "oportunidades",
+        "leer": true,
+        "editar": true,
+        "eliminar": true,
+        "crear": true
+      },
+      {
+        "modulo": "productos",
+        "leer": true,
+        "editar": true,
+        "eliminar": true,
+        "crear": true
+      },
+      {
+        "modulo": "cotizaciones",
+        "leer": true,
+        "editar": true,
+        "eliminar": true,
+        "crear": true
+      },
+      {
+        "modulo": "prospectos",
+        "leer": true,
+        "editar": true,
+        "eliminar": false,
+        "crear": true
+      },
+      {
+        "modulo": "pqrs",
+        "leer": true,
+        "editar": false,
+        "eliminar": false,
+        "crear": true
+      },
+      {
+        "modulo": "tareas",
+        "leer": true,
+        "editar": false,
+        "eliminar": false,
+        "crear": true
+      },
+      {
+        "modulo": "proyectos",
+        "leer": true,
+        "editar": true,
+        "eliminar": true,
+        "crear": true
+      },
+      {
+        "modulo": "pagos",
+        "leer": true,
+        "editar": false,
+        "eliminar": false
+      },
+      {
+        "modulo": "referencias",
+        "leer": false,
+        "editar": true,
+        "eliminar": false,
+        "crear": true
+      },
+      {
+        "modulo": "factores-monedas",
+        "leer": false,
+        "crear": true,
+        "editar": true,
+        "eliminar": false
+      },
+      {
+        "modulo": "proveedores",
+        "leer": false,
+        "crear": true,
+        "editar": false,
+        "eliminar": false
+      }
+    ],
+    "clave_visible": "Norton-GDB7"
+  },
+  {
+    "id": "admin-1",
+    "nombre": "JOSE DAVID",
+    "apellido": "PALOMARES VELASQUEZ",
+    "usuario": "directorlatam",
+    "clave": "scrypt$0a7f4b6c10c96f93b68d59415536a5c1$21b1a77e10d6879b36daa5227f4bf491abc74061e11133e07697328adb5bbbd07196fda6bb9a11de2681992581476d492dcf66d037812c6216b4939d694318e2",
+    "correo": "admin@crmcomercial.com",
+    "rol": "Admin",
+    "situacion": "Activo",
+    "permisos": [
+      {
+        "modulo": "dashboard",
+        "leer": true,
+        "editar": true,
+        "eliminar": true
+      },
+      {
+        "modulo": "clientes",
+        "leer": true,
+        "editar": true,
+        "eliminar": true
+      },
+      {
+        "modulo": "contactos",
+        "leer": true,
+        "editar": true,
+        "eliminar": true
+      },
+      {
+        "modulo": "oportunidades",
+        "leer": true,
+        "editar": true,
+        "eliminar": true
+      },
+      {
+        "modulo": "productos",
+        "leer": true,
+        "editar": true,
+        "eliminar": true
+      },
+      {
+        "modulo": "cotizaciones",
+        "leer": true,
+        "editar": true,
+        "eliminar": true
+      },
+      {
+        "modulo": "prospectos",
+        "leer": true,
+        "editar": true,
+        "eliminar": true
+      },
+      {
+        "modulo": "pqrs",
+        "leer": true,
+        "editar": true,
+        "eliminar": true
+      },
+      {
+        "modulo": "tareas",
+        "leer": true,
+        "editar": true,
+        "eliminar": true
+      },
+      {
+        "modulo": "proyectos",
+        "leer": true,
+        "editar": true,
+        "eliminar": true
+      },
+      {
+        "modulo": "pagos",
+        "leer": true,
+        "editar": true,
+        "eliminar": true
+      },
+      {
+        "modulo": "referencias",
+        "leer": true,
+        "editar": true,
+        "eliminar": true
+      }
+    ],
+    "clave_visible": "Norton-8TQX"
+  },
+  {
+    "id": "bf19c9f6-b539-4e06-a9f6-d259abafff97",
+    "nombre": "ADRIANA",
+    "apellido": "ARDILA",
+    "usuario": "comer99",
+    "clave": "scrypt$a9bb4aa713ca5fe6818db73228a79ba4$f9727b9a0697d77e15ddac4602a1966965e508b9b53773acd05f6592b30961c0c71c29d30a7a20f08a3c19982a64bbdfd396fc52cb4795108ef850faf06ed11b",
+    "correo": "auxiliar.ssta@losblancoscm.com",
+    "rol": "Soporte",
+    "situacion": "Activo",
+    "permisos": [
+      {
+        "modulo": "dashboard",
+        "leer": true,
+        "editar": false,
+        "eliminar": false,
+        "crear": false
+      },
+      {
+        "modulo": "clientes",
+        "leer": true,
+        "editar": false,
+        "eliminar": false,
+        "crear": true
+      },
+      {
+        "modulo": "contactos",
+        "leer": true,
+        "editar": false,
+        "eliminar": false,
+        "crear": true
+      },
+      {
+        "modulo": "oportunidades",
+        "leer": true,
+        "editar": false,
+        "eliminar": false
+      },
+      {
+        "modulo": "productos",
+        "leer": true,
+        "editar": false,
+        "eliminar": false
+      },
+      {
+        "modulo": "cotizaciones",
+        "leer": true,
+        "editar": false,
+        "eliminar": false,
+        "crear": false
+      },
+      {
+        "modulo": "prospectos",
+        "leer": true,
+        "editar": false,
+        "eliminar": false,
+        "crear": true
+      },
+      {
+        "modulo": "pqrs",
+        "leer": true,
+        "editar": true,
+        "eliminar": false,
+        "crear": true
+      },
+      {
+        "modulo": "tareas",
+        "leer": true,
+        "editar": false,
+        "eliminar": false,
+        "crear": false
+      },
+      {
+        "modulo": "proyectos",
+        "leer": true,
+        "editar": false,
+        "eliminar": false,
+        "crear": false
+      },
+      {
+        "modulo": "pagos",
+        "leer": true,
+        "editar": false,
+        "eliminar": false
+      },
+      {
+        "modulo": "referencias",
+        "leer": false,
+        "editar": false,
+        "eliminar": false
+      },
+      {
+        "modulo": "proveedores",
+        "leer": true,
+        "crear": true,
+        "editar": false,
+        "eliminar": false
+      },
+      {
+        "modulo": "factores-monedas",
+        "leer": false,
+        "crear": false,
+        "editar": false,
+        "eliminar": false
+      }
+    ],
+    "clave_visible": "Norton-JLG5"
+  }
+]

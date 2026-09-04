@@ -1,0 +1,152 @@
+[
+  {
+    "id_producto": "PRD-00001",
+    "descripcion": "Shampoo Nutrición Intensa 500ml",
+    "categoria": "Cuidado Capilar",
+    "marca": "Milagros",
+    "costo_unitario": 10200,
+    "precio_unitario": 18500,
+    "stock_minimo": 8000,
+    "estado": "Activo"
+  },
+  {
+    "id_producto": "PRD-00002",
+    "descripcion": "Acondicionador Reparador 500ml",
+    "categoria": "Cuidado Capilar",
+    "marca": "Milagros",
+    "costo_unitario": 11100,
+    "precio_unitario": 19900,
+    "stock_minimo": 6000,
+    "estado": "Activo"
+  },
+  {
+    "id_producto": "PRD-00003",
+    "descripcion": "Tratamiento de Keratina Profesional 1L",
+    "categoria": "Tratamientos",
+    "marca": "Milagros Pro",
+    "costo_unitario": 49000,
+    "precio_unitario": 85000,
+    "stock_minimo": 2000,
+    "estado": "Activo"
+  },
+  {
+    "id_producto": "PRD-00004",
+    "descripcion": "Ampollas Capilares Restauradoras x12",
+    "categoria": "Tratamientos",
+    "marca": "Milagros Pro",
+    "costo_unitario": 24500,
+    "precio_unitario": 42000,
+    "stock_minimo": 3000,
+    "estado": "Activo"
+  },
+  {
+    "id_producto": "PRD-00005",
+    "descripcion": "Tinte Permanente Castaño Oscuro",
+    "categoria": "Coloración",
+    "marca": "Milagros Color",
+    "costo_unitario": 6900,
+    "precio_unitario": 12500,
+    "stock_minimo": 5000,
+    "estado": "Activo"
+  },
+  {
+    "id_producto": "PRD-00006",
+    "descripcion": "Tinte Permanente Rubio Ceniza",
+    "categoria": "Coloración",
+    "marca": "Milagros Color",
+    "costo_unitario": 6900,
+    "precio_unitario": 12500,
+    "stock_minimo": 5000,
+    "estado": "Activo"
+  },
+  {
+    "id_producto": "PRD-00007",
+    "descripcion": "Crema para Peinar Anti-Frizz 300ml",
+    "categoria": "Cuidado Capilar",
+    "marca": "Milagros",
+    "costo_unitario": 8600,
+    "precio_unitario": 15900,
+    "stock_minimo": 4000,
+    "estado": "Activo"
+  },
+  {
+    "id_producto": "PRD-00008",
+    "descripcion": "Shampoo Anticaída Fortalecedor 400ml",
+    "categoria": "Cuidado Capilar",
+    "marca": "Milagros",
+    "costo_unitario": 13800,
+    "precio_unitario": 24500,
+    "stock_minimo": 4000,
+    "estado": "Activo"
+  },
+  {
+    "id_producto": "PRD-00009",
+    "descripcion": "Mascarilla Hidratante Profunda 500g",
+    "categoria": "Tratamientos",
+    "marca": "Milagros Pro",
+    "costo_unitario": 18400,
+    "precio_unitario": 32000,
+    "stock_minimo": 3000,
+    "estado": "Activo"
+  },
+  {
+    "id_producto": "PRD-00010",
+    "descripcion": "Aceite de Argán Capilar 60ml",
+    "categoria": "Tratamientos",
+    "marca": "Milagros",
+    "costo_unitario": 15900,
+    "precio_unitario": 28000,
+    "stock_minimo": 2500,
+    "estado": "Activo"
+  },
+  {
+    "id_producto": "PRD-00011",
+    "descripcion": "Laca Fijadora Extra Fuerte 400ml",
+    "categoria": "Fijación",
+    "marca": "Milagros Style",
+    "costo_unitario": 9400,
+    "precio_unitario": 16500,
+    "stock_minimo": 3500,
+    "estado": "Activo"
+  },
+  {
+    "id_producto": "PRD-00012",
+    "descripcion": "Kit Alisado Progresivo Profesional",
+    "categoria": "Alisados",
+    "marca": "Milagros Pro",
+    "costo_unitario": 71000,
+    "precio_unitario": 120000,
+    "stock_minimo": 800,
+    "estado": "Activo"
+  },
+  {
+    "id_producto": "PRD-00013",
+    "descripcion": "Jabón Líquido Antibacterial 1L",
+    "categoria": "Línea Aseo",
+    "marca": "Milagros Home",
+    "costo_unitario": 5600,
+    "precio_unitario": 9900,
+    "stock_minimo": 10000,
+    "estado": "Activo"
+  },
+  {
+    "id_producto": "PRD-00014",
+    "descripcion": "Suavizante de Telas Concentrado 2L",
+    "categoria": "Línea Aseo",
+    "marca": "Milagros Home",
+    "costo_unitario": 8300,
+    "precio_unitario": 14500,
+    "stock_minimo": 6000,
+    "estado": "Activo"
+  },
+  {
+    "id_producto": "PRD-00015",
+    "descripcion": "Gel Antibacterial para Manos 500ml",
+    "categoria": "Línea Aseo",
+    "marca": "Milagros Home",
+    "costo_unitario": 4900,
+    "precio_unitario": 8500,
+    "stock_minimo": 8000,
+    "estado": "Activo"
+  }
+]

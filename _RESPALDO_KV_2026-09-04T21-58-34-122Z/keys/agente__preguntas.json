@@ -1,0 +1,26 @@
+[
+  {
+    "id": "e75269f4-8597-4e1e-9f1d-5ce667c4b7f1",
+    "usuario_id": "comer01-1",
+    "pregunta": "¿Cómo uso este CRM?",
+    "respuesta": "Este CRM te permite gestionar clientes, contactos, oportunidades y tareas. Navega por los módulos del menú lateral para acceder a cada sección.",
+    "fecha_creacion": "2026-06-03",
+    "tipo": "predefinida"
+  },
+  {
+    "id": "11720deb-7845-4749-a00e-153e49a09ed7",
+    "usuario_id": "comer01-1",
+    "pregunta": "¿Cómo uso este CRM?",
+    "respuesta": "Este CRM te permite gestionar clientes, contactos, oportunidades y tareas. Navega por los módulos del menú lateral para acceder a cada sección.",
+    "fecha_creacion": "2026-06-03",
+    "tipo": "predefinida"
+  },
+  {
+    "id": "21517be9-8496-499f-8a12-e8e8a9e4f1ce",
+    "usuario_id": "comer01-1",
+    "pregunta": "¿Cómo uso este CRM?",
+    "respuesta": "Este CRM te permite gestionar clientes, contactos, oportunidades y tareas. Navega por los módulos del menú lateral para acceder a cada sección.",
+    "fecha_creacion": "2026-06-03",
+    "tipo": "predefinida"
+  }
+]

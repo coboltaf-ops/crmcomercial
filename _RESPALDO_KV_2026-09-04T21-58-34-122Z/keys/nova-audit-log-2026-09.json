@@ -1,0 +1,36 @@
+[
+  {
+    "id": "bb2d5250-e2be-44a9-a33e-74a6221fbabe",
+    "fecha": "2026-09-04T00:24:00.780Z",
+    "fecha_dia": "03/09/2026",
+    "hora": "07:24:00 p. m.",
+    "usuario": "admin",
+    "usuario_nombre": "admin",
+    "rol": "",
+    "modulo": "auth",
+    "accion": "OTRO",
+    "registro_codigo": "",
+    "registro_nombre": "",
+    "detalle": "Intento de login fallido para \"admin\"",
+    "campo": "",
+    "valor_anterior": "",
+    "valor_nuevo": ""
+  },
+  {
+    "id": "0786760a-177d-4d41-a94e-1283c0cba92b",
+    "fecha": "2026-09-04T00:24:30.952Z",
+    "fecha_dia": "03/09/2026",
+    "hora": "07:24:30 p. m.",
+    "usuario": "admin",
+    "usuario_nombre": "admin",
+    "rol": "",
+    "modulo": "auth",
+    "accion": "OTRO",
+    "registro_codigo": "",
+    "registro_nombre": "",
+    "detalle": "Intento de login fallido para \"admin\"",
+    "campo": "",
+    "valor_anterior": "",
+    "valor_nuevo": ""
+  }
+]

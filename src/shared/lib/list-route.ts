@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { readList, writeList } from '@/shared/lib/kv-store'
+import { getSesion, sesionVeTodo } from '@/shared/lib/session'
+import { filtrarPorPais, puedeAccederRegistro } from '@/shared/lib/paises'
 
 /**
  * Fábrica de handlers GET/POST para listas en KV — SEGURA ante navegadores
@@ -17,29 +19,61 @@ import { readList, writeList } from '@/shared/lib/kv-store'
 
 const noStore = { 'Cache-Control': 'no-store, no-cache, must-revalidate, max-age=0' }
 
-type WithId = { id?: string | number }
+type WithId = { id?: string | number; pais?: string }
 
-export function makeListHandlers(KV_KEY: string) {
-  async function GET() {
-    const data = await readList(KV_KEY)
-    return NextResponse.json(data, { headers: noStore })
+interface ListOptions {
+  /**
+   * Si es true, aplica el modelo multipaís:
+   *  - GET solo devuelve registros del país del usuario (GLOBAL/Admin ve todo).
+   *  - upsert sella el país del usuario y bloquea tocar registros de otro país.
+   *  - delete bloquea borrar registros de otro país.
+   * Debe quedar en false para catálogos/config globales (roles, monedas, etc.).
+   */
+  scopePais?: boolean
+}
+
+export function makeListHandlers(KV_KEY: string, options: ListOptions = {}) {
+  const { scopePais = false } = options
+
+  async function GET(req: NextRequest) {
+    const data = await readList<WithId>(KV_KEY)
+    if (!scopePais) return NextResponse.json(data, { headers: noStore })
+    const sesion = getSesion(req)
+    const visible = filtrarPorPais(data, sesion?.pais)
+    return NextResponse.json(visible, { headers: noStore })
   }
 
   async function POST(req: NextRequest) {
     try {
       const body = await req.json()
       const current = await readList<WithId>(KV_KEY)
+      const sesion = scopePais ? getSesion(req) : null
+      const veTodo = sesionVeTodo(sesion)
 
       // ── Operaciones por registro ──
       if (body && typeof body === 'object' && !Array.isArray(body) && 'op' in body) {
         if (body.op === 'upsert' && body.item && body.item.id != null) {
           const idx = current.findIndex((r) => r.id === body.item.id)
+          if (scopePais && !veTodo) {
+            // No puede tocar un registro existente de otro país.
+            if (idx >= 0 && !puedeAccederRegistro(sesion?.pais, current[idx].pais)) {
+              return NextResponse.json({ error: 'No autorizado: registro de otro país' }, { status: 403, headers: noStore })
+            }
+            // Sella el país del usuario en el registro (no puede crear para otro país).
+            body.item.pais = sesion?.pais || body.item.pais
+          }
           if (idx >= 0) current[idx] = body.item
           else current.push(body.item)
           await writeList(KV_KEY, current)
           return NextResponse.json({ ok: true, count: current.length }, { headers: noStore })
         }
         if (body.op === 'delete' && body.id != null) {
+          if (scopePais && !veTodo) {
+            const target = current.find((r) => r.id === body.id)
+            if (target && !puedeAccederRegistro(sesion?.pais, target.pais)) {
+              return NextResponse.json({ error: 'No autorizado: registro de otro país' }, { status: 403, headers: noStore })
+            }
+          }
           const next = current.filter((r) => r.id !== body.id)
           await writeList(KV_KEY, next)
           return NextResponse.json({ ok: true, count: next.length }, { headers: noStore })

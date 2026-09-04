@@ -1,0 +1,74 @@
+[
+  {
+    "id_movimiento": "M-0701-01",
+    "id_banco": "BCO-01",
+    "fecha": "2026-07-07",
+    "saldo_final": 1420000000,
+    "ingresos": 2100000000,
+    "egresos": 1890000000
+  },
+  {
+    "id_movimiento": "M-0701-02",
+    "id_banco": "BCO-02",
+    "fecha": "2026-07-07",
+    "saldo_final": 680000000,
+    "ingresos": 540000000,
+    "egresos": 610000000
+  },
+  {
+    "id_movimiento": "M-0701-03",
+    "id_banco": "BCO-03",
+    "fecha": "2026-07-07",
+    "saldo_final": 240000000,
+    "ingresos": 320000000,
+    "egresos": 410000000
+  },
+  {
+    "id_movimiento": "M-0714-01",
+    "id_banco": "BCO-01",
+    "fecha": "2026-07-14",
+    "saldo_final": 1580000000,
+    "ingresos": 1950000000,
+    "egresos": 1790000000
+  },
+  {
+    "id_movimiento": "M-0714-02",
+    "id_banco": "BCO-02",
+    "fecha": "2026-07-14",
+    "saldo_final": 720000000,
+    "ingresos": 480000000,
+    "egresos": 440000000
+  },
+  {
+    "id_movimiento": "M-0714-03",
+    "id_banco": "BCO-03",
+    "fecha": "2026-07-14",
+    "saldo_final": 90000000,
+    "ingresos": 260000000,
+    "egresos": 410000000
+  },
+  {
+    "id_movimiento": "M-0721-01",
+    "id_banco": "BCO-01",
+    "fecha": "2026-07-21",
+    "saldo_final": 1735000000,
+    "ingresos": 2240000000,
+    "egresos": 2085000000
+  },
+  {
+    "id_movimiento": "M-0721-02",
+    "id_banco": "BCO-02",
+    "fecha": "2026-07-21",
+    "saldo_final": 610000000,
+    "ingresos": 390000000,
+    "egresos": 500000000
+  },
+  {
+    "id_movimiento": "M-0721-03",
+    "id_banco": "BCO-03",
+    "fecha": "2026-07-21",
+    "saldo_final": -45000000,
+    "ingresos": 180000000,
+    "egresos": 315000000
+  }
+]

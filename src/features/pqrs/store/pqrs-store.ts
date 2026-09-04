@@ -28,6 +28,7 @@ export interface PQRS {
   fecha_cierre: string
   seguimientos: Seguimiento[]
   situacion: string
+  pais?: string
   creado_por?: string
   creado_por_usuario?: string
   creado_en?: string

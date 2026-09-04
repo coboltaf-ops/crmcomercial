@@ -1,0 +1,718 @@
+{
+  "fecha": "2026-09-04T21-58-34-122Z",
+  "total_claves": 142,
+  "ok": 142,
+  "err": 0,
+  "items": [
+    {
+      "key": "agente:preguntas",
+      "count": 3,
+      "tipo": "array"
+    },
+    {
+      "key": "audit-log-2026-04",
+      "count": 32,
+      "tipo": "array"
+    },
+    {
+      "key": "audit-log-2026-05",
+      "count": 266,
+      "tipo": "array"
+    },
+    {
+      "key": "audit-log-2026-06",
+      "count": 352,
+      "tipo": "array"
+    },
+    {
+      "key": "auditoria-log",
+      "count": 193,
+      "tipo": "array"
+    },
+    {
+      "key": "backup-2026-06-10T18-57-40-490Z",
+      "count": 0,
+      "tipo": "array"
+    },
+    {
+      "key": "backup-2026-06-13T01-00-40-541Z",
+      "count": 0,
+      "tipo": "array"
+    },
+    {
+      "key": "backup-2026-06-16T01-01-29-710Z",
+      "count": 0,
+      "tipo": "array"
+    },
+    {
+      "key": "backup-2026-06-19T01-00-51-053Z",
+      "count": 0,
+      "tipo": "array"
+    },
+    {
+      "key": "backup-2026-06-22T01-00-31-695Z",
+      "count": 0,
+      "tipo": "array"
+    },
+    {
+      "key": "backup-2026-06-25T01-00-24-691Z",
+      "count": 0,
+      "tipo": "array"
+    },
+    {
+      "key": "backup-2026-06-28T01-00-41-689Z",
+      "count": 0,
+      "tipo": "array"
+    },
+    {
+      "key": "backup-2026-07-01T01-00-37-159Z",
+      "count": 0,
+      "tipo": "array"
+    },
+    {
+      "key": "backup-2026-07-04T01-00-10-807Z",
+      "count": 0,
+      "tipo": "array"
+    },
+    {
+      "key": "backup-2026-07-07T01-00-10-551Z",
+      "count": 0,
+      "tipo": "array"
+    },
+    {
+      "key": "backup-2026-07-10T01-00-49-202Z",
+      "count": 0,
+      "tipo": "array"
+    },
+    {
+      "key": "backup-2026-07-13T01-01-44-247Z",
+      "count": 0,
+      "tipo": "array"
+    },
+    {
+      "key": "backup-2026-07-16T01-01-21-504Z",
+      "count": 0,
+      "tipo": "array"
+    },
+    {
+      "key": "backup-2026-07-19T01-00-22-467Z",
+      "count": 0,
+      "tipo": "array"
+    },
+    {
+      "key": "backup-2026-07-22T01-01-21-120Z",
+      "count": 0,
+      "tipo": "array"
+    },
+    {
+      "key": "backup-2026-07-25T01-01-11-821Z",
+      "count": 0,
+      "tipo": "array"
+    },
+    {
+      "key": "backup-2026-07-28T01-00-22-560Z",
+      "count": 0,
+      "tipo": "array"
+    },
+    {
+      "key": "backup-2026-07-31T01-00-22-451Z",
+      "count": 0,
+      "tipo": "array"
+    },
+    {
+      "key": "backup-2026-08-01T01-00-22-925Z",
+      "count": 0,
+      "tipo": "array"
+    },
+    {
+      "key": "backup-2026-08-04T01-00-22-620Z",
+      "count": 0,
+      "tipo": "array"
+    },
+    {
+      "key": "backup-2026-08-07T01-01-22-253Z",
+      "count": 0,
+      "tipo": "array"
+    },
+    {
+      "key": "backup-2026-08-10T01-00-22-628Z",
+      "count": 0,
+      "tipo": "array"
+    },
+    {
+      "key": "backup-2026-08-13T01-00-27-696Z",
+      "count": 0,
+      "tipo": "array"
+    },
+    {
+      "key": "backup-2026-08-16T01-00-27-604Z",
+      "count": 0,
+      "tipo": "array"
+    },
+    {
+      "key": "backup-2026-08-19T01-00-27-836Z",
+      "count": 0,
+      "tipo": "array"
+    },
+    {
+      "key": "backup-2026-08-22T01-00-27-577Z",
+      "count": 0,
+      "tipo": "array"
+    },
+    {
+      "key": "backup-2026-08-25T01-00-27-575Z",
+      "count": 1,
+      "tipo": "array"
+    },
+    {
+      "key": "backup-2026-08-28T01-00-37-792Z",
+      "count": 1,
+      "tipo": "array"
+    },
+    {
+      "key": "backup-2026-08-31T01-03-27-021Z",
+      "count": 1,
+      "tipo": "array"
+    },
+    {
+      "key": "backup-2026-09-01T01-00-38-781Z",
+      "count": 1,
+      "tipo": "array"
+    },
+    {
+      "key": "backup-2026-09-04T01-00-37-565Z",
+      "count": 1,
+      "tipo": "array"
+    },
+    {
+      "key": "backups-clientes",
+      "count": 7,
+      "tipo": "array"
+    },
+    {
+      "key": "backups-contactos",
+      "count": 4,
+      "tipo": "array"
+    },
+    {
+      "key": "backups-index",
+      "count": 5,
+      "tipo": "array"
+    },
+    {
+      "key": "backups-oportunidades",
+      "count": 3,
+      "tipo": "array"
+    },
+    {
+      "key": "backups-productos",
+      "count": 2,
+      "tipo": "array"
+    },
+    {
+      "key": "backups-prospectos",
+      "count": 3,
+      "tipo": "array"
+    },
+    {
+      "key": "backups-tareas",
+      "count": 1,
+      "tipo": "array"
+    },
+    {
+      "key": "clientes",
+      "count": 16,
+      "tipo": "array"
+    },
+    {
+      "key": "clientes-datos",
+      "count": 44,
+      "tipo": "array"
+    },
+    {
+      "key": "contactos",
+      "count": 10,
+      "tipo": "array"
+    },
+    {
+      "key": "contactos-datos",
+      "count": 30,
+      "tipo": "array"
+    },
+    {
+      "key": "correos-log",
+      "count": 8,
+      "tipo": "array"
+    },
+    {
+      "key": "cotizaciones",
+      "count": 3,
+      "tipo": "array"
+    },
+    {
+      "key": "cotizaciones-datos",
+      "count": 5,
+      "tipo": "array"
+    },
+    {
+      "key": "empresa",
+      "count": 1,
+      "tipo": "array"
+    },
+    {
+      "key": "empresa-datos",
+      "count": 1,
+      "tipo": "array"
+    },
+    {
+      "key": "empresa-public",
+      "count": 1,
+      "tipo": "array"
+    },
+    {
+      "key": "factores-monedas-datos",
+      "count": 1,
+      "tipo": "array"
+    },
+    {
+      "key": "happyes-productos",
+      "count": 48,
+      "tipo": "array"
+    },
+    {
+      "key": "milagros__crm__cotizaciones",
+      "count": 12,
+      "tipo": "array"
+    },
+    {
+      "key": "milagros__crm__cotizaciones__meta",
+      "count": 1,
+      "tipo": "array"
+    },
+    {
+      "key": "milagros__crm__oportunidades",
+      "count": 10,
+      "tipo": "array"
+    },
+    {
+      "key": "milagros__crm__oportunidades__meta",
+      "count": 1,
+      "tipo": "array"
+    },
+    {
+      "key": "milagros__crm__pqrs",
+      "count": 6,
+      "tipo": "array"
+    },
+    {
+      "key": "milagros__crm__pqrs__meta",
+      "count": 1,
+      "tipo": "array"
+    },
+    {
+      "key": "milagros__crm__prospectos",
+      "count": 12,
+      "tipo": "array"
+    },
+    {
+      "key": "milagros__crm__prospectos__meta",
+      "count": 1,
+      "tipo": "array"
+    },
+    {
+      "key": "milagros__crm__tareas",
+      "count": 8,
+      "tipo": "array"
+    },
+    {
+      "key": "milagros__crm__tareas__meta",
+      "count": 1,
+      "tipo": "array"
+    },
+    {
+      "key": "milagros__cxc__clientes",
+      "count": 5,
+      "tipo": "array"
+    },
+    {
+      "key": "milagros__cxc__facturas",
+      "count": 5,
+      "tipo": "array"
+    },
+    {
+      "key": "milagros__cxp__facturas",
+      "count": 11,
+      "tipo": "array"
+    },
+    {
+      "key": "milagros__cxp__facturas__meta",
+      "count": 1,
+      "tipo": "array"
+    },
+    {
+      "key": "milagros__cxp__proveedores",
+      "count": 4,
+      "tipo": "array"
+    },
+    {
+      "key": "milagros__inventario__existencias",
+      "count": 29,
+      "tipo": "array"
+    },
+    {
+      "key": "milagros__inventario__existencias__meta",
+      "count": 1,
+      "tipo": "array"
+    },
+    {
+      "key": "milagros__inventario__productos",
+      "count": 15,
+      "tipo": "array"
+    },
+    {
+      "key": "milagros__inventario__productos__meta",
+      "count": 1,
+      "tipo": "array"
+    },
+    {
+      "key": "milagros__presupuesto__ejecucion",
+      "count": 98,
+      "tipo": "array"
+    },
+    {
+      "key": "milagros__presupuesto__ejecucion__meta",
+      "count": 1,
+      "tipo": "array"
+    },
+    {
+      "key": "milagros__presupuesto__partidas",
+      "count": 14,
+      "tipo": "array"
+    },
+    {
+      "key": "milagros__presupuesto__partidas__meta",
+      "count": 1,
+      "tipo": "array"
+    },
+    {
+      "key": "milagros__tesoreria__bancos",
+      "count": 3,
+      "tipo": "array"
+    },
+    {
+      "key": "milagros__tesoreria__bancos__meta",
+      "count": 1,
+      "tipo": "array"
+    },
+    {
+      "key": "milagros__tesoreria__movimientos",
+      "count": 9,
+      "tipo": "array"
+    },
+    {
+      "key": "milagros__tesoreria__movimientos__meta",
+      "count": 1,
+      "tipo": "array"
+    },
+    {
+      "key": "milagros__ventas__detalle",
+      "count": 24,
+      "tipo": "array"
+    },
+    {
+      "key": "milagros__ventas__detalle__meta",
+      "count": 1,
+      "tipo": "array"
+    },
+    {
+      "key": "milagros__ventas__facturas",
+      "count": 9,
+      "tipo": "array"
+    },
+    {
+      "key": "milagros__ventas__facturas__meta",
+      "count": 1,
+      "tipo": "array"
+    },
+    {
+      "key": "milagros__ventas__productos",
+      "count": 15,
+      "tipo": "array"
+    },
+    {
+      "key": "milagros__ventas__productos__meta",
+      "count": 1,
+      "tipo": "array"
+    },
+    {
+      "key": "nova-audit-log-2026-04",
+      "count": 12,
+      "tipo": "array"
+    },
+    {
+      "key": "nova-audit-log-2026-05",
+      "count": 96,
+      "tipo": "array"
+    },
+    {
+      "key": "nova-audit-log-2026-06",
+      "count": 219,
+      "tipo": "array"
+    },
+    {
+      "key": "nova-audit-log-2026-07",
+      "count": 118,
+      "tipo": "array"
+    },
+    {
+      "key": "nova-audit-log-2026-08",
+      "count": 93,
+      "tipo": "array"
+    },
+    {
+      "key": "nova-audit-log-2026-09",
+      "count": 2,
+      "tipo": "array"
+    },
+    {
+      "key": "nova-clientes-acceso",
+      "count": 31,
+      "tipo": "array"
+    },
+    {
+      "key": "nova-correos-log",
+      "count": 14,
+      "tipo": "array"
+    },
+    {
+      "key": "nova-empresa-publica",
+      "count": 1,
+      "tipo": "array"
+    },
+    {
+      "key": "nova-pqrs-externas",
+      "count": 2,
+      "tipo": "array"
+    },
+    {
+      "key": "nova-prospectos-externos",
+      "count": 7,
+      "tipo": "array"
+    },
+    {
+      "key": "nova-referencias-publica",
+      "count": 1,
+      "tipo": "array"
+    },
+    {
+      "key": "oportunidades",
+      "count": 2,
+      "tipo": "array"
+    },
+    {
+      "key": "oportunidades-datos",
+      "count": 13,
+      "tipo": "array"
+    },
+    {
+      "key": "pagos",
+      "count": 3,
+      "tipo": "array"
+    },
+    {
+      "key": "pqrs",
+      "count": 4,
+      "tipo": "array"
+    },
+    {
+      "key": "pqrs-datos",
+      "count": 0,
+      "tipo": "array"
+    },
+    {
+      "key": "pqrs-externas",
+      "count": 2,
+      "tipo": "array"
+    },
+    {
+      "key": "productos",
+      "count": 9,
+      "tipo": "array"
+    },
+    {
+      "key": "productos-datos",
+      "count": 26,
+      "tipo": "array"
+    },
+    {
+      "key": "prospectos",
+      "count": 6,
+      "tipo": "array"
+    },
+    {
+      "key": "prospectos-datos",
+      "count": 3,
+      "tipo": "array"
+    },
+    {
+      "key": "prospectos-externos",
+      "count": 9,
+      "tipo": "array"
+    },
+    {
+      "key": "proyectos",
+      "count": 5,
+      "tipo": "array"
+    },
+    {
+      "key": "proyectos-datos",
+      "count": 4,
+      "tipo": "array"
+    },
+    {
+      "key": "referencias",
+      "count": 1,
+      "tipo": "array"
+    },
+    {
+      "key": "referencias-datos",
+      "count": 1,
+      "tipo": "array"
+    },
+    {
+      "key": "roles-datos",
+      "count": 5,
+      "tipo": "array"
+    },
+    {
+      "key": "store-crm-agente-sugerencias-storage",
+      "count": 1,
+      "tipo": "array"
+    },
+    {
+      "key": "store-crm-centros-costo-storage",
+      "count": 0,
+      "tipo": "array"
+    },
+    {
+      "key": "store-crm-clientes-storage",
+      "count": 1,
+      "tipo": "array"
+    },
+    {
+      "key": "store-crm-contactos-storage",
+      "count": 1,
+      "tipo": "array"
+    },
+    {
+      "key": "store-crm-contratos-storage",
+      "count": 0,
+      "tipo": "array"
+    },
+    {
+      "key": "store-crm-cotizaciones-storage",
+      "count": 1,
+      "tipo": "array"
+    },
+    {
+      "key": "store-crm-disenador-correos-storage",
+      "count": 0,
+      "tipo": "array"
+    },
+    {
+      "key": "store-crm-email-marketing-storage",
+      "count": 0,
+      "tipo": "array"
+    },
+    {
+      "key": "store-crm-empresa-storage",
+      "count": 1,
+      "tipo": "array"
+    },
+    {
+      "key": "store-crm-flujos-storage",
+      "count": 0,
+      "tipo": "array"
+    },
+    {
+      "key": "store-crm-lineas-servicio-storage",
+      "count": 1,
+      "tipo": "array"
+    },
+    {
+      "key": "store-crm-oportunidades-storage",
+      "count": 0,
+      "tipo": "array"
+    },
+    {
+      "key": "store-crm-personal-storage",
+      "count": 0,
+      "tipo": "array"
+    },
+    {
+      "key": "store-crm-pqrs-storage",
+      "count": 0,
+      "tipo": "array"
+    },
+    {
+      "key": "store-crm-productos-storage",
+      "count": 1,
+      "tipo": "array"
+    },
+    {
+      "key": "store-crm-prospectos-storage",
+      "count": 1,
+      "tipo": "array"
+    },
+    {
+      "key": "store-crm-referencias-storage",
+      "count": 1,
+      "tipo": "array"
+    },
+    {
+      "key": "store-crm-roles-storage",
+      "count": 1,
+      "tipo": "array"
+    },
+    {
+      "key": "store-crm-tareas-storage",
+      "count": 1,
+      "tipo": "array"
+    },
+    {
+      "key": "store-crm-usuarios-storage",
+      "count": 1,
+      "tipo": "array"
+    },
+    {
+      "key": "store-test-verif",
+      "count": 0,
+      "tipo": "array"
+    },
+    {
+      "key": "tareas",
+      "count": 3,
+      "tipo": "array"
+    },
+    {
+      "key": "tareas-datos",
+      "count": 1,
+      "tipo": "array"
+    },
+    {
+      "key": "tasas-cambio",
+      "count": 1,
+      "tipo": "array"
+    },
+    {
+      "key": "usuarios",
+      "count": 2,
+      "tipo": "array"
+    },
+    {
+      "key": "usuarios-datos",
+      "count": 4,
+      "tipo": "array"
+    }
+  ]
+}

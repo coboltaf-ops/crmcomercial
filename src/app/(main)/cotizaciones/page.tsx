@@ -22,6 +22,7 @@ import { useAsistenteStore } from '@/shared/stores/asistente-store'
 import { useT, useIdioma, useTStatus } from '@/shared/i18n/use-t'
 import { Seguimiento } from '@/shared/types/seguimiento'
 import { buildWhatsAppLink, isValidPhone } from '@/shared/lib/whatsapp'
+import { PAISES_ACTIVOS, esGlobal, etiquetaPais } from '@/shared/lib/paises'
 
 // En Cotizaciones los montos se muestran CON 2 decimales (no afecta el resto del sistema).
 // Los valores guardados (enteros) se ven como 1,000.00 — no se altera el dato.

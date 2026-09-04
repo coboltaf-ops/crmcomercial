@@ -1,0 +1,434 @@
+[
+  {
+    "id": "p1",
+    "nombre": "Huevos al gusto",
+    "descripcion": "Dos huevos, arepa y café",
+    "precio": 12000,
+    "categoria": "Desayunos",
+    "foto_url": "https://loremflickr.com/400/300/eggs,breakfast?lock=1",
+    "disponible": true
+  },
+  {
+    "id": "p2",
+    "nombre": "Calentado paisa",
+    "descripcion": "Arroz, frijol, huevo y arepa",
+    "precio": 15000,
+    "categoria": "Desayunos",
+    "foto_url": "https://loremflickr.com/400/300/breakfast?lock=2",
+    "disponible": true
+  },
+  {
+    "id": "p3",
+    "nombre": "Tostadas francesas",
+    "descripcion": "Con miel y frutas",
+    "precio": 14000,
+    "categoria": "Desayunos",
+    "foto_url": "https://loremflickr.com/400/300/frenchtoast?lock=3",
+    "disponible": true
+  },
+  {
+    "id": "p4",
+    "nombre": "Omelette jamón y queso",
+    "descripcion": "Esponjoso, con pan tostado",
+    "precio": 16000,
+    "categoria": "Desayunos",
+    "foto_url": "https://loremflickr.com/400/300/omelette?lock=4",
+    "disponible": true
+  },
+  {
+    "id": "p5",
+    "nombre": "Arepa con huevo",
+    "descripcion": "Tradicional costeña",
+    "precio": 9000,
+    "categoria": "Desayunos",
+    "foto_url": "https://loremflickr.com/400/300/arepa,breakfast?lock=5",
+    "disponible": true
+  },
+  {
+    "id": "p6",
+    "nombre": "Pancakes con miel",
+    "descripcion": "Torre de 3 con mantequilla",
+    "precio": 15000,
+    "categoria": "Desayunos",
+    "foto_url": "https://loremflickr.com/400/300/pancakes?lock=6",
+    "disponible": true
+  },
+  {
+    "id": "p7",
+    "nombre": "Tamal y chocolate",
+    "descripcion": "Tamal tolimense con chocolate",
+    "precio": 17000,
+    "categoria": "Desayunos",
+    "foto_url": "https://loremflickr.com/400/300/tamale?lock=7",
+    "disponible": true
+  },
+  {
+    "id": "p8",
+    "nombre": "Caldo de costilla",
+    "descripcion": "Con papa, cilantro y arepa",
+    "precio": 13000,
+    "categoria": "Desayunos",
+    "foto_url": "https://loremflickr.com/400/300/soup,breakfast?lock=8",
+    "disponible": true
+  },
+  {
+    "id": "p9",
+    "nombre": "Sándwich de desayuno",
+    "descripcion": "Huevo, queso y tocineta",
+    "precio": 14000,
+    "categoria": "Desayunos",
+    "foto_url": "https://loremflickr.com/400/300/sandwich,breakfast?lock=9",
+    "disponible": true
+  },
+  {
+    "id": "p10",
+    "nombre": "Bowl de yogurt",
+    "descripcion": "Yogurt, fruta y granola",
+    "precio": 13000,
+    "categoria": "Desayunos",
+    "foto_url": "https://loremflickr.com/400/300/yogurt,granola?lock=10",
+    "disponible": true
+  },
+  {
+    "id": "p11",
+    "nombre": "Croissant con café",
+    "descripcion": "Mantequilla, recién horneado",
+    "precio": 11000,
+    "categoria": "Desayunos",
+    "foto_url": "https://loremflickr.com/400/300/croissant?lock=11",
+    "disponible": true
+  },
+  {
+    "id": "p12",
+    "nombre": "Changua",
+    "descripcion": "Caldo de leche con huevo",
+    "precio": 12000,
+    "categoria": "Desayunos",
+    "foto_url": "https://loremflickr.com/400/300/soup,milk?lock=12",
+    "disponible": true
+  },
+  {
+    "id": "p13",
+    "nombre": "Bandeja de pollo",
+    "descripcion": "Pollo, arroz, ensalada y papa",
+    "precio": 22000,
+    "categoria": "Almuerzos",
+    "foto_url": "https://loremflickr.com/400/300/chicken,lunch?lock=13",
+    "disponible": true
+  },
+  {
+    "id": "p14",
+    "nombre": "Carne asada",
+    "descripcion": "Con arroz, frijol y patacón",
+    "precio": 25000,
+    "categoria": "Almuerzos",
+    "foto_url": "https://loremflickr.com/400/300/steak?lock=14",
+    "disponible": true
+  },
+  {
+    "id": "p15",
+    "nombre": "Pescado frito",
+    "descripcion": "Mojarra, arroz y ensalada",
+    "precio": 28000,
+    "categoria": "Almuerzos",
+    "foto_url": "https://loremflickr.com/400/300/friedfish?lock=15",
+    "disponible": true
+  },
+  {
+    "id": "p16",
+    "nombre": "Sancocho de gallina",
+    "descripcion": "Servido con arroz y aguacate",
+    "precio": 24000,
+    "categoria": "Almuerzos",
+    "foto_url": "https://loremflickr.com/400/300/soup,chicken?lock=16",
+    "disponible": true
+  },
+  {
+    "id": "p17",
+    "nombre": "Pasta boloñesa",
+    "descripcion": "Salsa de carne y queso",
+    "precio": 21000,
+    "categoria": "Almuerzos",
+    "foto_url": "https://loremflickr.com/400/300/pasta?lock=17",
+    "disponible": true
+  },
+  {
+    "id": "p18",
+    "nombre": "Sobrebarriga en salsa",
+    "descripcion": "Con papa criolla",
+    "precio": 26000,
+    "categoria": "Almuerzos",
+    "foto_url": "https://loremflickr.com/400/300/beef,meat?lock=18",
+    "disponible": true
+  },
+  {
+    "id": "p19",
+    "nombre": "Pollo apanado",
+    "descripcion": "Crocante con papas y ensalada",
+    "precio": 20000,
+    "categoria": "Almuerzos",
+    "foto_url": "https://loremflickr.com/400/300/friedchicken?lock=19",
+    "disponible": true
+  },
+  {
+    "id": "p20",
+    "nombre": "Lomo de cerdo",
+    "descripcion": "En salsa de ciruela",
+    "precio": 27000,
+    "categoria": "Almuerzos",
+    "foto_url": "https://loremflickr.com/400/300/pork?lock=20",
+    "disponible": true
+  },
+  {
+    "id": "p21",
+    "nombre": "Cazuela de mariscos",
+    "descripcion": "Camarón, calamar y pescado",
+    "precio": 32000,
+    "categoria": "Almuerzos",
+    "foto_url": "https://loremflickr.com/400/300/seafood?lock=21",
+    "disponible": true
+  },
+  {
+    "id": "p22",
+    "nombre": "Hamburguesa artesanal",
+    "descripcion": "Doble carne y papas",
+    "precio": 23000,
+    "categoria": "Almuerzos",
+    "foto_url": "https://loremflickr.com/400/300/burger?lock=22",
+    "disponible": true
+  },
+  {
+    "id": "p23",
+    "nombre": "Ajiaco santafereño",
+    "descripcion": "Con pollo, mazorca y crema",
+    "precio": 24000,
+    "categoria": "Almuerzos",
+    "foto_url": "https://loremflickr.com/400/300/soup?lock=23",
+    "disponible": true
+  },
+  {
+    "id": "p24",
+    "nombre": "Churrasco",
+    "descripcion": "Con chimichurri y papa",
+    "precio": 30000,
+    "categoria": "Almuerzos",
+    "foto_url": "https://loremflickr.com/400/300/churrasco,steak?lock=24",
+    "disponible": true
+  },
+  {
+    "id": "p25",
+    "nombre": "Jugo natural",
+    "descripcion": "En agua o leche",
+    "precio": 6000,
+    "categoria": "Bebidas",
+    "foto_url": "https://loremflickr.com/400/300/juice?lock=25",
+    "disponible": true
+  },
+  {
+    "id": "p26",
+    "nombre": "Gaseosa",
+    "descripcion": "Lata 350ml",
+    "precio": 4000,
+    "categoria": "Bebidas",
+    "foto_url": "https://loremflickr.com/400/300/soda?lock=26",
+    "disponible": true
+  },
+  {
+    "id": "p27",
+    "nombre": "Café",
+    "descripcion": "Tinto o con leche",
+    "precio": 3000,
+    "categoria": "Bebidas",
+    "foto_url": "https://loremflickr.com/400/300/coffee?lock=27",
+    "disponible": true
+  },
+  {
+    "id": "p28",
+    "nombre": "Limonada de coco",
+    "descripcion": "Cremosa y refrescante",
+    "precio": 8000,
+    "categoria": "Bebidas",
+    "foto_url": "https://loremflickr.com/400/300/lemonade?lock=28",
+    "disponible": true
+  },
+  {
+    "id": "p29",
+    "nombre": "Jugo de mango",
+    "descripcion": "Natural de la casa",
+    "precio": 6500,
+    "categoria": "Bebidas",
+    "foto_url": "https://loremflickr.com/400/300/mango,juice?lock=29",
+    "disponible": true
+  },
+  {
+    "id": "p30",
+    "nombre": "Agua",
+    "descripcion": "Con o sin gas",
+    "precio": 3000,
+    "categoria": "Bebidas",
+    "foto_url": "https://loremflickr.com/400/300/water,bottle?lock=30",
+    "disponible": true
+  },
+  {
+    "id": "p31",
+    "nombre": "Té helado",
+    "descripcion": "Durazno o limón",
+    "precio": 5000,
+    "categoria": "Bebidas",
+    "foto_url": "https://loremflickr.com/400/300/icedtea?lock=31",
+    "disponible": true
+  },
+  {
+    "id": "p32",
+    "nombre": "Malteada de vainilla",
+    "descripcion": "Con crema chantilly",
+    "precio": 11000,
+    "categoria": "Bebidas",
+    "foto_url": "https://loremflickr.com/400/300/milkshake?lock=32",
+    "disponible": true
+  },
+  {
+    "id": "p33",
+    "nombre": "Cerveza",
+    "descripcion": "Nacional bien fría",
+    "precio": 7000,
+    "categoria": "Bebidas",
+    "foto_url": "https://loremflickr.com/400/300/beer?lock=33",
+    "disponible": true
+  },
+  {
+    "id": "p34",
+    "nombre": "Chocolate caliente",
+    "descripcion": "Con queso",
+    "precio": 5500,
+    "categoria": "Bebidas",
+    "foto_url": "https://loremflickr.com/400/300/hotchocolate?lock=34",
+    "disponible": true
+  },
+  {
+    "id": "p35",
+    "nombre": "Smoothie de fresa",
+    "descripcion": "Con yogurt",
+    "precio": 10000,
+    "categoria": "Bebidas",
+    "foto_url": "https://loremflickr.com/400/300/smoothie?lock=35",
+    "disponible": true
+  },
+  {
+    "id": "p36",
+    "nombre": "Jugo verde",
+    "descripcion": "Detox de la casa",
+    "precio": 9000,
+    "categoria": "Bebidas",
+    "foto_url": "https://loremflickr.com/400/300/greenjuice?lock=36",
+    "disponible": true
+  },
+  {
+    "id": "p37",
+    "nombre": "Torta de chocolate",
+    "descripcion": "Porción individual",
+    "precio": 8000,
+    "categoria": "Postres",
+    "foto_url": "https://loremflickr.com/400/300/chocolatecake?lock=37",
+    "disponible": true
+  },
+  {
+    "id": "p38",
+    "nombre": "Flan de caramelo",
+    "descripcion": "Casero",
+    "precio": 7000,
+    "categoria": "Postres",
+    "foto_url": "https://loremflickr.com/400/300/flan?lock=38",
+    "disponible": true
+  },
+  {
+    "id": "p39",
+    "nombre": "Tres leches",
+    "descripcion": "Esponjoso y húmedo",
+    "precio": 9000,
+    "categoria": "Postres",
+    "foto_url": "https://loremflickr.com/400/300/cake?lock=39",
+    "disponible": true
+  },
+  {
+    "id": "p40",
+    "nombre": "Brownie con helado",
+    "descripcion": "Caliente con vainilla",
+    "precio": 11000,
+    "categoria": "Postres",
+    "foto_url": "https://loremflickr.com/400/300/brownie?lock=40",
+    "disponible": true
+  },
+  {
+    "id": "p41",
+    "nombre": "Cheesecake",
+    "descripcion": "De frutos rojos",
+    "precio": 12000,
+    "categoria": "Postres",
+    "foto_url": "https://loremflickr.com/400/300/cheesecake?lock=41",
+    "disponible": true
+  },
+  {
+    "id": "p42",
+    "nombre": "Arroz con leche",
+    "descripcion": "Con canela",
+    "precio": 6000,
+    "categoria": "Postres",
+    "foto_url": "https://loremflickr.com/400/300/ricepudding?lock=42",
+    "disponible": true
+  },
+  {
+    "id": "p43",
+    "nombre": "Helado artesanal",
+    "descripcion": "2 bolas a elección",
+    "precio": 8000,
+    "categoria": "Postres",
+    "foto_url": "https://loremflickr.com/400/300/icecream?lock=43",
+    "disponible": true
+  },
+  {
+    "id": "p44",
+    "nombre": "Mousse de maracuyá",
+    "descripcion": "Suave y ácido",
+    "precio": 8500,
+    "categoria": "Postres",
+    "foto_url": "https://loremflickr.com/400/300/mousse?lock=44",
+    "disponible": true
+  },
+  {
+    "id": "p45",
+    "nombre": "Tiramisú",
+    "descripcion": "Clásico italiano",
+    "precio": 13000,
+    "categoria": "Postres",
+    "foto_url": "https://loremflickr.com/400/300/tiramisu?lock=45",
+    "disponible": true
+  },
+  {
+    "id": "p46",
+    "nombre": "Galletas",
+    "descripcion": "Con chips de chocolate",
+    "precio": 5000,
+    "categoria": "Postres",
+    "foto_url": "https://loremflickr.com/400/300/cookies?lock=46",
+    "disponible": true
+  },
+  {
+    "id": "p47",
+    "nombre": "Postre de natas",
+    "descripcion": "Tradicional",
+    "precio": 7500,
+    "categoria": "Postres",
+    "foto_url": "https://loremflickr.com/400/300/dessert?lock=47",
+    "disponible": true
+  },
+  {
+    "id": "p48",
+    "nombre": "Fresas con crema",
+    "descripcion": "Frescas con chantilly",
+    "precio": 9000,
+    "categoria": "Postres",
+    "foto_url": "https://loremflickr.com/400/300/strawberries?lock=48",
+    "disponible": true
+  }
+]

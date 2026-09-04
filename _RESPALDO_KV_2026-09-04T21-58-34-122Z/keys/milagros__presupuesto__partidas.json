@@ -1,0 +1,100 @@
+[
+  {
+    "id_partida": "MP-01",
+    "nombre_partida": "Materias primas (activos y tensioactivos)",
+    "seccion": "Materia Prima y Empaques",
+    "responsable": "Producción",
+    "tipo": "Costo"
+  },
+  {
+    "id_partida": "MP-02",
+    "nombre_partida": "Empaques y envases",
+    "seccion": "Materia Prima y Empaques",
+    "responsable": "Producción",
+    "tipo": "Costo"
+  },
+  {
+    "id_partida": "GP-01",
+    "nombre_partida": "Nómina administrativa",
+    "seccion": "Gastos de Personal",
+    "responsable": "Talento Humano",
+    "tipo": "Gasto"
+  },
+  {
+    "id_partida": "GP-02",
+    "nombre_partida": "Nómina planta y comercial",
+    "seccion": "Gastos de Personal",
+    "responsable": "Talento Humano",
+    "tipo": "Gasto"
+  },
+  {
+    "id_partida": "PR-01",
+    "nombre_partida": "Servicio de maquila",
+    "seccion": "Producción / Maquila",
+    "responsable": "Producción",
+    "tipo": "Costo"
+  },
+  {
+    "id_partida": "PR-02",
+    "nombre_partida": "Control de calidad y laboratorio",
+    "seccion": "Producción / Maquila",
+    "responsable": "Producción",
+    "tipo": "Costo"
+  },
+  {
+    "id_partida": "CM-01",
+    "nombre_partida": "Publicidad y campañas",
+    "seccion": "Comercial y Mercadeo",
+    "responsable": "Comercial",
+    "tipo": "Gasto"
+  },
+  {
+    "id_partida": "CM-02",
+    "nombre_partida": "Comisiones y fuerza de ventas",
+    "seccion": "Comercial y Mercadeo",
+    "responsable": "Comercial",
+    "tipo": "Gasto"
+  },
+  {
+    "id_partida": "LG-01",
+    "nombre_partida": "Transporte y fletes",
+    "seccion": "Logística y Distribución",
+    "responsable": "Logística",
+    "tipo": "Gasto"
+  },
+  {
+    "id_partida": "LG-02",
+    "nombre_partida": "Bodegaje y almacenamiento",
+    "seccion": "Logística y Distribución",
+    "responsable": "Logística",
+    "tipo": "Gasto"
+  },
+  {
+    "id_partida": "AD-01",
+    "nombre_partida": "Servicios y arrendamientos",
+    "seccion": "Administración",
+    "responsable": "Administrativa",
+    "tipo": "Gasto"
+  },
+  {
+    "id_partida": "AD-02",
+    "nombre_partida": "Honorarios y gastos generales",
+    "seccion": "Administración",
+    "responsable": "Administrativa",
+    "tipo": "Gasto"
+  },
+  {
+    "id_partida": "TI-01",
+    "nombre_partida": "Licencias y software",
+    "seccion": "Tecnología y Sistemas",
+    "responsable": "Sistemas",
+    "tipo": "Inversión"
+  },
+  {
+    "id_partida": "TI-02",
+    "nombre_partida": "Infraestructura y soporte",
+    "seccion": "Tecnología y Sistemas",
+    "responsable": "Sistemas",
+    "tipo": "Inversión"
+  }
+]

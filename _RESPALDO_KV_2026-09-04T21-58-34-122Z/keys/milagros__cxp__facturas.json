@@ -1,0 +1,90 @@
+[
+  {
+    "id_factura": "F-001",
+    "id_proveedor": "900111",
+    "fecha_emision": "2026-07-01",
+    "fecha_vencimiento": "2026-08-15",
+    "valor_factura": 1180000000,
+    "valor_pagado": 0
+  },
+  {
+    "id_factura": "F-002",
+    "id_proveedor": "900222",
+    "fecha_emision": "2026-07-05",
+    "fecha_vencimiento": "2026-08-04",
+    "valor_factura": 920000000,
+    "valor_pagado": 200000000
+  },
+  {
+    "id_factura": "F-003",
+    "id_proveedor": "900333",
+    "fecha_emision": "2026-02-01",
+    "fecha_vencimiento": "2026-04-01",
+    "valor_factura": 640000000,
+    "valor_pagado": 0
+  },
+  {
+    "id_factura": "F-004",
+    "id_proveedor": "900444",
+    "fecha_emision": "2026-07-10",
+    "fecha_vencimiento": "2026-07-27",
+    "valor_factura": 430000000,
+    "valor_pagado": 0
+  },
+  {
+    "id_factura": "F-005",
+    "id_proveedor": "900111",
+    "fecha_emision": "2026-06-01",
+    "fecha_vencimiento": "2026-07-16",
+    "valor_factura": 350000000,
+    "valor_pagado": 0
+  },
+  {
+    "id_factura": "F-101",
+    "id_proveedor": "900111",
+    "fecha_emision": "2026-07-15",
+    "fecha_vencimiento": "2026-08-29",
+    "valor_factura": 250000000,
+    "valor_pagado": 0
+  },
+  {
+    "id_factura": "F-102",
+    "id_proveedor": "900222",
+    "fecha_emision": "2026-07-15",
+    "fecha_vencimiento": "2026-08-30",
+    "valor_factura": 180000000,
+    "valor_pagado": 0
+  },
+  {
+    "id_factura": "F-104",
+    "id_proveedor": "900444",
+    "fecha_emision": "2026-07-20",
+    "fecha_vencimiento": "2026-09-03",
+    "valor_factura": 0,
+    "valor_pagado": 0
+  },
+  {
+    "id_factura": "F-201",
+    "id_proveedor": "900111",
+    "fecha_emision": "2026-07-15",
+    "fecha_vencimiento": "2026-08-29",
+    "valor_factura": 250000000,
+    "valor_pagado": 0
+  },
+  {
+    "id_factura": "F-203",
+    "id_proveedor": "900333",
+    "fecha_emision": "2026-07-18",
+    "fecha_vencimiento": "2027-02-01",
+    "valor_factura": 90000000,
+    "valor_pagado": 0
+  },
+  {
+    "id_factura": "F-301",
+    "id_proveedor": "900111",
+    "fecha_emision": "2026-07-15",
+    "fecha_vencimiento": "2026-08-29",
+    "valor_factura": 250000000,
+    "valor_pagado": 0
+  }
+]

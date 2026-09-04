@@ -34,7 +34,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ ok: false, error: 'Usuario o clave incorrectos.' }, { status: 401 })
     }
 
-    const token = signSession({ usuario: u.usuario, rol: u.rol ?? '', nombre: u.nombre ?? '' })
+    const token = signSession({ usuario: u.usuario, rol: u.rol ?? '', nombre: u.nombre ?? '', pais: (u as { pais?: string }).pais ?? '' })
     // Devuelve el usuario COMPLETO (permisos, rol, etc.) pero con la clave en BLANCO.
     const safeUser = { ...u, clave: '' }
     const res = NextResponse.json({ ok: true, user: safeUser })

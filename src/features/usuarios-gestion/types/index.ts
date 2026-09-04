@@ -15,6 +15,8 @@ export interface Usuario {
   clave_visible?: string
   correo: string
   rol: string
+  /** País del usuario. 'GLOBAL' = HQ/Admin, ve todos los países. */
+  pais: string
   situacion: string
   permisos: PermisoModulo[]
 }

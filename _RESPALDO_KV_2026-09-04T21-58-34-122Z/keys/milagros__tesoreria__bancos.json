@@ -1,0 +1,26 @@
+[
+  {
+    "id_banco": "BCO-01",
+    "nombre_banco": "Bancolombia",
+    "tipo_cuenta": "Corriente",
+    "numero_cuenta": "****4821",
+    "moneda": "COP",
+    "cupo_sobregiro": 500000000
+  },
+  {
+    "id_banco": "BCO-02",
+    "nombre_banco": "Davivienda",
+    "tipo_cuenta": "Ahorros",
+    "numero_cuenta": "****9310",
+    "moneda": "COP",
+    "cupo_sobregiro": 0
+  },
+  {
+    "id_banco": "BCO-03",
+    "nombre_banco": "Banco de Bogotá",
+    "tipo_cuenta": "Corriente",
+    "numero_cuenta": "****2077",
+    "moneda": "COP",
+    "cupo_sobregiro": 300000000
+  }
+]

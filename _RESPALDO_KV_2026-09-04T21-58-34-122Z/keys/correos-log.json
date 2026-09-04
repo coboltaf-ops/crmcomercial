@@ -1,0 +1,90 @@
+[
+  {
+    "id": "f97ef753-c45e-4f1e-b127-7bd86280a71c",
+    "fecha": "07/04/2026",
+    "hora": "11:16:04 a. m.",
+    "de": "coboltaf@gmail.com",
+    "para": "coboltf@gmail.com",
+    "asunto": "Oferta",
+    "modulo": "cotizaciones",
+    "referencia": "COT-00002",
+    "estado": "Enviado"
+  },
+  {
+    "id": "f1e7f32e-284f-4c45-9e46-1cb8dac16baa",
+    "fecha": "07/04/2026",
+    "hora": "11:20:41 a. m.",
+    "de": "coboltaf@gmail.com",
+    "para": "coboltaf@gmail.com",
+    "asunto": "Cotizacion",
+    "modulo": "cotizaciones",
+    "referencia": "COT-00002",
+    "estado": "Enviado"
+  },
+  {
+    "id": "c93518ab-6156-403c-aec8-99941d0f03a7",
+    "fecha": "08/04/2026",
+    "hora": "10:45:09 a. m.",
+    "de": "coboltaf@gmail.com",
+    "para": "coboltaf@gmail.com",
+    "asunto": "Nueva tarea asignada: TAR-00001",
+    "modulo": "tareas",
+    "referencia": "TAR-00001",
+    "estado": "Enviado"
+  },
+  {
+    "id": "1b6af048-5d48-4d81-855b-e5df11a6e962",
+    "fecha": "08/04/2026",
+    "hora": "10:45:10 a. m.",
+    "de": "coboltaf@gmail.com",
+    "para": "coboltaf@gmail.com",
+    "asunto": "Nueva tarea asignada: TAR-00001",
+    "modulo": "tareas",
+    "referencia": "TAR-00001",
+    "estado": "Enviado"
+  },
+  {
+    "id": "c21272a1-2add-4d71-a857-dcb2945dc0d0",
+    "fecha": "08/04/2026",
+    "hora": "01:22:11 p. m.",
+    "de": "coboltaf@gmail.com",
+    "para": "diag@test.com",
+    "asunto": "Solicitud de Servicio Recibida",
+    "modulo": "prospectos",
+    "referencia": "Diag Test",
+    "estado": "Enviado"
+  },
+  {
+    "id": "823ef612-22d6-4e2c-b6b4-c82883154cd0",
+    "fecha": "14/04/2026",
+    "hora": "10:05:59 p. m.",
+    "de": "coboltaf@gmail.com",
+    "para": "olgave@gmail.com",
+    "asunto": "Solicitud de Servicio Recibida",
+    "modulo": "prospectos",
+    "referencia": "olga Velasquez",
+    "estado": "Enviado"
+  },
+  {
+    "id": "a0a4ec7c-117d-4f3b-8583-76d7cf65278e",
+    "fecha": "30/04/2026",
+    "hora": "09:08:37 p. m.",
+    "de": "coboltaf@gmail.com",
+    "para": "mariat@gmail.com",
+    "asunto": "Nueva tarea asignada: TAR-00002",
+    "modulo": "tareas",
+    "referencia": "TAR-00002",
+    "estado": "Enviado"
+  },
+  {
+    "id": "a50c3658-c35e-4f76-b5a2-6c1b8181a853",
+    "fecha": "05/05/2026",
+    "hora": "09:01:29 a. m.",
+    "de": "coboltaf@gmail.com",
+    "para": "coboltaf@gmail.com",
+    "asunto": "Bienvenido a NORTON",
+    "modulo": "prospectos",
+    "referencia": "PRS-00006",
+    "estado": "Enviado"
+  }
+]

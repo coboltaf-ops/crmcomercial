@@ -1,0 +1,98 @@
+[
+  {
+    "id_cotizacion": "COT-00001",
+    "cliente": "DISTRIBUIDORA BELLA IMAGEN S.A.S.",
+    "valor": 5847600,
+    "situacion": "Enviada",
+    "vendedor": "Jose Palomares",
+    "fecha_emision": "2026-07-02"
+  },
+  {
+    "id_cotizacion": "COT-00002",
+    "cliente": "SALÓN & SPA GLAMOUR",
+    "valor": 1910000,
+    "situacion": "Enviada",
+    "vendedor": "Jose Palomares",
+    "fecha_emision": "2026-07-03"
+  },
+  {
+    "id_cotizacion": "COT-00003",
+    "cliente": "PELUQUERÍA ESTILO ÚNICO",
+    "valor": 1140000,
+    "situacion": "Borrador",
+    "vendedor": "Jose Palomares",
+    "fecha_emision": "2026-07-04"
+  },
+  {
+    "id_cotizacion": "COT-00004",
+    "cliente": "CADENA BELLEZA TOTAL S.A.S.",
+    "valor": 16094400,
+    "situacion": "Enviada",
+    "vendedor": "Jose Palomares",
+    "fecha_emision": "2026-07-05"
+  },
+  {
+    "id_cotizacion": "COT-00005",
+    "cliente": "DISTRIBUIDORA DEL CAFÉ COSMÉTICOS",
+    "valor": 5242000,
+    "situacion": "Aprobada",
+    "vendedor": "Jose Palomares",
+    "fecha_emision": "2026-07-06"
+  },
+  {
+    "id_cotizacion": "COT-00006",
+    "cliente": "ACADEMIA DE BELLEZA PROFESIONAL",
+    "valor": 3860000,
+    "situacion": "Enviada",
+    "vendedor": "Jose Palomares",
+    "fecha_emision": "2026-07-07"
+  },
+  {
+    "id_cotizacion": "COT-00007",
+    "cliente": "SUPERMERCADOS LA ECONOMÍA",
+    "valor": 6034500,
+    "situacion": "Borrador",
+    "vendedor": "Jose Palomares",
+    "fecha_emision": "2026-07-08"
+  },
+  {
+    "id_cotizacion": "COT-00008",
+    "cliente": "BOUTIQUE CAPILAR VIP",
+    "valor": 2965000,
+    "situacion": "Enviada",
+    "vendedor": "Jose Palomares",
+    "fecha_emision": "2026-07-09"
+  },
+  {
+    "id_cotizacion": "COT-00009",
+    "cliente": "MUNDO ESTÉTICA & COLOR",
+    "valor": 1547000,
+    "situacion": "Enviada",
+    "vendedor": "Jose Palomares",
+    "fecha_emision": "2026-07-10"
+  },
+  {
+    "id_cotizacion": "COT-00010",
+    "cliente": "ALMACENES LA FRAGANCIA",
+    "valor": 3098900,
+    "situacion": "Aprobada",
+    "vendedor": "Jose Palomares",
+    "fecha_emision": "2026-07-11"
+  },
+  {
+    "id_cotizacion": "COT-00011",
+    "cliente": "DISTRIBUIDORA BELLA IMAGEN S.A.S.",
+    "valor": 3316000,
+    "situacion": "Aprobada",
+    "vendedor": "Jose Palomares",
+    "fecha_emision": "2026-07-12"
+  },
+  {
+    "id_cotizacion": "COT-00012",
+    "cliente": "CADENA BELLEZA TOTAL S.A.S.",
+    "valor": 6150000,
+    "situacion": "Enviada",
+    "vendedor": "Jose Palomares",
+    "fecha_emision": "2026-07-13"
+  }
+]

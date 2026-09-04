@@ -1,0 +1,40 @@
+[
+  {
+    "id": "8c14ee37-bd76-453e-a3cd-2a9c2951984b",
+    "radicado": "RAD-20260611-0001",
+    "fecha": "2026-06-11",
+    "tipo": "Petición",
+    "prioridad": "Media",
+    "cliente_id": "",
+    "cliente_codigo": "",
+    "cliente_nombre": "CLIENTE PRUEBA",
+    "fecha_aviso": "2026-06-12",
+    "hora_aviso": "10:00",
+    "persona_avisa": "PRUEBA CONEXION",
+    "movil_avisa": "3001234567",
+    "detalle_incidencia": "PRUEBA DE CONEXION PQRS - SE PUEDE BORRAR",
+    "acepta_datos": true,
+    "fecha_registro": "2026-06-11",
+    "hora_registro": "07:13 a. m.",
+    "importada": true
+  },
+  {
+    "id": "27ba456f-58a9-4ae0-9ad4-b2e888ee50a3",
+    "radicado": "RAD-20260614-0001",
+    "fecha": "2026-06-14",
+    "tipo": "Queja",
+    "prioridad": "Alta",
+    "cliente_id": "demo1",
+    "cliente_codigo": "CLI-DEMO",
+    "cliente_nombre": "EMPRESA DEMO",
+    "fecha_aviso": "2026-06-13",
+    "hora_aviso": "09:00",
+    "persona_avisa": "DEMO VALIDACION",
+    "movil_avisa": "3009998877",
+    "detalle_incidencia": "VALIDACIÓN DEMO MARTES",
+    "acepta_datos": true,
+    "fecha_registro": "2026-06-14",
+    "hora_registro": "09:13 a. m.",
+    "importada": true
+  }
+]

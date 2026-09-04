@@ -47,6 +47,7 @@ export interface Cotizacion {
   vendedor: string
   fecha_registro: string
   seguimientos: Seguimiento[]
+  pais?: string
 }
 
 interface CotizacionesState {

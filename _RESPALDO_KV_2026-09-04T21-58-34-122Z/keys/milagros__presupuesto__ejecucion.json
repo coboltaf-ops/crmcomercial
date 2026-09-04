@@ -1,0 +1,688 @@
+[
+  {
+    "id_registro": "EJ-2026-01-MP-01",
+    "periodo": "2026-01",
+    "id_partida": "MP-01",
+    "presupuestado": 850000000,
+    "ejecutado": 873970000
+  },
+  {
+    "id_registro": "EJ-2026-02-MP-01",
+    "periodo": "2026-02",
+    "id_partida": "MP-01",
+    "presupuestado": 850000000,
+    "ejecutado": 891990000
+  },
+  {
+    "id_registro": "EJ-2026-03-MP-01",
+    "periodo": "2026-03",
+    "id_partida": "MP-01",
+    "presupuestado": 850000000,
+    "ejecutado": 901000000
+  },
+  {
+    "id_registro": "EJ-2026-04-MP-01",
+    "periodo": "2026-04",
+    "id_partida": "MP-01",
+    "presupuestado": 850000000,
+    "ejecutado": 910010000
+  },
+  {
+    "id_registro": "EJ-2026-05-MP-01",
+    "periodo": "2026-05",
+    "id_partida": "MP-01",
+    "presupuestado": 850000000,
+    "ejecutado": 928030000
+  },
+  {
+    "id_registro": "EJ-2026-06-MP-01",
+    "periodo": "2026-06",
+    "id_partida": "MP-01",
+    "presupuestado": 850000000,
+    "ejecutado": 910010000
+  },
+  {
+    "id_registro": "EJ-2026-07-MP-01",
+    "periodo": "2026-07",
+    "id_partida": "MP-01",
+    "presupuestado": 850000000,
+    "ejecutado": 891990000
+  },
+  {
+    "id_registro": "EJ-2026-01-MP-02",
+    "periodo": "2026-01",
+    "id_partida": "MP-02",
+    "presupuestado": 350000000,
+    "ejecutado": 349685000
+  },
+  {
+    "id_registro": "EJ-2026-02-MP-02",
+    "periodo": "2026-02",
+    "id_partida": "MP-02",
+    "presupuestado": 350000000,
+    "ejecutado": 356895000
+  },
+  {
+    "id_registro": "EJ-2026-03-MP-02",
+    "periodo": "2026-03",
+    "id_partida": "MP-02",
+    "presupuestado": 350000000,
+    "ejecutado": 360500000
+  },
+  {
+    "id_registro": "EJ-2026-04-MP-02",
+    "periodo": "2026-04",
+    "id_partida": "MP-02",
+    "presupuestado": 350000000,
+    "ejecutado": 364105000
+  },
+  {
+    "id_registro": "EJ-2026-05-MP-02",
+    "periodo": "2026-05",
+    "id_partida": "MP-02",
+    "presupuestado": 350000000,
+    "ejecutado": 371315000
+  },
+  {
+    "id_registro": "EJ-2026-06-MP-02",
+    "periodo": "2026-06",
+    "id_partida": "MP-02",
+    "presupuestado": 350000000,
+    "ejecutado": 364105000
+  },
+  {
+    "id_registro": "EJ-2026-07-MP-02",
+    "periodo": "2026-07",
+    "id_partida": "MP-02",
+    "presupuestado": 350000000,
+    "ejecutado": 356895000
+  },
+  {
+    "id_registro": "EJ-2026-01-GP-01",
+    "periodo": "2026-01",
+    "id_partida": "GP-01",
+    "presupuestado": 260000000,
+    "ejecutado": 249678000
+  },
+  {
+    "id_registro": "EJ-2026-02-GP-01",
+    "periodo": "2026-02",
+    "id_partida": "GP-01",
+    "presupuestado": 260000000,
+    "ejecutado": 254826000
+  },
+  {
+    "id_registro": "EJ-2026-03-GP-01",
+    "periodo": "2026-03",
+    "id_partida": "GP-01",
+    "presupuestado": 260000000,
+    "ejecutado": 257400000
+  },
+  {
+    "id_registro": "EJ-2026-04-GP-01",
+    "periodo": "2026-04",
+    "id_partida": "GP-01",
+    "presupuestado": 260000000,
+    "ejecutado": 259974000
+  },
+  {
+    "id_registro": "EJ-2026-05-GP-01",
+    "periodo": "2026-05",
+    "id_partida": "GP-01",
+    "presupuestado": 260000000,
+    "ejecutado": 265122000
+  },
+  {
+    "id_registro": "EJ-2026-06-GP-01",
+    "periodo": "2026-06",
+    "id_partida": "GP-01",
+    "presupuestado": 260000000,
+    "ejecutado": 259974000
+  },
+  {
+    "id_registro": "EJ-2026-07-GP-01",
+    "periodo": "2026-07",
+    "id_partida": "GP-01",
+    "presupuestado": 260000000,
+    "ejecutado": 254826000
+  },
+  {
+    "id_registro": "EJ-2026-01-GP-02",
+    "periodo": "2026-01",
+    "id_partida": "GP-02",
+    "presupuestado": 340000000,
+    "ejecutado": 326502000
+  },
+  {
+    "id_registro": "EJ-2026-02-GP-02",
+    "periodo": "2026-02",
+    "id_partida": "GP-02",
+    "presupuestado": 340000000,
+    "ejecutado": 333234000
+  },
+  {
+    "id_registro": "EJ-2026-03-GP-02",
+    "periodo": "2026-03",
+    "id_partida": "GP-02",
+    "presupuestado": 340000000,
+    "ejecutado": 336600000
+  },
+  {
+    "id_registro": "EJ-2026-04-GP-02",
+    "periodo": "2026-04",
+    "id_partida": "GP-02",
+    "presupuestado": 340000000,
+    "ejecutado": 339966000
+  },
+  {
+    "id_registro": "EJ-2026-05-GP-02",
+    "periodo": "2026-05",
+    "id_partida": "GP-02",
+    "presupuestado": 340000000,
+    "ejecutado": 346698000
+  },
+  {
+    "id_registro": "EJ-2026-06-GP-02",
+    "periodo": "2026-06",
+    "id_partida": "GP-02",
+    "presupuestado": 340000000,
+    "ejecutado": 339966000
+  },
+  {
+    "id_registro": "EJ-2026-07-GP-02",
+    "periodo": "2026-07",
+    "id_partida": "GP-02",
+    "presupuestado": 340000000,
+    "ejecutado": 333234000
+  },
+  {
+    "id_registro": "EJ-2026-01-PR-01",
+    "periodo": "2026-01",
+    "id_partida": "PR-01",
+    "presupuestado": 220000000,
+    "ejecutado": 204864000
+  },
+  {
+    "id_registro": "EJ-2026-02-PR-01",
+    "periodo": "2026-02",
+    "id_partida": "PR-01",
+    "presupuestado": 220000000,
+    "ejecutado": 209088000
+  },
+  {
+    "id_registro": "EJ-2026-03-PR-01",
+    "periodo": "2026-03",
+    "id_partida": "PR-01",
+    "presupuestado": 220000000,
+    "ejecutado": 211200000
+  },
+  {
+    "id_registro": "EJ-2026-04-PR-01",
+    "periodo": "2026-04",
+    "id_partida": "PR-01",
+    "presupuestado": 220000000,
+    "ejecutado": 213312000
+  },
+  {
+    "id_registro": "EJ-2026-05-PR-01",
+    "periodo": "2026-05",
+    "id_partida": "PR-01",
+    "presupuestado": 220000000,
+    "ejecutado": 217536000
+  },
+  {
+    "id_registro": "EJ-2026-06-PR-01",
+    "periodo": "2026-06",
+    "id_partida": "PR-01",
+    "presupuestado": 220000000,
+    "ejecutado": 213312000
+  },
+  {
+    "id_registro": "EJ-2026-07-PR-01",
+    "periodo": "2026-07",
+    "id_partida": "PR-01",
+    "presupuestado": 220000000,
+    "ejecutado": 209088000
+  },
+  {
+    "id_registro": "EJ-2026-01-PR-02",
+    "periodo": "2026-01",
+    "id_partida": "PR-02",
+    "presupuestado": 60000000,
+    "ejecutado": 56454000
+  },
+  {
+    "id_registro": "EJ-2026-02-PR-02",
+    "periodo": "2026-02",
+    "id_partida": "PR-02",
+    "presupuestado": 60000000,
+    "ejecutado": 57618000
+  },
+  {
+    "id_registro": "EJ-2026-03-PR-02",
+    "periodo": "2026-03",
+    "id_partida": "PR-02",
+    "presupuestado": 60000000,
+    "ejecutado": 58200000
+  },
+  {
+    "id_registro": "EJ-2026-04-PR-02",
+    "periodo": "2026-04",
+    "id_partida": "PR-02",
+    "presupuestado": 60000000,
+    "ejecutado": 58782000
+  },
+  {
+    "id_registro": "EJ-2026-05-PR-02",
+    "periodo": "2026-05",
+    "id_partida": "PR-02",
+    "presupuestado": 60000000,
+    "ejecutado": 59946000
+  },
+  {
+    "id_registro": "EJ-2026-06-PR-02",
+    "periodo": "2026-06",
+    "id_partida": "PR-02",
+    "presupuestado": 60000000,
+    "ejecutado": 58782000
+  },
+  {
+    "id_registro": "EJ-2026-07-PR-02",
+    "periodo": "2026-07",
+    "id_partida": "PR-02",
+    "presupuestado": 60000000,
+    "ejecutado": 57618000
+  },
+  {
+    "id_registro": "EJ-2026-01-CM-01",
+    "periodo": "2026-01",
+    "id_partida": "CM-01",
+    "presupuestado": 120000000,
+    "ejecutado": 90792000
+  },
+  {
+    "id_registro": "EJ-2026-02-CM-01",
+    "periodo": "2026-02",
+    "id_partida": "CM-01",
+    "presupuestado": 120000000,
+    "ejecutado": 92664000
+  },
+  {
+    "id_registro": "EJ-2026-03-CM-01",
+    "periodo": "2026-03",
+    "id_partida": "CM-01",
+    "presupuestado": 120000000,
+    "ejecutado": 93600000
+  },
+  {
+    "id_registro": "EJ-2026-04-CM-01",
+    "periodo": "2026-04",
+    "id_partida": "CM-01",
+    "presupuestado": 120000000,
+    "ejecutado": 94536000
+  },
+  {
+    "id_registro": "EJ-2026-05-CM-01",
+    "periodo": "2026-05",
+    "id_partida": "CM-01",
+    "presupuestado": 120000000,
+    "ejecutado": 96408000
+  },
+  {
+    "id_registro": "EJ-2026-06-CM-01",
+    "periodo": "2026-06",
+    "id_partida": "CM-01",
+    "presupuestado": 120000000,
+    "ejecutado": 94536000
+  },
+  {
+    "id_registro": "EJ-2026-07-CM-01",
+    "periodo": "2026-07",
+    "id_partida": "CM-01",
+    "presupuestado": 120000000,
+    "ejecutado": 92664000
+  },
+  {
+    "id_registro": "EJ-2026-01-CM-02",
+    "periodo": "2026-01",
+    "id_partida": "CM-02",
+    "presupuestado": 90000000,
+    "ejecutado": 74205000
+  },
+  {
+    "id_registro": "EJ-2026-02-CM-02",
+    "periodo": "2026-02",
+    "id_partida": "CM-02",
+    "presupuestado": 90000000,
+    "ejecutado": 75735000
+  },
+  {
+    "id_registro": "EJ-2026-03-CM-02",
+    "periodo": "2026-03",
+    "id_partida": "CM-02",
+    "presupuestado": 90000000,
+    "ejecutado": 76500000
+  },
+  {
+    "id_registro": "EJ-2026-04-CM-02",
+    "periodo": "2026-04",
+    "id_partida": "CM-02",
+    "presupuestado": 90000000,
+    "ejecutado": 77265000
+  },
+  {
+    "id_registro": "EJ-2026-05-CM-02",
+    "periodo": "2026-05",
+    "id_partida": "CM-02",
+    "presupuestado": 90000000,
+    "ejecutado": 78795000
+  },
+  {
+    "id_registro": "EJ-2026-06-CM-02",
+    "periodo": "2026-06",
+    "id_partida": "CM-02",
+    "presupuestado": 90000000,
+    "ejecutado": 77265000
+  },
+  {
+    "id_registro": "EJ-2026-07-CM-02",
+    "periodo": "2026-07",
+    "id_partida": "CM-02",
+    "presupuestado": 90000000,
+    "ejecutado": 75735000
+  },
+  {
+    "id_registro": "EJ-2026-01-LG-01",
+    "periodo": "2026-01",
+    "id_partida": "LG-01",
+    "presupuestado": 100000000,
+    "ejecutado": 96030000
+  },
+  {
+    "id_registro": "EJ-2026-02-LG-01",
+    "periodo": "2026-02",
+    "id_partida": "LG-01",
+    "presupuestado": 100000000,
+    "ejecutado": 98010000
+  },
+  {
+    "id_registro": "EJ-2026-03-LG-01",
+    "periodo": "2026-03",
+    "id_partida": "LG-01",
+    "presupuestado": 100000000,
+    "ejecutado": 99000000
+  },
+  {
+    "id_registro": "EJ-2026-04-LG-01",
+    "periodo": "2026-04",
+    "id_partida": "LG-01",
+    "presupuestado": 100000000,
+    "ejecutado": 99990000
+  },
+  {
+    "id_registro": "EJ-2026-05-LG-01",
+    "periodo": "2026-05",
+    "id_partida": "LG-01",
+    "presupuestado": 100000000,
+    "ejecutado": 101970000
+  },
+  {
+    "id_registro": "EJ-2026-06-LG-01",
+    "periodo": "2026-06",
+    "id_partida": "LG-01",
+    "presupuestado": 100000000,
+    "ejecutado": 99990000
+  },
+  {
+    "id_registro": "EJ-2026-07-LG-01",
+    "periodo": "2026-07",
+    "id_partida": "LG-01",
+    "presupuestado": 100000000,
+    "ejecutado": 98010000
+  },
+  {
+    "id_registro": "EJ-2026-01-LG-02",
+    "periodo": "2026-01",
+    "id_partida": "LG-02",
+    "presupuestado": 50000000,
+    "ejecutado": 46075000
+  },
+  {
+    "id_registro": "EJ-2026-02-LG-02",
+    "periodo": "2026-02",
+    "id_partida": "LG-02",
+    "presupuestado": 50000000,
+    "ejecutado": 47025000
+  },
+  {
+    "id_registro": "EJ-2026-03-LG-02",
+    "periodo": "2026-03",
+    "id_partida": "LG-02",
+    "presupuestado": 50000000,
+    "ejecutado": 47500000
+  },
+  {
+    "id_registro": "EJ-2026-04-LG-02",
+    "periodo": "2026-04",
+    "id_partida": "LG-02",
+    "presupuestado": 50000000,
+    "ejecutado": 47975000
+  },
+  {
+    "id_registro": "EJ-2026-05-LG-02",
+    "periodo": "2026-05",
+    "id_partida": "LG-02",
+    "presupuestado": 50000000,
+    "ejecutado": 48925000
+  },
+  {
+    "id_registro": "EJ-2026-06-LG-02",
+    "periodo": "2026-06",
+    "id_partida": "LG-02",
+    "presupuestado": 50000000,
+    "ejecutado": 47975000
+  },
+  {
+    "id_registro": "EJ-2026-07-LG-02",
+    "periodo": "2026-07",
+    "id_partida": "LG-02",
+    "presupuestado": 50000000,
+    "ejecutado": 47025000
+  },
+  {
+    "id_registro": "EJ-2026-01-AD-01",
+    "periodo": "2026-01",
+    "id_partida": "AD-01",
+    "presupuestado": 70000000,
+    "ejecutado": 67221000
+  },
+  {
+    "id_registro": "EJ-2026-02-AD-01",
+    "periodo": "2026-02",
+    "id_partida": "AD-01",
+    "presupuestado": 70000000,
+    "ejecutado": 68607000
+  },
+  {
+    "id_registro": "EJ-2026-03-AD-01",
+    "periodo": "2026-03",
+    "id_partida": "AD-01",
+    "presupuestado": 70000000,
+    "ejecutado": 69300000
+  },
+  {
+    "id_registro": "EJ-2026-04-AD-01",
+    "periodo": "2026-04",
+    "id_partida": "AD-01",
+    "presupuestado": 70000000,
+    "ejecutado": 69993000
+  },
+  {
+    "id_registro": "EJ-2026-05-AD-01",
+    "periodo": "2026-05",
+    "id_partida": "AD-01",
+    "presupuestado": 70000000,
+    "ejecutado": 71379000
+  },
+  {
+    "id_registro": "EJ-2026-06-AD-01",
+    "periodo": "2026-06",
+    "id_partida": "AD-01",
+    "presupuestado": 70000000,
+    "ejecutado": 69993000
+  },
+  {
+    "id_registro": "EJ-2026-07-AD-01",
+    "periodo": "2026-07",
+    "id_partida": "AD-01",
+    "presupuestado": 70000000,
+    "ejecutado": 68607000
+  },
+  {
+    "id_registro": "EJ-2026-01-AD-02",
+    "periodo": "2026-01",
+    "id_partida": "AD-02",
+    "presupuestado": 45000000,
+    "ejecutado": 39285000
+  },
+  {
+    "id_registro": "EJ-2026-02-AD-02",
+    "periodo": "2026-02",
+    "id_partida": "AD-02",
+    "presupuestado": 45000000,
+    "ejecutado": 40095000
+  },
+  {
+    "id_registro": "EJ-2026-03-AD-02",
+    "periodo": "2026-03",
+    "id_partida": "AD-02",
+    "presupuestado": 45000000,
+    "ejecutado": 40500000
+  },
+  {
+    "id_registro": "EJ-2026-04-AD-02",
+    "periodo": "2026-04",
+    "id_partida": "AD-02",
+    "presupuestado": 45000000,
+    "ejecutado": 40905000
+  },
+  {
+    "id_registro": "EJ-2026-05-AD-02",
+    "periodo": "2026-05",
+    "id_partida": "AD-02",
+    "presupuestado": 45000000,
+    "ejecutado": 41715000
+  },
+  {
+    "id_registro": "EJ-2026-06-AD-02",
+    "periodo": "2026-06",
+    "id_partida": "AD-02",
+    "presupuestado": 45000000,
+    "ejecutado": 40905000
+  },
+  {
+    "id_registro": "EJ-2026-07-AD-02",
+    "periodo": "2026-07",
+    "id_partida": "AD-02",
+    "presupuestado": 45000000,
+    "ejecutado": 40095000
+  },
+  {
+    "id_registro": "EJ-2026-01-TI-01",
+    "periodo": "2026-01",
+    "id_partida": "TI-01",
+    "presupuestado": 30000000,
+    "ejecutado": 28518000
+  },
+  {
+    "id_registro": "EJ-2026-02-TI-01",
+    "periodo": "2026-02",
+    "id_partida": "TI-01",
+    "presupuestado": 30000000,
+    "ejecutado": 29106000
+  },
+  {
+    "id_registro": "EJ-2026-03-TI-01",
+    "periodo": "2026-03",
+    "id_partida": "TI-01",
+    "presupuestado": 30000000,
+    "ejecutado": 29400000
+  },
+  {
+    "id_registro": "EJ-2026-04-TI-01",
+    "periodo": "2026-04",
+    "id_partida": "TI-01",
+    "presupuestado": 30000000,
+    "ejecutado": 29694000
+  },
+  {
+    "id_registro": "EJ-2026-05-TI-01",
+    "periodo": "2026-05",
+    "id_partida": "TI-01",
+    "presupuestado": 30000000,
+    "ejecutado": 30282000
+  },
+  {
+    "id_registro": "EJ-2026-06-TI-01",
+    "periodo": "2026-06",
+    "id_partida": "TI-01",
+    "presupuestado": 30000000,
+    "ejecutado": 29694000
+  },
+  {
+    "id_registro": "EJ-2026-07-TI-01",
+    "periodo": "2026-07",
+    "id_partida": "TI-01",
+    "presupuestado": 30000000,
+    "ejecutado": 29106000
+  },
+  {
+    "id_registro": "EJ-2026-01-TI-02",
+    "periodo": "2026-01",
+    "id_partida": "TI-02",
+    "presupuestado": 25000000,
+    "ejecutado": 20612500
+  },
+  {
+    "id_registro": "EJ-2026-02-TI-02",
+    "periodo": "2026-02",
+    "id_partida": "TI-02",
+    "presupuestado": 25000000,
+    "ejecutado": 21037500
+  },
+  {
+    "id_registro": "EJ-2026-03-TI-02",
+    "periodo": "2026-03",
+    "id_partida": "TI-02",
+    "presupuestado": 25000000,
+    "ejecutado": 21250000
+  },
+  {
+    "id_registro": "EJ-2026-04-TI-02",
+    "periodo": "2026-04",
+    "id_partida": "TI-02",
+    "presupuestado": 25000000,
+    "ejecutado": 21462500
+  },
+  {
+    "id_registro": "EJ-2026-05-TI-02",
+    "periodo": "2026-05",
+    "id_partida": "TI-02",
+    "presupuestado": 25000000,
+    "ejecutado": 21887500
+  },
+  {
+    "id_registro": "EJ-2026-06-TI-02",
+    "periodo": "2026-06",
+    "id_partida": "TI-02",
+    "presupuestado": 25000000,
+    "ejecutado": 21462500
+  },
+  {
+    "id_registro": "EJ-2026-07-TI-02",
+    "periodo": "2026-07",
+    "id_partida": "TI-02",
+    "presupuestado": 25000000,
+    "ejecutado": 21037500
+  }
+]

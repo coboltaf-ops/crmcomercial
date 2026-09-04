@@ -1,0 +1,772 @@
+[
+  {
+    "data": {
+      "pais": [
+        {
+          "id": "1",
+          "descripcion": "Colombia",
+          "situacion": true
+        },
+        {
+          "id": "3",
+          "descripcion": "Ecuador",
+          "situacion": true
+        },
+        {
+          "id": "9f490602-c5d6-4ac9-b8e5-f2a5fea85ba2",
+          "descripcion": "Mexico",
+          "situacion": true
+        },
+        {
+          "id": "fd7b5a42-d224-4011-9bcf-879d73396a4e",
+          "descripcion": "Panama",
+          "situacion": true
+        },
+        {
+          "id": "5",
+          "descripcion": "Panamá",
+          "situacion": true
+        },
+        {
+          "id": "4",
+          "descripcion": "Perú",
+          "situacion": true
+        },
+        {
+          "id": "c8cf4c0f-cada-49d8-9401-67714444459c",
+          "descripcion": "USA",
+          "situacion": true
+        },
+        {
+          "id": "2",
+          "descripcion": "Venezuela",
+          "situacion": true
+        }
+      ],
+      "ciudad": [
+        {
+          "id": "492fc5d9-4b4e-427a-85b2-0a1494e8d03c",
+          "descripcion": "Arequipa",
+          "situacion": true
+        },
+        {
+          "id": "4",
+          "descripcion": "Barranquilla",
+          "situacion": true
+        },
+        {
+          "id": "1",
+          "descripcion": "Bogotá",
+          "situacion": true
+        },
+        {
+          "id": "3",
+          "descripcion": "Cali",
+          "situacion": true
+        },
+        {
+          "id": "9ba8fcce-10d1-4b66-8a45-c8cc8b02bd29",
+          "descripcion": "Callao",
+          "situacion": true
+        },
+        {
+          "id": "171e885b-40cd-4393-8aef-f7693e5e4ccc",
+          "descripcion": "Caral",
+          "situacion": true
+        },
+        {
+          "id": "de5b7c69-5c13-40e2-a7b7-43ff81f16c76",
+          "descripcion": "Cisco",
+          "situacion": true
+        },
+        {
+          "id": "68472600-3617-4906-8c66-1de35b7b3cad",
+          "descripcion": "Houston",
+          "situacion": true
+        },
+        {
+          "id": "29045c95-17d0-44bb-af0f-89edf96b33fd",
+          "descripcion": "Lima",
+          "situacion": true
+        },
+        {
+          "id": "371d4277-5edd-4458-b942-38a73cd16e76",
+          "descripcion": "Los Ángeles",
+          "situacion": true
+        },
+        {
+          "id": "d04db619-6c26-404b-8994-abcc8b309662",
+          "descripcion": "Lurin",
+          "situacion": true
+        },
+        {
+          "id": "2",
+          "descripcion": "Medellín",
+          "situacion": true
+        },
+        {
+          "id": "e51aaecd-cb21-443a-8efd-b7f96ee7fb82",
+          "descripcion": "Miami",
+          "situacion": true
+        },
+        {
+          "id": "3d27db78-356e-401d-99c2-03c670af70a0",
+          "descripcion": "Pachacamac",
+          "situacion": true
+        },
+        {
+          "id": "5bb40bdc-e05e-46ab-8262-464db64c8009",
+          "descripcion": "Quito",
+          "situacion": true
+        },
+        {
+          "id": "77b324b5-24d6-481c-add4-b6bce58417e7",
+          "descripcion": "Tulcan",
+          "situacion": true
+        }
+      ],
+      "actividad_cliente": [
+        {
+          "id": "371806a6-0be6-4ad9-803b-66a5f999d4a8",
+          "descripcion": "Alimentos",
+          "situacion": true
+        },
+        {
+          "id": "3",
+          "descripcion": "Comercio",
+          "situacion": true
+        },
+        {
+          "id": "1",
+          "descripcion": "Construcción",
+          "situacion": true
+        },
+        {
+          "id": "3a86ce9a-6ea0-4612-854d-f6bccc2c0ba7",
+          "descripcion": "Educacion",
+          "situacion": true
+        },
+        {
+          "id": "e4144f92-43b3-4a1d-aeec-11767668da73",
+          "descripcion": "Hoteleria",
+          "situacion": true
+        },
+        {
+          "id": "f2f89307-c2b4-472f-8548-3bbae75e709f",
+          "descripcion": "Industria Petrolera",
+          "situacion": true
+        },
+        {
+          "id": "5",
+          "descripcion": "Manufactura",
+          "situacion": true
+        },
+        {
+          "id": "4",
+          "descripcion": "Servicios",
+          "situacion": true
+        },
+        {
+          "id": "2",
+          "descripcion": "Tecnología",
+          "situacion": true
+        },
+        {
+          "id": "49b5785a-ae6f-48a2-9a02-eca206718033",
+          "descripcion": "Telecomunicaciones",
+          "situacion": true
+        }
+      ],
+      "situacion_cliente": [
+        {
+          "id": "1",
+          "descripcion": "Activo",
+          "situacion": true
+        },
+        {
+          "id": "2",
+          "descripcion": "Inactivo",
+          "situacion": true
+        },
+        {
+          "id": "84cec9af-2943-4796-9ca8-eceefae144af",
+          "descripcion": "Prospectando",
+          "situacion": true
+        },
+        {
+          "id": "3",
+          "descripcion": "Suspendido",
+          "situacion": true
+        }
+      ],
+      "situacion_contacto": [
+        {
+          "id": "1",
+          "descripcion": "Activo",
+          "situacion": true
+        },
+        {
+          "id": "2",
+          "descripcion": "Inactivo",
+          "situacion": true
+        }
+      ],
+      "situacion_cotizacion": [
+        {
+          "id": "1f22ad6f-0d7a-4924-a60f-98803062d4d6",
+          "descripcion": "Anulada",
+          "situacion": true
+        },
+        {
+          "id": "3",
+          "descripcion": "Aprobada",
+          "situacion": true
+        },
+        {
+          "id": "1",
+          "descripcion": "En Preparacion",
+          "situacion": true
+        },
+        {
+          "id": "2",
+          "descripcion": "Enviada",
+          "situacion": true
+        },
+        {
+          "id": "4",
+          "descripcion": "Rechazada",
+          "situacion": true
+        }
+      ],
+      "situacion_lista": [
+        {
+          "id": "1",
+          "descripcion": "Activo",
+          "situacion": true
+        },
+        {
+          "id": "3",
+          "descripcion": "Descontinuado",
+          "situacion": true
+        },
+        {
+          "id": "2",
+          "descripcion": "Inactivo",
+          "situacion": true
+        }
+      ],
+      "situacion_oportunidad": [
+        {
+          "id": "1",
+          "descripcion": "Abierta",
+          "situacion": true
+        },
+        {
+          "id": "4",
+          "descripcion": "En Negociación",
+          "situacion": true
+        },
+        {
+          "id": "2",
+          "descripcion": "Ganada",
+          "situacion": true
+        },
+        {
+          "id": "3",
+          "descripcion": "Perdida",
+          "situacion": true
+        }
+      ],
+      "situacion_pqrs": [
+        {
+          "id": "4",
+          "descripcion": "Anulada",
+          "situacion": true
+        },
+        {
+          "id": "3",
+          "descripcion": "Cerrada",
+          "situacion": true
+        },
+        {
+          "id": "2",
+          "descripcion": "En Proceso",
+          "situacion": true
+        }
+      ],
+      "situacion_proyecto": [
+        {
+          "id": "5",
+          "descripcion": "Cancelado",
+          "situacion": true
+        },
+        {
+          "id": "4",
+          "descripcion": "Cerrado",
+          "situacion": true
+        },
+        {
+          "id": "2",
+          "descripcion": "En Ejecución",
+          "situacion": true
+        },
+        {
+          "id": "3",
+          "descripcion": "En Pausa",
+          "situacion": true
+        },
+        {
+          "id": "1",
+          "descripcion": "Planeación",
+          "situacion": true
+        }
+      ],
+      "situacion_tarea": [
+        {
+          "id": "4",
+          "descripcion": "Cancelada",
+          "situacion": true
+        },
+        {
+          "id": "3",
+          "descripcion": "Completada",
+          "situacion": true
+        },
+        {
+          "id": "2",
+          "descripcion": "En Proceso",
+          "situacion": true
+        },
+        {
+          "id": "1",
+          "descripcion": "Pendiente",
+          "situacion": true
+        }
+      ],
+      "tipo_pqrs": [
+        {
+          "id": "1",
+          "descripcion": "Petición",
+          "situacion": true
+        },
+        {
+          "id": "2",
+          "descripcion": "Queja",
+          "situacion": true
+        },
+        {
+          "id": "3",
+          "descripcion": "Reclamo",
+          "situacion": true
+        },
+        {
+          "id": "4",
+          "descripcion": "Sugerencia",
+          "situacion": true
+        }
+      ],
+      "tipo_identificacion": [
+        {
+          "id": "2",
+          "descripcion": "Cédula",
+          "situacion": true
+        },
+        {
+          "id": "1",
+          "descripcion": "NIT",
+          "situacion": true
+        },
+        {
+          "id": "3",
+          "descripcion": "Pasaporte",
+          "situacion": true
+        },
+        {
+          "id": "4",
+          "descripcion": "RUC",
+          "situacion": true
+        }
+      ],
+      "tipo_moneda": [
+        {
+          "id": "2",
+          "descripcion": "Dólares",
+          "situacion": true
+        },
+        {
+          "id": "3",
+          "descripcion": "Euros",
+          "situacion": true
+        },
+        {
+          "id": "1",
+          "descripcion": "Pesos Col",
+          "situacion": true
+        },
+        {
+          "id": "f930d2f2-1d31-4a09-ac34-05090f2d5393",
+          "descripcion": "Sol",
+          "situacion": true
+        }
+      ],
+      "condiciones_pago": [
+        {
+          "id": "2",
+          "descripcion": "15 días",
+          "situacion": true
+        },
+        {
+          "id": "3",
+          "descripcion": "30 días",
+          "situacion": true
+        },
+        {
+          "id": "4",
+          "descripcion": "60 días",
+          "situacion": true
+        },
+        {
+          "id": "5",
+          "descripcion": "90 días",
+          "situacion": true
+        },
+        {
+          "id": "1",
+          "descripcion": "Contado",
+          "situacion": true
+        }
+      ],
+      "origen_oportunidad": [
+        {
+          "id": "4",
+          "descripcion": "Evento",
+          "situacion": true
+        },
+        {
+          "id": "3",
+          "descripcion": "Llamada",
+          "situacion": true
+        },
+        {
+          "id": "5",
+          "descripcion": "Redes Sociales",
+          "situacion": true
+        },
+        {
+          "id": "1",
+          "descripcion": "Referido",
+          "situacion": true
+        },
+        {
+          "id": "2",
+          "descripcion": "Web",
+          "situacion": true
+        }
+      ],
+      "etapa_oportunidad": [
+        {
+          "id": "2",
+          "descripcion": "Calificación",
+          "situacion": true
+        },
+        {
+          "id": "5",
+          "descripcion": "Cierre",
+          "situacion": true
+        },
+        {
+          "id": "4",
+          "descripcion": "Negociación",
+          "situacion": true
+        },
+        {
+          "id": "3",
+          "descripcion": "Propuesta",
+          "situacion": true
+        }
+      ],
+      "veredicto_oferta": [
+        {
+          "id": "2",
+          "descripcion": "Adjudicada",
+          "situacion": true
+        },
+        {
+          "id": "5",
+          "descripcion": "Cancelada",
+          "situacion": true
+        },
+        {
+          "id": "4",
+          "descripcion": "Desierta",
+          "situacion": true
+        },
+        {
+          "id": "3",
+          "descripcion": "No Adjudicada",
+          "situacion": true
+        },
+        {
+          "id": "1",
+          "descripcion": "Pendiente",
+          "situacion": true
+        }
+      ],
+      "prioridad_pqrs": [
+        {
+          "id": "3",
+          "descripcion": "Alta",
+          "situacion": true
+        },
+        {
+          "id": "1",
+          "descripcion": "Baja",
+          "situacion": true
+        },
+        {
+          "id": "2",
+          "descripcion": "Media",
+          "situacion": true
+        },
+        {
+          "id": "4",
+          "descripcion": "Urgente",
+          "situacion": true
+        }
+      ],
+      "roles": [
+        {
+          "id": "1",
+          "descripcion": "Admin",
+          "situacion": true
+        },
+        {
+          "id": "2",
+          "descripcion": "Comercial",
+          "situacion": true
+        },
+        {
+          "id": "4",
+          "descripcion": "Gerencia",
+          "situacion": true
+        },
+        {
+          "id": "db9c3a44-979b-4129-b3bf-284b7d04e141",
+          "descripcion": "Logistica",
+          "situacion": true
+        },
+        {
+          "id": "f980fa73-cf7e-4bd2-8e66-b4b199e76d02",
+          "descripcion": "Mercadeo",
+          "situacion": true
+        },
+        {
+          "id": "9e2b7d2b-81c3-4279-853a-723ae7a57cb2",
+          "descripcion": "Servicio al Cliente",
+          "situacion": true
+        },
+        {
+          "id": "3",
+          "descripcion": "Soporte",
+          "situacion": true
+        }
+      ],
+      "nivel_influencia": [
+        {
+          "id": "1",
+          "descripcion": "Decisor",
+          "situacion": true
+        },
+        {
+          "id": "4",
+          "descripcion": "Evaluador Técnico",
+          "situacion": true
+        },
+        {
+          "id": "2",
+          "descripcion": "Influenciador",
+          "situacion": true
+        },
+        {
+          "id": "3",
+          "descripcion": "Usuario Final",
+          "situacion": true
+        }
+      ],
+      "porcentaje_impuestos": [
+        {
+          "id": "1",
+          "descripcion": "0%",
+          "situacion": true
+        },
+        {
+          "id": "4",
+          "descripcion": "16%",
+          "situacion": true
+        },
+        {
+          "id": "5",
+          "descripcion": "19%",
+          "situacion": true
+        },
+        {
+          "id": "2",
+          "descripcion": "5%",
+          "situacion": true
+        },
+        {
+          "id": "3",
+          "descripcion": "8%",
+          "situacion": true
+        }
+      ],
+      "categoria_productos": [],
+      "unidad_medida": [
+        {
+          "id": "5",
+          "descripcion": "Caja",
+          "situacion": true
+        },
+        {
+          "id": "9cf83ebc-2834-4a88-a4cb-5de2f97d41e1",
+          "descripcion": "Gramos",
+          "situacion": true
+        },
+        {
+          "id": "2",
+          "descripcion": "Kilogramo",
+          "situacion": true
+        },
+        {
+          "id": "3",
+          "descripcion": "Litro",
+          "situacion": true
+        },
+        {
+          "id": "4",
+          "descripcion": "Metro",
+          "situacion": true
+        },
+        {
+          "id": "1f59195e-a331-4c12-a6b5-b212e3b02980",
+          "descripcion": "Mts",
+          "situacion": true
+        },
+        {
+          "id": "1bca925e-329c-4127-8963-fb99b7eea70d",
+          "descripcion": "Mts 2",
+          "situacion": true
+        },
+        {
+          "id": "e5bb4702-9090-4448-876f-03287271dc3e",
+          "descripcion": "Mts 3",
+          "situacion": true
+        },
+        {
+          "id": "6",
+          "descripcion": "Paquete",
+          "situacion": true
+        },
+        {
+          "id": "1",
+          "descripcion": "Unidad",
+          "situacion": true
+        }
+      ],
+      "situacion_prospecto": [
+        {
+          "id": "3",
+          "descripcion": "Calificado",
+          "situacion": true
+        },
+        {
+          "id": "2",
+          "descripcion": "Contactado",
+          "situacion": true
+        },
+        {
+          "id": "5",
+          "descripcion": "Convertido",
+          "situacion": true
+        },
+        {
+          "id": "6",
+          "descripcion": "Descartado",
+          "situacion": true
+        },
+        {
+          "id": "0",
+          "descripcion": "Sin Contactar",
+          "situacion": true
+        }
+      ],
+      "origen_prospecto": [
+        {
+          "id": "6",
+          "descripcion": "Email",
+          "situacion": true
+        },
+        {
+          "id": "4",
+          "descripcion": "Evento",
+          "situacion": true
+        },
+        {
+          "id": "3",
+          "descripcion": "Llamada",
+          "situacion": true
+        },
+        {
+          "id": "7",
+          "descripcion": "Otro",
+          "situacion": true
+        },
+        {
+          "id": "5",
+          "descripcion": "Redes Sociales",
+          "situacion": true
+        },
+        {
+          "id": "2",
+          "descripcion": "Referido",
+          "situacion": true
+        },
+        {
+          "id": "1",
+          "descripcion": "Web",
+          "situacion": true
+        }
+      ],
+      "vendedores": []
+    },
+    "vendedores": [
+      {
+        "id": "188a1bcd-e37e-4774-b59a-537cfda76189",
+        "codigo": "VEN-002",
+        "nombre": "GERARDO",
+        "apellido": "FLOREZ",
+        "correo": "gflorez@proyective.com.co",
+        "nro_movil": "305  3671736",
+        "situacion": true
+      },
+      {
+        "id": "ad6951c2-5e6b-4647-8122-438d9f855082",
+        "codigo": "VEN-003",
+        "nombre": "JOSE",
+        "apellido": "PALOMARES",
+        "correo": "coboltaf@gmail.com",
+        "nro_movil": "",
+        "situacion": true
+      },
+      {
+        "id": "9e8f1530-5d07-428b-87a2-5617aa1653bb",
+        "codigo": "VEN-001",
+        "nombre": "MARIA ELISA",
+        "apellido": "TOVAR",
+        "correo": "mariat@gmail.com",
+        "nro_movil": "315 6733290",
+        "situacion": true
+      }
+    ]
+  }
+]

@@ -18,13 +18,14 @@ import { useAsistenteStore } from '@/shared/stores/asistente-store'
 import { useT, useIdioma, useTStatus } from '@/shared/i18n/use-t'
 import { Seguimiento } from '@/shared/types/seguimiento'
 import { buildWhatsAppLink, isValidPhone } from '@/shared/lib/whatsapp'
+import { PAISES_ACTIVOS, esGlobal, etiquetaPais } from '@/shared/lib/paises'
 
 const today = todayColombia()
 
-const emptyContacto = (codigo: string): Contacto => ({
+const emptyContacto = (codigo: string, pais: string): Contacto => ({
   id: '', codigo, cliente_id: '', cliente_nombre: '',
   nombre: '', apellido: '', cargo: '', departamento: '', telefono: '', celular: '',
-  email: '', fecha_nacimiento: '', nivel_influencia: '', es_principal: false, observaciones: '', situacion: 'Activo', fecha_registro: today, seguimientos: [],
+  email: '', fecha_nacimiento: '', nivel_influencia: '', es_principal: false, observaciones: '', situacion: 'Activo', pais, fecha_registro: today, seguimientos: [],
 })
 
 export default function ContactosPage() {
@@ -33,6 +34,8 @@ export default function ContactosPage() {
   const idioma = useIdioma()
   const permisos = usePermisos('contactos')
   const currentUser = useCurrentUserStore(s => s.user)
+  const paisUsuario = currentUser?.pais || ''
+  const usuarioGlobal = esGlobal(paisUsuario)
   const { contactos, addContacto, updateContacto, deleteContacto } = useContactosStore()
   const loadContactos = useContactosStore(s => s.loadContactos)
   const clientes = useClientesStore(s => s.clientes).filter(c => c.situacion === 'Activo')
@@ -46,13 +49,14 @@ export default function ContactosPage() {
   const [tab, setTab] = useState<'registros' | 'reportes'>('registros')
   const [search, setSearch] = useState('')
   const [filterCliente, setFilterCliente] = useState('')
+  const [filtroPais, setFiltroPais] = useState('')  // solo lo usan usuarios GLOBAL
   const { pendingSearch, pendingAction, clearPending } = useAsistenteStore()
   const searchParams = useSearchParams()
   const router = useRouter()
   useEffect(() => { loadContactos() }, [loadContactos])
   useEffect(() => {
     if (pendingSearch) setSearch(pendingSearch)
-    if (pendingAction === 'nuevo') { setSelected(emptyContacto(nextConsecutivo('CON-', contactos.map(c => c.codigo)).codigo)); setIsForm(true) }
+    if (pendingAction === 'nuevo') { setSelected(emptyContacto(nextConsecutivo('CON-', contactos.map(c => c.codigo)).codigo, usuarioGlobal ? (PAISES_ACTIVOS[0]?.codigo || 'Colombia') : paisUsuario)); setIsForm(true) }
     if (pendingSearch || pendingAction) clearPending()
   }, [])
 
@@ -280,7 +284,7 @@ export default function ContactosPage() {
 
       {permisos.crear && tab === 'registros' && (
         <div style={{ marginBottom: 20, display: 'flex', justifyContent: 'flex-end' }}>
-          <button onClick={() => { setSelected(emptyContacto(nextConsecutivo('CON-', contactos.map(c => c.codigo)).codigo)); setIsForm(true) }} style={{ ...btnStyle, background: '#1e3a8a', color: '#ffffff' }}>{t('page.contactos.btnNuevo')}</button>
+          <button onClick={() => { setSelected(emptyContacto(nextConsecutivo('CON-', contactos.map(c => c.codigo)).codigo, usuarioGlobal ? (PAISES_ACTIVOS[0]?.codigo || 'Colombia') : paisUsuario)); setIsForm(true) }} style={{ ...btnStyle, background: '#1e3a8a', color: '#ffffff' }}>{t('page.contactos.btnNuevo')}</button>
         </div>
       )}
 

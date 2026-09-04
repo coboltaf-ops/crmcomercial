@@ -1,0 +1,161 @@
+[
+  {
+    "id": "6c4c853d-7986-42e2-9f58-6ca11149aef5",
+    "fecha": "11/06/2026",
+    "hora": "07:13:48 a. m.",
+    "de": "coboltaf@gmail.com\n",
+    "para": "prueba.crm@example.com",
+    "asunto": "Solicitud de Servicio Recibida",
+    "modulo": "prospectos",
+    "referencia": "PRUEBA CONEXION",
+    "estado": "Error",
+    "detalle_error": "Error: getaddrinfo EBUSY smtp.gmail.com\n"
+  },
+  {
+    "id": "28022d1f-8828-4b95-b5b0-fdd1a6ca6bd6",
+    "fecha": "11/06/2026",
+    "hora": "09:14:28 a. m.",
+    "de": "coboltaf@gmail.com\n",
+    "para": "coboltaf@gmail.com",
+    "asunto": "Solicitud de Servicio Recibida",
+    "modulo": "prospectos",
+    "referencia": "Jose E Palomares",
+    "estado": "Error",
+    "detalle_error": "Error: getaddrinfo EBUSY smtp.gmail.com\n"
+  },
+  {
+    "id": "f868ea7e-c94a-4996-8580-5ef66d092d1e",
+    "fecha": "14/06/2026",
+    "hora": "09:13:39 a. m.",
+    "de": "coboltaf@gmail.com\n",
+    "para": "demo.test@example.com",
+    "asunto": "Solicitud de Servicio Recibida",
+    "modulo": "prospectos",
+    "referencia": "DEMO VALIDACION",
+    "estado": "Error",
+    "detalle_error": "Error: getaddrinfo EBUSY smtp.gmail.com\n"
+  },
+  {
+    "id": "60c09ef6-8035-4cb2-bd38-06ff45149ffc",
+    "fecha": "24/06/2026",
+    "hora": "12:48:18 p. m.",
+    "de": "coboltaf@gmail.com\n",
+    "para": "coboltaf@gmail.com",
+    "asunto": "Solicitud de Servicio Recibida",
+    "modulo": "prospectos",
+    "referencia": "JOSE E PALOMARES",
+    "estado": "Error",
+    "detalle_error": "Error: getaddrinfo EBUSY smtp.gmail.com\n"
+  },
+  {
+    "id": "0c8e6814-60cc-47ad-bee5-b98bbe01a9ef",
+    "fecha": "24/06/2026",
+    "hora": "02:22:36 p. m.",
+    "de": "coboltaf@gmail.com\n",
+    "para": "marlopez@gmail.com",
+    "asunto": "Solicitud de Servicio Recibida",
+    "modulo": "prospectos",
+    "referencia": "MARIA LOPEZ",
+    "estado": "Error",
+    "detalle_error": "Error: getaddrinfo EBUSY smtp.gmail.com\n"
+  },
+  {
+    "id": "4c278707-1a4a-4f52-8684-24a7785cfca8",
+    "fecha": "28/06/2026",
+    "hora": "02:13:35 p. m.",
+    "de": "coboltaf@gmail.com\n",
+    "para": "coboltaf@gmail.com",
+    "asunto": "Nueva tarea asignada: TEST-DIAG2",
+    "modulo": "tareas",
+    "referencia": "TEST-DIAG2",
+    "estado": "Enviado"
+  },
+  {
+    "id": "b69c9694-958d-4d27-b4df-efadaedb7fb6",
+    "fecha": "28/06/2026",
+    "hora": "02:18:46 p. m.",
+    "de": "coboltaf@gmail.com\n",
+    "para": "coboltaf@gmail.com",
+    "asunto": "Nueva tarea asignada: TEST-NAME",
+    "modulo": "tareas",
+    "referencia": "TEST-NAME",
+    "estado": "Enviado"
+  },
+  {
+    "id": "c95097ee-190b-4b45-8244-f56ea13620eb",
+    "fecha": "28/06/2026",
+    "hora": "02:19:04 p. m.",
+    "de": "coboltaf@gmail.com\n",
+    "para": "coboltaf@gmail.com",
+    "asunto": "Nueva tarea asignada: TAR-DEMO-IA",
+    "modulo": "tareas",
+    "referencia": "TAR-DEMO-IA",
+    "estado": "Enviado"
+  },
+  {
+    "id": "835141f0-2ffc-491c-80a3-51370cc686cc",
+    "fecha": "22/07/2026",
+    "hora": "05:32:02 p. m.",
+    "de": "coboltaf@gmail.com\n",
+    "para": "coboltaf@gmail.com",
+    "asunto": "Cotizacion Solicitada",
+    "modulo": "cotizaciones",
+    "referencia": "COT-00001",
+    "estado": "Enviado"
+  },
+  {
+    "id": "6ebb1e33-04c9-49a7-a381-f934311235c2",
+    "fecha": "27/08/2026",
+    "hora": "07:55:50 p. m.",
+    "de": "coboltaf@gmail.com\n",
+    "para": "prueba.landing@example.com",
+    "asunto": "Solicitud de Servicio Recibida",
+    "modulo": "prospectos",
+    "referencia": "PRUEBA Landing Test",
+    "estado": "Enviado"
+  },
+  {
+    "id": "6a6e0a60-e80b-4b61-bc9f-4b653d958ed1",
+    "fecha": "27/08/2026",
+    "hora": "08:35:05 p. m.",
+    "de": "coboltaf@gmail.com\n",
+    "para": "prueba2@example.com",
+    "asunto": "Solicitud de Servicio Recibida",
+    "modulo": "prospectos",
+    "referencia": "PRUEBA2 Sector Test",
+    "estado": "Enviado"
+  },
+  {
+    "id": "ec725ae4-ab7b-4fa5-81f7-0f6ea9cfed88",
+    "fecha": "27/08/2026",
+    "hora": "09:10:13 p. m.",
+    "de": "coboltaf@gmail.com\n",
+    "para": "coboltaf@gmail.com",
+    "asunto": "Solicitud de Servicio Recibida",
+    "modulo": "prospectos",
+    "referencia": "jose e palomares",
+    "estado": "Enviado"
+  },
+  {
+    "id": "85e02031-22cc-43be-9bbf-29eb194bd209",
+    "fecha": "27/08/2026",
+    "hora": "09:14:57 p. m.",
+    "de": "coboltaf@gmail.com\n",
+    "para": "coboltaf@gmail.com",
+    "asunto": "Solicitud de Servicio Recibida",
+    "modulo": "prospectos",
+    "referencia": "Santiago Arango",
+    "estado": "Enviado"
+  },
+  {
+    "id": "693d9eec-9039-403c-a72c-541de9973911",
+    "fecha": "27/08/2026",
+    "hora": "09:45:44 p. m.",
+    "de": "coboltaf@gmail.com\n",
+    "para": "prueba3@example.com",
+    "asunto": "Solicitud de Servicio Recibida",
+    "modulo": "prospectos",
+    "referencia": "PRUEBA3 Ciudad Pais",
+    "estado": "Enviado"
+  }
+]

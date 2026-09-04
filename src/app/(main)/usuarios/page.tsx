@@ -4,6 +4,7 @@ import { useUsuariosStore } from '@/features/usuarios-gestion/store/usuarios-sto
 import { useCurrentUserStore } from '@/features/usuarios-gestion/store/current-user-store'
 import { useRolesStore } from '@/features/usuarios-gestion/store/roles-store'
 import { Usuario, MODULOS_CRM, ESTADOS_CONFIG } from '@/features/usuarios-gestion/types'
+import { PAISES_USUARIO, PAIS_GLOBAL, etiquetaPais } from '@/shared/lib/paises'
 import { exportToPDF, exportToExcel } from '@/shared/lib/export-report'
 import { useT, useIdioma } from '@/shared/i18n/use-t'
 
@@ -48,7 +49,7 @@ export default function UsuariosPage() {
     const firstNonAdmin = roles.find(r => r.nombre !== 'Admin')
     return {
       id: '', nombre: '', apellido: '', usuario: '', clave: '', correo: '',
-      rol: firstNonAdmin?.nombre || 'Ventas', situacion: 'Activo',
+      rol: firstNonAdmin?.nombre || 'Ventas', pais: 'Colombia', situacion: 'Activo',
       permisos: firstNonAdmin?.permisos || MODULOS_CRM.map(m => ({ modulo: m.id, leer: true, crear: false, editar: false, eliminar: false })),
     }
   }
@@ -143,9 +144,9 @@ export default function UsuariosPage() {
       { header: 'Usuario', key: 'usuario' }, { header: 'Nombre', key: 'nombre' },
       { header: 'Apellido', key: 'apellido' }, { header: 'Correo', key: 'correo' },
       { header: 'Clave', key: 'clave' },
-      { header: 'Rol', key: 'rol' }, { header: 'Estado', key: 'situacion' },
+      { header: 'Rol', key: 'rol' }, { header: 'País', key: 'pais' }, { header: 'Estado', key: 'situacion' },
     ],
-    rows: usuarios.map(u => ({ usuario: u.usuario, nombre: u.nombre, apellido: u.apellido, correo: u.correo, clave: u.clave_visible || '', rol: u.rol, situacion: u.situacion })),
+    rows: usuarios.map(u => ({ usuario: u.usuario, nombre: u.nombre, apellido: u.apellido, correo: u.correo, clave: u.clave_visible || '', rol: u.rol, pais: u.pais || '', situacion: u.situacion })),
   }
 
   return (
@@ -184,7 +185,7 @@ export default function UsuariosPage() {
           <table style={{ width: '100%', borderCollapse: 'collapse' }}>
             <thead>
               <tr>
-                {['Usuario', 'Nombre', 'Apellido', 'Correo', 'Clave', 'Rol', 'Estado', 'Acciones'].map(h => (
+                {['Usuario', 'Nombre', 'Apellido', 'Correo', 'Clave', 'Rol', 'País', 'Estado', 'Acciones'].map(h => (
                   <th key={h} style={{ padding: '12px 14px', background: '#1e3a8a', color: '#fff', fontSize: 12, textAlign: 'left' }}>{h}</th>
                 ))}
               </tr>
@@ -206,6 +207,7 @@ export default function UsuariosPage() {
                         : <span style={{ color: '#94a3b8', fontSize: 11 }} title="Restablece la clave (Editar) para poder verla">🔒 restablecer</span>}
                     </td>
                     <td style={{ padding: '10px 14px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 13 }}>{u.rol}</td>
+                    <td style={{ padding: '10px 14px', borderBottom: '1px solid #e2e8f0', color: '#013978', fontSize: 13, whiteSpace: 'nowrap' }}>{etiquetaPais(u.pais)}</td>
                     <td style={{ padding: '10px 14px', borderBottom: '1px solid #e2e8f0' }}>
                       <span style={{ padding: '3px 10px', borderRadius: 20, fontSize: 11, fontWeight: 600, background: est.bg, color: est.color, border: est.border }}>{u.situacion}</span>
                     </td>
@@ -245,10 +247,20 @@ export default function UsuariosPage() {
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, marginBottom: 4, display: 'block' }}>{t('lbl.rol')}</label>
               <select value={selected.rol} onChange={e => {
                 const rol = roles.find(r => r.nombre === e.target.value)
-                setSelected({ ...selected, rol: e.target.value, permisos: rol?.permisos || selected.permisos })
+                const esAdmin = e.target.value.toLowerCase() === 'admin'
+                setSelected({ ...selected, rol: e.target.value, permisos: rol?.permisos || selected.permisos, pais: esAdmin ? PAIS_GLOBAL : selected.pais })
               }} style={inputStyle}>
                 {rolNames.map(r => <option key={r} value={r}>{r}</option>)}
               </select>
+            </div>
+            <div>
+              <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, marginBottom: 4, display: 'block' }}>País</label>
+              <select value={selected.pais || 'Colombia'} onChange={e => setSelected({ ...selected, pais: e.target.value })} style={inputStyle}>
+                {PAISES_USUARIO.map(p => <option key={p.codigo} value={p.codigo}>{p.bandera} {p.nombre}</option>)}
+              </select>
+              <p style={{ color: '#64748b', fontSize: 11, marginTop: 4 }}>
+                {selected.pais === PAIS_GLOBAL ? 'Ve y administra TODOS los países.' : `Solo verá datos de ${selected.pais}.`}
+              </p>
             </div>
             <div>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, marginBottom: 4, display: 'block' }}>{t('lbl.situacion')}</label>

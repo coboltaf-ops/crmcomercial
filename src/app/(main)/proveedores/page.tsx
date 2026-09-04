@@ -10,6 +10,7 @@ import { fDate, todayColombia } from '@/shared/lib/format-date'
 import { nextConsecutivo } from '@/shared/lib/consecutivo'
 import SeguimientoPanel from '@/shared/components/seguimiento-panel'
 import { Seguimiento } from '@/shared/types/seguimiento'
+import { PAISES_ACTIVOS, esGlobal, etiquetaPais } from '@/shared/lib/paises'
 
 const today = todayColombia()
 

@@ -1,0 +1,19 @@
+[
+  {
+    "id": "be56aa84-024a-4a3f-a25c-b42b679f0d0a",
+    "codigo": "TAR-00001",
+    "fecha_asignacion": "2026-09-02",
+    "hora_asignacion": "08:00",
+    "persona_asigna": "Adriana Cespedes",
+    "persona_ejecuta": "Adriana Cespedes",
+    "fecha_requerida_fin": "2026-09-03",
+    "fecha_real_fin": "2026-09-04",
+    "descripcion": "tener los estados financieros del 2025 ",
+    "situacion": "Pendiente",
+    "fecha_registro": "2026-08-31",
+    "seguimientos": [],
+    "creado_por": "ADRIANA  CESPEDES",
+    "creado_por_usuario": "comer01",
+    "creado_en": "2026-08-31"
+  }
+]

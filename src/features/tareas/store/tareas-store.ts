@@ -26,6 +26,7 @@ export interface Tarea {
   creado_en?: string
   fecha_registro: string
   seguimientos: Seguimiento[]
+  pais?: string
 }
 
 const defaultSituaciones: SituacionTarea[] = [

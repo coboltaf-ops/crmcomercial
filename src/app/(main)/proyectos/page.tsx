@@ -14,19 +14,20 @@ import { nextConsecutivo } from '@/shared/lib/consecutivo'
 import SeguimientoPanel from '@/shared/components/seguimiento-panel'
 import DocumentosPanel from '@/shared/components/documentos-panel'
 import { Seguimiento } from '@/shared/types/seguimiento'
+import { PAISES_ACTIVOS, esGlobal, etiquetaPais } from '@/shared/lib/paises'
 
 const today = todayColombia()
 
 const SITUACION_DEFAULT = ['En Planeación', 'En Ejecución', 'Suspendido', 'Finalizado', 'Cancelado']
 const MONEDA_DEFAULT = ['Pesos Colombianos', 'Dólares', 'Euros']
 
-const emptyProyecto = (codigo: string, responsable: string): Proyecto => ({
+const emptyProyecto = (codigo: string, responsable: string, pais: string): Proyecto => ({
   id: '', codigo, fecha_registro: today, codigo_proyecto: '',
   cliente_id: '', cliente_nombre: '', descripcion: '',
   fecha_estimada_inicio: '', fecha_real_inicio: '',
   es_consorcio: false, nombre_consorcio: '',
   responsable, monto_aprobado: 0, monto_cobrado: 0,
-  tipo_moneda: 'Pesos Colombianos', situacion: 'En Planeación', seguimientos: [],
+  tipo_moneda: 'Pesos Colombianos', situacion: 'En Planeación', seguimientos: [], pais,
 })
 
 export default function ProyectosPage() {

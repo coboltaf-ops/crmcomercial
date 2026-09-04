@@ -1,0 +1,110 @@
+[
+  {
+    "id": "f5bcdd89-1d9d-4f10-8f5d-5d784b1eec5d",
+    "nombre": "Produccion",
+    "apellido": "OK",
+    "empresa": "Vercel KV",
+    "correo": "coboltaf@gmail.com",
+    "nro_movil": "3000000000",
+    "descripcion_requerimiento": "Test final produccion",
+    "fecha_registro": "2026-04-06",
+    "hora_registro": "10:59 p. m.",
+    "importado": true
+  },
+  {
+    "id": "c06b343f-8fcc-4b76-a94d-ad5f26f1e16b",
+    "nombre": "jose",
+    "apellido": "Ruiz",
+    "empresa": "CBS Productir",
+    "correo": "coboltaf@gmail.com",
+    "nro_movil": "321 5453623",
+    "descripcion_requerimiento": "Listo conexión Probemos",
+    "fecha_registro": "2026-04-06",
+    "hora_registro": "11:01 p. m.",
+    "importado": true
+  },
+  {
+    "id": "3e61aa84-26c3-4931-9681-d57744eef9c7",
+    "nombre": "Diag",
+    "apellido": "Test",
+    "empresa": "E",
+    "correo": "diag@test.com",
+    "nro_movil": "3000000",
+    "descripcion_requerimiento": "Diagnostico",
+    "fecha_registro": "2026-04-08",
+    "hora_registro": "01:22 p. m.",
+    "importado": true
+  },
+  {
+    "id": "c58685ed-c414-4375-9af1-9cda0a393391",
+    "nombre": "olga",
+    "apellido": "Velasquez",
+    "empresa": "Prisma",
+    "correo": "olgave@gmail.com",
+    "nro_movil": "300 3451230",
+    "descripcion_requerimiento": "Necesito Asesoría de Marketing Digital",
+    "fecha_registro": "2026-04-14",
+    "hora_registro": "10:05 p. m.",
+    "importado": true
+  },
+  {
+    "id": "00411104-4b6e-4f3e-a7cd-267f62ad5440",
+    "nombre": "PRUEBA",
+    "apellido": "DIRECTO CRM",
+    "empresa": "Test",
+    "correo": "prueba-directo-crm@example.com",
+    "nro_movil": "3000000000",
+    "descripcion_requerimiento": "Prueba directa al endpoint de crmcomercial",
+    "fecha_registro": "2026-07-10",
+    "hora_registro": "05:12 p. m.",
+    "importado": true
+  },
+  {
+    "id": "47f8c8d3-c437-4237-995d-cf7f9b98196a",
+    "nombre": "PRUEBA",
+    "apellido": "CONEXION OK",
+    "empresa": "Test Norton",
+    "correo": "prueba-landing-ok@example.com",
+    "nro_movil": "3001234567",
+    "descripcion_requerimiento": "Verificacion final: landing conectada a crmcomercial\n\n(Origen: Landing Norton · País: Colombia · Ciudad: Medellin)",
+    "fecha_registro": "2026-07-10",
+    "hora_registro": "05:13 p. m.",
+    "importado": true
+  },
+  {
+    "id": "d3354451-566c-4244-8ac4-a84523d06816",
+    "nombre": "Jose",
+    "apellido": "Abreu",
+    "empresa": "Norton Perú",
+    "correo": "jrabreu@gtmgrupo.com",
+    "nro_movil": "+51946379970",
+    "descripcion_requerimiento": "Esto es una prueba de envío de correos.\n\n(Origen: Landing Norton · País: Perú · Ciudad: Lima)",
+    "fecha_registro": "2026-08-15",
+    "hora_registro": "09:36 a. m.",
+    "importado": true
+  },
+  {
+    "id": "015102f9-28a6-4ffe-b78a-1f1ad9c7c7c1",
+    "nombre": "Jose",
+    "apellido": "Abreu",
+    "empresa": "GTM Grupo",
+    "correo": "abreujoseramon@gmail.com",
+    "nro_movil": "+52 8331189114",
+    "descripcion_requerimiento": "Queríamos revisar algunas opciones de trabajo.\n\n(Origen: Landing Norton · País: México · Ciudad: Tampico)",
+    "fecha_registro": "2026-08-17",
+    "hora_registro": "07:23 a. m.",
+    "importado": false
+  },
+  {
+    "id": "0434521c-4054-48f0-bca7-38101c0877c1",
+    "nombre": "Jose",
+    "apellido": "Abreu",
+    "empresa": "Norton Perú",
+    "correo": "jrabreu@gtmgrupo.com",
+    "nro_movil": "+51946379970",
+    "descripcion_requerimiento": "Esta es una prueba de llenado\n\n(Origen: Landing Norton · País: México · Ciudad: Tampico)",
+    "fecha_registro": "2026-08-18",
+    "hora_registro": "05:18 p. m.",
+    "importado": false
+  }
+]

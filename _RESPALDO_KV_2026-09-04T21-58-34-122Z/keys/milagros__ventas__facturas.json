@@ -1,0 +1,92 @@
+[
+  {
+    "id_factura": "FV-001",
+    "id_cliente": "901334",
+    "cliente_nombre": "Cadena Belleza Total S.A.S.",
+    "fecha": "2026-07-21",
+    "valor_total": 463700000,
+    "vendedor": "Juan Carlos Lopez",
+    "canal": "Retail",
+    "estado": "Emitida"
+  },
+  {
+    "id_factura": "FV-002",
+    "id_cliente": "900145",
+    "cliente_nombre": "Distribuidora Bella Imagen",
+    "fecha": "2026-07-20",
+    "valor_total": 680500000,
+    "vendedor": "Juan Carlos Lopez",
+    "canal": "Distribuidores",
+    "estado": "Emitida"
+  },
+  {
+    "id_factura": "FV-003",
+    "id_cliente": "901445",
+    "cliente_nombre": "Mundo Estética & Color",
+    "fecha": "2026-07-18",
+    "valor_total": 286000000,
+    "vendedor": "Juan Carlos Lopez",
+    "canal": "B2B",
+    "estado": "Emitida"
+  },
+  {
+    "id_factura": "FV-004",
+    "id_cliente": "900556",
+    "cliente_nombre": "Almacenes La Fragancia",
+    "fecha": "2026-07-15",
+    "valor_total": 280100000,
+    "vendedor": "Maria Teresa Jaramillo",
+    "canal": "Retail",
+    "estado": "Emitida"
+  },
+  {
+    "id_factura": "FV-005",
+    "id_cliente": "890900",
+    "cliente_nombre": "Supermercados La Economía",
+    "fecha": "2026-07-10",
+    "valor_total": 522800000,
+    "vendedor": "Maria Teresa Jaramillo",
+    "canal": "Retail",
+    "estado": "Emitida"
+  },
+  {
+    "id_factura": "FV-006",
+    "id_cliente": "901334",
+    "cliente_nombre": "Cadena Belleza Total S.A.S.",
+    "fecha": "2026-07-04",
+    "valor_total": 391300000,
+    "vendedor": "Juan Carlos Lopez",
+    "canal": "Retail",
+    "estado": "Emitida"
+  },
+  {
+    "id_factura": "FV-007",
+    "id_cliente": "900145",
+    "cliente_nombre": "Distribuidora Bella Imagen",
+    "fecha": "2026-06-28",
+    "valor_total": 541500000,
+    "vendedor": "Juan Carlos Lopez",
+    "canal": "Distribuidores",
+    "estado": "Emitida"
+  },
+  {
+    "id_factura": "FV-008",
+    "id_cliente": "901556",
+    "cliente_nombre": "Peluquería Estilo Único",
+    "fecha": "2026-04-12",
+    "valor_total": 63050000,
+    "vendedor": "Maria Teresa Jaramillo",
+    "canal": "B2B",
+    "estado": "Emitida"
+  },
+  {
+    "id_factura": "FV-009",
+    "id_cliente": "900667",
+    "cliente_nombre": "Academia de Belleza Profesional",
+    "fecha": "2026-03-20",
+    "valor_total": 80400000,
+    "vendedor": "Juan Carlos Lopez",
+    "canal": "B2B",
+    "estado": "Emitida"
+  }
+]

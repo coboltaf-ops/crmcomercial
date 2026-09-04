@@ -16,6 +16,7 @@ import { Seguimiento } from '@/shared/types/seguimiento'
 import { useEmpresaStore } from '@/features/empresa/store/empresa-store'
 import { useT, useIdioma, useTStatus } from '@/shared/i18n/use-t'
 import { buildWhatsAppLink, isValidPhone } from '@/shared/lib/whatsapp'
+import { PAISES_ACTIVOS, esGlobal, etiquetaPais } from '@/shared/lib/paises'
 
 const today = todayColombia()
 
@@ -25,9 +26,9 @@ interface ProspectoExterno {
   hora_registro: string; importado: boolean
 }
 
-const emptyProspecto = (codigo: string): Prospecto => ({
+const emptyProspecto = (codigo: string, pais: string): Prospecto => ({
   id: '', codigo, nombre: '', apellido: '', empresa: '', correo: '', nro_movil: '',
-  origen_prospecto: '', referenciado_por: '', empresa_referente: '', detalle_requerimiento: '', actividad: '', ciudad: '', pais: 'Colombia',
+  origen_prospecto: '', referenciado_por: '', empresa_referente: '', detalle_requerimiento: '', actividad: '', ciudad: '', pais,
   situacion: 'Nuevo', fecha_registro: today, seguimientos: [],
 })
 
@@ -37,6 +38,8 @@ export default function ProspectosPage() {
   const idioma = useIdioma()
   const permisos = usePermisos('prospectos')
   const currentUser = useCurrentUserStore(s => s.user)
+  const paisUsuario = currentUser?.pais || ''
+  const usuarioGlobal = esGlobal(paisUsuario)
   const empresa = useEmpresaStore(s => s.empresas[0])
   const { prospectos, addProspecto, updateProspecto, deleteProspecto } = useProspectosStore()
   const loadProspectos = useProspectosStore(s => s.loadProspectos)
@@ -49,6 +52,7 @@ export default function ProspectosPage() {
   const [verLectura, setVerLectura] = useState(false)
   const [tab, setTab] = useState<'registros' | 'reportes'>('registros')
   const [search, setSearch] = useState('')
+  const [filtroPais, setFiltroPais] = useState('')  // solo lo usan usuarios GLOBAL
   const { pendingSearch, pendingAction, clearPending } = useAsistenteStore()
 
   // ── Prospectos externos ──

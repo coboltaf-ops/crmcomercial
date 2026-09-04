@@ -1,0 +1,118 @@
+[
+  {
+    "id": "33b6451e-f952-4083-8542-e434a55d4f1a",
+    "codigo": "COT-00001",
+    "nro": 1,
+    "fecha_emision": "2026-04-07",
+    "fecha_vencimiento": "2026-04-10",
+    "cliente_id": "ec7a586c-5d10-499c-893a-90c26b083d86",
+    "cliente_nombre": "Palomares Consultor SAS",
+    "contacto_id": "43992ff6-6afb-4b84-a773-f01760810768",
+    "contacto_nombre": "Gloria Velasquez",
+    "oportunidad_id": "",
+    "oportunidad_nombre": "",
+    "tipo_moneda": "Pesos Colombianos",
+    "condicion_pago": "30 días",
+    "pct_impuesto": 18,
+    "observaciones": "\n\n[ANULADA] Motivo: No la Querian",
+    "detalles": [
+      {
+        "id": "923f5836-2052-495c-9ff1-a43e819a9688",
+        "producto_id": "63bef41d-2eda-4743-b1c1-9f95fa87f221",
+        "codigo_producto": "PRD-003",
+        "descripcion": "Consultoría en Transformación Digital (hora)",
+        "cantidad": 12,
+        "precio_unitario": 350000,
+        "unidad_medida": "Unidad",
+        "descuento_pct": 0,
+        "subtotal": 4200000
+      }
+    ],
+    "situacion": "Anulada",
+    "responsable": "Admin CRM",
+    "vendedor": "Gerardo Florez",
+    "fecha_registro": "2026-04-07",
+    "seguimientos": []
+  },
+  {
+    "id": "856b5dff-a548-49cb-8480-411d8f13f04a",
+    "codigo": "COT-00002",
+    "nro": 2,
+    "fecha_emision": "2026-04-07",
+    "fecha_vencimiento": "2026-04-10",
+    "cliente_id": "d487474e-900e-46d2-bac3-47ecc01204c1",
+    "cliente_nombre": "Logística del Caribe S.A.",
+    "contacto_id": "0fe8c678-873c-4407-bef0-f3fac0e5618e",
+    "contacto_nombre": "Patricia Herrera Díaz",
+    "oportunidad_id": "",
+    "oportunidad_nombre": "",
+    "tipo_moneda": "Pesos Colombianos",
+    "condicion_pago": "15 días",
+    "pct_impuesto": 18,
+    "observaciones": "",
+    "detalles": [
+      {
+        "id": "9ec8e02e-f44b-4365-8542-82531bb9dc6e",
+        "producto_id": "80badc3a-5673-4bcf-8961-de36e1e38bc2",
+        "codigo_producto": "PRD-004",
+        "descripcion": "Switch Cisco Catalyst 9300-48P PoE+",
+        "cantidad": 6,
+        "precio_unitario": 4200,
+        "unidad_medida": "Unidad",
+        "descuento_pct": 0,
+        "subtotal": 25200
+      },
+      {
+        "id": "6c8c4e87-41e3-4f9a-b24e-275c27f93381",
+        "producto_id": "a07c7460-09a8-4bcc-929d-4f5bf9b3d8e8",
+        "codigo_producto": "PRD-007",
+        "descripcion": "Capacitación Microsoft 365 Admin (grupo hasta 15)",
+        "cantidad": 1,
+        "precio_unitario": 5800000,
+        "unidad_medida": "Unidad",
+        "descuento_pct": 0,
+        "subtotal": 5800000
+      }
+    ],
+    "situacion": "Enviada",
+    "responsable": "Admin CRM",
+    "vendedor": "Maria Elisa Tovar",
+    "fecha_registro": "2026-04-07",
+    "seguimientos": []
+  },
+  {
+    "id": "f5ae0037-112f-41ea-ac1c-74722bf24e76",
+    "codigo": "COT-00003",
+    "nro": 3,
+    "fecha_emision": "2026-05-01",
+    "fecha_vencimiento": "2026-05-21",
+    "cliente_id": "fa9978d2-c7af-4779-ae52-abba018c424e",
+    "cliente_nombre": "R Y P CONSTRUCTORA S.A.S..",
+    "contacto_id": "",
+    "contacto_nombre": "",
+    "oportunidad_id": "d9f54db5-83e0-4b04-8ead-dc8bae97dc43",
+    "oportunidad_nombre": "FABRICACIOPN DE EEMM Y ENVOLVENTES",
+    "tipo_moneda": "Pesos Col",
+    "condicion_pago": "30 días",
+    "pct_impuesto": 19,
+    "observaciones": "",
+    "detalles": [
+      {
+        "id": "2b98a888-9815-4f67-a040-17eb9aa209c3",
+        "producto_id": "47a8a95d-e479-4eab-8368-e1356912bb65",
+        "codigo_producto": "PRD-009",
+        "descripcion": "Desarrollo de App Móvil - MVP (proyecto)",
+        "cantidad": 1,
+        "precio_unitario": 7077199279,
+        "unidad_medida": "Unidad",
+        "descuento_pct": 0,
+        "subtotal": 7077199279
+      }
+    ],
+    "situacion": "Enviada",
+    "responsable": "ADMIN CRM",
+    "vendedor": "",
+    "fecha_registro": "2026-05-27",
+    "seguimientos": []
+  }
+]

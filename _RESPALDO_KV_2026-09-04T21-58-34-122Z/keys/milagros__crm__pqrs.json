@@ -1,0 +1,62 @@
+[
+  {
+    "id_pqrs": "PQRS-00001",
+    "tipo": "Petición",
+    "cliente": "CADENA BELLEZA TOTAL S.A.S.",
+    "asunto": "Solicitud de material POP",
+    "situacion": "Abierto",
+    "prioridad": "Media",
+    "responsable": "Jose Palomares",
+    "fecha_registro": "2026-07-05"
+  },
+  {
+    "id_pqrs": "PQRS-00002",
+    "tipo": "Queja",
+    "cliente": "DISTRIBUIDORA BELLA IMAGEN S.A.S.",
+    "asunto": "Demora en despacho de pedido",
+    "situacion": "En proceso",
+    "prioridad": "Alta",
+    "responsable": "Jose Palomares",
+    "fecha_registro": "2026-07-06"
+  },
+  {
+    "id_pqrs": "PQRS-00003",
+    "tipo": "Reclamo",
+    "cliente": "SUPERMERCADOS LA ECONOMÍA",
+    "asunto": "Producto con envase averiado",
+    "situacion": "En proceso",
+    "prioridad": "Alta",
+    "responsable": "Jose Palomares",
+    "fecha_registro": "2026-07-07"
+  },
+  {
+    "id_pqrs": "PQRS-00004",
+    "tipo": "Sugerencia",
+    "cliente": "SALÓN & SPA GLAMOUR",
+    "asunto": "Ampliar gama de tonos de tinte",
+    "situacion": "Abierto",
+    "prioridad": "Baja",
+    "responsable": "Jose Palomares",
+    "fecha_registro": "2026-07-08"
+  },
+  {
+    "id_pqrs": "PQRS-00005",
+    "tipo": "Petición",
+    "cliente": "MUNDO ESTÉTICA & COLOR",
+    "asunto": "Cotización de línea aseo",
+    "situacion": "Cerrado",
+    "prioridad": "Media",
+    "responsable": "Jose Palomares",
+    "fecha_registro": "2026-07-09"
+  },
+  {
+    "id_pqrs": "PQRS-00006",
+    "tipo": "Reclamo",
+    "cliente": "DISTRIBUIDORA DEL CAFÉ COSMÉTICOS",
+    "asunto": "Diferencia en factura",
+    "situacion": "Cerrado",
+    "prioridad": "Media",
+    "responsable": "Jose Palomares",
+    "fecha_registro": "2026-07-10"
+  }
+]

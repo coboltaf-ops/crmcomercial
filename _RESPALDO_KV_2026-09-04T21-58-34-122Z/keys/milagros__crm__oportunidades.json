@@ -1,0 +1,112 @@
+[
+  {
+    "id_oportunidad": "OPO-00001",
+    "nombre": "Abastecimiento anual línea capilar",
+    "cliente": "DISTRIBUIDORA BELLA IMAGEN S.A.S.",
+    "valor_estimado": 18500000,
+    "etapa": "Propuesta",
+    "situacion": "Ganada",
+    "probabilidad": 100,
+    "responsable": "Jose Palomares",
+    "fecha_cierre": "2026-08-10"
+  },
+  {
+    "id_oportunidad": "OPO-00002",
+    "nombre": "Dotación productos spa premium",
+    "cliente": "SALÓN & SPA GLAMOUR",
+    "valor_estimado": 6200000,
+    "etapa": "Negociación",
+    "situacion": "En Negociación",
+    "probabilidad": 55,
+    "responsable": "Jose Palomares",
+    "fecha_cierre": "2026-09-11"
+  },
+  {
+    "id_oportunidad": "OPO-00003",
+    "nombre": "Kit alisado + coloración temporada",
+    "cliente": "PELUQUERÍA ESTILO ÚNICO",
+    "valor_estimado": 3800000,
+    "etapa": "Calificación",
+    "situacion": "Abierta",
+    "probabilidad": 40,
+    "responsable": "Jose Palomares",
+    "fecha_cierre": "2026-08-12"
+  },
+  {
+    "id_oportunidad": "OPO-00004",
+    "nombre": "Contrato retail cadena 12 tiendas",
+    "cliente": "CADENA BELLEZA TOTAL S.A.S.",
+    "valor_estimado": 42000000,
+    "etapa": "Propuesta",
+    "situacion": "Ganada",
+    "probabilidad": 100,
+    "responsable": "Jose Palomares",
+    "fecha_cierre": "2026-09-13"
+  },
+  {
+    "id_oportunidad": "OPO-00005",
+    "nombre": "Distribución regional Eje Cafetero",
+    "cliente": "DISTRIBUIDORA DEL CAFÉ COSMÉTICOS",
+    "valor_estimado": 15300000,
+    "etapa": "Calificación",
+    "situacion": "Abierta",
+    "probabilidad": 50,
+    "responsable": "Jose Palomares",
+    "fecha_cierre": "2026-08-14"
+  },
+  {
+    "id_oportunidad": "OPO-00006",
+    "nombre": "Insumos academia (semestre)",
+    "cliente": "ACADEMIA DE BELLEZA PROFESIONAL",
+    "valor_estimado": 5400000,
+    "etapa": "Negociación",
+    "situacion": "En Negociación",
+    "probabilidad": 65,
+    "responsable": "Jose Palomares",
+    "fecha_cierre": "2026-09-15"
+  },
+  {
+    "id_oportunidad": "OPO-00007",
+    "nombre": "Ingreso góndola supermercados",
+    "cliente": "SUPERMERCADOS LA ECONOMÍA",
+    "valor_estimado": 28000000,
+    "etapa": "Prospección",
+    "situacion": "Abierta",
+    "probabilidad": 35,
+    "responsable": "Jose Palomares",
+    "fecha_cierre": "2026-08-16"
+  },
+  {
+    "id_oportunidad": "OPO-00008",
+    "nombre": "Línea premium boutique VIP",
+    "cliente": "BOUTIQUE CAPILAR VIP",
+    "valor_estimado": 7600000,
+    "etapa": "Negociación",
+    "situacion": "Ganada",
+    "probabilidad": 100,
+    "responsable": "Jose Palomares",
+    "fecha_cierre": "2026-09-17"
+  },
+  {
+    "id_oportunidad": "OPO-00009",
+    "nombre": "Reposición mensual salón + venta",
+    "cliente": "MUNDO ESTÉTICA & COLOR",
+    "valor_estimado": 4100000,
+    "etapa": "Calificación",
+    "situacion": "Abierta",
+    "probabilidad": 45,
+    "responsable": "Jose Palomares",
+    "fecha_cierre": "2026-08-18"
+  },
+  {
+    "id_oportunidad": "OPO-00010",
+    "nombre": "Perfumería y aseo retail",
+    "cliente": "ALMACENES LA FRAGANCIA",
+    "valor_estimado": 11200000,
+    "etapa": "Propuesta",
+    "situacion": "Abierta",
+    "probabilidad": 55,
+    "responsable": "Jose Palomares",
+    "fecha_cierre": "2026-09-19"
+  }
+]

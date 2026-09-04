@@ -25,6 +25,7 @@ export interface Proyecto {
   creado_por_usuario?: string
   creado_en?: string
   seguimientos: Seguimiento[]
+  pais?: string
 }
 
 interface ProyectosState {

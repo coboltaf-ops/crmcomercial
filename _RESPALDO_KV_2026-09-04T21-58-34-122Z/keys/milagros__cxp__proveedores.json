@@ -1,0 +1,30 @@
+[
+  {
+    "id_proveedor": "900111",
+    "razon_social": "Químicos Andinos",
+    "condicion_pago": 45,
+    "categoria": "Materia prima",
+    "dcto_pronto_pago": 2
+  },
+  {
+    "id_proveedor": "900222",
+    "razon_social": "EnvasePlas S.A.",
+    "condicion_pago": 30,
+    "categoria": "Envases",
+    "dcto_pronto_pago": 0
+  },
+  {
+    "id_proveedor": "900333",
+    "razon_social": "Fragancias del Sur",
+    "condicion_pago": 60,
+    "categoria": "Materia prima",
+    "dcto_pronto_pago": 3
+  },
+  {
+    "id_proveedor": "900444",
+    "razon_social": "Etiquetas Nova",
+    "condicion_pago": 30,
+    "categoria": "Etiquetas",
+    "dcto_pronto_pago": 1
+  }
+]
