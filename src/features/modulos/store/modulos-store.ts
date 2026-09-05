@@ -17,7 +17,7 @@ interface ModulosState {
 
 const defaultModulos: Modulo[] = [
   // ── Módulos Principales ──
-  { id: 'manual', label: 'Manual uso CRM Comercial', icon: '📖', href: '/manual', activo: true, grupo: 'principal' },
+  { id: 'manual', label: 'Manual uso CRM', icon: '📖', href: '/manual', activo: true, grupo: 'principal' },
   { id: 'dashboard', label: 'Dashboard', icon: '📊', href: '/dashboard', activo: true, grupo: 'principal' },
   { id: 'clientes', label: 'Empresas', icon: '🏢', href: '/clientes', activo: true, grupo: 'principal' },
   { id: 'contactos', label: 'Contactos', icon: '👤', href: '/contactos', activo: true, grupo: 'principal' },
