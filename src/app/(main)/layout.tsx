@@ -288,7 +288,7 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
               )}
               <div style={{ textAlign: 'center' }}>
                 <p style={{ color: '#ffffff', fontWeight: 800, fontSize: 16, lineHeight: 1.2, margin: 0 }}>{idioma === 'en' ? 'COMMERCIAL MANAGEMENT NORTON' : 'GESTIÓN COMERCIAL NORTON'}</p>
-                <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: 11, margin: '2px 0 0' }}>{empresa?.nombre || (idioma === 'en' ? 'Management System' : 'Sistema de Gestión')}</p>
+                <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: 11, margin: '2px 0 0' }}>{(empresa?.nombre || (idioma === 'en' ? 'Management System' : 'Sistema de Gestión')).replace(/\s*colombia\s*/i, ' ').trim()}</p>
               </div>
             </div>
           )}
