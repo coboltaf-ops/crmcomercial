@@ -59,13 +59,13 @@ nav li, nav a, nav button, nav div {
   color: #FFFFFF !important;
 }
 
-/* Textos del Dashboard: azul oscuro */
-h1, h2, h3, h4, h5, h6 {
+/* Textos del Dashboard: azul oscuro (excepto dentro de Ofertas .po-root) */
+h1:not(.po-root *), h2:not(.po-root *), h3:not(.po-root *), h4:not(.po-root *), h5:not(.po-root *), h6:not(.po-root *) {
   color: #013978 !important;
 }
 
-/* Labels/títulos de formularios: fondo azul oscuro + texto blanco */
-label {
+/* Labels/títulos de formularios: fondo azul oscuro + texto blanco (excepto Ofertas) */
+label:not(.po-root *) {
   color: #FFFFFF !important;
   background: #1e3a8a !important;
   padding: 6px 10px !important;
@@ -75,22 +75,22 @@ label {
   margin-bottom: 6px !important;
 }
 
-/* Tablas (despliegues) con texto negro intenso, un poco más grande */
-table, tr, td {
+/* Tablas (despliegues) con texto negro intenso (excepto Ofertas, que trae sus colores) */
+table:not(.po-root *), tr:not(.po-root *), td:not(.po-root *) {
   color: #000000 !important;
   border-color: rgba(0,0,0,0.2) !important;
   font-size: 14px !important;
 }
 
-/* Encabezados de tablas: texto blanco con fondo azul oscuro */
-th {
+/* Encabezados de tablas: texto blanco con fondo azul oscuro (excepto Ofertas) */
+th:not(.po-root *) {
   color: #FFFFFF !important;
   background: #1e3a8a !important;
   border-color: rgba(0,0,0,0.2) !important;
 }
 
-/* Inputs/formularios: texto NEGRO intenso, un poco más grande, sobre fondo claro */
-input, textarea, select {
+/* Inputs/formularios: texto NEGRO sobre fondo claro (excepto Ofertas, que trae los suyos) */
+input:not(.po-root *), textarea:not(.po-root *), select:not(.po-root *) {
   color: #000000 !important;
   background: rgba(255,255,255,0.9) !important;
   border: 2px solid #1e3a8a !important;
