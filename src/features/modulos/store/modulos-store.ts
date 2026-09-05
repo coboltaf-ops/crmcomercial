@@ -25,7 +25,6 @@ const defaultModulos: Modulo[] = [
   { id: 'oportunidades', label: 'Oportunidades', icon: '🎯', href: '/oportunidades', activo: true, grupo: 'principal' },
   { id: 'proyectos', label: 'Proyectos', icon: '🏗️', href: '/proyectos', activo: true, grupo: 'principal' },
   { id: 'proveedores', label: 'Proveedores', icon: '🏭', href: '/proveedores', activo: true, grupo: 'principal' },
-  { id: 'productos', label: 'Productos', icon: '📦', href: '/productos', activo: true, grupo: 'principal' },
   { id: 'cotizaciones', label: 'Cotizaciones', icon: '📋', href: '/cotizaciones', activo: true, grupo: 'principal' },
   { id: 'pqrs', label: 'PQRS', icon: '📩', href: '/pqrs', activo: true, grupo: 'principal' },
   { id: 'correos', label: 'Correos Enviados', icon: '📧', href: '/correos', activo: true, grupo: 'principal' },

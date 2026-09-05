@@ -158,29 +158,6 @@ const TARJETAS_OPERATIVAS: Tarjeta[] = [
     ],
   },
   {
-    id: 'productos', titulo: 'Productos', icono: '📦', color: '#b45309',
-    intro: 'Este módulo se desarrolló para facilitar las cotizaciones a prospectos o clientes que desean un trabajo muy específico y que la Empresa está en condiciones de atender y ejecutar. Aunque normalmente se manejan las ofertas de licitaciones (con APUs y lineamientos estrictos), es posible que un prospecto o cliente requiera un trabajo más simple, sin entrar en datos tan específicos. Por eso esta lista de productos/materiales es útil según el perfil y la necesidad de cada caso.',
-    puntos: [
-      'Es el catálogo de productos, servicios o materiales que la Empresa ofrece.',
-      'Cada producto pertenece a una Categoría, y esa categoría es la que luego filtra qué productos se pueden agregar en una Cotización.',
-      'Sirve tanto para cotizaciones simples como de insumo para armar ofertas más completas.',
-    ],
-    campos: [
-      { n: 'Categoría', d: 'OBLIGATORIA y va de primero. Se elige desde Referencias (Categoría Productos) y define en qué cotizaciones aparece el producto.' },
-      { n: 'Código', d: 'Consecutivo automático del producto.' },
-      { n: 'Descripción', d: 'Nombre o detalle del producto/servicio.' },
-      { n: 'Unidad de Medida', d: 'Unidad, m², hora, global, etc. (desde Referencias).' },
-      { n: 'Precio Unitario / Moneda', d: 'Valor del producto y su moneda (Pesos por defecto).' },
-      { n: 'Observaciones', d: 'Notas o especificaciones del producto.' },
-      { n: 'Situación', d: 'Activo / Inactivo / Descontinuado.' },
-    ],
-    notas: [
-      'Foto del producto: cada producto SÍ puede tener foto/imagen. Se adjunta en su registro (junto con PDF, Word o Excel), hasta 50 MB por archivo, para verlo en el catálogo y soportar la cotización. El adjunto se habilita después de guardar el producto.',
-      'La Categoría es la llave: define qué productos aparecen al armar una Cotización, así que clasifícalos bien desde el inicio.',
-      'Bitácora de Seguimiento incluida para registrar cambios de precio, notas o novedades del producto.',
-    ],
-  },
-  {
     id: 'cotizaciones', titulo: 'Cotizaciones', icono: '📋', color: '#6d28d9',
     intro: 'Las Cotizaciones son el corazón comercial del CRM: es donde toda la información dispersa se junta para producir una propuesta formal en minutos. Optimiza y agiliza el trabajo porque REUTILIZA los datos que ya viven en el sistema —el cliente, sus contactos, los productos y sus precios— evitando volver a digitar y reduciendo errores. En lugar de armar cada oferta a mano, se genera de forma consistente, con sus cálculos e impuestos automáticos.',
     puntos: [
@@ -478,7 +455,7 @@ export default function ManualPage() {
   const [abierta, setAbierta] = useState<string | null>(null)
 
   // Orden de las tarjetas = orden del menú lateral
-  const ORDEN_MENU = ['introduccion', 'dashboard', 'clientes', 'contactos', 'prospectos', 'oportunidades', 'ofertas', 'productos', 'cotizaciones', 'pqrs', 'tareas']
+  const ORDEN_MENU = ['introduccion', 'dashboard', 'clientes', 'contactos', 'prospectos', 'oportunidades', 'ofertas', 'cotizaciones', 'pqrs', 'tareas']
   const posMenu = (id: string) => { const i = ORDEN_MENU.indexOf(id); return i < 0 ? 999 : i }
   const operativasOrd = [...TARJETAS_OPERATIVAS].sort((a, b) => posMenu(a.id) - posMenu(b.id))
 
