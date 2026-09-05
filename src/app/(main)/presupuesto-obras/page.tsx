@@ -376,11 +376,10 @@ export default function OfertasClientesPage() {
   const abrirNuevo = () => { draftIdRef.current = ''; setVista('todo'); setForm(initForm(nextOfertaConsecutivo(ofertas), usuarioGlobal ? (PAISES_ACTIVOS[0]?.codigo || 'Perú') : paisUsuario)); setFormError(''); setIsFormOpen(true) }
   const abrirEditar = (o: Oferta) => { draftIdRef.current = ''; setVista('todo'); setForm({ ...o, renglones: ordenarSoloTipo(o.renglones.map(r => migrarRenglon({ ...r }))) }); setFormError(''); setIsFormOpen(true) }
   const abrirVer = (o: Oferta) => {
+    // Abre el presupuesto directo (igual que en Operaciones/Borinquen). SIN window.confirm,
+    // que bloqueaba el hilo y hacía parecer que "no traía datos".
     setVista('todo'); setViewItem(o)
-    setUtilPct(o.margen_general || 0); setUtilScope('general'); setUtilMsg('')
-    // Al abrir el presupuesto, preguntar si desea cambiar el Porcentaje de Utilidad
-    const quiere = window.confirm('¿Deseas cambiar el Porcentaje de Utilidad de este presupuesto?\n\nPodrás aplicarlo en general (todo el presupuesto) o solo a un capítulo.')
-    setShowUtil(quiere)
+    setUtilPct(o.margen_general || 0); setUtilScope('general'); setUtilMsg(''); setShowUtil(false)
   }
 
   // Ids de los renglones de DETALLE que pertenecen al bloque de un capítulo (Título T1)
