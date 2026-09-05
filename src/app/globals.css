@@ -18,7 +18,7 @@ body, html {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-main:not(.po-root *), section:not(.po-root *), article:not(.po-root *) {
+main:not(:where(.po-root *)), section:not(:where(.po-root *)), article:not(:where(.po-root *)) {
   background: #FFFFFF !important;
   color: #013978 !important;
   font-family: Arial, Helvetica, sans-serif;
@@ -26,7 +26,7 @@ main:not(.po-root *), section:not(.po-root *), article:not(.po-root *) {
 
 /* El módulo Ofertas (envuelto en .po-root) trae sus propios colores/estructura,
    igual que en Operaciones. Se excluye del fondo blanco global para no romperlo. */
-div:not(.po-root):not(.po-root *) {
+div:not(:where(.po-root, .po-root *)) {
   background: #FFFFFF !important;
 }
 
@@ -39,7 +39,7 @@ div:not(.po-root):not(.po-root *) {
 .manual-back-title { color: var(--card-bg, #1e3a8a) !important; }
 
 /* Textos por defecto en azul oscuro (fondo blanco) — excepto dentro de Ofertas (.po-root) */
-p:not(.po-root *), span:not(.po-root *), a:not(.po-root *), li:not(.po-root *) {
+p:not(:where(.po-root *)), span:not(:where(.po-root *)), a:not(:where(.po-root *)), li:not(:where(.po-root *)) {
   color: #013978 !important;
 }
 
@@ -60,12 +60,12 @@ nav li, nav a, nav button, nav div {
 }
 
 /* Textos del Dashboard: azul oscuro (excepto dentro de Ofertas .po-root) */
-h1:not(.po-root *), h2:not(.po-root *), h3:not(.po-root *), h4:not(.po-root *), h5:not(.po-root *), h6:not(.po-root *) {
+h1:not(:where(.po-root *)), h2:not(:where(.po-root *)), h3:not(:where(.po-root *)), h4:not(:where(.po-root *)), h5:not(:where(.po-root *)), h6:not(:where(.po-root *)) {
   color: #013978 !important;
 }
 
 /* Labels/títulos de formularios: fondo azul oscuro + texto blanco (excepto Ofertas) */
-label:not(.po-root *) {
+label:not(:where(.po-root *)) {
   color: #FFFFFF !important;
   background: #1e3a8a !important;
   padding: 6px 10px !important;
@@ -76,21 +76,21 @@ label:not(.po-root *) {
 }
 
 /* Tablas (despliegues) con texto negro intenso (excepto Ofertas, que trae sus colores) */
-table:not(.po-root *), tr:not(.po-root *), td:not(.po-root *) {
+table:not(:where(.po-root *)), tr:not(:where(.po-root *)), td:not(:where(.po-root *)) {
   color: #000000 !important;
   border-color: rgba(0,0,0,0.2) !important;
   font-size: 14px !important;
 }
 
 /* Encabezados de tablas: texto blanco con fondo azul oscuro (excepto Ofertas) */
-th:not(.po-root *) {
+th:not(:where(.po-root *)) {
   color: #FFFFFF !important;
   background: #1e3a8a !important;
   border-color: rgba(0,0,0,0.2) !important;
 }
 
 /* Inputs/formularios: texto NEGRO sobre fondo claro (excepto Ofertas, que trae los suyos) */
-input:not(.po-root *), textarea:not(.po-root *), select:not(.po-root *) {
+input:not(:where(.po-root *)), textarea:not(:where(.po-root *)), select:not(:where(.po-root *)) {
   color: #000000 !important;
   background: rgba(255,255,255,0.9) !important;
   border: 2px solid #1e3a8a !important;
@@ -144,8 +144,8 @@ div[style*="background:#ffffff"] {
 
 /* Todos los bordes con colores claros → azul oscuro intenso (excepto Ofertas .po-root,
    que trae sus propios bordes; este selector es costoso y ralentiza el modal grande). */
-[style*="border"]:not(.po-root *),
-[style*="border:"]:not(.po-root *) {
+[style*="border"]:not(:where(.po-root *)),
+[style*="border:"]:not(:where(.po-root *)) {
   border-color: #1e3a8a !important;
 }
 

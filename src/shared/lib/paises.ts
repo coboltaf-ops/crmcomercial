@@ -31,7 +31,7 @@ export interface Pais {
 export const PAISES: Pais[] = [
   { codigo: 'Colombia', nombre: 'Colombia', bandera: '🇨🇴', activo: true },
   { codigo: 'Perú', nombre: 'Perú', bandera: '🇵🇪', activo: true },
-  { codigo: 'Ecuador', nombre: 'Ecuador', bandera: '🇪🇨', activo: false },
+  { codigo: 'Ecuador', nombre: 'Ecuador', bandera: '🇪🇨', activo: true },
 ]
 
 /** Países disponibles para elegir en formularios (solo los activos). */
