@@ -208,7 +208,7 @@ const TARJETAS_OPERATIVAS: Tarjeta[] = [
     ],
   },
   {
-    id: 'ofertas', titulo: 'Ofertas — Presupuesto de Obra', icono: '🏗️', color: '#0369a1',
+    id: 'ofertas', titulo: 'Ofertas', icono: '🏗️', color: '#0369a1',
     intro: 'El subsistema de Ofertas es el motor para elaborar PRESUPUESTOS DE OBRA / LICITACIÓN con nivel de APU (Análisis de Precios Unitarios). A diferencia de una cotización simple, aquí se arma una oferta detallada por CAPÍTULOS y RENGLONES, jalando los costos reales de los maestros (Personal, Productos Varios, Maquinaria y Contratistas), y calculando margen de utilidad, impuestos y el monto total — todo listo para presentar reportes profesionales al cliente.',
     puntos: [
       'Presupuesto Ofertas: es la oferta en sí (PR-XXXXX). Tiene su cabecera (Cliente, Proyecto, País, Moneda, % Utilidad, % Impuesto) y sus renglones organizados por Capítulos (Títulos) y Detalles (MOD, MOI, Materiales, Maquinaria, Subcontrato, Otro).',
