@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import { apiUpsert, apiDelete } from '@/shared/lib/list-client'
+import { SEED_SUBCONTRATISTAS } from '../seed-edificio'
 
 // Contratistas (subcontratistas) PROPIOS de crmgtm (multipaís). Se persisten por
 // registro en el servidor (/api/subcontratistas → subcontratistas-datos).
@@ -41,6 +42,12 @@ export const useSubcontratistasStore = create<SubcontratistasState>()((set, get)
       const res = await fetch('/api/subcontratistas', { cache: 'no-store' })
       const data = await res.json()
       const kv: Subcontratista[] = Array.isArray(data) ? data : []
+      if (kv.length === 0) {
+        const seed = SEED_SUBCONTRATISTAS.map((x) => ({ ...x, pais: 'Colombia' })) as Subcontratista[]
+        set({ subcontratistas: seed, loaded: true })
+        for (const x of seed) apiUpsert('/api/subcontratistas', x)
+        return
+      }
       set({ subcontratistas: kv, loaded: true })
     } catch (err) {
       console.error('[subcontratistas-store] load error:', err)

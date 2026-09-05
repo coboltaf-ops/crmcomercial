@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import { apiUpsert, apiDelete } from '@/shared/lib/list-client'
+import { SEED_PRODUCTOS_VARIOS } from '../seed-edificio'
 
 // Productos Varios PROPIOS de crmgtm (multipaís). Se persisten por registro en el
 // servidor (/api/productos-varios → productos-varios-datos). El servidor filtra
@@ -38,6 +39,12 @@ export const useProductosVariosStore = create<ProductosVariosState>()((set, get)
       const res = await fetch('/api/productos-varios', { cache: 'no-store' })
       const data = await res.json()
       const kvProductos: ProductoVario[] = Array.isArray(data) ? data : []
+      if (kvProductos.length === 0) {
+        const seed = SEED_PRODUCTOS_VARIOS.map((x) => ({ ...x, pais: 'Colombia' })) as ProductoVario[]
+        set({ productosVarios: seed, loaded: true })
+        for (const x of seed) apiUpsert('/api/productos-varios', x)
+        return
+      }
       set({ productosVarios: kvProductos, loaded: true })
     } catch (err) {
       console.error('[productos-varios-store] load error:', err)

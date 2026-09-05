@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import { apiUpsert, apiDelete } from '@/shared/lib/list-client'
+import { SEED_PRESUPUESTO_SUBCONTRATISTAS } from '../seed-edificio'
 
 // Presupuesto de Contratistas/Subcontratistas — PROPIO de crmgtm (multipaís).
 // Se persiste por registro en el servidor (/api/presupuesto-subcontratistas →
@@ -45,6 +46,12 @@ export const usePresupuestoSubcontratistasStore = create<PresupuestoSubcontratis
       const res = await fetch('/api/presupuesto-subcontratistas', { cache: 'no-store' })
       const data = await res.json()
       const kv: PresupuestoSubcontratista[] = Array.isArray(data) ? data : []
+      if (kv.length === 0) {
+        const seed = SEED_PRESUPUESTO_SUBCONTRATISTAS.map((x) => ({ ...x, pais: 'Colombia' })) as PresupuestoSubcontratista[]
+        set({ presupuestosSub: seed, loaded: true })
+        for (const x of seed) apiUpsert('/api/presupuesto-subcontratistas', x)
+        return
+      }
       set({ presupuestosSub: kv, loaded: true })
     } catch (err) {
       console.error('[presupuesto-subcontratistas-store] load error:', err)

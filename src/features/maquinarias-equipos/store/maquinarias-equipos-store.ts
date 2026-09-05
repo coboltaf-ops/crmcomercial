@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import { apiUpsert, apiDelete } from '@/shared/lib/list-client'
+import { SEED_MAQUINARIAS } from '../seed-edificio'
 
 // Maquinaria y Equipos PROPIOS de crmgtm (multipaís). Se persisten por registro
 // en el servidor (/api/maquinarias-equipos → maquinarias-equipos-datos).
@@ -42,6 +43,12 @@ export const useMaquinariasStore = create<MaquinariasState>()((set, get) => ({
       const res = await fetch('/api/maquinarias-equipos', { cache: 'no-store' })
       const data = await res.json()
       const kv: MaquinariaEquipo[] = Array.isArray(data) ? data : []
+      if (kv.length === 0) {
+        const seed = SEED_MAQUINARIAS.map((x) => ({ ...x, pais: 'Colombia' })) as MaquinariaEquipo[]
+        set({ maquinarias: seed, loaded: true })
+        for (const x of seed) apiUpsert('/api/maquinarias-equipos', x)
+        return
+      }
       set({ maquinarias: kv, loaded: true })
     } catch (err) {
       console.error('[maquinarias-equipos-store] load error:', err)

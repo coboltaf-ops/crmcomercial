@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import { apiUpsert, apiDelete } from '@/shared/lib/list-client'
+import { SEED_CARGOS } from '../seed-edificio'
 
 // Cargos y Salarios PROPIOS de crmgtm (multipaís). Se persisten por registro en
 // el servidor (/api/cargos-salarios → cargos-salarios-datos). El servidor filtra
@@ -39,6 +40,12 @@ export const useCargosSalariosStore = create<CargosSalariosState>()((set, get) =
       const res = await fetch('/api/cargos-salarios', { cache: 'no-store' })
       const data = await res.json()
       const kvCargos: CargoSalario[] = Array.isArray(data) ? data : []
+      if (kvCargos.length === 0) {
+        const seed = SEED_CARGOS.map((x) => ({ ...x, pais: 'Colombia' })) as CargoSalario[]
+        set({ cargos: seed, loaded: true })
+        for (const x of seed) apiUpsert('/api/cargos-salarios', x)
+        return
+      }
       set({ cargos: kvCargos, loaded: true })
     } catch (err) {
       console.error('[cargos-salarios-store] load error:', err)
