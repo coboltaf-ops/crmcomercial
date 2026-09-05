@@ -18,13 +18,15 @@ body, html {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-main, section, article {
+main:not(.po-root *), section:not(.po-root *), article:not(.po-root *) {
   background: #FFFFFF !important;
   color: #013978 !important;
   font-family: Arial, Helvetica, sans-serif;
 }
 
-div {
+/* El módulo Ofertas (envuelto en .po-root) trae sus propios colores/estructura,
+   igual que en Operaciones. Se excluye del fondo blanco global para no romperlo. */
+div:not(.po-root):not(.po-root *) {
   background: #FFFFFF !important;
 }
 
@@ -36,8 +38,8 @@ div {
 .manual-card-front span { color: #ffffff !important; }
 .manual-back-title { color: var(--card-bg, #1e3a8a) !important; }
 
-/* Textos por defecto en azul oscuro (fondo blanco) */
-p, span, a, li {
+/* Textos por defecto en azul oscuro (fondo blanco) — excepto dentro de Ofertas (.po-root) */
+p:not(.po-root *), span:not(.po-root *), a:not(.po-root *), li:not(.po-root *) {
   color: #013978 !important;
 }
 
