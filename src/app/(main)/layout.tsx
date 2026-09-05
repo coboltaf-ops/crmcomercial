@@ -1,5 +1,5 @@
 'use client'
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, Fragment } from 'react'
 import { useRouter, usePathname } from 'next/navigation'
 import { useCurrentUserStore } from '@/features/usuarios-gestion/store/current-user-store'
 import { useModulosStore } from '@/features/modulos/store/modulos-store'
@@ -108,6 +108,7 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
   const [hint, setHint] = useState('')
   const [listening, setListening] = useState(false)
   const [configOpen, setConfigOpen] = useState(false)
+  const [ofertasOpen, setOfertasOpen] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
   const recognitionRef = useRef<unknown>(null)
 
@@ -220,6 +221,54 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
   const configItems = isAdmin ? modulos
     .filter(m => m.activo && m.grupo === 'configuracion')
     .map(m => ({ href: m.href, icon: m.icon, label: menuLabel(m) })) : []
+  const ofertasItems = modulos
+    .filter(m => m.activo && m.grupo === 'ofertas')
+    .map(m => ({ href: m.href, icon: m.icon, label: menuLabel(m) }))
+
+  // Grupo colapsable "Ofertas" — se renderiza justo debajo de "Oportunidades".
+  const ofertasGroup = ofertasItems.length > 0 ? (
+    <>
+      <button onClick={() => setOfertasOpen(!ofertasOpen)}
+        title={collapsed ? 'Ofertas' : undefined}
+        style={{
+          display: 'flex', alignItems: 'center', gap: 12,
+          padding: collapsed ? '10px 0' : '10px 12px',
+          justifyContent: collapsed ? 'center' : 'flex-start',
+          borderRadius: 10, border: 'none', cursor: 'pointer',
+          background: ofertasOpen ? 'rgba(255,255,255,0.12)' : 'transparent',
+          color: ofertasOpen ? '#ffffff' : 'rgba(255,255,255,0.85)',
+          fontSize: 14, fontWeight: 600, transition: 'all 0.2s', borderLeft: '3px solid transparent',
+        }}>
+        <span style={{ fontSize: 18, flexShrink: 0 }}>📄</span>
+        {!collapsed && (
+          <>
+            <span style={{ flex: 1 }}>Ofertas</span>
+            <span style={{ fontSize: 10, transition: 'transform 0.2s', transform: ofertasOpen ? 'rotate(180deg)' : 'rotate(0deg)' }}>▼</span>
+          </>
+        )}
+      </button>
+      {(ofertasOpen || collapsed) && ofertasItems.map(item => {
+        const active = pathname === item.href
+        return (
+          <button key={item.href} onClick={() => router.push(item.href)}
+            title={collapsed ? item.label : undefined}
+            style={{
+              display: 'flex', alignItems: 'center', gap: 12,
+              padding: collapsed ? '8px 0' : '8px 12px 8px 28px',
+              justifyContent: collapsed ? 'center' : 'flex-start',
+              borderRadius: 8, border: 'none', cursor: 'pointer',
+              background: active ? 'rgba(255,255,255,0.2)' : 'transparent',
+              color: active ? '#ffffff' : 'rgba(255,255,255,0.7)',
+              fontSize: 13, fontWeight: active ? 700 : 500, transition: 'all 0.2s',
+              borderLeft: active ? '3px solid #ffffff' : '3px solid transparent',
+            }}>
+            <span style={{ fontSize: 16, flexShrink: 0 }}>{item.icon}</span>
+            {!collapsed && <span>{item.label}</span>}
+          </button>
+        )
+      })}
+    </>
+  ) : null
 
   const sideW = collapsed ? 64 : 240
 
@@ -288,7 +337,6 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
               )}
               <div style={{ textAlign: 'center' }}>
                 <p style={{ color: '#ffffff', fontWeight: 800, fontSize: 16, lineHeight: 1.2, margin: 0 }}>{idioma === 'en' ? 'COMMERCIAL MANAGEMENT NORTON' : 'GESTIÓN COMERCIAL NORTON'}</p>
-                <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: 11, margin: '2px 0 0' }}>{(empresa?.nombre || (idioma === 'en' ? 'Management System' : 'Sistema de Gestión')).replace(/\s*colombia\s*/i, ' ').trim()}</p>
               </div>
             </div>
           )}
@@ -299,7 +347,8 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
           {mainItems.map(item => {
             const active = pathname === item.href
             return (
-              <button key={item.href} onClick={() => router.push(item.href)}
+              <Fragment key={item.href}>
+              <button onClick={() => router.push(item.href)}
                 title={collapsed ? item.label : undefined}
                 style={{
                   display: 'flex', alignItems: 'center', gap: 12,
@@ -315,6 +364,8 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
                 <span style={{ fontSize: 18, flexShrink: 0 }}>{item.icon}</span>
                 {!collapsed && <span>{item.label}</span>}
               </button>
+              {item.href === '/oportunidades' && ofertasGroup}
+              </Fragment>
             )
           })}
 

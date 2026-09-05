@@ -7,7 +7,7 @@ export interface Modulo {
   icon: string
   href: string
   activo: boolean
-  grupo?: 'principal' | 'configuracion'
+  grupo?: 'principal' | 'configuracion' | 'ofertas'
 }
 
 interface ModulosState {
@@ -30,6 +30,16 @@ const defaultModulos: Modulo[] = [
   { id: 'pqrs', label: 'PQRS', icon: '📩', href: '/pqrs', activo: true, grupo: 'principal' },
   { id: 'correos', label: 'Correos Enviados', icon: '📧', href: '/correos', activo: true, grupo: 'principal' },
   { id: 'tareas', label: 'Tareas', icon: '✅', href: '/tareas', activo: true, grupo: 'principal' },
+
+  // ── Ofertas ──
+  { id: 'presupuesto-obras', label: 'Presupuesto Ofertas', icon: '🧮', href: '/presupuesto-obras', activo: true, grupo: 'ofertas' },
+  { id: 'capitulos-obra', label: 'Capítulos de Oferta', icon: '🗂️', href: '/capitulos-obra', activo: true, grupo: 'ofertas' },
+  { id: 'subcontratistas', label: 'Contratistas', icon: '👷', href: '/subcontratistas', activo: true, grupo: 'ofertas' },
+  { id: 'presupuesto-subcontratistas', label: 'Presupuesto Contratistas', icon: '📑', href: '/presupuesto-subcontratistas', activo: true, grupo: 'ofertas' },
+  { id: 'productos-varios', label: 'Productos Varios', icon: '🧱', href: '/productos-varios', activo: true, grupo: 'ofertas' },
+  { id: 'maquinarias-equipos', label: 'Maquinaria y Equipos', icon: '🚜', href: '/maquinarias-equipos', activo: true, grupo: 'ofertas' },
+  { id: 'cargos-salarios', label: 'Cargos y Salarios', icon: '💼', href: '/cargos-salarios', activo: true, grupo: 'ofertas' },
+
   { id: 'referencias', label: 'Referencias', icon: '⚙️', href: '/referencias', activo: true, grupo: 'configuracion' },
   { id: 'factores-monedas', label: 'Factores Conversión Monedas', icon: '💱', href: '/factores-monedas', activo: true, grupo: 'configuracion' },
 
