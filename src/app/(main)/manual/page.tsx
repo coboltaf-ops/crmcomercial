@@ -12,6 +12,7 @@ type Tarjeta = {
   // Contenido (se va llenando con lo que dicta el usuario)
   intro?: string
   puntos?: string[]
+  pasos?: string[]   // Paso a paso (secuencia numerada)
   campos?: CampoManual[]
   notas?: string[]
 }
@@ -29,7 +30,7 @@ const TARJETAS_OPERATIVAS: Tarjeta[] = [
     notas: [
       'El resultado de atender bien: comentarios y recomendaciones favorables que posicionan a la empresa como un referente en el mundo empresarial.',
       'Por eso el CRM: reúne Mercadeo + Ventas + Servicio al Cliente en un solo lugar, con la visión completa y controlada de la relación con cada cliente.',
-      'Tip país — Este CRM está adecuado a Colombia: montos en Pesos (COP) y ubicación con la estructura del país (Región → Departamento → Ciudad).',
+      'Tip MULTIPAÍS — Este CRM (GESTIÓN COMERCIAL NORTON) maneja varios países. Cada usuario tiene asignado su País y ve SOLO la información de su país; los usuarios GLOBAL (Admin / HQ) ven todos los países. Monedas por país: Colombia → Pesos (COP $) · Perú → Soles (S/) · Ecuador → Dólar (US$). La ubicación se adapta a la estructura de cada país (Colombia: Región → Departamento → Ciudad · Perú: Departamento → Provincia → Distrito).',
     ],
   },
   {
@@ -96,6 +97,15 @@ const TARJETAS_OPERATIVAS: Tarjeta[] = [
       'Un prospecto puede registrarse a mano dentro del CRM o llegar por el Formulario Público / Landing de Norton.',
       'Se le hace seguimiento comercial (llamadas, correos) hasta calificarlo o descartarlo.',
       'Cuando su situación indica que “Requiere una Oferta/Cotización”, se pulsa “Convertir a Cliente” (queda con Tipo Prospecto) y desde ahí se crea la Oportunidad.',
+    ],
+    pasos: [
+      '1) El interesado llena el Formulario Público / Landing de Norton (nombre, empresa, correo, requerimiento).',
+      '2) Ese lead NO entra directo al CRM: primero cae en una BANDEJA DE ENTRADA (pendientes por importar).',
+      '3) La pantalla de Prospectos se revisa sola cada ~15 segundos y AVISA con un globo rojo mostrando cuántos prospectos hay pendientes por incorporar.',
+      '4) El usuario abre la bandeja y revisa cada lead (así filtra spam o datos incompletos antes de que entren a la base).',
+      '5) Pulsa “Importar al CRM” (o “Importar Todas”) para pasarlos a la lista de Prospectos. Entran con Origen = “Formulario Web”.',
+      '6) El sistema le envía al prospecto un correo de confirmación automático.',
+      '7) Se le hace seguimiento en la bitácora hasta calificarlo; cuando “Requiere Oferta/Cotización”, se pulsa “Convertir a Cliente” y se crea la Oportunidad.',
     ],
     campos: [
       { n: 'Código', d: 'Consecutivo automático (PRS-XXXXX).' },
@@ -195,6 +205,33 @@ const TARJETAS_OPERATIVAS: Tarjeta[] = [
       'Cálculo según el Tipo: en Servicios el Impuesto va sobre el Subtotal; en Construcción se activa el AIU (Administración, Imprevistos, Utilidad) y el impuesto se liquida sobre la Utilidad.',
       'Bitácora de Seguimiento: registra la gestión de cada cotización; la Situación del seguimiento actualiza la Situación de la cotización.',
       'Adjuntar archivos: en cada registro se pueden subir fotos, imágenes y documentos (PDF, Word, Excel), hasta 50 MB por archivo.',
+    ],
+  },
+  {
+    id: 'ofertas', titulo: 'Ofertas — Presupuesto de Obra', icono: '🏗️', color: '#0369a1',
+    intro: 'El subsistema de Ofertas es el motor para elaborar PRESUPUESTOS DE OBRA / LICITACIÓN con nivel de APU (Análisis de Precios Unitarios). A diferencia de una cotización simple, aquí se arma una oferta detallada por CAPÍTULOS y RENGLONES, jalando los costos reales de los maestros (Personal, Productos Varios, Maquinaria y Contratistas), y calculando margen de utilidad, impuestos y el monto total — todo listo para presentar reportes profesionales al cliente.',
+    puntos: [
+      'Presupuesto Ofertas: es la oferta en sí (PR-XXXXX). Tiene su cabecera (Cliente, Proyecto, País, Moneda, % Utilidad, % Impuesto) y sus renglones organizados por Capítulos (Títulos) y Detalles (MOD, MOI, Materiales, Maquinaria, Subcontrato, Otro).',
+      'Capítulos de Oferta: la estructura del presupuesto (ej. E-01 Estudios, E-02 Preliminares, E-03 Movimiento de Tierras…). Ordenan los renglones de la oferta.',
+      'Contratistas y Presupuesto Contratistas: el maestro de subcontratistas y sus presupuestos, para los renglones de tipo Subcontrato.',
+      'Productos Varios: materiales/insumos con su costo, que alimentan los renglones de Materiales.',
+      'Maquinaria y Equipos: el maestro de maquinaria/equipos con su costo, para los renglones de Maquinaria.',
+      'Cargos y Salarios: el maestro de personal (cargo, salario, costo día cargado), que alimenta los renglones de MOD (mano de obra directa) y MOI (indirecta).',
+    ],
+    pasos: [
+      '1) Prepara los maestros: registra tus Cargos y Salarios, Productos Varios, Maquinaria y Equipos y Contratistas — de ahí saldrán los costos de cada renglón.',
+      '2) Crea los Capítulos de Oferta (Títulos y subcapítulos) que estructurarán el presupuesto.',
+      '3) En Presupuesto Ofertas pulsa “+ Nueva Oferta” y llena la cabecera: Cliente, Proyecto, País, Moneda, % Utilidad general, % Impuesto y Alcance.',
+      '4) Agrega los renglones: cada uno es un Título (capítulo) o un Detalle (D1=MOD, D2=MOI, D3=Materiales, D4=Maquinaria, D5=Subcontrato, D6=Otro). Al elegir el concepto, el renglón jala el recurso de su maestro con su costo.',
+      '5) Ajusta las cantidades y el % de margen (general o por capítulo). El sistema calcula precio unitario, venta e impuesto automáticamente.',
+      '6) Guarda. En la lista, con el botón “Ver” abres el presupuesto completo con sus subtotales por capítulo y el total general.',
+      '7) Genera los reportes: 📄 Oficial (oferta formal para el cliente), 🖨 APU (análisis de precios unitarios detallado) y 📊 Gráfico (resumen visual por concepto). Se guardan en PDF o se imprimen.',
+    ],
+    notas: [
+      'Motor APU: cada renglón de Detalle jala su costo del maestro correspondiente (Cargos / Productos Varios / Maquinaria / Contratistas). Por eso es CLAVE tener los maestros al día.',
+      'Multipaís: cada oferta lleva su País. Los usuarios GLOBAL ven todas las ofertas; un usuario de un país ve solo las de su país. El filtro 🌎 permite ver por país (Colombia, Perú, Ecuador).',
+      'Conceptos con color: MOD, MOI, Materiales, Maquinaria y Vehículos, Subcontrato y Otro se distinguen por color para leer rápido el presupuesto.',
+      'Transparencia: los reportes muestran el desglose completo (Costos, Ventas y Utilidad), para presentar la oferta con total claridad al cliente.',
     ],
   },
   {
@@ -440,6 +477,11 @@ export default function ManualPage() {
   const isAdmin = (user?.rol || '').toLowerCase() === 'admin'
   const [abierta, setAbierta] = useState<string | null>(null)
 
+  // Orden de las tarjetas = orden del menú lateral
+  const ORDEN_MENU = ['introduccion', 'dashboard', 'clientes', 'contactos', 'prospectos', 'oportunidades', 'ofertas', 'productos', 'cotizaciones', 'pqrs', 'tareas']
+  const posMenu = (id: string) => { const i = ORDEN_MENU.indexOf(id); return i < 0 ? 999 : i }
+  const operativasOrd = [...TARJETAS_OPERATIVAS].sort((a, b) => posMenu(a.id) - posMenu(b.id))
+
   const todas = [...TARJETAS_OPERATIVAS, ...TARJETAS_ADMIN]
   const tarjeta = todas.find(t => t.id === abierta) || null
   const tieneContenido = (t: Tarjeta) => !!(t.intro || t.puntos?.length || t.campos?.length || t.notas?.length)
@@ -499,6 +541,20 @@ export default function ManualPage() {
                 </ul>
               )}
 
+              {t.pasos && t.pasos.length > 0 && (
+                <div>
+                  <p style={{ color: t.color, fontSize: 16, fontWeight: 800, marginBottom: 10 }}>Paso a paso</p>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                    {t.pasos.map((paso, i) => (
+                      <div key={i} style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
+                        <span style={{ flexShrink: 0, width: 28, height: 28, borderRadius: 999, background: t.color, color: '#ffffff', fontSize: 14, fontWeight: 800, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{i + 1}</span>
+                        <p style={{ color: '#0f172a', fontSize: 14.5, lineHeight: 1.55, paddingTop: 3 }}>{paso.replace(/^\d+\)\s*/, '')}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
               {t.campos && t.campos.length > 0 && (
                 <div>
                   <p style={{ color: t.color, fontSize: 16, fontWeight: 800, marginBottom: 8 }}>Campos del formulario</p>
@@ -541,16 +597,16 @@ export default function ManualPage() {
         background: 'linear-gradient(135deg, #1e3a8a 0%, #0f766e 100%)', borderRadius: 18, padding: '28px 24px',
         marginBottom: 8, boxShadow: '0 10px 24px rgba(0,0,0,0.15)',
       }}>
-        <h1 style={{ color: '#ffffff', fontSize: 30, fontWeight: 900, letterSpacing: 0.3 }}>Manejo Operativo del CRM Comercial</h1>
+        <h1 style={{ color: '#ffffff', fontSize: 30, fontWeight: 900, letterSpacing: 0.3 }}>Manual de Uso — GESTIÓN COMERCIAL NORTON</h1>
         <p style={{ color: 'rgba(255,255,255,0.85)', fontSize: 14, marginTop: 6 }}>
-          Toca una tarjeta para abrirla en página completa. Todo en uno.
+          Guía por módulos, paso a paso. Toca una tarjeta para abrirla en página completa.
         </p>
       </div>
 
       {/* Módulos operativos */}
       <h2 style={{ color: '#013978', fontSize: 18, fontWeight: 800, marginTop: 24 }}>Módulos Operativos</h2>
       <div style={grid}>
-        {TARJETAS_OPERATIVAS.map(t => <Tile key={t.id} t={t} />)}
+        {operativasOrd.map(t => <Tile key={t.id} t={t} />)}
       </div>
 
       {/* Administración — solo Admin */}

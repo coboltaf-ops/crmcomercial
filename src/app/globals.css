@@ -229,7 +229,7 @@ div[style*="rgba(255,255,255,0.05)"] * {
 }
 .login-screen .login-card {
   background: #ffffff !important;
-  border-color: #1e3a8a !important;
+  border: 3px solid #000000 !important;
 }
 .login-screen h1 {
   color: #000000 !important;
