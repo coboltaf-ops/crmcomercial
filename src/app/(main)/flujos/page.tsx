@@ -1,4 +1,5 @@
 'use client'
+import { useIdioma } from '@/shared/i18n/use-t'
 import { useState } from 'react'
 import { useFlujosStore, Flujo, Condicion, Accion, MODULOS_FLUJO, TRIGGERS, OPERADORES, TIPOS_ACCION } from '@/features/flujos/store/flujos-store'
 import { useCurrentUserStore } from '@/features/usuarios-gestion/store/current-user-store'
@@ -24,6 +25,8 @@ const CAMPOS_MODULO: Record<string, { id: string; label: string }[]> = {
 type Vista = 'lista' | 'constructor' | 'detalle'
 
 export default function FlujosPage() {
+  const idioma = useIdioma()
+  const es = idioma !== 'en'
   const user = useCurrentUserStore(s => s.user)
   const { flujos, addFlujo, updateFlujo, deleteFlujo, toggleActivo, duplicarFlujo } = useFlujosStore()
   const vendedores = useReferenceStore(s => s.vendedores)
@@ -234,21 +237,21 @@ export default function FlujosPage() {
               <h3 style={{ color: '#fff', fontSize: 14, fontWeight: 700, marginBottom: 12 }}>Datos del Flujo</h3>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
                 <div style={{ gridColumn: 'span 2' }}>
-                  <label style={labelStyle}>Nombre *</label>
+                  <label style={labelStyle}>{es ? 'Nombre *' : 'Name *'}</label>
                   <input value={editing.nombre} onChange={e => setEditing({ ...editing, nombre: e.target.value })} placeholder="Ej: Notificar PQRS Urgente" style={inputStyle} />
                 </div>
                 <div>
-                  <label style={labelStyle}>Módulo *</label>
+                  <label style={labelStyle}>{es ? 'Módulo *' : 'Module *'}</label>
                   <select value={editing.modulo} onChange={e => setEditing({ ...editing, modulo: e.target.value, condiciones: [], trigger_campo: '' })} style={inputStyle}>
                     {MODULOS_FLUJO.map(m => <option key={m.id} value={m.id}>{m.label}</option>)}
                   </select>
                 </div>
                 <div>
-                  <label style={labelStyle}>Código</label>
+                  <label style={labelStyle}>{es ? 'Código' : 'Code'}</label>
                   <input value={editing.codigo} readOnly style={{ ...inputStyle, opacity: 0.5 }} />
                 </div>
                 <div style={{ gridColumn: 'span 2' }}>
-                  <label style={labelStyle}>Descripción</label>
+                  <label style={labelStyle}>{es ? 'Descripción' : 'Description'}</label>
                   <input value={editing.descripcion} onChange={e => setEditing({ ...editing, descripcion: e.target.value })} placeholder="Describir qué hace este flujo..." style={inputStyle} />
                 </div>
               </div>
@@ -310,14 +313,14 @@ export default function FlujosPage() {
               <h3 style={{ color: '#60a5fa', fontSize: 14, fontWeight: 700, marginBottom: 12 }}>⚡ Trigger (Cuándo se dispara)</h3>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
                 <div>
-                  <label style={labelStyle}>Evento</label>
+                  <label style={labelStyle}>{es ? 'Evento' : 'Event'}</label>
                   <select value={editing.trigger} onChange={e => setEditing({ ...editing, trigger: e.target.value, trigger_campo: '' })} style={inputStyle}>
                     {TRIGGERS.map(t => <option key={t.id} value={t.id}>{t.label}</option>)}
                   </select>
                 </div>
                 {editing.trigger === 'field_changed' && (
                   <div>
-                    <label style={labelStyle}>Campo que cambia</label>
+                    <label style={labelStyle}>{es ? 'Campo que cambia' : 'Field that changes'}</label>
                     <select value={editing.trigger_campo} onChange={e => setEditing({ ...editing, trigger_campo: e.target.value })} style={inputStyle}>
                       <option value="">Seleccionar...</option>
                       {camposModulo.map(c => <option key={c.id} value={c.id}>{c.label}</option>)}
@@ -327,11 +330,11 @@ export default function FlujosPage() {
                 {editing.trigger === 'scheduled' && (
                   <>
                     <div>
-                      <label style={labelStyle}>Fecha Programada *</label>
+                      <label style={labelStyle}>{es ? 'Fecha Programada *' : 'Scheduled Date *'}</label>
                       <input type="date" value={editing.fecha_programada || ''} onChange={e => setEditing({ ...editing, fecha_programada: e.target.value, ejecutado_programado: false })} style={inputStyle} />
                     </div>
                     <div>
-                      <label style={labelStyle}>Hora Programada</label>
+                      <label style={labelStyle}>{es ? 'Hora Programada' : 'Scheduled Time'}</label>
                       <input type="time" value={editing.hora_programada || ''} onChange={e => setEditing({ ...editing, hora_programada: e.target.value, ejecutado_programado: false })} style={inputStyle} />
                     </div>
                   </>
@@ -398,45 +401,45 @@ export default function FlujosPage() {
                   {/* Config segun tipo */}
                   {a.tipo === 'send_email' && (
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
-                      <div><label style={labelStyle}>Para (email)</label><input value={a.config.to || ''} onChange={e => updateAccionConfig(i, 'to', e.target.value)} placeholder="{{correo}} o email fijo" style={inputStyle} /></div>
-                      <div><label style={labelStyle}>Nombre destino</label><input value={a.config.nombre_destino || ''} onChange={e => updateAccionConfig(i, 'nombre_destino', e.target.value)} placeholder="{{nombre}}" style={inputStyle} /></div>
-                      <div style={{ gridColumn: 'span 2' }}><label style={labelStyle}>Asunto</label><input value={a.config.asunto || ''} onChange={e => updateAccionConfig(i, 'asunto', e.target.value)} placeholder="Asunto del email" style={inputStyle} /></div>
-                      <div style={{ gridColumn: 'span 2' }}><label style={labelStyle}>Contenido HTML</label><textarea value={a.config.contenido || ''} onChange={e => updateAccionConfig(i, 'contenido', e.target.value)} placeholder="<p>Hola {{nombre}}...</p>" style={{ ...inputStyle, minHeight: 80 }} /></div>
+                      <div><label style={labelStyle}>{es ? 'Para (email)' : 'To (email)'}</label><input value={a.config.to || ''} onChange={e => updateAccionConfig(i, 'to', e.target.value)} placeholder="{{correo}} o email fijo" style={inputStyle} /></div>
+                      <div><label style={labelStyle}>{es ? 'Nombre destino' : 'Target name'}</label><input value={a.config.nombre_destino || ''} onChange={e => updateAccionConfig(i, 'nombre_destino', e.target.value)} placeholder="{{nombre}}" style={inputStyle} /></div>
+                      <div style={{ gridColumn: 'span 2' }}><label style={labelStyle}>{es ? 'Asunto' : 'Subject'}</label><input value={a.config.asunto || ''} onChange={e => updateAccionConfig(i, 'asunto', e.target.value)} placeholder="Asunto del email" style={inputStyle} /></div>
+                      <div style={{ gridColumn: 'span 2' }}><label style={labelStyle}>{es ? 'Contenido HTML' : 'HTML Content'}</label><textarea value={a.config.contenido || ''} onChange={e => updateAccionConfig(i, 'contenido', e.target.value)} placeholder="<p>Hola {{nombre}}...</p>" style={{ ...inputStyle, minHeight: 80 }} /></div>
                     </div>
                   )}
                   {a.tipo === 'create_tarea' && (
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
-                      <div><label style={labelStyle}>Persona Asigna</label>
+                      <div><label style={labelStyle}>{es ? 'Persona Asigna' : 'Assigned by'}</label>
                         <select value={a.config.persona_asigna || ''} onChange={e => updateAccionConfig(i, 'persona_asigna', e.target.value)} style={inputStyle}>
                           <option value="Sistema">Sistema</option>
                           {personas.map(p => <option key={p} value={p}>{p}</option>)}
                         </select>
                       </div>
-                      <div><label style={labelStyle}>Persona Ejecuta</label>
+                      <div><label style={labelStyle}>{es ? 'Persona Ejecuta' : 'Executed by'}</label>
                         <select value={a.config.persona_ejecuta || ''} onChange={e => updateAccionConfig(i, 'persona_ejecuta', e.target.value)} style={inputStyle}>
                           <option value="">Seleccionar...</option>
                           {personas.map(p => <option key={p} value={p}>{p}</option>)}
                         </select>
                       </div>
-                      <div><label style={labelStyle}>Días de plazo</label><input type="number" value={a.config.dias_plazo || ''} onChange={e => updateAccionConfig(i, 'dias_plazo', e.target.value)} placeholder="3" style={inputStyle} /></div>
-                      <div style={{ gridColumn: 'span 2' }}><label style={labelStyle}>Descripción tarea</label><input value={a.config.descripcion || ''} onChange={e => updateAccionConfig(i, 'descripcion', e.target.value)} placeholder="Seguimiento a {{codigo}}" style={inputStyle} /></div>
+                      <div><label style={labelStyle}>{es ? 'Días de plazo' : 'Days term'}</label><input type="number" value={a.config.dias_plazo || ''} onChange={e => updateAccionConfig(i, 'dias_plazo', e.target.value)} placeholder="3" style={inputStyle} /></div>
+                      <div style={{ gridColumn: 'span 2' }}><label style={labelStyle}>{es ? 'Descripción tarea' : 'Task Description'}</label><input value={a.config.descripcion || ''} onChange={e => updateAccionConfig(i, 'descripcion', e.target.value)} placeholder="Seguimiento a {{codigo}}" style={inputStyle} /></div>
                     </div>
                   )}
                   {a.tipo === 'update_field' && (
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
-                      <div><label style={labelStyle}>Campo</label>
+                      <div><label style={labelStyle}>{es ? 'Campo' : 'Field'}</label>
                         <select value={a.config.campo || ''} onChange={e => updateAccionConfig(i, 'campo', e.target.value)} style={inputStyle}>
                           <option value="">Seleccionar...</option>
                           {(CAMPOS_MODULO[a.modulo_destino] || []).map(c => <option key={c.id} value={c.id}>{c.label}</option>)}
                         </select>
                       </div>
-                      <div><label style={labelStyle}>Nuevo valor</label><input value={a.config.valor || ''} onChange={e => updateAccionConfig(i, 'valor', e.target.value)} placeholder="Valor o {{variable}}" style={inputStyle} /></div>
+                      <div><label style={labelStyle}>{es ? 'Nuevo valor' : 'New value'}</label><input value={a.config.valor || ''} onChange={e => updateAccionConfig(i, 'valor', e.target.value)} placeholder="Valor o {{variable}}" style={inputStyle} /></div>
                     </div>
                   )}
                   {a.tipo === 'add_seguimiento' && (
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
-                      <div style={{ gridColumn: 'span 2' }}><label style={labelStyle}>Detalle del seguimiento</label><input value={a.config.detalle || ''} onChange={e => updateAccionConfig(i, 'detalle', e.target.value)} placeholder="Acción automática: {{codigo}}" style={inputStyle} /></div>
-                      <div><label style={labelStyle}>Situación</label><input value={a.config.situacion || ''} onChange={e => updateAccionConfig(i, 'situacion', e.target.value)} placeholder="{{situacion}}" style={inputStyle} /></div>
+                      <div style={{ gridColumn: 'span 2' }}><label style={labelStyle}>{es ? 'Detalle del seguimiento' : 'Follow-up detail'}</label><input value={a.config.detalle || ''} onChange={e => updateAccionConfig(i, 'detalle', e.target.value)} placeholder="Acción automática: {{codigo}}" style={inputStyle} /></div>
+                      <div><label style={labelStyle}>{es ? 'Situación' : 'Status'}</label><input value={a.config.situacion || ''} onChange={e => updateAccionConfig(i, 'situacion', e.target.value)} placeholder="{{situacion}}" style={inputStyle} /></div>
                     </div>
                   )}
                   {a.tipo === 'create_record' && (

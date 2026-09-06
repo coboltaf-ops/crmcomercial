@@ -1,4 +1,5 @@
 'use client'
+import { useIdioma } from '@/shared/i18n/use-t'
 import { useState, useRef } from 'react'
 import { useDirenadorStore, PlantillaCorreo } from '@/features/disenador-correos/store/disenador-store'
 import { useEmpresaStore } from '@/features/empresa/store/empresa-store'
@@ -23,6 +24,8 @@ const bloques = [
 type Vista = 'lista' | 'editor'
 
 export default function DisenadorCorreosPage() {
+  const idioma = useIdioma()
+  const es = idioma !== 'en'
   const { plantillas, addPlantilla, updatePlantilla, deletePlantilla, duplicarPlantilla } = useDirenadorStore()
   const empresas = useEmpresaStore(s => s.empresas)
   const empresaNombre = empresas?.[0]?.nombre || 'CRM Comercial'
@@ -143,22 +146,22 @@ export default function DisenadorCorreosPage() {
           <div style={cardStyle}>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 14 }}>
               <div>
-                <label style={labelStyle}>Nombre *</label>
+                <label style={labelStyle}>{es ? 'Nombre *' : 'Name *'}</label>
                 <input value={editing.nombre} onChange={e => setEditing({ ...editing, nombre: e.target.value })} placeholder="Ej: Bienvenida Premium" style={inputStyle} />
               </div>
               <div>
-                <label style={labelStyle}>Categoria</label>
+                <label style={labelStyle}>{es ? 'Categoria' : 'Category'}</label>
                 <select value={editing.categoria} onChange={e => setEditing({ ...editing, categoria: e.target.value })} style={inputStyle}>
                   {categorias.map(c => <option key={c} value={c}>{c}</option>)}
                 </select>
               </div>
               <div style={{ gridColumn: 'span 2' }}>
-                <label style={labelStyle}>Asunto del Correo *</label>
+                <label style={labelStyle}>{es ? 'Asunto del Correo *' : 'Email Subject *'}</label>
                 <input value={editing.asunto} onChange={e => setEditing({ ...editing, asunto: e.target.value })} placeholder="Ej: Bienvenido a {{empresa}}" style={inputStyle} />
               </div>
             </div>
             <div>
-              <label style={labelStyle}>Contenido HTML</label>
+              <label style={labelStyle}>{es ? 'Contenido HTML' : 'HTML Content'}</label>
               <textarea value={editing.contenido} onChange={e => setEditing({ ...editing, contenido: e.target.value })}
                 style={{ ...inputStyle, minHeight: 420, fontFamily: 'monospace', fontSize: 12, lineHeight: 1.5 }}
                 placeholder="Escriba o inserte bloques HTML..." />

@@ -1,4 +1,5 @@
 'use client'
+import { useIdioma } from '@/shared/i18n/use-t'
 import { logAudit, computarDiff } from '@/shared/lib/audit'
 import { useState, useEffect } from 'react'
 import ModuleHeader from '@/shared/components/module-header'
@@ -31,6 +32,8 @@ const emptyProyecto = (codigo: string, responsable: string, pais: string): Proye
 })
 
 export default function ProyectosPage() {
+  const idioma = useIdioma()
+  const es = idioma !== 'en'
   const currentUser = useCurrentUserStore(s => s.user)
   const paisUsuario = currentUser?.pais || ''
   const usuarioGlobal = esGlobal(paisUsuario)
@@ -104,19 +107,19 @@ export default function ProyectosPage() {
           <fieldset disabled={verLectura} style={{ border: 'none', padding: 0, margin: 0, minInlineSize: 'auto' }}>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 16 }}>
               <div>
-                <label style={labelStyle}>Nro Proyecto *</label>
+                <label style={labelStyle}>{es ? 'Nro Proyecto *' : 'Project No. *'}</label>
                 {verLectura ? <div className="ver-box">{selected.codigo || '—'}</div> : <input value={selected.codigo} readOnly style={inputRO} />}
               </div>
               <div>
-                <label style={labelStyle}>Fecha Registro</label>
+                <label style={labelStyle}>{es ? 'Fecha Registro' : 'Registration Date'}</label>
                 {verLectura ? <div className="ver-box">{fDate(selected.fecha_registro || today) || '—'}</div> : <input value={fDate(selected.fecha_registro || today)} readOnly style={inputRO} />}
               </div>
               <div>
-                <label style={labelStyle}>Código Proyecto</label>
+                <label style={labelStyle}>{es ? 'Código Proyecto' : 'Project Code'}</label>
                 {verLectura ? <div className="ver-box">{selected.codigo_proyecto || '—'}</div> : <input value={selected.codigo_proyecto} onChange={e => setSelected({ ...selected, codigo_proyecto: e.target.value.toUpperCase() })} placeholder="Código del proyecto..." style={inputStyle} />}
               </div>
               <div style={{ gridColumn: 'span 2' }}>
-                <label style={labelStyle}>Cliente *</label>
+                <label style={labelStyle}>{es ? 'Cliente *' : 'Client *'}</label>
                 {verLectura ? <div className="ver-box">{selected.cliente_nombre || '—'}</div> : <select value={selected.cliente_id} onChange={e => {
                   const cli = clientes.find(c => c.id === e.target.value)
                   setSelected({ ...selected, cliente_id: e.target.value, cliente_nombre: cli?.razon_social || '' })
@@ -129,11 +132,11 @@ export default function ProyectosPage() {
                 </select>}
               </div>
               <div>
-                <label style={labelStyle}>Responsable del Proyecto</label>
+                <label style={labelStyle}>{es ? 'Responsable del Proyecto' : 'Project Manager'}</label>
                 {verLectura ? <div className="ver-box">{selected.responsable || '—'}</div> : <input value={selected.responsable} onChange={e => setSelected({ ...selected, responsable: e.target.value })} placeholder="Responsable..." style={inputStyle} />}
               </div>
               <div>
-                <label style={labelStyle}>País{usuarioGlobal && ' *'}</label>
+                <label style={labelStyle}>{es ? 'País' : 'Country'}{usuarioGlobal && ' *'}</label>
                 {verLectura ? <div className="ver-box">{etiquetaPais(selected.pais)}</div> : usuarioGlobal ? (
                   <select value={selected.pais || ''} onChange={e => setSelected({ ...selected, pais: e.target.value })} style={inputStyle}>
                     {PAISES_ACTIVOS.map(p => <option key={p.codigo} value={p.codigo}>{p.bandera} {p.nombre}</option>)}
@@ -143,19 +146,19 @@ export default function ProyectosPage() {
                 )}
               </div>
               <div style={{ gridColumn: 'span 3' }}>
-                <label style={labelStyle}>Descripción Detallada del Proyecto</label>
+                <label style={labelStyle}>{es ? 'Descripción Detallada del Proyecto' : 'Detailed Project Description'}</label>
                 {verLectura ? <div className="ver-box">{selected.descripcion || '—'}</div> : <textarea value={selected.descripcion} onChange={e => setSelected({ ...selected, descripcion: e.target.value })} rows={3} placeholder="Descripción del proyecto..." style={{ ...inputStyle, resize: 'vertical' }} />}
               </div>
               <div>
-                <label style={labelStyle}>Fecha Estimada Inicio</label>
+                <label style={labelStyle}>{es ? 'Fecha Estimada Inicio' : 'Estimated Start Date'}</label>
                 {verLectura ? <div className="ver-box">{selected.fecha_estimada_inicio || '—'}</div> : <input type="date" value={selected.fecha_estimada_inicio} onChange={e => setSelected({ ...selected, fecha_estimada_inicio: e.target.value })} style={inputStyle} />}
               </div>
               <div>
-                <label style={labelStyle}>Fecha Real Inicio</label>
+                <label style={labelStyle}>{es ? 'Fecha Real Inicio' : 'Actual Start Date'}</label>
                 {verLectura ? <div className="ver-box">{selected.fecha_real_inicio || '—'}</div> : <input type="date" value={selected.fecha_real_inicio} onChange={e => setSelected({ ...selected, fecha_real_inicio: e.target.value })} style={inputStyle} />}
               </div>
               <div>
-                <label style={labelStyle}>¿Es con Consorcio?</label>
+                <label style={labelStyle}>{es ? '¿Es con Consorcio?' : 'Is it a Consortium?'}</label>
                 {verLectura ? <div className="ver-box">{selected.es_consorcio ? 'Si' : 'No'}</div> : <select value={selected.es_consorcio ? 'Si' : 'No'} onChange={e => setSelected({ ...selected, es_consorcio: e.target.value === 'Si', nombre_consorcio: e.target.value === 'Si' ? selected.nombre_consorcio : '' })} style={inputStyle}>
                   <option value="No">No</option>
                   <option value="Si">Sí</option>
@@ -163,26 +166,26 @@ export default function ProyectosPage() {
               </div>
               {selected.es_consorcio && (
                 <div style={{ gridColumn: 'span 3' }}>
-                  <label style={labelStyle}>Nombre del Consorcio</label>
+                  <label style={labelStyle}>{es ? 'Nombre del Consorcio' : 'Consortium Name'}</label>
                   {verLectura ? <div className="ver-box">{selected.nombre_consorcio || '—'}</div> : <input value={selected.nombre_consorcio} onChange={e => setSelected({ ...selected, nombre_consorcio: e.target.value.toUpperCase() })} placeholder="Nombre del consorcio..." style={inputStyle} />}
                 </div>
               )}
               <div>
-                <label style={labelStyle}>Tipo de Moneda</label>
+                <label style={labelStyle}>{es ? 'Tipo de Moneda' : 'Currency Type'}</label>
                 {verLectura ? <div className="ver-box">{selected.tipo_moneda || '—'}</div> : <select value={selected.tipo_moneda} onChange={e => setSelected({ ...selected, tipo_moneda: e.target.value })} style={inputStyle}>
                   {refOptions('tipo_moneda', MONEDA_DEFAULT).map(o => <option key={o} value={o}>{o}</option>)}
                 </select>}
               </div>
               <div>
-                <label style={labelStyle}>Monto Aprobado</label>
+                <label style={labelStyle}>{es ? 'Monto Aprobado' : 'Approved Amount'}</label>
                 <MoneyInput value={selected.monto_aprobado || 0} onChange={n => setSelected({ ...selected, monto_aprobado: n })} placeholder="0" style={inputStyle} />
               </div>
               <div>
-                <label style={labelStyle}>Monto Cobrado</label>
+                <label style={labelStyle}>{es ? 'Monto Cobrado' : 'Collected Amount'}</label>
                 <MoneyInput value={selected.monto_cobrado || 0} onChange={n => setSelected({ ...selected, monto_cobrado: n })} placeholder="0" style={inputStyle} />
               </div>
               <div>
-                <label style={labelStyle}>Situación</label>
+                <label style={labelStyle}>{es ? 'Situación' : 'Status'}</label>
                 {verLectura ? <div className="ver-box">{selected.situacion || '—'}</div> : <select value={selected.situacion} onChange={e => setSelected({ ...selected, situacion: e.target.value })} style={inputStyle}>
                   {refOptions('situacion_proyecto', SITUACION_DEFAULT).map(o => <option key={o} value={o}>{o}</option>)}
                 </select>}
@@ -222,7 +225,7 @@ export default function ProyectosPage() {
   // ── VISTA PRINCIPAL ──
   return (
     <div>
-      <ModuleHeader title="Proyectos" subtitle="Gestión de proyectos" />
+      <ModuleHeader title={es ? 'Proyectos' : 'Projects'} subtitle={es ? 'Gestión de proyectos' : 'Project management'} />
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16, gap: 12, flexWrap: 'wrap' }}>
         <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Buscar por código, cliente o responsable..." style={{ ...inputStyle, maxWidth: 360 }} />
         {usuarioGlobal && (

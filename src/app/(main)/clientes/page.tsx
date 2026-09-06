@@ -58,6 +58,7 @@ export default function ClientesPage() {
   const t = useT()
   const ts = useTStatus()
   const idioma = useIdioma()
+  const es = idioma !== 'en'
   const permisos = usePermisos('clientes')
   const currentUser = useCurrentUserStore(s => s.user)
   const paisUsuario = currentUser?.pais || ''
@@ -569,14 +570,14 @@ export default function ClientesPage() {
                 )}
               </div>
               <div>
-                <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>Región</label>
+                <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{es ? 'Región' : 'Region'}</label>
                 {verLectura ? <div className="ver-box">{regionEff || '—'}</div> : <select value={regionEff} onChange={e => { const v = e.target.value; const same = v === regionEff; setSelected({ ...selected, region: v, departamento: same ? deptoEff : '', ciudad: same ? selected.ciudad : '' }) }} style={inputStyle}>
                   <option value="">{t("campo.seleccionar")}</option>
                   {nivel1De(paisEff).map(o => <option key={o} value={o}>{o}</option>)}
                 </select>}
               </div>
               <div>
-                <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>Departamento (Provincia)</label>
+                <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{es ? 'Departamento (Provincia)' : 'Department (Province)'}</label>
                 {verLectura ? <div className="ver-box">{deptoEff || '—'}</div> : <select value={deptoEff} onChange={e => { const v = e.target.value; const same = v === deptoEff; setSelected({ ...selected, region: regionEff, departamento: v, ciudad: same ? selected.ciudad : '' }) }} disabled={!regionEff} style={{ ...inputStyle, opacity: regionEff ? 1 : 0.5 }}>
                   <option value="">{t("campo.seleccionar")}</option>
                   {nivel2De(paisEff, regionEff).map(o => <option key={o} value={o}>{o}</option>)}

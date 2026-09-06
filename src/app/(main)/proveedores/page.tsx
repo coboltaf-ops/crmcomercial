@@ -1,4 +1,5 @@
 'use client'
+import { useIdioma } from '@/shared/i18n/use-t'
 import { logAudit, computarDiff } from '@/shared/lib/audit'
 import { useState, useEffect } from 'react'
 import ModuleHeader from '@/shared/components/module-header'
@@ -29,6 +30,8 @@ const emptyProveedor = (codigo: string, pais: string): Proveedor => ({
 })
 
 export default function ProveedoresPage() {
+  const idioma = useIdioma()
+  const es = idioma !== 'en'
   const currentUser = useCurrentUserStore(s => s.user)
   const paisUsuario = currentUser?.pais || ''
   const usuarioGlobal = esGlobal(paisUsuario)
@@ -99,56 +102,56 @@ export default function ProveedoresPage() {
           <fieldset disabled={verLectura} style={{ border: 'none', padding: 0, margin: 0, minInlineSize: 'auto' }}>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 16 }}>
               <div>
-                <label style={labelStyle}>Nro Proveedor *</label>
+                <label style={labelStyle}>{es ? 'Nro Proveedor *' : 'Supplier No. *'}</label>
                 {verLectura ? <div className="ver-box">{selected.codigo || '—'}</div> : <input value={selected.codigo} readOnly style={inputRO} />}
               </div>
               <div>
-                <label style={labelStyle}>Fecha Registro</label>
+                <label style={labelStyle}>{es ? 'Fecha Registro' : 'Registration Date'}</label>
                 {verLectura ? <div className="ver-box">{fDate(selected.fecha_registro || today) || '—'}</div> : <input value={fDate(selected.fecha_registro || today)} readOnly style={inputRO} />}
               </div>
               <div>
-                <label style={labelStyle}>Calificación</label>
+                <label style={labelStyle}>{es ? 'Calificación' : 'Rating'}</label>
                 {verLectura ? <div className="ver-box">{selected.calificacion || '—'}</div> : <select value={selected.calificacion} onChange={e => setSelected({ ...selected, calificacion: e.target.value })} style={inputStyle}>
                   <option value="">Seleccionar...</option>
                   {refOptions('calificacion_proveedor', CALIFICACION_DEFAULT).map(o => <option key={o} value={o}>{o}</option>)}
                 </select>}
               </div>
               <div style={{ gridColumn: 'span 2' }}>
-                <label style={labelStyle}>Nombre *</label>
+                <label style={labelStyle}>{es ? 'Nombre *' : 'Name *'}</label>
                 {verLectura ? <div className="ver-box">{selected.nombre || '—'}</div> : <input value={selected.nombre} onChange={e => setSelected({ ...selected, nombre: e.target.value.toUpperCase() })} required placeholder="Nombre del proveedor..." style={inputStyle} />}
               </div>
               <div>
-                <label style={labelStyle}>Tipo ID</label>
+                <label style={labelStyle}>{es ? 'Tipo ID' : 'ID Type'}</label>
                 {verLectura ? <div className="ver-box">{selected.tipo_id || '—'}</div> : <select value={selected.tipo_id} onChange={e => setSelected({ ...selected, tipo_id: e.target.value })} style={inputStyle}>
                   {refOptions('tipo_identificacion', TIPO_ID_DEFAULT).map(o => <option key={o} value={o}>{o}</option>)}
                 </select>}
               </div>
               <div>
-                <label style={labelStyle}>Nro Documento</label>
+                <label style={labelStyle}>{es ? 'Nro Documento' : 'Document No.'}</label>
                 {verLectura ? <div className="ver-box">{selected.nro_documento || '—'}</div> : <input value={selected.nro_documento} onChange={e => setSelected({ ...selected, nro_documento: e.target.value })} placeholder="Número de documento..." style={inputStyle} />}
               </div>
               <div>
-                <label style={labelStyle}>Correo</label>
+                <label style={labelStyle}>{es ? 'Correo' : 'Email'}</label>
                 {verLectura ? <div className="ver-box">{selected.correo || '—'}</div> : <input type="email" value={selected.correo} onChange={e => setSelected({ ...selected, correo: e.target.value })} placeholder="correo@ejemplo.com" style={inputStyle} />}
               </div>
               <div>
-                <label style={labelStyle}>Tel Oficina</label>
+                <label style={labelStyle}>{es ? 'Tel Oficina' : 'Office Phone'}</label>
                 {verLectura ? <div className="ver-box">{selected.tel_oficina || '—'}</div> : <input value={selected.tel_oficina} onChange={e => setSelected({ ...selected, tel_oficina: e.target.value })} placeholder="Teléfono oficina..." style={inputStyle} />}
               </div>
               <div>
-                <label style={labelStyle}>Celular Oficina</label>
+                <label style={labelStyle}>{es ? 'Celular Oficina' : 'Office Mobile'}</label>
                 {verLectura ? <div className="ver-box">{selected.celular_oficina || '—'}</div> : <input value={selected.celular_oficina} onChange={e => setSelected({ ...selected, celular_oficina: e.target.value })} placeholder="Celular oficina..." style={inputStyle} />}
               </div>
               <div>
-                <label style={labelStyle}>Persona Contacto</label>
+                <label style={labelStyle}>{es ? 'Persona Contacto' : 'Contact Person'}</label>
                 {verLectura ? <div className="ver-box">{selected.persona_contacto || '—'}</div> : <input value={selected.persona_contacto} onChange={e => setSelected({ ...selected, persona_contacto: e.target.value.toUpperCase() })} placeholder="Persona de contacto..." style={inputStyle} />}
               </div>
               <div>
-                <label style={labelStyle}>Proveedor Desde</label>
+                <label style={labelStyle}>{es ? 'Proveedor Desde' : 'Supplier Since'}</label>
                 {verLectura ? <div className="ver-box">{selected.proveedor_desde || '—'}</div> : <input type="date" value={selected.proveedor_desde} onChange={e => setSelected({ ...selected, proveedor_desde: e.target.value })} style={inputStyle} />}
               </div>
               <div>
-                <label style={labelStyle}>Actividad</label>
+                <label style={labelStyle}>{es ? 'Actividad' : 'Activity'}</label>
                 {verLectura ? <div className="ver-box">{selected.actividad || '—'}</div> : <select value={selected.actividad} onChange={e => setSelected({ ...selected, actividad: e.target.value })} style={inputStyle}>
                   <option value="">Seleccionar...</option>
                   {selected.actividad && !refOptions('actividad_proveedor', []).includes(selected.actividad) && <option value={selected.actividad}>{selected.actividad}</option>}
@@ -156,7 +159,7 @@ export default function ProveedoresPage() {
                 </select>}
               </div>
               <div style={{ gridColumn: 'span 2' }}>
-                <label style={labelStyle}>Representante Legal</label>
+                <label style={labelStyle}>{es ? 'Representante Legal' : 'Legal Representative'}</label>
                 {verLectura ? <div className="ver-box">{selected.representante_legal || '—'}</div> : <input value={selected.representante_legal} onChange={e => setSelected({ ...selected, representante_legal: e.target.value.toUpperCase() })} placeholder="Representante legal..." style={inputStyle} />}
               </div>
             </div>
@@ -165,11 +168,11 @@ export default function ProveedoresPage() {
             <p style={seccion}>📍 Ubicación</p>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: 16 }}>
               <div style={{ gridColumn: 'span 2' }}>
-                <label style={labelStyle}>Dirección</label>
+                <label style={labelStyle}>{es ? 'Dirección' : 'Address'}</label>
                 {verLectura ? <div className="ver-box">{selected.direccion || '—'}</div> : <input value={selected.direccion} onChange={e => setSelected({ ...selected, direccion: e.target.value })} placeholder="Dirección..." style={inputStyle} />}
               </div>
               <div>
-                <label style={labelStyle}>Ciudad</label>
+                <label style={labelStyle}>{es ? 'Ciudad' : 'City'}</label>
                 {verLectura ? <div className="ver-box">{selected.ciudad || '—'}</div> : <select value={selected.ciudad} onChange={e => setSelected({ ...selected, ciudad: e.target.value })} style={inputStyle}>
                   <option value="">Seleccionar...</option>
                   {selected.ciudad && !refOptions('ciudad', CIUDAD_DEFAULT).includes(selected.ciudad) && <option value={selected.ciudad}>{selected.ciudad}</option>}
@@ -177,7 +180,7 @@ export default function ProveedoresPage() {
                 </select>}
               </div>
               <div>
-                <label style={labelStyle}>País{usuarioGlobal && !verLectura && <span style={{ color: '#dc2626' }}> *</span>}</label>
+                <label style={labelStyle}>{es ? 'País' : 'Country'}{usuarioGlobal && !verLectura && <span style={{ color: '#dc2626' }}> *</span>}</label>
                 {verLectura ? <div className="ver-box">{etiquetaPais(selected.pais) || '—'}</div> : usuarioGlobal ? (
                   <select value={selected.pais} onChange={e => setSelected({ ...selected, pais: e.target.value })} style={inputStyle}>
                     {PAISES_ACTIVOS.map(p => <option key={p.codigo} value={p.codigo}>{p.bandera} {p.nombre}</option>)}
@@ -187,7 +190,7 @@ export default function ProveedoresPage() {
                 )}
               </div>
               <div>
-                <label style={labelStyle}>Código Postal</label>
+                <label style={labelStyle}>{es ? 'Código Postal' : 'Postal Code'}</label>
                 {verLectura ? <div className="ver-box">{selected.codigo_postal || '—'}</div> : <input value={selected.codigo_postal} onChange={e => setSelected({ ...selected, codigo_postal: e.target.value })} placeholder="Código postal..." style={inputStyle} />}
               </div>
             </div>
@@ -195,11 +198,11 @@ export default function ProveedoresPage() {
             {/* ── Cierre ── */}
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 16, marginTop: 16 }}>
               <div style={{ gridColumn: 'span 2' }}>
-                <label style={labelStyle}>Observaciones</label>
+                <label style={labelStyle}>{es ? 'Observaciones' : 'Notes'}</label>
                 {verLectura ? <div className="ver-box">{selected.observaciones || '—'}</div> : <textarea value={selected.observaciones} onChange={e => setSelected({ ...selected, observaciones: e.target.value })} rows={3} placeholder="Observaciones..." style={{ ...inputStyle, resize: 'vertical' }} />}
               </div>
               <div>
-                <label style={labelStyle}>Situación</label>
+                <label style={labelStyle}>{es ? 'Situación' : 'Status'}</label>
                 {verLectura ? <div className="ver-box">{selected.situacion || '—'}</div> : <select value={selected.situacion} onChange={e => setSelected({ ...selected, situacion: e.target.value })} style={inputStyle}>
                   {refOptions('situacion_proveedor', SITUACION_DEFAULT).map(o => <option key={o} value={o}>{o}</option>)}
                 </select>}
@@ -236,7 +239,7 @@ export default function ProveedoresPage() {
   // ── VISTA PRINCIPAL ──
   return (
     <div>
-      <ModuleHeader title="Proveedores" subtitle="Gestión de proveedores" />
+      <ModuleHeader title={es ? 'Proveedores' : 'Suppliers'} subtitle={es ? 'Gestión de proveedores' : 'Supplier management'} />
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16, gap: 12, flexWrap: 'wrap' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap', flex: 1 }}>
           <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Buscar por código, nombre, documento o contacto..." style={{ ...inputStyle, maxWidth: 380 }} />

@@ -45,6 +45,7 @@ export default function OportunidadesPage() {
   const t = useT()
   const ts = useTStatus()
   const idioma = useIdioma()
+  const es = idioma !== 'en'
   const permisos = usePermisos('oportunidades')
   const currentUser = useCurrentUserStore(s => s.user)
   const paisUsuario = currentUser?.pais || ''
@@ -366,11 +367,11 @@ export default function OportunidadesPage() {
               )}
             </div>
             <div>
-              <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>Estimado COP *</label>
+              <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{es ? 'Estimado COP *' : 'Estimated COP *'}</label>
               {verLectura ? <div className="ver-box">{fmtMoney(selected.estimado_cop || 0) || '—'}</div> : <MoneyInput value={selected.estimado_cop || 0} onChange={n => setSelected({ ...selected, estimado_cop: n })} required placeholder="0" style={inputStyle} />}
             </div>
             <div>
-              <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>Estimado USA *</label>
+              <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{es ? 'Estimado USA *' : 'Estimated USD *'}</label>
               {verLectura ? <div className="ver-box">{fmtMoney(selected.monto_estimado || 0) || '—'}</div> : <MoneyInput value={selected.monto_estimado || 0} onChange={n => setSelected({ ...selected, monto_estimado: n })} required placeholder="0" style={inputStyle} />}
             </div>
             <div>

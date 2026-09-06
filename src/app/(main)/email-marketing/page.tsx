@@ -1,4 +1,5 @@
 'use client'
+import { useIdioma } from '@/shared/i18n/use-t'
 import { useState, useMemo, useRef } from 'react'
 import { useCurrentUserStore } from '@/features/usuarios-gestion/store/current-user-store'
 import { useEmailMarketingStore, Campana, Destinatario, Plantilla, ImagenEmail } from '@/features/email-marketing/store/email-marketing-store'
@@ -20,6 +21,8 @@ function nextCod(campanas: Campana[]) {
 type Vista = 'lista' | 'nueva' | 'editar' | 'detalle' | 'plantillas' | 'editarPlantilla'
 
 export default function EmailMarketingPage() {
+  const idioma = useIdioma()
+  const es = idioma !== 'en'
   const user = useCurrentUserStore(s => s.user)
   const { campanas, plantillas, addCampana, updateCampana, deleteCampana, addPlantilla, updatePlantilla, deletePlantilla } = useEmailMarketingStore()
   const clientes = useClientesStore(s => s.clientes)
@@ -140,7 +143,7 @@ export default function EmailMarketingPage() {
   // Componente reutilizable de galeria de imagenes
   const ImagenesPanel = ({ imagenes, target, fileRef }: { imagenes: ImagenEmail[]; target: 'campana' | 'plantilla'; fileRef: React.RefObject<HTMLInputElement | null> }) => (
     <div style={{ marginBottom: 16 }}>
-      <label style={labelStyle}>Imagenes y Logos</label>
+      <label style={labelStyle}>{es ? 'Imagenes y Logos' : 'Images and Logos'}</label>
       <input ref={fileRef} type="file" accept="image/*" style={{ display: 'none' }}
         onChange={e => { const f = e.target.files?.[0]; if (f) subirImagen(f, target); e.target.value = '' }} />
       <button onClick={() => fileRef.current?.click()} disabled={uploading}
@@ -418,15 +421,15 @@ export default function EmailMarketingPage() {
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
           <div style={cardStyle}>
             <div style={{ marginBottom: 16 }}>
-              <label style={labelStyle}>Nombre</label>
+              <label style={labelStyle}>{es ? 'Nombre' : 'Name'}</label>
               <input value={tplNombre} onChange={e => setTplNombre(e.target.value)} style={inputStyle} placeholder="Ej: Bienvenida, Promocion..." />
             </div>
             <div style={{ marginBottom: 16 }}>
-              <label style={labelStyle}>Asunto del correo</label>
+              <label style={labelStyle}>{es ? 'Asunto del correo' : 'Email subject'}</label>
               <input value={tplAsunto} onChange={e => setTplAsunto(e.target.value)} style={inputStyle} placeholder="Ej: Bienvenido a {{empresa}}" />
             </div>
             <div style={{ marginBottom: 16 }}>
-              <label style={labelStyle}>Contenido HTML</label>
+              <label style={labelStyle}>{es ? 'Contenido HTML' : 'HTML Content'}</label>
               <textarea value={tplContenido} onChange={e => setTplContenido(e.target.value)}
                 style={{ ...inputStyle, minHeight: 250, fontFamily: 'monospace', fontSize: 12 }}
                 placeholder="Escriba el HTML del email. Use {{nombre}} y {{empresa}} como variables." />
@@ -442,7 +445,7 @@ export default function EmailMarketingPage() {
             </div>
             {tplContenido && (
               <div style={{ ...cardStyle, marginTop: 16 }}>
-                <label style={labelStyle}>Vista previa</label>
+                <label style={labelStyle}>{es ? 'Vista previa' : 'Preview'}</label>
                 <div style={{ background: '#fff', borderRadius: 8, padding: 16, maxHeight: 400, overflow: 'auto' }}
                   dangerouslySetInnerHTML={{ __html: tplContenido.replace(/\{\{nombre\}\}/g, 'Juan Perez').replace(/\{\{empresa\}\}/g, empresaNombre) }} />
               </div>
@@ -571,12 +574,12 @@ export default function EmailMarketingPage() {
             <h3 style={{ color: '#fff', fontSize: 15, fontWeight: 700, marginBottom: 16 }}>Datos de la Campana</h3>
 
             <div style={{ marginBottom: 14 }}>
-              <label style={labelStyle}>Nombre de la campana *</label>
+              <label style={labelStyle}>{es ? 'Nombre de la campana *' : 'Campaign name *'}</label>
               <input value={formNombre} onChange={e => setFormNombre(e.target.value)} style={inputStyle} placeholder="Ej: Promocion Marzo 2026" />
             </div>
 
             <div style={{ marginBottom: 14 }}>
-              <label style={labelStyle}>Plantilla (opcional)</label>
+              <label style={labelStyle}>{es ? 'Plantilla (opcional)' : 'Template (optional)'}</label>
               <select value={formPlantilla} onChange={e => aplicarPlantilla(e.target.value)} style={inputStyle}>
                 <option value="">Sin plantilla</option>
                 {plantillas.length > 0 && <optgroup label="Email Marketing">
@@ -589,7 +592,7 @@ export default function EmailMarketingPage() {
             </div>
 
             <div style={{ marginBottom: 14 }}>
-              <label style={labelStyle}>Asunto del correo *</label>
+              <label style={labelStyle}>{es ? 'Asunto del correo *' : 'Email subject *'}</label>
               <input value={formAsunto} onChange={e => setFormAsunto(e.target.value)} style={inputStyle} placeholder="Ej: Oferta especial para ti" />
             </div>
 
@@ -597,7 +600,7 @@ export default function EmailMarketingPage() {
             <ImagenesPanel imagenes={formImagenes} target="campana" fileRef={formFileRef} />
 
             <div style={{ marginBottom: 14 }}>
-              <label style={labelStyle}>Contenido HTML *</label>
+              <label style={labelStyle}>{es ? 'Contenido HTML *' : 'HTML Content *'}</label>
               <textarea value={formContenido} onChange={e => setFormContenido(e.target.value)}
                 style={{ ...inputStyle, minHeight: 200, fontFamily: 'monospace', fontSize: 12 }}
                 placeholder="HTML del email. Use {{nombre}} y {{empresa}}" />
@@ -607,7 +610,7 @@ export default function EmailMarketingPage() {
 
             {formContenido && (
               <div style={{ marginTop: 12 }}>
-                <label style={labelStyle}>Vista previa</label>
+                <label style={labelStyle}>{es ? 'Vista previa' : 'Preview'}</label>
                 <div style={{ background: '#fff', borderRadius: 8, padding: 12, maxHeight: 200, overflow: 'auto' }}
                   dangerouslySetInnerHTML={{ __html: formContenido.replace(/\{\{nombre\}\}/g, 'Juan Perez').replace(/\{\{empresa\}\}/g, empresaNombre) }} />
               </div>

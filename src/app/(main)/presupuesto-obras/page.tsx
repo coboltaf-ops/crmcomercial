@@ -1,5 +1,6 @@
 'use client'
 
+import { useIdioma } from '@/shared/i18n/use-t'
 import { useState, useEffect, useRef, Fragment } from 'react'
 import { PRESUPUESTO_CSS } from '@/shared/lib/presupuesto-css'
 import { useOfertasStore } from '@/features/ofertas/store/ofertas-store'
@@ -62,6 +63,8 @@ const initForm = (consec: string, pais = ''): Oferta => ({
 })
 
 export default function OfertasClientesPage() {
+  const idioma = useIdioma()
+  const es = idioma !== 'en'
   const { ofertas, addOferta, updateOferta, deleteOferta, loadOfertas } = useOfertasStore()
   const currentUser = useCurrentUserStore(s => s.user)
   const paisUsuario = currentUser?.pais || ''
@@ -472,11 +475,11 @@ export default function OfertasClientesPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             <div>
-              <label className="block text-xl font-extrabold text-[#0b1d4a] mb-1">Código GTM Oferta</label>
+              <label className="block text-xl font-extrabold text-[#0b1d4a] mb-1">{es ? 'Código GTM Oferta' : 'GTM Bid Code'}</label>
               <input value={form.codigo_gtm || ''} onChange={e => setForm({ ...form, codigo_gtm: e.target.value })} className="w-full px-3 py-2.5 rounded-lg text-lg text-[#0b1d4a] outline-none" style={inputSt} placeholder="GTM-OF-0001" />
             </div>
             <div>
-              <label className="block text-xl font-extrabold text-[#0b1d4a] mb-1">Cliente *</label>
+              <label className="block text-xl font-extrabold text-[#0b1d4a] mb-1">{es ? 'Cliente *' : 'Client *'}</label>
               <select required value={form.cliente || ''} onChange={e => setForm({ ...form, cliente: e.target.value })} className="w-full px-3 py-2.5 rounded-lg text-lg outline-none" style={inputSt}>
                 <option value="">Seleccione Cliente…</option>
                 {clientesLista.map(cl => <option key={cl.id} value={cl.razon_social}>{cl.razon_social}{cl.ciudad ? ` — ${cl.ciudad}` : ''}</option>)}
@@ -484,7 +487,7 @@ export default function OfertasClientesPage() {
             </div>
             {/* País: bloqueado para usuarios de un país (el servidor lo sella); editable para GLOBAL */}
             <div>
-              <label className="block text-xl font-extrabold text-[#0b1d4a] mb-1">País{usuarioGlobal ? ' *' : ''}</label>
+              <label className="block text-xl font-extrabold text-[#0b1d4a] mb-1">{es ? 'País' : 'Country'}{usuarioGlobal ? ' *' : ''}</label>
               {usuarioGlobal ? (
                 <select value={form.pais || ''} onChange={e => { const p = e.target.value; setForm({ ...form, pais: p, moneda: monedaDePais(p).nombre }) }} className="w-full px-3 py-2.5 rounded-lg text-lg outline-none" style={inputSt}>
                   {PAISES_ACTIVOS.map(p => <option key={p.codigo} value={p.codigo}>{p.bandera} {p.nombre}</option>)}
@@ -494,58 +497,58 @@ export default function OfertasClientesPage() {
               )}
             </div>
             <div>
-              <label className="block text-xl font-extrabold text-[#0b1d4a] mb-1">Fecha Comienzo Elaboración</label>
+              <label className="block text-xl font-extrabold text-[#0b1d4a] mb-1">{es ? 'Fecha Comienzo Elaboración' : 'Preparation Start Date'}</label>
               <input type="date" value={form.fecha_emision} onChange={e => setForm({ ...form, fecha_emision: e.target.value })} className="w-full px-3 py-2.5 rounded-lg text-lg text-[#0b1d4a] outline-none" style={inputSt} />
             </div>
             <div>
-              <label className="block text-xl font-extrabold text-[#0b1d4a] mb-1">Comercial Oferta</label>
+              <label className="block text-xl font-extrabold text-[#0b1d4a] mb-1">{es ? 'Comercial Oferta' : 'Bid Sales Rep'}</label>
               <select value={form.comercial || ''} onChange={e => setForm({ ...form, comercial: e.target.value })} className="w-full px-3 py-2.5 rounded-lg text-lg outline-none" style={inputSt}>
                 <option value="">Seleccione de Personal…</option>
                 {personalActivo.map(p => { const n = `${p.nombre} ${p.apellido || ''}`.trim(); return <option key={p.id} value={n}>{n}{p.cargo ? ` — ${p.cargo}` : ''}</option> })}
               </select>
             </div>
             <div>
-              <label className="block text-xl font-extrabold text-[#0b1d4a] mb-1">Responsable Técnico Oferta</label>
+              <label className="block text-xl font-extrabold text-[#0b1d4a] mb-1">{es ? 'Responsable Técnico Oferta' : 'Bid Technical Manager'}</label>
               <select value={form.responsable_tecnico || ''} onChange={e => setForm({ ...form, responsable_tecnico: e.target.value })} className="w-full px-3 py-2.5 rounded-lg text-lg outline-none" style={inputSt}>
                 <option value="">Seleccione de Personal…</option>
                 {personalActivo.map(p => { const n = `${p.nombre} ${p.apellido || ''}`.trim(); return <option key={p.id} value={n}>{n}{p.cargo ? ` — ${p.cargo}` : ''}</option> })}
               </select>
             </div>
             <div>
-              <label className="block text-xl font-extrabold text-[#0b1d4a] mb-1">Unidad de Negocio</label>
+              <label className="block text-xl font-extrabold text-[#0b1d4a] mb-1">{es ? 'Unidad de Negocio' : 'Business Unit'}</label>
               <select value={form.unidad_negocio || ''} onChange={e => setForm({ ...form, unidad_negocio: e.target.value })} className="w-full px-3 py-2.5 rounded-lg text-lg outline-none" style={inputSt}>
                 <option value="">Seleccione…</option>
                 {(refData.unidad_negocio ?? []).filter(u => u.situacion).map(u => <option key={u.id} value={u.descripcion}>{u.descripcion}</option>)}
               </select>
             </div>
             <div>
-              <label className="block text-xl font-extrabold text-[#0b1d4a] mb-1">Lugar Ejecución</label>
+              <label className="block text-xl font-extrabold text-[#0b1d4a] mb-1">{es ? 'Lugar Ejecución' : 'Execution Site'}</label>
               <select value={form.lugar_ejecucion || ''} onChange={e => setForm({ ...form, lugar_ejecucion: e.target.value })} className="w-full px-3 py-2.5 rounded-lg text-lg outline-none" style={inputSt}>
                 <option value="">Seleccione Ciudad…</option>
                 {ciudadesRef.map(c => <option key={c.id} value={c.descripcion}>{c.descripcion}</option>)}
               </select>
             </div>
             <div>
-              <label className="block text-xl font-extrabold text-[#0b1d4a] mb-1">Tipo de Moneda</label>
+              <label className="block text-xl font-extrabold text-[#0b1d4a] mb-1">{es ? 'Tipo de Moneda' : 'Currency Type'}</label>
               <select value={form.moneda} onChange={e => setForm({ ...form, moneda: e.target.value })} className="w-full px-3 py-2.5 rounded-lg text-lg outline-none" style={inputSt}>
                 <option value="">Seleccione…</option>
                 {(refData.tipo_moneda ?? []).map(m => <option key={m.id} value={m.descripcion}>{m.descripcion}</option>)}
               </select>
             </div>
             <div>
-              <label className="block text-xl font-extrabold text-[#0b1d4a] mb-1">Porcentaje de Utilidad (%)</label>
+              <label className="block text-xl font-extrabold text-[#0b1d4a] mb-1">{es ? 'Porcentaje de Utilidad (%)' : 'Profit Percentage (%)'}</label>
               <input inputMode="decimal" value={form.margen_general || ''} onChange={e => setMargenGeneral(parseMonto(e.target.value))} className="w-full px-3 py-2.5 rounded-lg text-lg text-[#0b1d4a] outline-none text-right font-bold" style={inputSt} placeholder="0" />
               <p className="text-sm mt-1" style={{ color: '#6b7280' }}>Es el % de utilidad por defecto de todos los renglones — luego puedes ajustarlo por ítem o, al Ver el presupuesto, cambiarlo en general o por capítulo.</p>
             </div>
             <div>
-              <label className="block text-xl font-extrabold text-[#0b1d4a] mb-1">% Impuesto</label>
+              <label className="block text-xl font-extrabold text-[#0b1d4a] mb-1">{es ? '% Impuesto' : 'Tax %'}</label>
               <select value={form.pct_impuesto || 0} onChange={e => setForm({ ...form, pct_impuesto: Number(e.target.value) })} className="w-full px-3 py-2.5 rounded-lg text-lg outline-none" style={inputSt}>
                 <option value={0}>Sin impuesto (0%)</option>
                 {(refData.impuesto ?? []).filter(i => i.situacion !== false).map(i => <option key={i.id} value={parseMonto(i.descripcion)}>{i.descripcion}</option>)}
               </select>
             </div>
             <div>
-              <label className="block text-xl font-extrabold text-[#0b1d4a] mb-1">Situación Oferta</label>
+              <label className="block text-xl font-extrabold text-[#0b1d4a] mb-1">{es ? 'Situación Oferta' : 'Bid Status'}</label>
               <select value={form.situacion} onChange={e => setForm({ ...form, situacion: e.target.value })} className="w-full px-3 py-2.5 rounded-lg text-lg outline-none" style={inputSt}>
                 <option value="Borrador">Borrador</option>
                 <option value="Enviada">Enviada</option>
@@ -554,12 +557,12 @@ export default function OfertasClientesPage() {
               </select>
             </div>
             <div>
-              <label className="block text-xl font-extrabold text-[#0b1d4a] mb-1">Monto Calculado Oferta</label>
+              <label className="block text-xl font-extrabold text-[#0b1d4a] mb-1">{es ? 'Monto Calculado Oferta' : 'Calculated Bid Amount'}</label>
               <input readOnly value={money(total(form))} className="w-full px-3 py-2.5 rounded-lg text-lg outline-none text-right font-extrabold cursor-not-allowed" style={{ background: '#eef3ff', border: '1px solid #93c5fd', color: '#0b1d4a' }} />
               <p className="text-sm mt-1" style={{ color: '#6b7280' }}>Se calcula automático: Venta + Impuesto de todos los renglones.</p>
             </div>
             <div className="lg:col-span-3">
-              <label className="block text-xl font-extrabold text-[#0b1d4a] mb-1">Alcance de la Oferta</label>
+              <label className="block text-xl font-extrabold text-[#0b1d4a] mb-1">{es ? 'Alcance de la Oferta' : 'Bid Scope'}</label>
               <textarea value={form.alcance} onChange={e => setForm({ ...form, alcance: e.target.value })} rows={3} className="w-full px-3 py-2.5 rounded-lg text-lg text-[#0b1d4a] outline-none" style={inputSt} placeholder="Describa el alcance del proyecto ofertado…" />
             </div>
           </div>
@@ -846,11 +849,11 @@ export default function OfertasClientesPage() {
                 {showUtil && (
                   <div className="flex flex-wrap items-end gap-3 mt-3">
                     <div>
-                      <label className="block text-xs font-bold mb-1" style={{ color: '#9a3412' }}>Utilidad (%)</label>
+                      <label className="block text-xs font-bold mb-1" style={{ color: '#9a3412' }}>{es ? 'Utilidad (%)' : 'Profit (%)'}</label>
                       <input inputMode="decimal" value={utilPct || ''} onChange={e => setUtilPct(parseMonto(e.target.value))} className="w-28 px-3 py-2 rounded-lg text-right font-bold outline-none" style={{ background: '#fff', border: '1px solid #fdba74', color: '#7c2d12' }} placeholder="0" />
                     </div>
                     <div>
-                      <label className="block text-xs font-bold mb-1" style={{ color: '#9a3412' }}>Aplicar a</label>
+                      <label className="block text-xs font-bold mb-1" style={{ color: '#9a3412' }}>{es ? 'Aplicar a' : 'Apply to'}</label>
                       <select value={utilScope} onChange={e => { setUtilScope(e.target.value); setUtilMsg('') }} className="px-3 py-2 rounded-lg outline-none" style={{ background: '#fff', border: '1px solid #fdba74', color: '#7c2d12', minWidth: '280px' }}>
                         <option value="general">General — todo el presupuesto</option>
                         {viewItem.renglones.filter(r => r.tipo === 'T1').map(t => <option key={t.id} value={t.id}>Solo capítulo: {t.codigo ? `${t.codigo} · ` : ''}{t.descripcion || '(sin nombre)'}</option>)}

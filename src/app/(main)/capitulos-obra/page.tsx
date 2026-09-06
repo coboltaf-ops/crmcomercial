@@ -1,5 +1,6 @@
 'use client'
 
+import { useIdioma } from '@/shared/i18n/use-t'
 import { useState, useEffect } from 'react'
 import { PRESUPUESTO_CSS } from '@/shared/lib/presupuesto-css'
 import { useCapitulosObraStore, type CapituloObra, type TipoCapitulo } from '@/features/capitulos-obra/store/capitulos-obra-store'
@@ -32,6 +33,8 @@ const emptyForm: CapituloObra = {
 }
 
 export default function CapitulosObraPage() {
+  const idioma = useIdioma()
+  const es = idioma !== 'en'
   const permisos = usePermisos('capitulos-obra')
   const { capitulos, addCapitulo, updateCapitulo, deleteCapitulo } = useCapitulosObraStore()
   const loadCapitulos = useCapitulosObraStore(s => s.loadCapitulos)
@@ -161,7 +164,7 @@ export default function CapitulosObraPage() {
               <p className="text-sm text-[#6b7280]">Selecciona la Oferta y sus datos se traen automáticamente.</p>
             </div>
             <div>
-              <label className="block text-lg font-extrabold text-[#0b1d4a] mb-1">Nro. Consecutivo Oferta</label>
+              <label className="block text-lg font-extrabold text-[#0b1d4a] mb-1">{es ? 'Nro. Consecutivo Oferta' : 'Bid Sequence No.'}</label>
               <select value={form.oferta_consecutivo || ''} onChange={e => seleccionarOferta(e.target.value)}
                 className="w-full rounded-xl px-4 py-2.5 text-[#0b1d4a] font-bold outline-none" style={{ background: '#ffffff', border: '1px solid #e5e7eb' }}>
                 <option value="">Seleccione Oferta…</option>
@@ -169,36 +172,36 @@ export default function CapitulosObraPage() {
               </select>
             </div>
             <div>
-              <label className="block text-lg font-extrabold text-[#0b1d4a] mb-1">Fecha Registro</label>
+              <label className="block text-lg font-extrabold text-[#0b1d4a] mb-1">{es ? 'Fecha Registro' : 'Registration Date'}</label>
               <input type="date" value={form.fecha_registro || ''} onChange={e => setForm({ ...form, fecha_registro: e.target.value })}
                 className="w-full rounded-xl px-4 py-2.5 text-[#0b1d4a] font-bold outline-none" style={{ background: '#ffffff', border: '1px solid #e5e7eb' }} />
             </div>
             <div>
-              <label className="block text-lg font-extrabold text-[#0b1d4a] mb-1">Nro. Oferta GTM</label>
+              <label className="block text-lg font-extrabold text-[#0b1d4a] mb-1">{es ? 'Nro. Oferta GTM' : 'GTM Bid No.'}</label>
               <input readOnly value={form.codigo_gtm || ''} className="w-full rounded-xl px-4 py-2.5 font-bold outline-none cursor-not-allowed" style={{ background: '#f1f5f9', border: '1px solid #e5e7eb', color: '#0b1d4a' }} placeholder="(de la oferta)" />
             </div>
             <div>
-              <label className="block text-lg font-extrabold text-[#0b1d4a] mb-1">Cliente</label>
+              <label className="block text-lg font-extrabold text-[#0b1d4a] mb-1">{es ? 'Cliente' : 'Client'}</label>
               <input readOnly value={form.cliente || ''} className="w-full rounded-xl px-4 py-2.5 font-bold outline-none cursor-not-allowed" style={{ background: '#f1f5f9', border: '1px solid #e5e7eb', color: '#0b1d4a' }} placeholder="(de la oferta)" />
             </div>
             <div>
-              <label className="block text-lg font-extrabold text-[#0b1d4a] mb-1">Responsable Técnico</label>
+              <label className="block text-lg font-extrabold text-[#0b1d4a] mb-1">{es ? 'Responsable Técnico' : 'Technical Manager'}</label>
               <input readOnly value={form.responsable_tecnico || ''} className="w-full rounded-xl px-4 py-2.5 font-bold outline-none cursor-not-allowed" style={{ background: '#f1f5f9', border: '1px solid #e5e7eb', color: '#0b1d4a' }} placeholder="(de la oferta)" />
             </div>
             <div>
-              <label className="block text-lg font-extrabold text-[#0b1d4a] mb-1">Responsable Comercial</label>
+              <label className="block text-lg font-extrabold text-[#0b1d4a] mb-1">{es ? 'Responsable Comercial' : 'Sales Manager'}</label>
               <input readOnly value={form.comercial || ''} className="w-full rounded-xl px-4 py-2.5 font-bold outline-none cursor-not-allowed" style={{ background: '#f1f5f9', border: '1px solid #e5e7eb', color: '#0b1d4a' }} placeholder="(de la oferta)" />
             </div>
             <div>
-              <label className="block text-lg font-extrabold text-[#0b1d4a] mb-1">Lugar de Ejecución</label>
+              <label className="block text-lg font-extrabold text-[#0b1d4a] mb-1">{es ? 'Lugar de Ejecución' : 'Execution Site'}</label>
               <input readOnly value={form.lugar_ejecucion || ''} className="w-full rounded-xl px-4 py-2.5 font-bold outline-none cursor-not-allowed" style={{ background: '#f1f5f9', border: '1px solid #e5e7eb', color: '#0b1d4a' }} placeholder="(de la oferta)" />
             </div>
             <div>
-              <label className="block text-lg font-extrabold text-[#0b1d4a] mb-1">Tipo Moneda</label>
+              <label className="block text-lg font-extrabold text-[#0b1d4a] mb-1">{es ? 'Tipo Moneda' : 'Currency Type'}</label>
               <input readOnly value={form.moneda || ''} className="w-full rounded-xl px-4 py-2.5 font-bold outline-none cursor-not-allowed" style={{ background: '#f1f5f9', border: '1px solid #e5e7eb', color: '#0b1d4a' }} placeholder="(de la oferta)" />
             </div>
             <div className="lg:col-span-3">
-              <label className="block text-lg font-extrabold text-[#0b1d4a] mb-1">Alcance del Proyecto</label>
+              <label className="block text-lg font-extrabold text-[#0b1d4a] mb-1">{es ? 'Alcance del Proyecto' : 'Project Scope'}</label>
               <textarea readOnly value={form.alcance || ''} rows={2} className="w-full rounded-xl px-4 py-2.5 font-bold outline-none cursor-not-allowed" style={{ background: '#f1f5f9', border: '1px solid #e5e7eb', color: '#0b1d4a' }} placeholder="(de la oferta)" />
             </div>
 
@@ -212,21 +215,21 @@ export default function CapitulosObraPage() {
               <h3 className="text-base font-extrabold" style={{ color: '#1e3a8a' }}>🧱 Datos del Capítulo</h3>
             </div>
             <div>
-              <label className="block text-xl font-extrabold text-[#0b1d4a] mb-1">Código *</label>
+              <label className="block text-xl font-extrabold text-[#0b1d4a] mb-1">{es ? 'Código *' : 'Code *'}</label>
               <input required value={form.codigo} onChange={e => setForm({ ...form, codigo: e.target.value })}
                 className="w-full rounded-xl px-4 py-2.5 text-[#0b1d4a] outline-none"
                 style={{ background: '#ffffff', border: '1px solid #e5e7eb' }}
                 placeholder="60" />
             </div>
             <div>
-              <label className="block text-xl font-extrabold text-[#0b1d4a] mb-1">Nombre *</label>
+              <label className="block text-xl font-extrabold text-[#0b1d4a] mb-1">{es ? 'Nombre *' : 'Name *'}</label>
               <input required value={form.nombre} onChange={e => setForm({ ...form, nombre: e.target.value })}
                 className="w-full rounded-xl px-4 py-2.5 text-[#0b1d4a] outline-none"
                 style={{ background: '#ffffff', border: '1px solid #e5e7eb' }}
                 placeholder="Estructura" />
             </div>
             <div>
-              <label className="block text-xl font-extrabold text-[#0b1d4a] mb-1">Tipo *</label>
+              <label className="block text-xl font-extrabold text-[#0b1d4a] mb-1">{es ? 'Tipo *' : 'Type *'}</label>
               <select value={form.tipo} onChange={e => setForm({ ...form, tipo: e.target.value as TipoCapitulo })}
                 className="w-full rounded-xl px-4 py-2.5 text-[#0b1d4a] outline-none"
                 style={{ background: '#ffffff', border: '1px solid #e5e7eb' }}>
@@ -234,14 +237,14 @@ export default function CapitulosObraPage() {
               </select>
             </div>
             <div>
-              <label className="block text-xl font-extrabold text-[#0b1d4a] mb-1">Orden</label>
+              <label className="block text-xl font-extrabold text-[#0b1d4a] mb-1">{es ? 'Orden' : 'Order'}</label>
               <input type="number" value={form.orden} onChange={e => setForm({ ...form, orden: Number(e.target.value) })}
                 className="w-full rounded-xl px-4 py-2.5 text-[#0b1d4a] outline-none"
                 style={{ background: '#ffffff', border: '1px solid #e5e7eb' }}
                 placeholder="1" />
             </div>
             <div>
-              <label className="block text-xl font-extrabold text-[#0b1d4a] mb-1">Situación</label>
+              <label className="block text-xl font-extrabold text-[#0b1d4a] mb-1">{es ? 'Situación' : 'Status'}</label>
               <select value={form.situacion} onChange={e => setForm({ ...form, situacion: e.target.value })}
                 className="w-full rounded-xl px-4 py-2.5 text-[#0b1d4a] outline-none"
                 style={{ background: '#ffffff', border: '1px solid #e5e7eb' }}>
@@ -250,7 +253,7 @@ export default function CapitulosObraPage() {
             </div>
             {/* País: bloqueado para usuarios de un país (el servidor lo sella); editable para GLOBAL */}
             <div>
-              <label className="block text-xl font-extrabold text-[#0b1d4a] mb-1">País{usuarioGlobal && ' *'}</label>
+              <label className="block text-xl font-extrabold text-[#0b1d4a] mb-1">{es ? 'País' : 'Country'}{usuarioGlobal && ' *'}</label>
               {usuarioGlobal ? (
                 <select value={form.pais} onChange={e => setForm({ ...form, pais: e.target.value })}
                   className="w-full rounded-xl px-4 py-2.5 text-[#0b1d4a] outline-none"

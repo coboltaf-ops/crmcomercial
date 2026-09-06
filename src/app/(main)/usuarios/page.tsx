@@ -11,6 +11,7 @@ import { useT, useIdioma } from '@/shared/i18n/use-t'
 export default function UsuariosPage() {
   const t = useT()
   const idioma = useIdioma()
+  const es = idioma !== 'en'
   const { usuarios, addUsuario, updateUsuario, deleteUsuario } = useUsuariosStore()
   const loadUsuarios = useUsuariosStore(s => s.loadUsuarios)
   const currentUser = useCurrentUserStore(s => s.user)
@@ -240,7 +241,7 @@ export default function UsuariosPage() {
               </div>
             ))}
             <div>
-              <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, marginBottom: 4, display: 'block' }}>Clave {selected.id && '(dejar vacío = mantener)'}</label>
+              <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, marginBottom: 4, display: 'block' }}>{es ? 'Clave' : 'Password'} {selected.id && '(dejar vacío = mantener)'}</label>
               <input type="password" value={selected.clave || ''} onChange={e => setSelected({ ...selected, clave: e.target.value })} required={!selected.id} style={inputStyle} />
             </div>
             <div>
@@ -254,7 +255,7 @@ export default function UsuariosPage() {
               </select>
             </div>
             <div>
-              <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, marginBottom: 4, display: 'block' }}>País</label>
+              <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, marginBottom: 4, display: 'block' }}>{es ? 'País' : 'Country'}</label>
               <select value={selected.pais || 'Colombia'} onChange={e => setSelected({ ...selected, pais: e.target.value })} style={inputStyle}>
                 {PAISES_USUARIO.map(p => <option key={p.codigo} value={p.codigo}>{p.bandera} {p.nombre}</option>)}
               </select>

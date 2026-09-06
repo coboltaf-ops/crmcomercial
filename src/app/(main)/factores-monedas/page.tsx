@@ -1,4 +1,5 @@
 'use client'
+import { useIdioma } from '@/shared/i18n/use-t'
 import { logAudit, computarDiff } from '@/shared/lib/audit'
 import { useState, useEffect } from 'react'
 import ModuleHeader from '@/shared/components/module-header'
@@ -20,6 +21,8 @@ const emptyFactor = (codigo: string): FactorMoneda => ({
 })
 
 export default function FactoresMonedasPage() {
+  const idioma = useIdioma()
+  const es = idioma !== 'en'
   const currentUser = useCurrentUserStore(s => s.user)
   const permisos = usePermisos('factores-monedas')
   const { factores, addFactor, updateFactor, deleteFactor } = useFactoresStore()
@@ -71,23 +74,23 @@ export default function FactoresMonedasPage() {
           <fieldset disabled={verLectura} style={{ border: 'none', padding: 0, margin: 0, minInlineSize: 'auto' }}>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
               <div>
-                <label style={labelStyle}>Nro *</label>
+                <label style={labelStyle}>{es ? 'Nro *' : 'No. *'}</label>
                 {verLectura ? <div className="ver-box">{selected.codigo || '—'}</div> : <input value={selected.codigo} readOnly style={inputRO} />}
               </div>
               <div>
-                <label style={labelStyle}>Fecha Registro</label>
+                <label style={labelStyle}>{es ? 'Fecha Registro' : 'Registration Date'}</label>
                 {verLectura ? <div className="ver-box">{fDate(selected.fecha_registro || today) || '—'}</div> : <input value={fDate(selected.fecha_registro || today)} readOnly style={inputRO} />}
               </div>
               <div>
-                <label style={labelStyle}>Factor Pesos a US$</label>
+                <label style={labelStyle}>{es ? 'Factor Pesos a US$' : 'Pesos to US$ Factor'}</label>
                 <DecimalInput value={selected.factor_pesos_usd || 0} onChange={n => setSelected({ ...selected, factor_pesos_usd: n })} placeholder="Ej: 4000.00" style={inputStyle} />
               </div>
               <div>
-                <label style={labelStyle}>Factor US$ a Euro</label>
+                <label style={labelStyle}>{es ? 'Factor US$ a Euro' : 'US$ to Euro Factor'}</label>
                 <DecimalInput value={selected.factor_usd_euro || 0} onChange={n => setSelected({ ...selected, factor_usd_euro: n })} placeholder="Ej: 0.92" style={inputStyle} />
               </div>
               <div>
-                <label style={labelStyle}>Situación</label>
+                <label style={labelStyle}>{es ? 'Situación' : 'Status'}</label>
                 {verLectura ? <div className="ver-box">{selected.situacion || '—'}</div> : (
                   <select value={selected.situacion} onChange={e => setSelected({ ...selected, situacion: e.target.value })} style={inputStyle}>
                     <option value="Activo">Activo</option>
@@ -114,7 +117,7 @@ export default function FactoresMonedasPage() {
   // ── VISTA PRINCIPAL ──
   return (
     <div>
-      <ModuleHeader title="Factores Conversión Monedas" subtitle="Factores de conversión de monedas" />
+      <ModuleHeader title={es ? 'Factores Conversión Monedas' : 'Currency Conversion Factors'} subtitle={es ? 'Factores de conversión de monedas' : 'Currency conversion factors'} />
       <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', marginBottom: 16 }}>
         {permisos.crear && (
           <button onClick={() => { setSelected(emptyFactor(nextConsecutivo('FCM-', factores.map(f => f.codigo)).codigo)); setVerLectura(false); setIsForm(true) }} style={{ ...btnStyle, background: '#1e3a8a', color: '#ffffff' }}>+ Nuevos Factores</button>

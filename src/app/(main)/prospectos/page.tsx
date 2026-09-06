@@ -36,6 +36,7 @@ export default function ProspectosPage() {
   const t = useT()
   const ts = useTStatus()
   const idioma = useIdioma()
+  const es = idioma !== 'en'
   const permisos = usePermisos('prospectos')
   const currentUser = useCurrentUserStore(s => s.user)
   const paisUsuario = currentUser?.pais || ''
@@ -332,11 +333,11 @@ export default function ProspectosPage() {
               </select>}
             </div>
             <div>
-              <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>Referenciado Por</label>
+              <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{es ? 'Referenciado Por' : 'Referred By'}</label>
               {verLectura ? <div className="ver-box">{selected.referenciado_por || '—'}</div> : <input value={selected.referenciado_por || ''} onChange={e => setSelected({ ...selected, referenciado_por: e.target.value.toUpperCase() })} style={inputStyle} />}
             </div>
             <div>
-              <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>Empresa Referente</label>
+              <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{es ? 'Empresa Referente' : 'Referring Company'}</label>
               {verLectura ? <div className="ver-box">{selected.empresa_referente || '—'}</div> : <input value={selected.empresa_referente || ''} onChange={e => setSelected({ ...selected, empresa_referente: e.target.value.toUpperCase() })} style={inputStyle} />}
             </div>
             <div>

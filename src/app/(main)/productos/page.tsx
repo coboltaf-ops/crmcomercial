@@ -29,6 +29,7 @@ export default function ProductosPage() {
   const t = useT()
   const ts = useTStatus()
   const idioma = useIdioma()
+  const es = idioma !== 'en'
   const permisos = usePermisos('productos')
   const currentUser = useCurrentUserStore(s => s.user)
   const { productos, addProducto, updateProducto, deleteProducto } = useProductosStore()
@@ -192,7 +193,7 @@ export default function ProductosPage() {
               </select>}
             </div>
             <div>
-              <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>País</label>
+              <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{es ? 'País' : 'Country'}</label>
               {verLectura ? <div className="ver-box">{etiquetaPais(selected.pais) || '—'}</div> : usuarioGlobal ? (
                 <select value={selected.pais || paisNuevo} onChange={e => setSelected({ ...selected, pais: e.target.value })} style={inputStyle}>
                   {PAISES_ACTIVOS.map(p => <option key={p.codigo} value={p.codigo}>{p.bandera} {p.nombre}</option>)}
