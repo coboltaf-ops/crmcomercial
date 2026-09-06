@@ -47,7 +47,7 @@ export default function LoginPage() {
           {/* Logo Empresarial */}
           <div style={{ marginBottom: 24 }}>
             {empresa?.logo_url ? (
-              <img src={empresa.logo_url} alt="Logo" style={{ width: 140, height: 140, borderRadius: 16, objectFit: 'contain', background: 'rgba(255,255,255,0.1)', padding: 12, margin: '0 auto' }} />
+              <img src={empresa.logo_url} alt="Logo" style={{ width: 190, height: 190, borderRadius: 16, objectFit: 'contain', background: 'rgba(255,255,255,0.1)', padding: 12, margin: '0 auto' }} />
             ) : (
               <div style={{ width: 140, height: 140, borderRadius: 16, background: 'rgba(255,255,255,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#ffffff', fontSize: 48, fontWeight: 700, margin: '0 auto' }}>C</div>
             )}
