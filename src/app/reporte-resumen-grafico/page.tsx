@@ -5,11 +5,13 @@ import { PRESUPUESTO_CSS } from '@/shared/lib/presupuesto-css'
 import { useSearchParams } from 'next/navigation'
 import { useOfertasStore } from '@/features/ofertas/store/ofertas-store'
 import { type RenglonOferta, esDetalle, costoTotal, montoVenta } from '@/features/ofertas/types'
+import { simboloMoneda } from '@/shared/lib/paises'
 
 // ---------- helpers ----------
-const money = (n: number) => 'S/ ' + Math.round(n || 0).toLocaleString('en-US')
+let SIM_R = 'S/'   // símbolo de moneda según el país de la oferta (se fija al cargar)
+const money = (n: number) => SIM_R + ' ' + Math.round(n || 0).toLocaleString('en-US')
 const money0 = (n: number) => Math.round(n || 0).toLocaleString('en-US')
-const money2 = (n: number) => 'S/ ' + (n || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+const money2 = (n: number) => SIM_R + ' ' + (n || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
 const qty = (n: number) => (n || 0).toLocaleString('en-US', { maximumFractionDigits: 2 })
 const fecha = (iso: string) => { if (!iso) return '—'; const [y, m, d] = iso.split('-'); return `${d}/${m}/${y}` }
 const fechaHoy = () => { const d = new Date(); const p = (n: number) => String(n).padStart(2, '0'); return `${p(d.getDate())}/${p(d.getMonth() + 1)}/${d.getFullYear()}` }
@@ -90,6 +92,7 @@ function ReporteResumen() {
   useEffect(() => { useOfertasStore.getState().loadOfertas() }, [])
 
   const oferta = useMemo(() => ofertas.find(o => o.id === ofertaId) || null, [ofertas, ofertaId])
+  SIM_R = simboloMoneda(oferta?.pais)
   useEffect(() => {
     if (oferta) document.title = `${oferta.consecutivo}${oferta.proyecto ? ' - ' + oferta.proyecto : ''}`
   }, [oferta])

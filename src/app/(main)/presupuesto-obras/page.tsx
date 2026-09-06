@@ -14,12 +14,14 @@ import { useCotizacionesSubStore } from '@/features/cotizaciones-subcontratistas
 import { useMaquinariasStore } from '@/features/maquinarias-equipos/store/maquinarias-equipos-store'
 import { CreadoPorCell } from '@/shared/components/creado-por-cell'
 import { useCurrentUserStore } from '@/features/usuarios-gestion/store/current-user-store'
-import { PAISES_ACTIVOS, esGlobal, etiquetaPais } from '@/shared/lib/paises'
+import { PAISES_ACTIVOS, esGlobal, etiquetaPais, simboloMoneda, monedaDePais } from '@/shared/lib/paises'
 
 const inputSt: React.CSSProperties = { background: '#ffffff', border: '1px solid #e5e7eb', color: '#0b1d4a' }
 const fmtMonto = (n: number) => (n || n === 0) ? Number(n).toLocaleString('en-US') : ''
 const parseMonto = (s: string) => Number(String(s).replace(/[^\d.]/g, '')) || 0
-const money = (n: number) => 'S/ ' + Math.round(n || 0).toLocaleString('en-US')
+// Símbolo de moneda ACTIVO (se fija por país de la oferta en cada render). Cada país su moneda.
+let SIM_MONEDA = 'S/'
+const money = (n: number) => SIM_MONEDA + ' ' + Math.round(n || 0).toLocaleString('en-US')
 const fDate = (iso: string) => { if (!iso) return '—'; const [y, m, d] = iso.split('-'); return d && m && y ? `${d}/${m}/${y}` : iso }
 const hoy = () => new Date().toISOString().slice(0, 10)
 
@@ -56,7 +58,7 @@ const nuevoRenglon = (tipo = 'D1'): RenglonOferta => ({ id: crypto.randomUUID(),
 const initForm = (consec: string, pais = ''): Oferta => ({
   id: '', nro: 0, consecutivo: consec, proyecto: '', fecha_emision: hoy(),
   cliente: '', comercial: '', responsable_tecnico: '', codigo_gtm: '', unidad_negocio: '', lugar_ejecucion: '',
-  moneda: '', margen_general: 0, pct_impuesto: 0, alcance: '', observaciones: '', pais, renglones: [nuevoRenglon()], situacion: 'Borrador',
+  moneda: pais ? monedaDePais(pais).nombre : '', margen_general: 0, pct_impuesto: 0, alcance: '', observaciones: '', pais, renglones: [nuevoRenglon()], situacion: 'Borrador',
 })
 
 export default function OfertasClientesPage() {
@@ -88,6 +90,9 @@ export default function OfertasClientesPage() {
   // Mostrar desglose de Costos / Ventas / Utilidad en la totalización (No = solo total de la oferta)
   const [verDesglose, setVerDesglose] = useState(false)
   const draftIdRef = useRef('')  // id del borrador que se está auto-guardando
+
+  // Símbolo de moneda según el país de la oferta en foco (Ver → viewItem, Editar/Nuevo → form, si no → país del usuario).
+  SIM_MONEDA = simboloMoneda(viewItem?.pais || form?.pais || paisUsuario)
 
   // Carga las ofertas del servidor al montar (sin esto la lista sale vacía).
   useEffect(() => { loadOfertas() }, [loadOfertas])
@@ -481,7 +486,7 @@ export default function OfertasClientesPage() {
             <div>
               <label className="block text-xl font-extrabold text-[#0b1d4a] mb-1">País{usuarioGlobal ? ' *' : ''}</label>
               {usuarioGlobal ? (
-                <select value={form.pais || ''} onChange={e => setForm({ ...form, pais: e.target.value })} className="w-full px-3 py-2.5 rounded-lg text-lg outline-none" style={inputSt}>
+                <select value={form.pais || ''} onChange={e => { const p = e.target.value; setForm({ ...form, pais: p, moneda: monedaDePais(p).nombre }) }} className="w-full px-3 py-2.5 rounded-lg text-lg outline-none" style={inputSt}>
                   {PAISES_ACTIVOS.map(p => <option key={p.codigo} value={p.codigo}>{p.bandera} {p.nombre}</option>)}
                 </select>
               ) : (

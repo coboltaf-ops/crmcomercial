@@ -22,7 +22,7 @@ import { useAsistenteStore } from '@/shared/stores/asistente-store'
 import { useT, useIdioma, useTStatus } from '@/shared/i18n/use-t'
 import { Seguimiento } from '@/shared/types/seguimiento'
 import { buildWhatsAppLink, isValidPhone } from '@/shared/lib/whatsapp'
-import { PAISES_ACTIVOS, esGlobal, etiquetaPais } from '@/shared/lib/paises'
+import { PAISES_ACTIVOS, esGlobal, etiquetaPais, monedaDePais } from '@/shared/lib/paises'
 
 // En Cotizaciones los montos se muestran CON 2 decimales (no afecta el resto del sistema).
 // Los valores guardados (enteros) se ven como 1,000.00 — no se altera el dato.
@@ -64,7 +64,7 @@ const emptyDetalle = (): DetalleCotizacion => ({
 const emptyCotizacion = (codigo: string, nro: number, responsable: string, pais: string): Cotizacion => ({
   id: '', codigo, nro, fecha_emision: today,
   fecha_vencimiento: '', cliente_id: '', cliente_nombre: '', contacto_id: '', contacto_nombre: '',
-  oportunidad_id: '', oportunidad_nombre: '', categoria: '', tipo_moneda: 'Pesos Colombianos',
+  oportunidad_id: '', oportunidad_nombre: '', categoria: '', tipo_moneda: monedaDePais(pais).nombre,
   condicion_pago: 'Contado', pct_impuesto: 19, aiu_activo: false, aiu_admin_pct: 0, aiu_imprev_pct: 0, aiu_utilidad_pct: 0, aiu_base_iva: 'utilidad', observaciones: '', detalles: [emptyDetalle()],
   situacion: 'En Construcción', responsable, vendedor: '', fecha_registro: today, seguimientos: [], pais,
 })

@@ -37,6 +37,24 @@ export const PAISES: Pais[] = [
 /** Países disponibles para elegir en formularios (solo los activos). */
 export const PAISES_ACTIVOS = PAISES.filter((p) => p.activo)
 
+/** Moneda propia de cada país (nombre + símbolo). Cada país maneja SU moneda. */
+export interface MonedaPais { nombre: string; simbolo: string }
+export const MONEDAS_PAIS: Record<string, MonedaPais> = {
+  Colombia: { nombre: 'Pesos', simbolo: '$' },
+  'Perú': { nombre: 'Soles', simbolo: 'S/' },
+  Ecuador: { nombre: 'Dólares', simbolo: 'US$' }, // Ecuador dolarizado
+}
+/** Moneda por defecto = la del primer país activo del catálogo (se adapta a cada CRM). */
+const MONEDA_DEFAULT: MonedaPais = MONEDAS_PAIS[PAISES_ACTIVOS[0]?.codigo] || { nombre: 'Soles', simbolo: 'S/' }
+/** Devuelve la moneda (nombre + símbolo) del país dado. */
+export function monedaDePais(pais: string | undefined | null): MonedaPais {
+  return MONEDAS_PAIS[pais || ''] || MONEDA_DEFAULT
+}
+/** Símbolo de moneda del país (ej. Colombia → "$", Perú → "S/", Ecuador → "US$"). */
+export function simboloMoneda(pais: string | undefined | null): string {
+  return monedaDePais(pais).simbolo
+}
+
 /** Opción "GLOBAL" para asignar a usuarios de HQ / Admin. */
 export const OPCION_GLOBAL: Pais = {
   codigo: PAIS_GLOBAL,
