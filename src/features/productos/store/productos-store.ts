@@ -14,6 +14,7 @@ export interface Producto {
   tipo_moneda: string
   observaciones: string
   situacion: string
+  pais?: string
   creado_por?: string
   creado_por_usuario?: string
   creado_en?: string

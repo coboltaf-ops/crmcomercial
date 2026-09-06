@@ -15,13 +15,14 @@ import DocumentosPanel from '@/shared/components/documentos-panel'
 import { useAsistenteStore } from '@/shared/stores/asistente-store'
 import { useT, useIdioma, useTStatus } from '@/shared/i18n/use-t'
 import { Seguimiento } from '@/shared/types/seguimiento'
+import { PAISES_ACTIVOS, esGlobal, etiquetaPais } from '@/shared/lib/paises'
 
 const today = todayColombia()
 
-const emptyProducto = (codigo: string): Producto => ({
+const emptyProducto = (codigo: string, pais: string): Producto => ({
   id: '', codigo, descripcion: '', categoria: '',
   unidad_medida: 'Unidad', precio_unitario: 0, tipo_moneda: 'Pesos Colombianos',
-  observaciones: '', situacion: 'Activo', fecha_registro: today, seguimientos: [],
+  observaciones: '', situacion: 'Activo', pais, fecha_registro: today, seguimientos: [],
 })
 
 export default function ProductosPage() {
@@ -33,6 +34,9 @@ export default function ProductosPage() {
   const { productos, addProducto, updateProducto, deleteProducto } = useProductosStore()
   const loadProductos = useProductosStore(s => s.loadProductos)
   const refData = useReferenceStore(s => s.data)
+  const paisUsuario = currentUser?.pais || ''
+  const usuarioGlobal = esGlobal(paisUsuario)
+  const paisNuevo = usuarioGlobal ? (PAISES_ACTIVOS[0]?.codigo || 'Colombia') : paisUsuario
 
   useEffect(() => { loadProductos() }, [loadProductos])
 
@@ -42,16 +46,18 @@ export default function ProductosPage() {
   const [viewDetail, setViewDetail] = useState<Producto | null>(null)
   const [tab, setTab] = useState<'registros' | 'reportes'>('registros')
   const [search, setSearch] = useState('')
+  const [filtroPais, setFiltroPais] = useState('')
   const { pendingSearch, pendingAction, clearPending } = useAsistenteStore()
   useEffect(() => {
     if (pendingSearch) setSearch(pendingSearch)
-    if (pendingAction === 'nuevo') { setSelected(emptyProducto(nextConsecutivo('PRD-', productos.map(p => p.codigo)).codigo)); setIsForm(true) }
+    if (pendingAction === 'nuevo') { setSelected(emptyProducto(nextConsecutivo('PRD-', productos.map(p => p.codigo)).codigo, paisNuevo)); setIsForm(true) }
     if (pendingSearch || pendingAction) clearPending()
   }, [])
 
   const filtered = productos.filter(p =>
-    !search || p.descripcion.toLowerCase().includes(search.toLowerCase()) ||
-    p.codigo.toLowerCase().includes(search.toLowerCase())
+    (!usuarioGlobal || !filtroPais || p.pais === filtroPais) &&
+    (!search || p.descripcion.toLowerCase().includes(search.toLowerCase()) ||
+    p.codigo.toLowerCase().includes(search.toLowerCase()))
   )
 
   const auditParams = () => ({
@@ -185,6 +191,14 @@ export default function ProductosPage() {
                 {refOptions('situacion_lista').map(o => <option key={o} value={o}>{o}</option>)}
               </select>}
             </div>
+            <div>
+              <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>País</label>
+              {verLectura ? <div className="ver-box">{etiquetaPais(selected.pais) || '—'}</div> : usuarioGlobal ? (
+                <select value={selected.pais || paisNuevo} onChange={e => setSelected({ ...selected, pais: e.target.value })} style={inputStyle}>
+                  {PAISES_ACTIVOS.map(p => <option key={p.codigo} value={p.codigo}>{p.bandera} {p.nombre}</option>)}
+                </select>
+              ) : <div className="ver-box">{etiquetaPais(selected.pais || paisUsuario)}</div>}
+            </div>
             <div style={{ gridColumn: 'span 3' }}>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.observaciones')}</label>
               {verLectura ? <div className="ver-box">{selected.observaciones || '—'}</div> : <textarea value={selected.observaciones} onChange={e => setSelected({ ...selected, observaciones: e.target.value })} rows={3} style={{ ...inputStyle, resize: 'vertical' }} />}
@@ -227,7 +241,7 @@ export default function ProductosPage() {
 
       {permisos.crear && tab === 'registros' && (
         <div style={{ marginBottom: 20, display: 'flex', justifyContent: 'flex-end' }}>
-          <button onClick={() => { setSelected(emptyProducto(nextConsecutivo('PROD-', productos.map(p => p.codigo)).codigo)); setIsForm(true) }} style={{ ...btnStyle, background: '#1e3a8a', color: '#ffffff' }}>{t('page.productos.btnNuevo')}</button>
+          <button onClick={() => { setSelected(emptyProducto(nextConsecutivo('PROD-', productos.map(p => p.codigo)).codigo, paisNuevo)); setIsForm(true) }} style={{ ...btnStyle, background: '#1e3a8a', color: '#ffffff' }}>{t('page.productos.btnNuevo')}</button>
         </div>
       )}
 
@@ -238,8 +252,16 @@ export default function ProductosPage() {
 
       {tab === 'registros' && (
         <>
-          <input value={search} onChange={e => setSearch(e.target.value)} placeholder={t('ph.buscarProducto')}
-            style={{ ...inputStyle, maxWidth: 400, marginBottom: 16 }} />
+          <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', alignItems: 'center', marginBottom: 16 }}>
+            <input value={search} onChange={e => setSearch(e.target.value)} placeholder={t('ph.buscarProducto')}
+              style={{ ...inputStyle, maxWidth: 400, marginBottom: 0 }} />
+            {usuarioGlobal && (
+              <select value={filtroPais} onChange={e => setFiltroPais(e.target.value)} style={{ ...inputStyle, maxWidth: 220, marginBottom: 0 }}>
+                <option value="">🌎 Todos los países</option>
+                {PAISES_ACTIVOS.map(p => <option key={p.codigo} value={p.codigo}>{p.bandera} {p.nombre}</option>)}
+              </select>
+            )}
+          </div>
           <div style={{ borderRadius: 12, border: '1px solid #1e3a8a', overflow: 'hidden' }}>
             <table style={{ width: '100%', borderCollapse: 'collapse' }}>
               <thead>
