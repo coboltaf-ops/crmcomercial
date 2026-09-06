@@ -47,6 +47,11 @@ const html = `<!DOCTYPE html>
   <h1>Publicación de la Landing Norton<br>en el Dominio Corporativo</h1>
   <div class="rule"></div>
   <div class="sub">Procedimiento técnico paso a paso para publicar el sitio de Norton Edificios Industriales en el dominio <b>nortoneilatam.com</b> provisto por Grupo Tamoin.</div>
+  <div style="margin-top:26px; padding:14px 18px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.18); border-radius:10px; max-width:88%;">
+    <div style="font-size:11px; letter-spacing:2px; text-transform:uppercase; color:#8fbaff; margin-bottom:4px;">Dirigido a</div>
+    <div style="font-size:17px; font-weight:800; color:#ffffff;">José Abreu</div>
+    <div style="font-size:13px; color:#cfe0f7;">Responsable de Transformación Digital LATAM</div>
+  </div>
   <div class="meta">Documento técnico · ${FECHA}<br>Elaborado por <b>Ing. José E. Palomares</b> — Consultor de Desarrollo y Sistemas de Información</div>
 </div>
 

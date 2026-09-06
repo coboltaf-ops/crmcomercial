@@ -116,6 +116,9 @@ const html = `<!DOCTYPE html>
 
   <div class="fase"><div class="n">Fase 6 · Respaldos y continuidad</div><div class="ti">Nada se pierde</div>
   Cada sistema genera <b>respaldos automáticos periódicos</b> de toda su información, con historial de versiones, permitiendo restaurar el estado ante cualquier eventualidad. <span class="chk">Probado en un caso real de restauración.</span></div>
+
+  <div class="fase"><div class="n">Fase 7 · Multipaís total y sistema bilingüe</div><div class="ti">Operación LATAM y en dos idiomas</div>
+  Se completó el aislamiento por país en todos los módulos operativos —incluido <b>Productos/Catálogo</b>, que ahora también filtra por país— y se habilitó el <b>sistema bilingüe Español / Inglés</b>: títulos de módulos y nombres de campos se traducen con un clic. <span class="chk">Aplicado en CRM Comercial y CRM GTM, en producción.</span></div>
   <div class="footer"><span>TI · LATAM · Grupo Tamoin</span><span>Página 4</span></div>
 </div>
 
@@ -144,7 +147,7 @@ const html = `<!DOCTYPE html>
   <h2 style="margin-top:20px;">7. Conclusión</h2>
   <p>El ecosistema digital de Norton / GTM en LATAM está <b>construido, desplegado y bajo control</b>, con una arquitectura moderna, segura y escalable. Cada pieza tiene su función, su aislamiento y su respaldo, y todo el conjunto se administra de forma centralizada y trazable. Esto le da a Grupo Tamoin una base tecnológica <b>profesional, confiable y lista para crecer</b> en la región.</p>
   <div style="margin-top:16px;">
-    <span class="badge">CRM Comercial Multipaís</span><span class="badge">CRM GTM Obras</span><span class="badge">Sitio Corporativo</span><span class="badge">Respaldos Automáticos</span><span class="badge">Acceso por País</span><span class="badge">SSL / Nube Global</span>
+    <span class="badge">CRM Comercial Multipaís</span><span class="badge">CRM GTM Obras</span><span class="badge">Sitio Corporativo</span><span class="badge">Respaldos Automáticos</span><span class="badge">Acceso por País</span><span class="badge">Bilingüe ES / EN</span><span class="badge">SSL / Nube Global</span>
   </div>
   <p style="margin-top:18px; font-style:italic; color:#24405f;">Preparado por el Ing. José E. Palomares para el área de TI LATAM de Grupo Tamoin.</p>
   <div class="footer"><span>TI · LATAM · Grupo Tamoin</span><span>Página 5</span></div>

@@ -30,7 +30,8 @@ const TARJETAS_OPERATIVAS: Tarjeta[] = [
     notas: [
       'El resultado de atender bien: comentarios y recomendaciones favorables que posicionan a la empresa como un referente en el mundo empresarial.',
       'Por eso el CRM: reúne Mercadeo + Ventas + Servicio al Cliente en un solo lugar, con la visión completa y controlada de la relación con cada cliente.',
-      'Tip MULTIPAÍS — Este CRM (GESTIÓN COMERCIAL NORTON) maneja varios países. Cada usuario tiene asignado su País y ve SOLO la información de su país; los usuarios GLOBAL (Admin / HQ) ven todos los países. Monedas por país: Colombia → Pesos (COP $) · Perú → Soles (S/) · Ecuador → Dólar (US$). La ubicación se adapta a la estructura de cada país (Colombia: Región → Departamento → Ciudad · Perú: Departamento → Provincia → Distrito).',
+      'Tip MULTIPAÍS — Este CRM (GESTIÓN COMERCIAL NORTON) maneja varios países. Cada usuario tiene asignado su País y ve SOLO la información de su país; los usuarios GLOBAL (Admin / HQ) ven todos los países. Monedas por país: Colombia → Pesos (COP $) · Perú → Soles (S/) · Ecuador → Dólar (US$). La ubicación se adapta a la estructura de cada país (Colombia: Región → Departamento → Ciudad · Perú: Departamento → Provincia → Distrito). El módulo de Productos también filtra por país: cada producto pertenece a un país y el usuario ve solo los de su país (GLOBAL ve todos, con filtro 🌎).',
+      'Tip BILINGÜE — El sistema es bilingüe Español / Inglés. Con la banderita del encabezado (🇪🇸 / 🇺🇸) se cambia el idioma y se traducen los títulos de módulos y los nombres de campos al instante.',
     ],
   },
   {
