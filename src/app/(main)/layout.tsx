@@ -461,7 +461,13 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
               </button>
             )}
             <button onClick={() => {
-              if (confirm(idioma === 'en' ? 'Log out?' : '¿Cerrar sesión?')) { logout(); window.location.href = 'https://gtm-hq.vercel.app' }
+              if (confirm(idioma === 'en' ? 'Log out?' : '¿Cerrar sesión?')) {
+                // Solo Jose David (HQ) vuelve a la Torre de Control; los demás, logout normal (/login).
+                const esJoseDavid = user?.usuario === 'directorlatam' || /jose\s*david/i.test(user?.nombre || '')
+                logout()
+                if (esJoseDavid) window.location.href = 'https://gtm-hq.vercel.app'
+                else router.push('/login')
+              }
             }}
               style={{
                 padding: '8px 20px', borderRadius: 8,
