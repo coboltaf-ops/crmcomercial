@@ -96,7 +96,24 @@ const html = `<!DOCTYPE html>
     <tr><td><b>CNAME</b></td><td><code>www</code></td><td><code>cname.vercel-dns.com</code></td><td>Apunta la versión con www al sitio.</td></tr>
   </table>
   <p style="font-size:12px;color:#46566e;">Alternativa equivalente: cambiar los <i>nameservers</i> del dominio a <code>ns1.vercel-dns.com</code> y <code>ns2.vercel-dns.com</code> (delega todo el DNS a la plataforma). Se prefirió la opción de registros por ser más específica y no afectar otros servicios del dominio (como el correo).</p>
+
   <div class="footer"><span>TI · LATAM · Grupo Tamoin</span><span>Página 3</span></div>
+</div>
+
+<div class="page">
+  <div class="running">Publicación de la Landing Norton · Dominio Corporativo</div>
+  <h2>Recomendación — ¿quién aplica el cambio de DNS?</h2>
+  <p class="lead">El dominio <b>nortoneilatam.com</b> está registrado en <b>Neubox</b>, cuyo acceso administra el equipo de Tamoin. Para publicar la landing hay dos caminos, ambos sencillos:</p>
+  <div class="box" style="border-left-color:#15803d; background:#f0fdf4;">
+    <b>Opción A (recomendada) — Tamoin aplica los registros</b><br>
+    El responsable del dominio entra al panel de Neubox y, en la Zona DNS, crea o edita los dos registros del paso 5: <code>A · @ · 76.76.21.21</code> y <code>CNAME · www · cname.vercel-dns.com</code>. Es un cambio de 5 minutos y no afecta el correo ni otros servicios del dominio.
+  </div>
+  <div class="box" style="border-left-color:#1e5aa8; background:#f3f8ff;">
+    <b>Opción B — Tamoin nos da acceso</b><br>
+    Si el equipo de Tamoin comparte el acceso al panel de Neubox (o delega los <i>nameservers</i> a Vercel), nosotros realizamos la configuración por ustedes y dejamos la landing publicada, sin que su equipo tenga que hacer nada más.
+  </div>
+  <p style="margin-top:10px;">En cualquiera de las dos opciones, tras el cambio la propagación toma entre <b>15 minutos y 2 horas</b>, el certificado <b>SSL se emite automáticamente</b> y la landing queda viva en <b>https://nortoneilatam.com</b>. Todo lo demás ya está listo de nuestro lado.</p>
+  <div class="footer"><span>TI · LATAM · Grupo Tamoin</span><span>Página 4</span></div>
 </div>
 
 <div class="page">
@@ -123,7 +140,7 @@ const html = `<!DOCTYPE html>
   </ul>
 
   <p style="margin-top:16px; font-style:italic; color:#24405f;">Procedimiento ejecutado y documentado por el Ing. José E. Palomares para el área de TI LATAM de Grupo Tamoin.</p>
-  <div class="footer"><span>TI · LATAM · Grupo Tamoin</span><span>Página 4</span></div>
+  <div class="footer"><span>TI · LATAM · Grupo Tamoin</span><span>Página 5</span></div>
 </div>
 
 </body></html>`
