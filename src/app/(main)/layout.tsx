@@ -330,13 +330,10 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
           </div>
           {!collapsed && (
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6, marginTop: 8 }}>
-              {empresa?.logo_url ? (
-                <img src={empresa.logo_url} alt="Logo" style={{ width: 120, height: 120, borderRadius: 14, objectFit: 'contain', background: 'rgba(255,255,255,0.1)', padding: 8 }} />
-              ) : (
-                <div style={{ width: 120, height: 120, borderRadius: 14, background: 'rgba(255,255,255,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#ffffff', fontWeight: 700, fontSize: 34 }}>C</div>
-              )}
+              <img src="/logo-norton.jpeg" alt="Norton" style={{ width: 190, height: 84, borderRadius: 12, objectFit: 'contain', background: '#ffffff', padding: 8 }} />
               <div style={{ textAlign: 'center' }}>
-                <p style={{ color: '#ffffff', fontWeight: 800, fontSize: 16, lineHeight: 1.2, margin: 0 }}>{idioma === 'en' ? 'COMMERCIAL MANAGEMENT NORTON' : 'GESTIÓN COMERCIAL NORTON'}</p>
+                <p style={{ color: '#ffffff', fontWeight: 800, fontSize: 16, lineHeight: 1.2, margin: 0 }}>Grupo GTM LATAM</p>
+                <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: 11, margin: '2px 0 0' }}>Gestión Comercial</p>
               </div>
             </div>
           )}
@@ -464,7 +461,7 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
               </button>
             )}
             <button onClick={() => {
-              if (confirm(idioma === 'en' ? 'Log out?' : '¿Cerrar sesión?')) { logout(); router.push('/login') }
+              if (confirm(idioma === 'en' ? 'Log out?' : '¿Cerrar sesión?')) { logout(); window.location.href = 'https://gtm-hq.vercel.app' }
             }}
               style={{
                 padding: '8px 20px', borderRadius: 8,

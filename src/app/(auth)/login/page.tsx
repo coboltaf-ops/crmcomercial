@@ -46,13 +46,10 @@ export default function LoginPage() {
         <div style={{ textAlign: 'center', marginBottom: 32 }}>
           {/* Logo Empresarial */}
           <div style={{ marginBottom: 24 }}>
-            {empresa?.logo_url ? (
-              <img src={empresa.logo_url} alt="Logo" style={{ width: 190, height: 190, borderRadius: 16, objectFit: 'contain', background: 'rgba(255,255,255,0.1)', padding: 12, margin: '0 auto' }} />
-            ) : (
-              <div style={{ width: 140, height: 140, borderRadius: 16, background: 'rgba(255,255,255,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#ffffff', fontSize: 48, fontWeight: 700, margin: '0 auto' }}>C</div>
-            )}
+            <img src="/logo-norton.jpeg" alt="Norton" style={{ width: 240, height: 120, borderRadius: 16, objectFit: 'contain', background: '#ffffff', padding: 12, margin: '0 auto' }} />
           </div>
-          <h1 style={{ fontSize: 26, fontWeight: 800, color: '#ffffff', marginBottom: 4 }}>GESTIÓN COMERCIAL NORTON</h1>
+          <h1 style={{ fontSize: 28, fontWeight: 800, color: '#ffffff', marginBottom: 4 }}>Grupo GTM LATAM</h1>
+          <p style={{ color: '#ffffff', fontSize: 15, fontWeight: 700, margin: '0 0 4px' }}>Gestión Comercial</p>
           <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: 14 }}>Inicia sesión en tu cuenta</p>
         </div>
         <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
