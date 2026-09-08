@@ -108,6 +108,10 @@ const initialData: RefData = {
     { id: '4', descripcion: 'Negociación', situacion: true },
     { id: '5', descripcion: 'Cierre', situacion: true },
   ],
+  veredicto_oferta: [
+    { id: '1', descripcion: 'Pendiente', situacion: true },
+    { id: '2', descripcion: 'Desierta', situacion: true },
+  ],
   prioridad_pqrs: [
     { id: '1', descripcion: 'Baja', situacion: true },
     { id: '2', descripcion: 'Media', situacion: true },
