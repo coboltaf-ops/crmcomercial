@@ -9,9 +9,10 @@ type Props = {
   title: string
   fields: Field[]
   onClose: () => void
+  children?: React.ReactNode
 }
 
-export default function ViewRecordModal({ title, fields, onClose }: Props) {
+export default function ViewRecordModal({ title, fields, onClose, children }: Props) {
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4" style={{ background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(4px)' }}>
       <div className="w-full max-w-2xl max-h-[80vh] overflow-y-auto rounded-2xl p-6"
@@ -30,6 +31,7 @@ export default function ViewRecordModal({ title, fields, onClose }: Props) {
             </div>
           ))}
         </div>
+        {children}
         <div className="mt-6 flex justify-end">
           <button onClick={onClose} className="px-5 py-2 rounded-xl text-[#374151] text-sm font-medium"
             style={{ background: '#ffffff', border: '1px solid #e5e7eb' }}>

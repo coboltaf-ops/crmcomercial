@@ -8,6 +8,8 @@ import { nextConsecutivo } from '@/shared/lib/consecutivo'
 import { todayColombia } from '@/shared/lib/format-date'
 import { useIdioma } from '@/shared/i18n/use-t'
 import { PAISES_ACTIVOS, esGlobal, etiquetaPais } from '@/shared/lib/paises'
+import SeguimientoPanel from '@/shared/components/seguimiento-panel'
+import { Seguimiento } from '@/shared/types/seguimiento'
 
 export default function ProductosVariosPage() {
   const idioma = useIdioma()
@@ -174,6 +176,17 @@ export default function ProductosVariosPage() {
             </div>
           </div>
         </div>
+        <SeguimientoPanel
+          seguimientos={detalle.seguimientos || []}
+          usuario={`${currentUser?.nombre} ${currentUser?.apellido}`}
+          situacionActual={detalle.situacion}
+          situacionOpciones={['Activo', 'Inactivo']}
+          onAdd={(seg: Seguimiento) => {
+            const updated = { ...detalle, situacion: seg.situacion, seguimientos: [...(detalle.seguimientos || []), seg] }
+            updateProductoVario(detalle.id, updated)
+            setDetalle(updated)
+          }}
+        />
       </div>
     )
   }

@@ -1,6 +1,7 @@
 import { create } from 'zustand'
 import { apiUpsert, apiDelete } from '@/shared/lib/list-client'
 import { SEED_CARGOS } from '../seed-edificio'
+import { Seguimiento } from '@/shared/types/seguimiento'
 
 // Cargos y Salarios PROPIOS de crmgtm (multipaís). Se persisten por registro en
 // el servidor (/api/cargos-salarios → cargos-salarios-datos). El servidor filtra
@@ -21,6 +22,7 @@ export interface CargoSalario {
   creado_por_usuario?: string
   creado_en?: string
   fecha_registro: string
+  seguimientos?: Seguimiento[]
 }
 
 interface CargosSalariosState {

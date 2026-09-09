@@ -1,6 +1,7 @@
 import { create } from 'zustand'
 import { apiUpsert, apiDelete } from '@/shared/lib/list-client'
 import { SEED_PRODUCTOS_VARIOS } from '../seed-edificio'
+import { Seguimiento } from '@/shared/types/seguimiento'
 
 // Productos Varios PROPIOS de crmgtm (multipaís). Se persisten por registro en el
 // servidor (/api/productos-varios → productos-varios-datos). El servidor filtra
@@ -20,6 +21,7 @@ export interface ProductoVario {
   creado_por_usuario?: string
   creado_en?: string
   fecha_registro: string
+  seguimientos?: Seguimiento[]
 }
 
 interface ProductosVariosState {

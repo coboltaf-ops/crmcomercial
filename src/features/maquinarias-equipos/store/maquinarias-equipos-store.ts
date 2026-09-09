@@ -1,6 +1,7 @@
 import { create } from 'zustand'
 import { apiUpsert, apiDelete } from '@/shared/lib/list-client'
 import { SEED_MAQUINARIAS } from '../seed-edificio'
+import { Seguimiento } from '@/shared/types/seguimiento'
 
 // Maquinaria y Equipos PROPIOS de crmgtm (multipaís). Se persisten por registro
 // en el servidor (/api/maquinarias-equipos → maquinarias-equipos-datos).
@@ -24,6 +25,7 @@ export interface MaquinariaEquipo {
   creado_por_usuario?: string
   creado_en?: string
   fecha_registro: string
+  seguimientos?: Seguimiento[]
 }
 
 interface MaquinariasState {
