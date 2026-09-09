@@ -31,6 +31,7 @@ export const REFERENCE_TABLES = [
   { id: 'origen_oportunidad', label: 'Origen Oportunidad' },
   { id: 'etapa_oportunidad', label: 'Etapa Oportunidad' },
   { id: 'veredicto_oferta', label: 'Veredicto' },
+  { id: 'situacion_oferta', label: 'Situación Oferta' },
   { id: 'prioridad_pqrs', label: 'Prioridad PQRS' },
   { id: 'roles', label: 'Roles' },
   { id: 'nivel_influencia', label: 'Nivel Influencia' },

@@ -361,7 +361,7 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
                 <span style={{ fontSize: 18, flexShrink: 0 }}>{item.icon}</span>
                 {!collapsed && <span>{item.label}</span>}
               </button>
-              {item.href === '/oportunidades' && ofertasGroup}
+              {item.href === '/seguimiento-oferta' && ofertasGroup}
               </Fragment>
             )
           })}

@@ -23,6 +23,7 @@ const defaultModulos: Modulo[] = [
   { id: 'contactos', label: 'Contactos', icon: '👤', href: '/contactos', activo: true, grupo: 'principal' },
   { id: 'prospectos', label: 'Prospectos', icon: '🧲', href: '/prospectos', activo: true, grupo: 'principal' },
   { id: 'oportunidades', label: 'Oportunidades', icon: '🎯', href: '/oportunidades', activo: true, grupo: 'principal' },
+  { id: 'seguimiento-oferta', label: 'Seguimiento Oferta', icon: '📄', href: '/seguimiento-oferta', activo: true, grupo: 'principal' },
   { id: 'proyectos', label: 'Proyectos', icon: '🏗️', href: '/proyectos', activo: true, grupo: 'principal' },
   { id: 'proveedores', label: 'Proveedores', icon: '🏭', href: '/proveedores', activo: true, grupo: 'principal' },
   { id: 'cotizaciones', label: 'Cotizaciones', icon: '📋', href: '/cotizaciones', activo: true, grupo: 'principal' },

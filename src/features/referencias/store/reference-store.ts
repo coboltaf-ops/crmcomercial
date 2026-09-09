@@ -60,9 +60,10 @@ const initialData: RefData = {
   ],
   situacion_oportunidad: [
     { id: '1', descripcion: 'Abierta', situacion: true },
-    { id: '2', descripcion: 'Ganada', situacion: true },
-    { id: '3', descripcion: 'Perdida', situacion: true },
-    { id: '4', descripcion: 'En Negociación', situacion: true },
+    { id: '2', descripcion: 'Cliente Pide Oferta', situacion: true },
+    { id: '3', descripcion: 'Ganada', situacion: true },
+    { id: '4', descripcion: 'Perdida', situacion: true },
+    { id: '5', descripcion: 'En Negociación', situacion: true },
   ],
   situacion_pqrs: [
     { id: '1', descripcion: 'Abierta', situacion: true },
@@ -111,6 +112,13 @@ const initialData: RefData = {
   veredicto_oferta: [
     { id: '1', descripcion: 'Pendiente', situacion: true },
     { id: '2', descripcion: 'Desierta', situacion: true },
+  ],
+  situacion_oferta: [
+    { id: '1', descripcion: 'En Preparación', situacion: true },
+    { id: '2', descripcion: 'Presentada', situacion: true },
+    { id: '3', descripcion: 'En Evaluación', situacion: true },
+    { id: '4', descripcion: 'Adjudicada', situacion: true },
+    { id: '5', descripcion: 'No Adjudicada', situacion: true },
   ],
   prioridad_pqrs: [
     { id: '1', descripcion: 'Baja', situacion: true },
