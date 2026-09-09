@@ -7,6 +7,8 @@ import { useCapitulosObraStore, type CapituloObra, type TipoCapitulo } from '@/f
 import { useOfertasStore } from '@/features/ofertas/store/ofertas-store'
 import { useCurrentUserStore } from '@/features/usuarios-gestion/store/current-user-store'
 import { PAISES_ACTIVOS, esGlobal, etiquetaPais } from '@/shared/lib/paises'
+import SeguimientoPanel from '@/shared/components/seguimiento-panel'
+import { Seguimiento } from '@/shared/types/seguimiento'
 import { usePermisos } from '@/shared/hooks/use-permisos'
 import ViewRecordModal from '@/shared/components/view-record-modal'
 import { CreadoPorCell } from '@/shared/components/creado-por-cell'
@@ -395,7 +397,19 @@ export default function CapitulosObraPage() {
             { label: 'País', value: etiquetaPais(viewRecord.pais) },
           ]}
           onClose={() => setViewRecord(null)}
-        />
+        >
+          <SeguimientoPanel
+            seguimientos={viewRecord.seguimientos || []}
+            usuario={`${currentUser?.nombre} ${currentUser?.apellido}`}
+            situacionActual={viewRecord.situacion}
+            situacionOpciones={['Activo', 'Inactivo']}
+            onAdd={(seg: Seguimiento) => {
+              const updated = { ...viewRecord, situacion: seg.situacion, seguimientos: [...(viewRecord.seguimientos || []), seg] }
+              updateCapitulo(viewRecord.id, updated)
+              setViewRecord(updated)
+            }}
+          />
+        </ViewRecordModal>
       )}
     </div>
   )

@@ -16,6 +16,8 @@ import { useMaquinariasStore } from '@/features/maquinarias-equipos/store/maquin
 import { CreadoPorCell } from '@/shared/components/creado-por-cell'
 import { useCurrentUserStore } from '@/features/usuarios-gestion/store/current-user-store'
 import { PAISES_ACTIVOS, esGlobal, etiquetaPais, simboloMoneda, monedaDePais } from '@/shared/lib/paises'
+import SeguimientoPanel from '@/shared/components/seguimiento-panel'
+import { Seguimiento } from '@/shared/types/seguimiento'
 
 const inputSt: React.CSSProperties = { background: '#ffffff', border: '1px solid #e5e7eb', color: '#0b1d4a' }
 const fmtMonto = (n: number) => (n || n === 0) ? Number(n).toLocaleString('en-US') : ''
@@ -966,6 +968,17 @@ export default function OfertasClientesPage() {
                 )
               })()}
               {verDesglose && resumenVertical(verVisible!)}
+              <SeguimientoPanel
+                seguimientos={viewItem.seguimientos || []}
+                usuario={`${currentUser?.nombre} ${currentUser?.apellido}`}
+                situacionActual={viewItem.situacion}
+                situacionOpciones={['Borrador', 'Enviada', 'Ganada', 'Perdida']}
+                onAdd={(seg: Seguimiento) => {
+                  const updated = { ...viewItem, situacion: seg.situacion, seguimientos: [...(viewItem.seguimientos || []), seg] }
+                  updateOferta(viewItem.id, updated)
+                  setViewItem(updated)
+                }}
+              />
             </div>
           </div>
         </div>

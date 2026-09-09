@@ -65,6 +65,7 @@ export type Oferta = Auditoria & {
   renglones: RenglonOferta[]
   situacion: string          // Borrador · Enviada · Ganada · Perdida
   pais: string               // País de la oferta (multipaís). GLOBAL/Admin ve todos.
+  seguimientos?: import('@/shared/types/seguimiento').Seguimiento[]
 }
 
 // Cálculos por renglón

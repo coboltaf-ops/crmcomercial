@@ -26,6 +26,7 @@ export type CapituloObra = Auditoria & {
   moneda?: string                // Tipo Moneda
   alcance?: string               // Alcance del proyecto
   pais: string                   // País del capítulo (multipaís). GLOBAL/Admin ve todos.
+  seguimientos?: import('@/shared/types/seguimiento').Seguimiento[]
 }
 
 // Capítulos de Oferta — PROPIOS de crmgtm (multipaís). Se persisten POR REGISTRO en el
