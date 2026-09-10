@@ -90,11 +90,11 @@
 
   <!-- PORTADA -->
   <div class="cover">
-    <span class="badge">🚧 SISTEMA EN CONSTRUCCIÓN · v1.2</span>
+    <span class="badge">🚧 SISTEMA EN CONSTRUCCIÓN · v1.3</span>
     <h1>Manual de Procedimientos y Uso</h1>
     <div class="sub">Sistema <b>Control de Proyectos</b> — Dashboard Gerencial de Obra · Norton</div>
     <div class="meta">
-      <b>Versión:</b> 1.2 &nbsp;·&nbsp; <b>Fecha:</b> 10 de septiembre de 2026 &nbsp;·&nbsp; <b>Cubre:</b> Fases 0 a 4<br>
+      <b>Versión:</b> 1.3 &nbsp;·&nbsp; <b>Fecha:</b> 10 de septiembre de 2026 &nbsp;·&nbsp; <b>Cubre:</b> Fases 0 a 5<br>
       <b>Elaborado por:</b> Ing. José E. Palomares — Consultor Sistemas de Información<br>
       <b>Módulo dentro de:</b> CRM Comercial Norton
     </div>
@@ -293,12 +293,45 @@
     </div>
     <div class="nota"><b>Alerta temprana:</b> en el ejemplo, aunque el presupuesto proyecta 9% de margen, el margen real a hoy está <b>en rojo</b>. Ese contraste es exactamente lo que el sistema pone frente a la Gerencia para actuar a tiempo.</div>
 
-    <!-- 11. BITÁCORA -->
-    <h2><span class="n">11.</span> Bitácora de seguimiento</h2>
+    <!-- 11. PROCESO 6 -->
+    <h2><span class="n">11.</span> Proceso 6 — Vista de Portafolio y semáforos</h2>
+    <p>La pantalla principal del sistema es el <b>Portafolio</b>: todos los proyectos en control, de un vistazo, con su <b>semáforo</b> de estado. Es la vista que la Gerencia abre primero.</p>
+    <h3>Franja de indicadores del portafolio</h3>
+    <p>Arriba se muestran los totales consolidados: número de <b>proyectos</b>, <b>presupuesto total</b>, <b>avance promedio</b>, <b>margen real total</b> y cuántos están <b>en alerta</b>.</p>
+    <h3>Semáforo por proyecto</h3>
+    <p>Cada proyecto se colorea según la <b>desviación de avance</b> (real − plan) del último corte:</p>
+    <table class="tabla">
+      <tr><th>Color</th><th>Estado</th><th>Criterio</th></tr>
+      <tr><td>🟢 Verde</td><td>En verde</td><td>Desviación mayor a −5% (a tiempo o adelantado).</td></tr>
+      <tr><td>🟠 Ámbar</td><td>Atención</td><td>Desviación entre −5% y −10%.</td></tr>
+      <tr><td>🔴 Rojo</td><td>Crítico</td><td>Desviación de −10% o peor.</td></tr>
+      <tr><td>⚪ Gris</td><td>Sin datos</td><td>Aún no tiene cortes de avance.</td></tr>
+    </table>
+    <div class="fig">
+      <div class="cap"><b>Figura 6.</b> Portafolio — franja de totales + tabla con semáforo</div>
+      <div class="canvas">
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px;margin-bottom:12px;">
+          <div style="border:1px solid #e2e8f0;border-top:3px solid #1e3a8a;border-radius:8px;padding:8px 10px;"><div style="font-size:9px;color:#64748b;font-weight:700;text-transform:uppercase;">Proyectos</div><div style="font-size:16px;font-weight:800;color:#1e3a8a;">4</div></div>
+          <div style="border:1px solid #e2e8f0;border-top:3px solid #0f766e;border-radius:8px;padding:8px 10px;"><div style="font-size:9px;color:#64748b;font-weight:700;text-transform:uppercase;">Presupuesto</div><div style="font-size:16px;font-weight:800;color:#0f766e;">$8.140M</div></div>
+          <div style="border:1px solid #e2e8f0;border-top:3px solid #ea580c;border-radius:8px;padding:8px 10px;"><div style="font-size:9px;color:#64748b;font-weight:700;text-transform:uppercase;">Avance prom.</div><div style="font-size:16px;font-weight:800;color:#ea580c;">38%</div></div>
+          <div style="border:1px solid #e2e8f0;border-top:3px solid #dc2626;border-radius:8px;padding:8px 10px;"><div style="font-size:9px;color:#64748b;font-weight:700;text-transform:uppercase;">En alerta</div><div style="font-size:16px;font-weight:800;color:#dc2626;">2</div></div>
+        </div>
+        <table class="wbs">
+          <tr><th>Nro</th><th>Proyecto</th><th class="r">Avance</th><th>Semáforo</th></tr>
+          <tr><td>CTP-0001</td><td>Edificio CLE 16-16</td><td class="r">43% (−57)</td><td><span style="color:#dc2626;font-weight:700;">🔴 Crítico</span></td></tr>
+          <tr><td>CTP-0002</td><td>Bodega Norte</td><td class="r">62% (−7)</td><td><span style="color:#f59e0b;font-weight:700;">🟠 Atención</span></td></tr>
+          <tr><td>CTP-0003</td><td>Nave Industrial Sur</td><td class="r">80% (+2)</td><td><span style="color:#16a34a;font-weight:700;">🟢 En verde</span></td></tr>
+        </table>
+      </div>
+    </div>
+    <div class="nota"><b>Uso gerencial:</b> los umbrales del semáforo (−5% y −10%) son los que sugiere la especificación. En un vistazo, la Gerencia sabe qué proyecto necesita atención sin abrir cada ficha.</div>
+
+    <!-- 12. BITÁCORA -->
+    <h2><span class="n">12.</span> Bitácora de seguimiento</h2>
     <p>Cada proyecto tiene una <b>bitácora</b> donde se registran notas y cambios de situación con fecha y usuario. Sirve para dejar el historial de decisiones y novedades del proyecto (retrasos, acuerdos, hitos). Se usa igual que en los demás módulos del CRM.</p>
 
-    <!-- 12. ESTADO -->
-    <h2><span class="n">12.</span> Estado del desarrollo (hoja de ruta)</h2>
+    <!-- 13. ESTADO -->
+    <h2><span class="n">13.</span> Estado del desarrollo (hoja de ruta)</h2>
     <p>Este sistema se libera por fases. Estado a la fecha de este manual:</p>
     <div class="estado">
       <div class="e"><b>✅ Fase 0</b> Esqueleto del módulo y acceso desde el menú.</div>
@@ -306,16 +339,16 @@
       <div class="e"><b>✅ Fase 2a</b> WBS / partidas + presupuesto e importación de Excel.</div>
       <div class="e"><b>✅ Fase 3</b> Cortes de avance + Curva S (planeado vs real) en vivo.</div>
       <div class="e"><b>✅ Fase 4</b> Resumen Gerencial (KPIs: margen, avance, facturación) + Curva S financiera.</div>
-      <div class="e pend"><b>🕓 Fase 2b</b> Capas Proyectado/Real por partida y eje semanal → mensual.</div>
-      <div class="e pend"><b>🕓 Fase 4+</b> 3ª curva (retrasos cliente) y alertas por umbral.</div>
-      <div class="e pend"><b>🕓 Fase 5–6</b> Portafolio, semáforos, cartera y exportación (PDF/PPT/Excel).</div>
+      <div class="e"><b>✅ Fase 5</b> Portafolio con franja de totales y semáforo por proyecto.</div>
+      <div class="e pend"><b>🕓 Fase 6</b> Cartera (antigüedad), alertas por umbral y exportación (PDF/PPT/Excel).</div>
+      <div class="e pend"><b>🕓 Refinamientos</b> Capas Proyectado/Real por partida, eje semanal→mensual y 3ª curva (retrasos cliente).</div>
     </div>
     <div class="nota">Cada fase que se libere se documentará en la siguiente versión de este manual, con sus procesos paso a paso y capturas del sistema real.</div>
 
   </div>
 
   <footer>
-    <b>Manual de Procedimientos y Uso — Sistema Control de Proyectos</b> · v1.2 · 10/09/2026<br>
+    <b>Manual de Procedimientos y Uso — Sistema Control de Proyectos</b> · v1.3 · 10/09/2026<br>
     CRM Comercial Norton · Elaborado por Ing. José E. Palomares · Documento vivo: se actualiza con cada nueva fase.
   </footer>
 

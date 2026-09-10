@@ -88,6 +88,29 @@ export default function ControlProyectosPage() {
       (p.responsable || '').toLowerCase().includes(search.toLowerCase()))
   )
 
+  // ── Portafolio + semáforo por desviación de avance (Fase 5) ──
+  const presupuestoDe = (p: ControlProyecto) => {
+    const parts = p.partidas || []
+    if (parts.length) { const cods = parts.map(x => x.codigo); return parts.filter(x => esHoja(x.codigo, cods)).reduce((s, x) => s + (x.total_presupuesto || 0), 0) }
+    return p.presupuesto_base || 0
+  }
+  const estadoDe = (p: ControlProyecto) => {
+    const cs = p.cortes || []
+    const u = cs[cs.length - 1]
+    const real = u ? (u.pct_real || 0) : 0
+    const plan = u ? (u.pct_plan || 0) : 0
+    const desv = real - plan
+    const color = !u ? '#94a3b8' : desv <= -10 ? '#dc2626' : desv < -5 ? '#f59e0b' : '#16a34a'
+    const label = !u ? 'Sin datos' : desv <= -10 ? 'Crítico' : desv < -5 ? 'Atención' : 'En verde'
+    return { real, plan, desv, color, label, tiene: !!u }
+  }
+  const portafolio = {
+    presupuesto: filtered.reduce((s, p) => s + presupuestoDe(p), 0),
+    avance: filtered.length ? filtered.reduce((s, p) => s + estadoDe(p).real, 0) / filtered.length : 0,
+    margen: filtered.reduce((s, p) => s + ((p.ingresos_real || 0) - (p.egresos_real || 0)), 0),
+    alerta: filtered.filter(p => { const e = estadoDe(p); return e.tiene && e.desv < -5 }).length,
+  }
+
   // Vincular una Oferta → auto-rellena para evitar doble digitación (Sección 3.6 del documento)
   const vincularOferta = (ofertaId: string) => {
     if (!selected) return
@@ -499,6 +522,21 @@ export default function ControlProyectosPage() {
   return (
     <div>
       <OrangeHeader />
+      {/* Franja de portafolio (Fase 5) */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(150px,1fr))', gap: 10, marginBottom: 16 }}>
+        {[
+          { t: 'Proyectos', v: String(filtered.length), c: '#1e3a8a' },
+          { t: 'Presupuesto total', v: fmtMoney(portafolio.presupuesto), c: '#0f766e' },
+          { t: 'Avance promedio', v: portafolio.avance.toFixed(1) + '%', c: '#ea580c' },
+          { t: 'Margen real total', v: fmtMoney(portafolio.margen), c: portafolio.margen < 0 ? '#dc2626' : '#16a34a' },
+          { t: 'En alerta', v: String(portafolio.alerta), c: portafolio.alerta > 0 ? '#dc2626' : '#16a34a' },
+        ].map(k => (
+          <div key={k.t} style={{ background: '#fff', border: '1px solid #e2e8f0', borderTop: `3px solid ${k.c}`, borderRadius: 10, padding: '10px 14px' }}>
+            <div style={{ fontSize: 11, color: '#64748b', fontWeight: 700, textTransform: 'uppercase', letterSpacing: .3 }}>{k.t}</div>
+            <div style={{ fontSize: 18, fontWeight: 800, color: k.c, marginTop: 2 }}>{k.v}</div>
+          </div>
+        ))}
+      </div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16, gap: 12, flexWrap: 'wrap' }}>
         <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Buscar por código, proyecto, cliente o responsable..." style={{ ...inputStyle, maxWidth: 380 }} />
         {usuarioGlobal && (
@@ -513,23 +551,31 @@ export default function ControlProyectosPage() {
       </div>
 
       <div style={{ borderRadius: 12, border: '1px solid #ea580c', overflow: 'hidden' }}>
+        <div style={{ overflowX: 'auto' }}>
         <table style={{ width: '100%', borderCollapse: 'collapse' }}>
           <thead>
             <tr>
-              {['Nro', 'Proyecto', 'Cliente', 'Responsable', 'País', 'Presupuesto Base', 'Situación', 'Acciones'].map(h => (
-                <th key={h} style={{ padding: '12px 14px', background: '#ea580c', color: '#fff', fontSize: 12, textAlign: 'left' }}>{h}</th>
+              {['Nro', 'Proyecto', 'Cliente', 'País', 'Presupuesto', 'Avance', 'Semáforo', 'Situación', 'Acciones'].map(h => (
+                <th key={h} style={{ padding: '12px 14px', background: '#ea580c', color: '#fff', fontSize: 12, textAlign: 'left', whiteSpace: 'nowrap' }}>{h}</th>
               ))}
             </tr>
           </thead>
           <tbody>
-            {filtered.map((p, i) => (
+            {filtered.map((p, i) => {
+              const est = estadoDe(p)
+              return (
               <tr key={p.id} style={{ background: i % 2 === 0 ? '#fff7ed' : '#fff' }}>
                 <td style={{ padding: '8px 12px', borderBottom: '1px solid #fed7aa', color: '#000', fontSize: 13, fontFamily: 'monospace' }}>{p.codigo}</td>
                 <td style={{ padding: '8px 12px', borderBottom: '1px solid #fed7aa', color: '#000', fontSize: 13, fontWeight: 600 }}>{p.nombre_proyecto || '—'}</td>
                 <td style={{ padding: '8px 12px', borderBottom: '1px solid #fed7aa', color: '#000', fontSize: 13 }}>{p.cliente_nombre || '—'}</td>
-                <td style={{ padding: '8px 12px', borderBottom: '1px solid #fed7aa', color: '#000', fontSize: 13 }}>{p.responsable || '—'}</td>
                 <td style={{ padding: '8px 12px', borderBottom: '1px solid #fed7aa', color: '#000', fontSize: 13, whiteSpace: 'nowrap' }}>{etiquetaPais(p.pais)}</td>
-                <td style={{ padding: '8px 12px', borderBottom: '1px solid #fed7aa', color: '#000', fontSize: 13, textAlign: 'right' }}>{fmtMoney(p.presupuesto_base || 0)}</td>
+                <td style={{ padding: '8px 12px', borderBottom: '1px solid #fed7aa', color: '#000', fontSize: 13, textAlign: 'right', whiteSpace: 'nowrap' }}>{fmtMoney(presupuestoDe(p))}</td>
+                <td style={{ padding: '8px 12px', borderBottom: '1px solid #fed7aa', color: '#000', fontSize: 13, textAlign: 'right', whiteSpace: 'nowrap' }}>{est.tiene ? est.real.toFixed(0) + '%' : '—'}{est.tiene && <span style={{ color: est.desv < 0 ? '#dc2626' : '#16a34a', fontSize: 11, marginLeft: 4 }}>({est.desv > 0 ? '+' : ''}{est.desv.toFixed(0)})</span>}</td>
+                <td style={{ padding: '8px 12px', borderBottom: '1px solid #fed7aa', whiteSpace: 'nowrap' }}>
+                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 11, fontWeight: 700, color: est.color }}>
+                    <span style={{ width: 11, height: 11, borderRadius: '50%', background: est.color, display: 'inline-block' }} />{est.label}
+                  </span>
+                </td>
                 <td style={{ padding: '8px 12px', borderBottom: '1px solid #fed7aa' }}><span style={situColor(p.situacion)}>{p.situacion}</span></td>
                 <td style={{ padding: '8px 12px', borderBottom: '1px solid #fed7aa' }}>
                   <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap' }}>
@@ -539,10 +585,11 @@ export default function ControlProyectosPage() {
                   </div>
                 </td>
               </tr>
-            ))}
-            {filtered.length === 0 && <tr><td colSpan={8} style={{ padding: 32, textAlign: 'center', color: '#9a3412', fontSize: 14 }}>No hay proyectos en control todavía. Crea el primero con “+ Nuevo Control”.</td></tr>}
+            )})}
+            {filtered.length === 0 && <tr><td colSpan={9} style={{ padding: 32, textAlign: 'center', color: '#9a3412', fontSize: 14 }}>No hay proyectos en control todavía. Crea el primero con “+ Nuevo Control”.</td></tr>}
           </tbody>
         </table>
+        </div>
       </div>
     </div>
   )
