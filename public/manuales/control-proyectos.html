@@ -90,11 +90,11 @@
 
   <!-- PORTADA -->
   <div class="cover">
-    <span class="badge">🚧 SISTEMA EN CONSTRUCCIÓN · v1.1</span>
+    <span class="badge">🚧 SISTEMA EN CONSTRUCCIÓN · v1.2</span>
     <h1>Manual de Procedimientos y Uso</h1>
     <div class="sub">Sistema <b>Control de Proyectos</b> — Dashboard Gerencial de Obra · Norton</div>
     <div class="meta">
-      <b>Versión:</b> 1.1 &nbsp;·&nbsp; <b>Fecha:</b> 10 de septiembre de 2026 &nbsp;·&nbsp; <b>Cubre:</b> Fases 0 a 3<br>
+      <b>Versión:</b> 1.2 &nbsp;·&nbsp; <b>Fecha:</b> 10 de septiembre de 2026 &nbsp;·&nbsp; <b>Cubre:</b> Fases 0 a 4<br>
       <b>Elaborado por:</b> Ing. José E. Palomares — Consultor Sistemas de Información<br>
       <b>Módulo dentro de:</b> CRM Comercial Norton
     </div>
@@ -261,28 +261,61 @@
     </div>
     <div class="nota"><b>Lectura gerencial:</b> cuando la línea <b>real</b> (naranja) va por debajo de la <b>planeada</b> (azul), el proyecto está atrasado. La distancia entre ambas es la desviación acumulada — la alerta temprana para el comité de obra.</div>
 
-    <!-- 10. BITÁCORA -->
-    <h2><span class="n">10.</span> Bitácora de seguimiento</h2>
+    <!-- 10. PROCESO 5 -->
+    <h2><span class="n">10.</span> Proceso 5 — Resumen Gerencial (KPIs) y Curva S financiera</h2>
+    <p>El <b>Resumen Gerencial</b> es el tablero que la Gerencia mira de un vistazo. Se calcula solo a partir del presupuesto (WBS), los cortes de avance y unos pocos datos financieros.</p>
+    <ol class="pasos">
+      <li>En la ficha, baja a <b>📊 Resumen Gerencial · KPIs</b>.</li>
+      <li>Completa los <b>Datos financieros</b>: costo presupuestado, valor y costo proyectado, ingresos reales, egresos reales y facturado acumulado.</li>
+      <li>Los <b>KPIs</b> se recalculan automáticamente y se colorean según el estado (verde = sano, ámbar = atención, rojo = alerta).</li>
+      <li>Debajo aparece la <b>Curva S financiera ($)</b>: valor planeado vs valor ganado (avance × presupuesto).</li>
+    </ol>
+    <table class="tabla">
+      <tr><th>KPI</th><th>Qué mide</th></tr>
+      <tr><td><b>Presupuesto</b></td><td>Valor total de la línea base (suma de las partidas hoja del WBS).</td></tr>
+      <tr><td><b>Avance físico</b></td><td>% real del último corte, con el plan y la desviación.</td></tr>
+      <tr><td><b>Margen presupuestado / proyectado</b></td><td>(Valor − Costo) / Valor, para el presupuesto y para la reestimación.</td></tr>
+      <tr><td><b>Margen real a hoy</b></td><td>Ingresos reales − Egresos reales. En rojo si es negativo.</td></tr>
+      <tr><td><b>Facturado</b></td><td>% facturado sobre el presupuesto.</td></tr>
+      <tr><td><b>Saldo por facturar</b></td><td>(Avance físico × presupuesto) − facturado acumulado.</td></tr>
+    </table>
+    <div class="fig">
+      <div class="cap"><b>Figura 5.</b> Resumen Gerencial — KPIs (ejemplo con datos de la obra 16-16)</div>
+      <div class="canvas">
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;">
+          <div style="border:1px solid #e2e8f0;border-top:3px solid #1e3a8a;border-radius:10px;padding:10px 14px;"><div style="font-size:10px;color:#64748b;font-weight:700;text-transform:uppercase;">Presupuesto</div><div style="font-size:18px;font-weight:800;color:#1e3a8a;">$2.670.127.485</div></div>
+          <div style="border:1px solid #e2e8f0;border-top:3px solid #ea580c;border-radius:10px;padding:10px 14px;"><div style="font-size:10px;color:#64748b;font-weight:700;text-transform:uppercase;">Avance físico</div><div style="font-size:18px;font-weight:800;color:#ea580c;">43.0%</div><div style="font-size:10px;color:#94a3b8;">Plan 100% · Desv −57%</div></div>
+          <div style="border:1px solid #e2e8f0;border-top:3px solid #16a34a;border-radius:10px;padding:10px 14px;"><div style="font-size:10px;color:#64748b;font-weight:700;text-transform:uppercase;">Margen presupuestado</div><div style="font-size:18px;font-weight:800;color:#16a34a;">9.0%</div></div>
+          <div style="border:1px solid #e2e8f0;border-top:3px solid #f59e0b;border-radius:10px;padding:10px 14px;"><div style="font-size:10px;color:#64748b;font-weight:700;text-transform:uppercase;">Margen proyectado</div><div style="font-size:18px;font-weight:800;color:#f59e0b;">5.0%</div></div>
+          <div style="border:1px solid #e2e8f0;border-top:3px solid #dc2626;border-radius:10px;padding:10px 14px;"><div style="font-size:10px;color:#64748b;font-weight:700;text-transform:uppercase;">Margen real a hoy</div><div style="font-size:18px;font-weight:800;color:#dc2626;">−$47.516.098</div><div style="font-size:10px;color:#94a3b8;">Ingresos − Egresos</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="nota"><b>Alerta temprana:</b> en el ejemplo, aunque el presupuesto proyecta 9% de margen, el margen real a hoy está <b>en rojo</b>. Ese contraste es exactamente lo que el sistema pone frente a la Gerencia para actuar a tiempo.</div>
+
+    <!-- 11. BITÁCORA -->
+    <h2><span class="n">11.</span> Bitácora de seguimiento</h2>
     <p>Cada proyecto tiene una <b>bitácora</b> donde se registran notas y cambios de situación con fecha y usuario. Sirve para dejar el historial de decisiones y novedades del proyecto (retrasos, acuerdos, hitos). Se usa igual que en los demás módulos del CRM.</p>
 
-    <!-- 11. ESTADO -->
-    <h2><span class="n">11.</span> Estado del desarrollo (hoja de ruta)</h2>
+    <!-- 12. ESTADO -->
+    <h2><span class="n">12.</span> Estado del desarrollo (hoja de ruta)</h2>
     <p>Este sistema se libera por fases. Estado a la fecha de este manual:</p>
     <div class="estado">
       <div class="e"><b>✅ Fase 0</b> Esqueleto del módulo y acceso desde el menú.</div>
       <div class="e"><b>✅ Fase 1</b> Ficha del proyecto + datos base + vínculo a oferta.</div>
       <div class="e"><b>✅ Fase 2a</b> WBS / partidas + presupuesto e importación de Excel.</div>
       <div class="e"><b>✅ Fase 3</b> Cortes de avance + Curva S (planeado vs real) en vivo.</div>
+      <div class="e"><b>✅ Fase 4</b> Resumen Gerencial (KPIs: margen, avance, facturación) + Curva S financiera.</div>
       <div class="e pend"><b>🕓 Fase 2b</b> Capas Proyectado/Real por partida y eje semanal → mensual.</div>
-      <div class="e pend"><b>🕓 Fase 4</b> Curva S financiera + 3ª curva (retrasos cliente) + KPIs del Resumen.</div>
-      <div class="e pend"><b>🕓 Fase 5–6</b> Portafolio, semáforos, cartera, alertas y exportación.</div>
+      <div class="e pend"><b>🕓 Fase 4+</b> 3ª curva (retrasos cliente) y alertas por umbral.</div>
+      <div class="e pend"><b>🕓 Fase 5–6</b> Portafolio, semáforos, cartera y exportación (PDF/PPT/Excel).</div>
     </div>
     <div class="nota">Cada fase que se libere se documentará en la siguiente versión de este manual, con sus procesos paso a paso y capturas del sistema real.</div>
 
   </div>
 
   <footer>
-    <b>Manual de Procedimientos y Uso — Sistema Control de Proyectos</b> · v1.1 · 10/09/2026<br>
+    <b>Manual de Procedimientos y Uso — Sistema Control de Proyectos</b> · v1.2 · 10/09/2026<br>
     CRM Comercial Norton · Elaborado por Ing. José E. Palomares · Documento vivo: se actualiza con cada nueva fase.
   </footer>
 

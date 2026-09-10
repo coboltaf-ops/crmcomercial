@@ -195,6 +195,33 @@ export default function ControlProyectosPage() {
   // ── FORMULARIO (crear / editar / ver) ──
   if (isForm && selected) {
     const ofSel = ofertas.find(o => o.id === selected.oferta_id)
+    // ── KPIs del Resumen Gerencial (Fase 4) ──
+    const cortesArr = selected.cortes || []
+    const ultimoCorte = cortesArr[cortesArr.length - 1]
+    const presupuesto = partidasTotal > 0 ? partidasTotal : (selected.presupuesto_base || 0)
+    const avanceFisico = ultimoCorte ? (ultimoCorte.pct_real || 0) : 0
+    const avancePlan = ultimoCorte ? (ultimoCorte.pct_plan || 0) : 0
+    const desvAvance = avanceFisico - avancePlan
+    const margenPres = presupuesto > 0 ? (presupuesto - (selected.costo_presupuestado || 0)) / presupuesto * 100 : 0
+    const valProy = selected.valor_proyectado || presupuesto
+    const margenProy = valProy > 0 ? (valProy - (selected.costo_proyectado || 0)) / valProy * 100 : 0
+    const margenRealHoy = (selected.ingresos_real || 0) - (selected.egresos_real || 0)
+    const factPct = presupuesto > 0 ? (selected.facturado_acum || 0) / presupuesto * 100 : 0
+    const saldoFacturar = (avanceFisico / 100) * presupuesto - (selected.facturado_acum || 0)
+    const kpi = (titulo: string, valor: string, color: string, sub?: string) => (
+      <div style={{ background: '#fff', border: '1px solid #e2e8f0', borderTop: `3px solid ${color}`, borderRadius: 10, padding: '10px 14px' }}>
+        <div style={{ fontSize: 11, color: '#64748b', fontWeight: 700, textTransform: 'uppercase', letterSpacing: .3 }}>{titulo}</div>
+        <div style={{ fontSize: 19, fontWeight: 800, color, marginTop: 2 }}>{valor}</div>
+        {sub && <div style={{ fontSize: 11, color: '#94a3b8', marginTop: 1 }}>{sub}</div>}
+      </div>
+    )
+    const cMargen = (m: number) => m < 0 ? '#dc2626' : m < 5 ? '#f59e0b' : '#16a34a'
+    const finInput = (label: string, val: number | undefined, key: keyof ControlProyecto) => (
+      <div>
+        <label style={labelStyle}>{label}</label>
+        {verLectura ? <div className="ver-box">{fmtMoney((val as number) || 0)}</div> : <MoneyInput value={(val as number) || 0} onChange={n => setSelected({ ...selected, [key]: n } as ControlProyecto)} placeholder="0" style={inputStyle} />}
+      </div>
+    )
     return (
       <div>
         <OrangeHeader />
@@ -363,7 +390,16 @@ export default function ControlProyectosPage() {
               <b style={{ color: '#9a3412', fontSize: 14 }}>📈 Cortes de Avance · Curva S</b>
               {!verLectura && <button type="button" onClick={addCorte} style={{ ...btnStyle, padding: '6px 12px', fontSize: 12, background: '#ea580c', color: '#fff' }}>+ Corte</button>}
             </div>
-            <CurvaS cortes={selected.cortes || []} />
+            <CurvaS
+              labels={(selected.cortes || []).map(c => c.periodo || '')}
+              series={[
+                { label: 'Planeado', color: '#2563eb', values: (selected.cortes || []).map(c => c.pct_plan || 0) },
+                { label: 'Real', color: '#ea580c', values: (selected.cortes || []).map(c => c.pct_real || 0) },
+              ]}
+              fmt={v => Math.round(v) + '%'}
+              maxHint={100}
+              vacio="Aún no hay cortes. Agrega cortes y la Curva S se dibuja sola."
+            />
             <div style={{ overflowX: 'auto', borderTop: '1px solid #fed7aa' }}>
               <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
                 <thead><tr>{['Periodo', 'Fecha', '% Plan acum.', '% Real acum.', 'Desv.', 'Hito / Nota', ...(verLectura ? [] : [''])].map((h, idx) => <th key={idx} style={{ background: '#fed7aa', color: '#7c2d12', padding: '6px 8px', textAlign: 'left', whiteSpace: 'nowrap' }}>{h}</th>)}</tr></thead>
@@ -385,6 +421,47 @@ export default function ControlProyectosPage() {
                   {(selected.cortes || []).length === 0 && <tr><td colSpan={verLectura ? 6 : 7} style={{ padding: 14, textAlign: 'center', color: '#9a3412' }}>Sin cortes. Pulsa “+ Corte” para registrar el avance por período.</td></tr>}
                 </tbody>
               </table>
+            </div>
+          </div>
+
+          {/* 📊 Resumen Gerencial (KPIs) + finanzas + Curva S financiera — Fase 4 */}
+          <div style={{ marginTop: 22, border: '1px solid #fdba74', borderRadius: 12, overflow: 'hidden' }}>
+            <div style={{ background: '#fff7ed', padding: '10px 14px' }}>
+              <b style={{ color: '#9a3412', fontSize: 14 }}>📊 Resumen Gerencial · KPIs</b>
+            </div>
+            <div style={{ padding: 14 }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(150px,1fr))', gap: 10 }}>
+                {kpi('Presupuesto', fmtMoney(presupuesto), '#1e3a8a')}
+                {kpi('Avance físico', avanceFisico.toFixed(1) + '%', '#ea580c', `Plan ${avancePlan.toFixed(1)}% · Desv ${desvAvance > 0 ? '+' : ''}${desvAvance.toFixed(1)}%`)}
+                {kpi('Margen presupuestado', margenPres.toFixed(1) + '%', cMargen(margenPres))}
+                {kpi('Margen proyectado', margenProy.toFixed(1) + '%', cMargen(margenProy))}
+                {kpi('Margen real a hoy', fmtMoney(margenRealHoy), margenRealHoy < 0 ? '#dc2626' : '#16a34a', 'Ingresos − Egresos')}
+                {kpi('Facturado', factPct.toFixed(1) + '%', '#2563eb', fmtMoney(selected.facturado_acum || 0))}
+                {kpi('Saldo por facturar', fmtMoney(saldoFacturar), saldoFacturar > 0 ? '#f59e0b' : '#16a34a', '(avance × ppto) − facturado')}
+              </div>
+              <fieldset disabled={verLectura} style={{ border: 'none', padding: 0, margin: '16px 0 0', minInlineSize: 'auto' }}>
+                <div style={{ fontSize: 12, fontWeight: 700, color: '#9a3412', marginBottom: 8 }}>Datos financieros (alimentan los KPIs)</div>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 12 }}>
+                  {finInput('Costo presupuestado', selected.costo_presupuestado, 'costo_presupuestado')}
+                  {finInput('Valor proyectado', selected.valor_proyectado, 'valor_proyectado')}
+                  {finInput('Costo proyectado', selected.costo_proyectado, 'costo_proyectado')}
+                  {finInput('Ingresos reales', selected.ingresos_real, 'ingresos_real')}
+                  {finInput('Egresos reales', selected.egresos_real, 'egresos_real')}
+                  {finInput('Facturado acumulado', selected.facturado_acum, 'facturado_acum')}
+                </div>
+              </fieldset>
+            </div>
+            <div style={{ borderTop: '1px solid #fed7aa' }}>
+              <div style={{ padding: '8px 14px 0', fontSize: 13, fontWeight: 700, color: '#9a3412' }}>Curva S financiera ($) — valor planeado vs valor ganado</div>
+              <CurvaS
+                labels={cortesArr.map(c => c.periodo || '')}
+                series={[
+                  { label: 'Valor planeado', color: '#2563eb', values: cortesArr.map(c => (c.pct_plan || 0) / 100 * presupuesto) },
+                  { label: 'Valor ganado (real)', color: '#ea580c', values: cortesArr.map(c => (c.pct_real || 0) / 100 * presupuesto) },
+                ]}
+                fmt={v => '$' + (v / 1e6).toFixed(0) + 'M'}
+                vacio="Registra cortes y define el presupuesto; la curva financiera aparece sola."
+              />
             </div>
           </div>
 

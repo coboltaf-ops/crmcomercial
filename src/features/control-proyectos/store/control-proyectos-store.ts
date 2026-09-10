@@ -32,6 +32,10 @@ export interface Corte {
   pct_plan: number     // % avance PLANEADO acumulado (0–100)
   pct_real: number     // % avance REAL acumulado (0–100)
   nota?: string        // hito / observación del período
+  // ── Fase 4: Curva S financiera ($ acumulados) — opcionales ──
+  monto_plan?: number  // presupuesto acumulado ($)
+  monto_real?: number  // costo real acumulado ($)
+  monto_fact?: number  // facturación acumulada ($)
 }
 
 /** Nivel jerárquico según el código WBS ("1"->1, "1.2"->2, "1.2.3"->3). */
@@ -90,6 +94,13 @@ export interface ControlProyecto {
   partidas?: Partida[]
   // ── Fase 3: cortes de avance (histórico para la Curva S) ──
   cortes?: Corte[]
+  // ── Fase 4: datos financieros del Resumen Gerencial (nivel proyecto) ──
+  costo_presupuestado?: number  // costo directo previsto (línea base)
+  valor_proyectado?: number     // valor total proyectado (reestimado)
+  costo_proyectado?: number     // costo proyectado
+  ingresos_real?: number        // ingresos reales (recaudado / cobrado)
+  egresos_real?: number         // egresos reales (costos incurridos)
+  facturado_acum?: number       // facturación acumulada a la fecha
   // ── Fase 2b+: capas Proyectado/Real por partida, eje semanal→mensual, etc. ──
 }
 
