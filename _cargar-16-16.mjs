@@ -16,27 +16,41 @@ const wb = XLSX.readFile(FILE)
 // ── WBS ──
 const toNum = v => { if (typeof v === 'number') return isFinite(v) ? v : 0; const n = parseFloat(String(v ?? '').replace(/[^0-9.\-]/g, '')); return isNaN(n) ? 0 : n }
 const esCod = c => /^\d+(\.\d+)*\.?$/.test(String(c).trim())
-function parseWBS() {
-  for (const hoja of wb.SheetNames) {
-    const rows = XLSX.utils.sheet_to_json(wb.Sheets[hoja], { header: 1, blankrows: false, defval: '' })
-    let h = -1, col = {}
-    for (let i = 0; i < rows.length; i++) {
-      const r = rows[i].map(x => String(x).trim().toLowerCase())
-      const ci = r.findIndex(x => x === 'código' || x === 'codigo'), ii = r.findIndex(x => x === 'item')
-      if (ci >= 0 && ii >= 0) { h = i; col = { codigo: ci, item: ii, cant: r.findIndex(x => x.startsWith('cantidad')), uni: r.findIndex(x => x.includes('unidad')), vu: r.findIndex(x => x.includes('valor unitario')), tot: r.findIndex(x => x.includes('total presupuesto')) }; break }
-    }
-    if (h < 0) continue
-    const P = []
-    for (let i = h + 1; i < rows.length; i++) {
-      const r = rows[i]; const codigo = String(r[col.codigo] ?? '').trim(); const item = String(r[col.item] ?? '').trim()
-      if (!codigo || !item || !esCod(codigo)) continue
-      const cant = col.cant >= 0 ? toNum(r[col.cant]) : 0, vu = col.vu >= 0 ? toNum(r[col.vu]) : 0
-      let tot = col.tot >= 0 ? toNum(r[col.tot]) : 0; if (!tot && cant && vu) tot = cant * vu
-      P.push({ id: randomUUID(), codigo: codigo.replace(/\.+$/, ''), item, unidad: col.uni >= 0 ? String(r[col.uni] ?? '').trim() : '', cantidad: cant, valor_unitario: vu, total_presupuesto: tot })
-    }
-    if (P.length) return P
+function parseHoja(hoja) {
+  const rows = XLSX.utils.sheet_to_json(wb.Sheets[hoja], { header: 1, blankrows: false, defval: '' })
+  let h = -1, col = {}
+  for (let i = 0; i < rows.length; i++) {
+    const r = rows[i].map(x => String(x).trim().toLowerCase())
+    const ci = r.findIndex(x => x === 'código' || x === 'codigo'), ii = r.findIndex(x => x === 'item')
+    if (ci >= 0 && ii >= 0) { h = i; col = { codigo: ci, item: ii, cant: r.findIndex(x => x.startsWith('cantidad')), uni: r.findIndex(x => x.includes('unidad')), vu: r.findIndex(x => x.includes('valor unitario')), tot: r.findIndex(x => x.includes('total presupuesto')) }; break }
   }
-  return []
+  if (h < 0) return []
+  const P = []
+  for (let i = h + 1; i < rows.length; i++) {
+    const r = rows[i]; const codigo = String(r[col.codigo] ?? '').trim(); const item = String(r[col.item] ?? '').trim()
+    if (!codigo || !item || !esCod(codigo)) continue
+    const cant = col.cant >= 0 ? toNum(r[col.cant]) : 0, vu = col.vu >= 0 ? toNum(r[col.vu]) : 0
+    let tot = col.tot >= 0 ? toNum(r[col.tot]) : 0; if (!tot && cant && vu) tot = cant * vu
+    P.push({ id: randomUUID(), codigo: codigo.replace(/\.+$/, ''), item, unidad: col.uni >= 0 ? String(r[col.uni] ?? '').trim() : '', cantidad: cant, valor_unitario: tot && !vu ? 0 : vu, total_presupuesto: tot })
+  }
+  return P
+}
+// Elige la hoja cuyo WBS sume lo MÁS CERCANO al presupuesto real (línea base),
+// para traer el desglose completo sin agarrar hojas con números inflados.
+const PRESUPUESTO_OBJETIVO = 2670127485
+function parseWBS() {
+  let mejor = [], mejorDif = Infinity, mejorHoja = '', mejorSuma = 0
+  for (const hoja of wb.SheetNames) {
+    const P = parseHoja(hoja)
+    if (!P.length) continue
+    const cods = P.map(x => x.codigo)
+    const suma = P.filter(x => !cods.some(c => c.startsWith(x.codigo + '.'))).reduce((s, x) => s + (x.total_presupuesto || 0), 0)
+    if (suma <= 0) continue
+    const dif = Math.abs(suma - PRESUPUESTO_OBJETIVO)
+    if (dif < mejorDif) { mejorDif = dif; mejor = P; mejorHoja = hoja; mejorSuma = suma }
+  }
+  console.log('WBS tomado de hoja:', JSON.stringify(mejorHoja), '(suma hojas:', Math.round(mejorSuma / 1e6) + 'M)')
+  return mejor
 }
 
 // ── Cortes desde hoja CURVA S (Mes[1] Semana[3] Capítulos[4] Plan%[6] Hito[7] Real%[11]) ──
