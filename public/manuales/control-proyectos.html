@@ -90,11 +90,11 @@
 
   <!-- PORTADA -->
   <div class="cover">
-    <span class="badge">🚧 SISTEMA EN CONSTRUCCIÓN · v1.3</span>
+    <span class="badge">🚧 SISTEMA EN CONSTRUCCIÓN · v1.4</span>
     <h1>Manual de Procedimientos y Uso</h1>
     <div class="sub">Sistema <b>Control de Proyectos</b> — Dashboard Gerencial de Obra · Norton</div>
     <div class="meta">
-      <b>Versión:</b> 1.3 &nbsp;·&nbsp; <b>Fecha:</b> 10 de septiembre de 2026 &nbsp;·&nbsp; <b>Cubre:</b> Fases 0 a 5<br>
+      <b>Versión:</b> 1.4 &nbsp;·&nbsp; <b>Fecha:</b> 10 de septiembre de 2026 &nbsp;·&nbsp; <b>Cubre:</b> Fases 0 a 6 (núcleo completo)<br>
       <b>Elaborado por:</b> Ing. José E. Palomares — Consultor Sistemas de Información<br>
       <b>Módulo dentro de:</b> CRM Comercial Norton
     </div>
@@ -326,21 +326,41 @@
     </div>
     <div class="nota"><b>Uso gerencial:</b> los umbrales del semáforo (−5% y −10%) son los que sugiere la especificación. En un vistazo, la Gerencia sabe qué proyecto necesita atención sin abrir cada ficha.</div>
 
-    <!-- 12. BITÁCORA -->
-    <h2><span class="n">12.</span> Bitácora de seguimiento</h2>
+    <!-- 12. PROCESO 7 -->
+    <h2><span class="n">12.</span> Proceso 7 — Cartera, alertas y exportación</h2>
+    <h3>Cartera / cuentas por cobrar</h3>
+    <p>En el panel financiero se captura el saldo pendiente de cobro por <b>antigüedad</b>: <b>0–30</b>, <b>31–60</b> y <b>60+ días</b> (vencida). El sistema suma la <b>cartera total</b> y marca en rojo si hay cartera vencida.</p>
+    <h3>Alertas automáticas</h3>
+    <p>La ficha muestra un <b>banner de alertas</b> cuando se superan los umbrales:</p>
+    <ul>
+      <li>🔴 <b>Avance crítico</b> (desviación ≤ −10%) · 🟠 <b>Atención</b> (entre −5% y −10%).</li>
+      <li>🔴 <b>Margen real negativo</b> (ingresos − egresos &lt; 0).</li>
+      <li>🔴 <b>Cartera vencida</b> (60+ días con saldo).</li>
+      <li>🟠 <b>Saldo por facturar alto</b> (más del 15% del presupuesto).</li>
+    </ul>
+    <h3>Exportar el resumen ejecutivo</h3>
+    <ol class="pasos">
+      <li>Abre un proyecto y pulsa <b>📄 Exportar resumen (PDF)</b>.</li>
+      <li>Se abre una vista de <b>una página</b> con los KPIs, las alertas y los cortes de avance.</li>
+      <li>Usa <b>Imprimir → Guardar como PDF</b> para el comité de obra.</li>
+    </ol>
+    <div class="tip"><b>Listo para comité:</b> ese resumen de una página reemplaza el armado manual de presentaciones antes de cada reunión de obra.</div>
+
+    <!-- 13. BITÁCORA -->
+    <h2><span class="n">13.</span> Bitácora de seguimiento</h2>
     <p>Cada proyecto tiene una <b>bitácora</b> donde se registran notas y cambios de situación con fecha y usuario. Sirve para dejar el historial de decisiones y novedades del proyecto (retrasos, acuerdos, hitos). Se usa igual que en los demás módulos del CRM.</p>
 
-    <!-- 13. ESTADO -->
-    <h2><span class="n">13.</span> Estado del desarrollo (hoja de ruta)</h2>
-    <p>Este sistema se libera por fases. Estado a la fecha de este manual:</p>
+    <!-- 14. ESTADO -->
+    <h2><span class="n">14.</span> Estado del desarrollo (hoja de ruta)</h2>
+    <p>Este sistema se libera por fases. Estado a la fecha de este manual — <b>núcleo completo</b>:</p>
     <div class="estado">
       <div class="e"><b>✅ Fase 0</b> Esqueleto del módulo y acceso desde el menú.</div>
       <div class="e"><b>✅ Fase 1</b> Ficha del proyecto + datos base + vínculo a oferta.</div>
       <div class="e"><b>✅ Fase 2a</b> WBS / partidas + presupuesto e importación de Excel.</div>
       <div class="e"><b>✅ Fase 3</b> Cortes de avance + Curva S (planeado vs real) en vivo.</div>
-      <div class="e"><b>✅ Fase 4</b> Resumen Gerencial (KPIs: margen, avance, facturación) + Curva S financiera.</div>
+      <div class="e"><b>✅ Fase 4</b> Resumen Gerencial (KPIs) + Curva S financiera.</div>
       <div class="e"><b>✅ Fase 5</b> Portafolio con franja de totales y semáforo por proyecto.</div>
-      <div class="e pend"><b>🕓 Fase 6</b> Cartera (antigüedad), alertas por umbral y exportación (PDF/PPT/Excel).</div>
+      <div class="e"><b>✅ Fase 6</b> Cartera por antigüedad, alertas por umbral y exportación del resumen.</div>
       <div class="e pend"><b>🕓 Refinamientos</b> Capas Proyectado/Real por partida, eje semanal→mensual y 3ª curva (retrasos cliente).</div>
     </div>
     <div class="nota">Cada fase que se libere se documentará en la siguiente versión de este manual, con sus procesos paso a paso y capturas del sistema real.</div>
@@ -348,7 +368,7 @@
   </div>
 
   <footer>
-    <b>Manual de Procedimientos y Uso — Sistema Control de Proyectos</b> · v1.3 · 10/09/2026<br>
+    <b>Manual de Procedimientos y Uso — Sistema Control de Proyectos</b> · v1.4 · 10/09/2026<br>
     CRM Comercial Norton · Elaborado por Ing. José E. Palomares · Documento vivo: se actualiza con cada nueva fase.
   </footer>
 

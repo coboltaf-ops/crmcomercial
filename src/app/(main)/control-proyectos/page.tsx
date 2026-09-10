@@ -245,10 +245,51 @@ export default function ControlProyectosPage() {
         {verLectura ? <div className="ver-box">{fmtMoney((val as number) || 0)}</div> : <MoneyInput value={(val as number) || 0} onChange={n => setSelected({ ...selected, [key]: n } as ControlProyecto)} placeholder="0" style={inputStyle} />}
       </div>
     )
+    // ── Cartera + Alertas (Fase 6) ──
+    const carteraVencida = selected.cartera_60mas || 0
+    const carteraTotal = (selected.cartera_0_30 || 0) + (selected.cartera_31_60 || 0) + carteraVencida
+    const alertas: { txt: string; color: string }[] = []
+    if (ultimoCorte && desvAvance <= -10) alertas.push({ txt: `Avance crítico: ${desvAvance.toFixed(0)}% vs plan`, color: '#dc2626' })
+    else if (ultimoCorte && desvAvance < -5) alertas.push({ txt: `Atención en avance: ${desvAvance.toFixed(0)}% vs plan`, color: '#f59e0b' })
+    if (margenRealHoy < 0) alertas.push({ txt: `Margen real negativo: ${fmtMoney(margenRealHoy)}`, color: '#dc2626' })
+    if (carteraVencida > 0) alertas.push({ txt: `Cartera vencida (60+ días): ${fmtMoney(carteraVencida)}`, color: '#dc2626' })
+    if (presupuesto > 0 && saldoFacturar > presupuesto * 0.15) alertas.push({ txt: `Saldo por facturar alto: ${fmtMoney(saldoFacturar)}`, color: '#f59e0b' })
+
+    const exportarResumen = () => {
+      const filaCorte = (selected.cortes || []).map(c => `<tr><td>${c.periodo || ''}</td><td>${c.fecha || ''}</td><td style="text-align:right">${(c.pct_plan || 0)}%</td><td style="text-align:right">${(c.pct_real || 0)}%</td><td style="text-align:right;color:${(c.pct_real || 0) - (c.pct_plan || 0) < 0 ? '#dc2626' : '#16a34a'}">${((c.pct_real || 0) - (c.pct_plan || 0)).toFixed(1)}%</td></tr>`).join('')
+      const kpiHTML = [
+        ['Presupuesto', fmtMoney(presupuesto)], ['Avance físico', avanceFisico.toFixed(1) + '%'],
+        ['Margen presupuestado', margenPres.toFixed(1) + '%'], ['Margen proyectado', margenProy.toFixed(1) + '%'],
+        ['Margen real a hoy', fmtMoney(margenRealHoy)], ['Facturado', factPct.toFixed(1) + '%'],
+        ['Saldo por facturar', fmtMoney(saldoFacturar)], ['Cartera total', fmtMoney(carteraTotal)],
+      ].map(([t, v]) => `<div style="border:1px solid #e2e8f0;border-top:3px solid #ea580c;border-radius:8px;padding:8px 10px"><div style="font-size:10px;color:#64748b;text-transform:uppercase">${t}</div><div style="font-size:16px;font-weight:800;color:#0f172a">${v}</div></div>`).join('')
+      const alertHTML = alertas.length ? `<div style="margin:10px 0"><b style="color:#9a3412">Alertas:</b> ${alertas.map(a => `<span style="display:inline-block;background:${a.color};color:#fff;font-size:11px;font-weight:700;padding:2px 8px;border-radius:10px;margin:2px">${a.txt}</span>`).join(' ')}</div>` : ''
+      const html = `<!doctype html><html><head><meta charset="utf-8"><title>Resumen ${selected.codigo} — ${selected.nombre_proyecto}</title>
+        <style>body{font-family:-apple-system,Segoe UI,Arial,sans-serif;color:#334155;padding:28px;max-width:820px;margin:0 auto}h1{color:#ea580c;font-size:22px;margin:0}.sub{color:#64748b;font-size:13px;margin:2px 0 14px}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:12px 0}table{width:100%;border-collapse:collapse;font-size:12px;margin-top:8px}th{background:#ea580c;color:#fff;padding:6px 8px;text-align:left}td{border-bottom:1px solid #eee;padding:5px 8px}@media print{body{padding:0}}</style></head><body>
+        <h1>Resumen Ejecutivo — Control de Proyecto</h1>
+        <div class="sub"><b>${selected.codigo}</b> · ${selected.nombre_proyecto || ''} · Cliente: ${selected.cliente_nombre || '—'} · ${new Date().toLocaleDateString('es-CO')}</div>
+        <div class="grid">${kpiHTML}</div>
+        ${alertHTML}
+        <h3 style="color:#9a3412;font-size:14px;margin:14px 0 4px">Cortes de avance</h3>
+        <table><thead><tr><th>Periodo</th><th>Fecha</th><th style="text-align:right">% Plan</th><th style="text-align:right">% Real</th><th style="text-align:right">Desv.</th></tr></thead><tbody>${filaCorte || '<tr><td colspan="5">Sin cortes</td></tr>'}</tbody></table>
+        <p style="margin-top:18px;font-size:11px;color:#94a3b8">Generado por el Sistema Control de Proyectos · CRM Comercial Norton</p>
+        <script>window.onload=function(){setTimeout(function(){window.print()},250)}<\/script></body></html>`
+      const w = window.open('', '_blank')
+      if (w) { w.document.write(html); w.document.close() }
+    }
     return (
       <div>
         <OrangeHeader />
-        <button onClick={() => { setIsForm(false); setSelected(null); setVerLectura(false) }} style={{ ...btnStyle, background: '#000000', color: '#ffffff', border: '1px solid #333333', marginBottom: 16 }}>← Volver</button>
+        <div style={{ display: 'flex', gap: 8, marginBottom: 16, flexWrap: 'wrap' }}>
+          <button onClick={() => { setIsForm(false); setSelected(null); setVerLectura(false) }} style={{ ...btnStyle, background: '#000000', color: '#ffffff', border: '1px solid #333333' }}>← Volver</button>
+          {selected.id && <button type="button" onClick={exportarResumen} style={{ ...btnStyle, background: '#0f766e', color: '#ffffff' }}>📄 Exportar resumen (PDF)</button>}
+        </div>
+        {alertas.length > 0 && (
+          <div style={{ background: '#fef2f2', border: '1px solid #fecaca', borderRadius: 10, padding: '10px 14px', marginBottom: 16 }}>
+            <b style={{ color: '#9a3412', fontSize: 13 }}>🔔 Alertas ({alertas.length}):</b>{' '}
+            {alertas.map((a, i) => <span key={i} style={{ display: 'inline-block', background: a.color, color: '#fff', fontSize: 11, fontWeight: 700, padding: '2px 8px', borderRadius: 10, margin: '3px 3px 0 0' }}>{a.txt}</span>)}
+          </div>
+        )}
         <form onSubmit={handleSave} style={{ background: '#ffffff', borderRadius: 16, padding: 24, border: '2px solid #ea580c' }}>
           <h2 style={{ color: '#9a3412', fontSize: 18, fontWeight: 800, marginBottom: 20 }}>{verLectura ? 'Ver Control de Proyecto' : selected.id ? 'Editar Control de Proyecto' : 'Nuevo Control de Proyecto'}</h2>
           <fieldset disabled={verLectura} style={{ border: 'none', padding: 0, margin: 0, minInlineSize: 'auto' }}>
@@ -471,6 +512,16 @@ export default function ControlProyectosPage() {
                   {finInput('Ingresos reales', selected.ingresos_real, 'ingresos_real')}
                   {finInput('Egresos reales', selected.egresos_real, 'egresos_real')}
                   {finInput('Facturado acumulado', selected.facturado_acum, 'facturado_acum')}
+                </div>
+                <div style={{ fontSize: 12, fontWeight: 700, color: '#9a3412', margin: '16px 0 8px' }}>Cartera / cuentas por cobrar (por antigüedad)</div>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: 12 }}>
+                  {finInput('0–30 días', selected.cartera_0_30, 'cartera_0_30')}
+                  {finInput('31–60 días', selected.cartera_31_60, 'cartera_31_60')}
+                  {finInput('60+ días (vencida)', selected.cartera_60mas, 'cartera_60mas')}
+                  <div>
+                    <label style={labelStyle}>Cartera total</label>
+                    <div className="ver-box" style={{ fontWeight: 800, color: carteraVencida > 0 ? '#dc2626' : '#0f172a' }}>{fmtMoney(carteraTotal)}</div>
+                  </div>
                 </div>
               </fieldset>
             </div>

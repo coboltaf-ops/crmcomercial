@@ -101,6 +101,10 @@ export interface ControlProyecto {
   ingresos_real?: number        // ingresos reales (recaudado / cobrado)
   egresos_real?: number         // egresos reales (costos incurridos)
   facturado_acum?: number       // facturación acumulada a la fecha
+  // ── Fase 6: cartera / cuentas por cobrar por antigüedad ──
+  cartera_0_30?: number         // saldo pendiente 0–30 días
+  cartera_31_60?: number        // saldo pendiente 31–60 días
+  cartera_60mas?: number        // saldo pendiente 60+ días (vencida crítica)
   // ── Fase 2b+: capas Proyectado/Real por partida, eje semanal→mensual, etc. ──
 }
 
