@@ -22,16 +22,31 @@ export interface ControlProyecto {
   codigo: string              // consecutivo automático (CTP-XXX)
   fecha_registro: string      // automática del día
   nombre_proyecto: string
+  codigo_proyecto: string     // código interno del proyecto (opcional)
   cliente_id: string
   cliente_nombre: string
-  responsable: string
+  descripcion: string         // alcance del proyecto
+  responsable: string         // gerente / responsable del proyecto
+  tipo_contrato: string
+  // ── Línea base (viene de la oferta ganada; se detalla por partidas en Fase 2) ──
+  presupuesto_base: number    // valor total aprobado (línea base)
+  tipo_moneda: string
+  // ── Cronograma línea base (fechas macro; el detalle por partida va en Fase 2/3) ──
+  fecha_inicio_plan: string
+  fecha_fin_plan: string
+  fecha_inicio_real: string
+  frecuencia_corte: string    // 'Semanal' | 'Mensual' — para la Curva S (Fase 3/4)
+  // ── Vínculos para evitar doble digitación ──
+  oferta_id?: string          // Seguimiento Oferta de origen
+  oferta_nro?: string
+  proyecto_id?: string        // Proyecto del módulo actual (opcional)
   situacion: string
   pais?: string
   creado_por?: string
   creado_por_usuario?: string
   creado_en?: string
   seguimientos: Seguimiento[]
-  // ── Campos de fases siguientes se agregan aquí cuando toque ──
+  // ── Fase 2+: WBS/partidas, cortes de avance, etc. se agregan aquí ──
 }
 
 interface ControlProyectosState {
