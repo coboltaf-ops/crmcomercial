@@ -25,6 +25,7 @@ const defaultModulos: Modulo[] = [
   { id: 'oportunidades', label: 'Oportunidades', icon: '🎯', href: '/oportunidades', activo: true, grupo: 'principal' },
   { id: 'seguimiento-oferta', label: 'Seguimiento Oferta', icon: '📄', href: '/seguimiento-oferta', activo: true, grupo: 'principal' },
   { id: 'proyectos', label: 'Proyectos', icon: '🏗️', href: '/proyectos', activo: true, grupo: 'principal' },
+  { id: 'control-proyectos-manual', label: 'Manual Control Proyectos', icon: '📘', href: '/control-proyectos/manual', activo: true, grupo: 'principal' },
   { id: 'control-proyectos', label: 'Control de Proyectos', icon: '📈', href: '/control-proyectos', activo: true, grupo: 'principal' },
   { id: 'proveedores', label: 'Proveedores', icon: '🏭', href: '/proveedores', activo: true, grupo: 'principal' },
   { id: 'cotizaciones', label: 'Cotizaciones', icon: '📋', href: '/cotizaciones', activo: true, grupo: 'principal' },

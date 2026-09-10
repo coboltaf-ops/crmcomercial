@@ -359,11 +359,11 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
                   borderLeft: active ? '3px solid #ffffff' : '3px solid transparent',
                 }}>
                 <span style={{ fontSize: 18, flexShrink: 0 }}>{item.icon}</span>
-                {!collapsed && (item.href === '/control-proyectos'
+                {!collapsed && (item.href.startsWith('/control-proyectos')
                   ? (
                     <span style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
                       <b className="cp-menu-label" style={{ color: '#f97316' }}>{item.label}</b>
-                      <span className="cp-menu-badge" style={{ fontSize: 9, fontWeight: 800, color: '#ffffff', background: '#ea580c', padding: '1px 5px', borderRadius: 6, letterSpacing: 0.3, whiteSpace: 'nowrap' }}>🚧 EN OBRA</span>
+                      {item.href === '/control-proyectos' && <span className="cp-menu-badge" style={{ fontSize: 9, fontWeight: 800, color: '#ffffff', background: '#ea580c', padding: '1px 5px', borderRadius: 6, letterSpacing: 0.3, whiteSpace: 'nowrap' }}>🚧 EN OBRA</span>}
                     </span>
                   )
                   : <span>{item.label}</span>)}

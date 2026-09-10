@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Manual de Procedimientos y Uso — Sistema Control de Proyectos</title>
+<style>
+  :root{
+    --azul:#1e3a8a; --azul2:#013978; --naranja:#ea580c; --naranja2:#f97316;
+    --gris:#334155; --grisc:#64748b; --linea:#e2e8f0; --crema:#fff7ed; --crema2:#fed7aa;
+  }
+  *{ box-sizing:border-box; }
+  body{ margin:0; font-family:-apple-system,Segoe UI,Roboto,Arial,sans-serif; color:var(--gris); background:#f1f5f9; line-height:1.55; }
+  .doc{ max-width:900px; margin:0 auto; background:#fff; }
+  /* Portada */
+  .cover{ background:linear-gradient(135deg,var(--azul) 0%,#0f766e 100%); color:#fff; padding:64px 48px 52px; }
+  .cover .badge{ display:inline-block; background:var(--naranja); color:#fff; font-weight:800; font-size:12px; letter-spacing:.5px; padding:5px 12px; border-radius:20px; margin-bottom:22px; }
+  .cover h1{ margin:0 0 6px; font-size:34px; line-height:1.15; font-weight:900; }
+  .cover .sub{ font-size:16px; opacity:.92; }
+  .cover .meta{ margin-top:30px; font-size:13px; opacity:.9; border-top:1px solid rgba(255,255,255,.25); padding-top:16px; }
+  .cover .meta b{ color:#fff; }
+  /* Cuerpo */
+  .body{ padding:36px 48px 60px; }
+  h2{ color:var(--azul2); font-size:22px; font-weight:800; margin:38px 0 10px; padding-bottom:8px; border-bottom:2px solid var(--crema2); }
+  h2 .n{ color:var(--naranja); }
+  h3{ color:var(--naranja); font-size:16px; font-weight:800; margin:22px 0 6px; }
+  p{ margin:8px 0; font-size:14px; }
+  ul,ol{ font-size:14px; margin:8px 0 8px 4px; padding-left:22px; }
+  li{ margin:4px 0; }
+  a{ color:var(--azul); }
+  .lead{ font-size:15px; color:var(--gris); }
+  code{ background:#f1f5f9; padding:1px 6px; border-radius:5px; font-family:ui-monospace,Menlo,monospace; font-size:13px; color:var(--azul2); }
+  /* Cajas */
+  .nota{ background:var(--crema); border:1px solid var(--crema2); border-left:4px solid var(--naranja); border-radius:8px; padding:12px 16px; margin:14px 0; font-size:13.5px; }
+  .nota b{ color:#9a3412; }
+  .tip{ background:#ecfdf5; border:1px solid #a7f3d0; border-left:4px solid #16a34a; border-radius:8px; padding:12px 16px; margin:14px 0; font-size:13.5px; }
+  .obj{ display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:14px 0; }
+  .obj .card{ border:1px solid var(--linea); border-radius:10px; padding:12px 14px; font-size:13.5px; background:#fff; }
+  .obj .card b{ color:var(--azul2); }
+  table.tabla{ width:100%; border-collapse:collapse; font-size:13px; margin:12px 0; }
+  table.tabla th{ background:var(--azul); color:#fff; text-align:left; padding:8px 10px; }
+  table.tabla td{ border-bottom:1px solid var(--linea); padding:7px 10px; vertical-align:top; }
+  table.tabla tr:nth-child(even){ background:#f8fafc; }
+  /* Pasos */
+  ol.pasos{ counter-reset:paso; list-style:none; padding-left:0; }
+  ol.pasos>li{ counter-increment:paso; position:relative; padding:10px 0 10px 46px; border-bottom:1px dashed var(--linea); font-size:14px; }
+  ol.pasos>li::before{ content:counter(paso); position:absolute; left:0; top:8px; width:30px; height:30px; background:var(--naranja); color:#fff; border-radius:50%; font-weight:800; display:flex; align-items:center; justify-content:center; font-size:14px; }
+  /* Figuras (recreación de la pantalla real) */
+  .fig{ margin:16px 0 22px; border:1px solid var(--linea); border-radius:12px; overflow:hidden; box-shadow:0 4px 14px rgba(0,0,0,.06); }
+  .fig .cap{ background:#0f172a; color:#cbd5e1; font-size:12px; padding:6px 12px; }
+  .fig .cap b{ color:#fff; }
+  .fig .canvas{ padding:16px; background:#fff; }
+  .figfoot{ font-size:12px; color:var(--grisc); margin:-14px 0 20px; text-align:center; font-style:italic; }
+  /* Mock sidebar */
+  .mock-nav{ width:240px; background:var(--azul); border-radius:10px; padding:10px; }
+  .mock-nav .it{ display:flex; align-items:center; gap:10px; padding:8px 10px; border-radius:8px; color:rgba(255,255,255,.85); font-size:13px; font-weight:500; }
+  .mock-nav .it.manual b{ color:var(--naranja2); }
+  .mock-nav .it.cp b{ color:var(--naranja2); }
+  .mock-nav .it .obra{ font-size:9px; font-weight:800; color:#fff; background:var(--naranja); padding:1px 6px; border-radius:6px; }
+  /* Mock ficha */
+  .mock-card{ border:2px solid var(--naranja); border-radius:12px; padding:16px; background:#fff; }
+  .mock-card h4{ margin:0 0 12px; color:#9a3412; font-size:15px; }
+  .grid3{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; }
+  .fld label{ display:block; font-size:11px; color:var(--azul2); font-weight:700; margin-bottom:3px; }
+  .fld .inp{ border:1px solid var(--azul); border-radius:7px; padding:6px 9px; font-size:12px; color:var(--azul2); background:#fff; }
+  .link-of{ background:var(--crema); border:1px solid #fdba74; border-radius:9px; padding:10px; margin-top:10px; }
+  /* Mock WBS */
+  table.wbs{ width:100%; border-collapse:collapse; font-size:12px; }
+  table.wbs th{ background:var(--crema2); color:#7c2d12; text-align:left; padding:6px 8px; }
+  table.wbs td{ border-bottom:1px solid var(--crema2); padding:5px 8px; }
+  table.wbs .n1{ background:var(--crema); font-weight:700; }
+  table.wbs .r{ text-align:right; }
+  .estado{ display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin:14px 0; }
+  .estado .e{ border:1px solid var(--linea); border-left:4px solid #16a34a; border-radius:9px; padding:10px 12px; font-size:13px; }
+  .estado .e.pend{ border-left-color:#f59e0b; }
+  .estado .e b{ display:block; }
+  footer{ background:#0f172a; color:#94a3b8; font-size:12px; padding:20px 48px; }
+  footer b{ color:#fff; }
+  @media print{
+    body{ background:#fff; } .doc{ max-width:none; }
+    .cover{ padding:48px 40px; } .body{ padding:24px 40px; }
+    .fig,.mock-card{ box-shadow:none; }
+    h2{ page-break-after:avoid; } .fig,.estado,.obj{ page-break-inside:avoid; }
+  }
+  @media (max-width:640px){ .obj,.grid3,.estado{ grid-template-columns:1fr; } .body,.cover,footer{ padding-left:22px; padding-right:22px; } }
+</style>
+</head>
+<body>
+<div class="doc">
+
+  <!-- PORTADA -->
+  <div class="cover">
+    <span class="badge">🚧 SISTEMA EN CONSTRUCCIÓN · v1.0</span>
+    <h1>Manual de Procedimientos y Uso</h1>
+    <div class="sub">Sistema <b>Control de Proyectos</b> — Dashboard Gerencial de Obra · Norton</div>
+    <div class="meta">
+      <b>Versión:</b> 1.0 &nbsp;·&nbsp; <b>Fecha:</b> 10 de septiembre de 2026 &nbsp;·&nbsp; <b>Cubre:</b> Fases 0, 1 y 2a<br>
+      <b>Elaborado por:</b> Ing. José E. Palomares — Consultor Sistemas de Información<br>
+      <b>Módulo dentro de:</b> CRM Comercial Norton
+    </div>
+  </div>
+
+  <div class="body">
+
+    <!-- 1. INTRODUCCIÓN -->
+    <h2><span class="n">1.</span> Introducción</h2>
+    <p class="lead">El <b>Sistema Control de Proyectos</b> es un módulo del CRM que reemplaza el control de obra que hoy se lleva en hojas de Excel. Permite hacer seguimiento a cada proyecto en ejecución —avance físico, avance financiero, facturación, costos y cumplimiento de cronograma— con la <b>Curva S</b> como herramienta central de comparación entre lo planeado y lo ejecutado.</p>
+    <p>El objetivo de fondo es que la <b>Gerencia General</b> tome decisiones rápidas sin depender de que cada gerente de proyecto arme manualmente un Excel para cada comité de obra, y que toda la información quede en un solo lugar, trazable y siempre actualizada.</p>
+    <div class="nota"><b>¿Por qué “EN CONSTRUCCIÓN”?</b> El sistema se desarrolla por fases. Este manual crece con él: cada vez que se libera una fase, se documenta aquí. Lo marcamos en <b>naranja</b> en el menú para distinguirlo del módulo <b>Proyectos</b> actual, que sigue funcionando igual y no se toca.</p>
+
+    <!-- 2. OBJETIVOS -->
+    <h2><span class="n">2.</span> Objetivos del sistema</h2>
+    <div class="obj">
+      <div class="card"><b>Centralizar</b> el control de todos los proyectos en ejecución en un solo tablero, sin Excel dispersos.</div>
+      <div class="card"><b>Comparar</b> lo planeado contra lo real (Curva S física y financiera) en cualquier momento.</div>
+      <div class="card"><b>Controlar</b> presupuesto, costos, facturación y cartera por proyecto y por partida (WBS).</div>
+      <div class="card"><b>Alertar</b> a tiempo sobre desviaciones de avance, margen o flujo de caja.</div>
+      <div class="card"><b>Evitar doble digitación</b> tomando la línea base desde la oferta ganada.</div>
+      <div class="card"><b>Estandarizar</b> el reporte de comités de obra con un formato único de marca Norton.</div>
+    </div>
+
+    <!-- 3. ALCANCE -->
+    <h2><span class="n">3.</span> Alcance y a quién va dirigido</h2>
+    <table class="tabla">
+      <tr><th>Rol</th><th>Qué hace en el sistema</th></tr>
+      <tr><td><b>Gerencia General</b></td><td>Ve el portafolio completo, todos los indicadores y exporta reportes.</td></tr>
+      <tr><td><b>Gerente / Responsable de proyecto</b></td><td>Carga y ve la información de sus proyectos asignados.</td></tr>
+      <tr><td><b>Área administrativa / financiera</b></td><td>Carga facturación y cartera; ve el avance físico en solo lectura.</td></tr>
+      <tr><td><b>Comercial</b></td><td>Solo lectura del estado de los proyectos derivados de sus ofertas ganadas.</td></tr>
+    </table>
+
+    <!-- 4. GLOSARIO -->
+    <h2><span class="n">4.</span> Glosario de términos</h2>
+    <table class="tabla">
+      <tr><th>Término</th><th>Significado</th></tr>
+      <tr><td><b>Curva S</b></td><td>Gráfico acumulado en el tiempo (forma de “S”) que compara el avance planeado contra el real, físico o financiero.</td></tr>
+      <tr><td><b>Partida / WBS</b></td><td>Cada ítem o capítulo en que se divide el presupuesto y el alcance (ej. cimentación, estructura, pintura). Estructura jerárquica: capítulo &gt; partida &gt; sub-partida.</td></tr>
+      <tr><td><b>Línea base</b></td><td>Presupuesto y cronograma aprobados inicialmente, contra los que se mide toda desviación.</td></tr>
+      <tr><td><b>AIU</b></td><td>Administración, Imprevistos y Utilidad: componentes del precio de una oferta de construcción.</td></tr>
+      <tr><td><b>Acta de avance de obra</b></td><td>Documento que certifica el avance físico de un período y sustenta la facturación al cliente.</td></tr>
+      <tr><td><b>Otrosí</b></td><td>Modificación contractual formal (ampliación de plazo o alcance) sobre un contrato firmado.</td></tr>
+      <tr><td><b>Corte</b></td><td>Fecha (semanal o mensual) en la que se registra el avance. Cada corte se guarda como histórico y no se sobrescribe.</td></tr>
+    </table>
+
+    <!-- 5. ACCESO -->
+    <h2><span class="n">5.</span> Cómo entrar al sistema</h2>
+    <p>Inicia sesión en el CRM. En el <b>menú lateral</b>, dentro del bloque naranja del sistema, encuentras dos opciones: este <b>Manual</b> (primera opción) y <b>Control de Proyectos</b> (el módulo).</p>
+    <div class="fig">
+      <div class="cap"><b>Figura 1.</b> Menú lateral — el sistema aparece en naranja</div>
+      <div class="canvas" style="background:#0b1220;">
+        <div class="mock-nav">
+          <div class="it">🏗️ Proyectos</div>
+          <div class="it manual"><span>📘</span> <b>Manual Control Proyectos</b></div>
+          <div class="it cp"><span>📈</span> <b>Control de Proyectos</b> <span class="obra">🚧 EN OBRA</span></div>
+          <div class="it">🏭 Proveedores</div>
+        </div>
+      </div>
+    </div>
+    <div class="figfoot">El color naranja distingue el sistema nuevo del módulo “Proyectos” tradicional.</div>
+
+    <!-- 6. PROCESO 1 -->
+    <h2><span class="n">6.</span> Proceso 1 — Crear un Control de Proyecto</h2>
+    <p>Registrar un proyecto para hacerle seguimiento. Este es el punto de partida.</p>
+    <ol class="pasos">
+      <li>Entra a <b>📈 Control de Proyectos</b> en el menú.</li>
+      <li>Pulsa <b>+ Nuevo Control</b> (botón naranja, arriba a la derecha).</li>
+      <li>El sistema asigna automáticamente el consecutivo <code>CTP-XXXX</code> y la fecha de registro.</li>
+      <li>Completa los datos base: <b>Nombre del proyecto</b>, <b>Cliente</b>, <b>Responsable/Gerente</b>, <b>Tipo de contrato</b>, <b>moneda</b> y <b>presupuesto / línea base</b>.</li>
+      <li>Indica las <b>fechas</b> (inicio plan, fin plan, inicio real) y la <b>frecuencia de corte</b> (Mensual o Semanal).</li>
+      <li>Elige la <b>Situación</b> (En Planeación, En Ejecución, etc.) y pulsa <b>Guardar</b>.</li>
+    </ol>
+    <div class="fig">
+      <div class="cap"><b>Figura 2.</b> Ficha del Control de Proyecto (datos base)</div>
+      <div class="canvas">
+        <div class="mock-card">
+          <h4>Nuevo Control de Proyecto</h4>
+          <div class="grid3">
+            <div class="fld"><label>Nro Control *</label><div class="inp">CTP-0001</div></div>
+            <div class="fld"><label>Fecha Registro</label><div class="inp">10/09/2026</div></div>
+            <div class="fld"><label>Código Proyecto</label><div class="inp">16-16</div></div>
+          </div>
+          <div class="link-of"><label style="font-size:11px;color:#9a3412;font-weight:700;">🔗 Vincular Oferta (opcional — trae cliente, proyecto, moneda y presupuesto)</label><div class="inp" style="border-color:#fdba74;">OF-0007 · NORTON · Edificio Industrial CLE 16-16</div></div>
+          <div class="grid3" style="margin-top:10px;">
+            <div class="fld"><label>Nombre del Proyecto *</label><div class="inp">Edificio Industrial CLE 16-16</div></div>
+            <div class="fld"><label>Cliente *</label><div class="inp">NORTON EDIFICIOS …</div></div>
+            <div class="fld"><label>Presupuesto / Línea Base</label><div class="inp">$ 2.670.127.485</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 7. PROCESO 2 -->
+    <h2><span class="n">7.</span> Proceso 2 — Vincular una Oferta ganada (auto-relleno)</h2>
+    <p>Para no volver a teclear datos que ya existen, el sistema puede tomar la información desde una oferta del módulo <b>Seguimiento Oferta</b>.</p>
+    <ol class="pasos">
+      <li>Dentro de la ficha, en <b>🔗 Vincular Oferta</b>, abre la lista y elige la oferta correspondiente.</li>
+      <li>El sistema rellena automáticamente <b>Cliente</b>, <b>Nombre del proyecto</b>, <b>Moneda</b> y <b>Presupuesto (línea base)</b>.</li>
+      <li>Revisa y ajusta lo que necesites; luego <b>Guardar</b>.</li>
+    </ol>
+    <div class="tip"><b>Ventaja:</b> la línea base del proyecto queda idéntica a la oferta ganada, sin errores de transcripción. Es el flujo <b>Oportunidad → Oferta → Proyecto</b> que pide la especificación.</div>
+
+    <!-- 8. PROCESO 3 -->
+    <h2><span class="n">8.</span> Proceso 3 — Cargar el WBS / Presupuesto (importar Excel)</h2>
+    <p>El <b>WBS</b> (Work Breakdown Structure) es el desglose del presupuesto por partidas jerárquicas. Se puede <b>importar directamente desde el Excel de control de obra</b> o capturar a mano.</p>
+    <h3>A) Importar desde Excel</h3>
+    <ol class="pasos">
+      <li>En la sección <b>🧱 Partidas (WBS)</b> de la ficha, pulsa <b>⬆ Importar Excel</b>.</li>
+      <li>Elige tu archivo de control (ej. <code>5396-CLE16-Control.xlsx</code>).</li>
+      <li>El sistema busca la tabla <b>Código / ITEM</b> y muestra cuántas partidas leyó y el presupuesto total. Confirma para cargarlas.</li>
+      <li>Las partidas aparecen con su <b>jerarquía</b> (1 · 1.1 · 1.1.1), <b>unidad</b> (glb, Kg, Ton), <b>cantidad</b>, <b>valor unitario</b>, <b>total</b> y <b>peso %</b>.</li>
+      <li>Revisa, ajusta lo que haga falta y pulsa <b>Guardar</b>.</li>
+    </ol>
+    <h3>B) Capturar o ajustar a mano</h3>
+    <ul>
+      <li><b>+ Partida</b> agrega una fila nueva. El código define el nivel: <code>1</code> capítulo, <code>1.1</code> partida, <code>1.1.1</code> sub-partida.</li>
+      <li>Si escribes <b>cantidad</b> y <b>valor unitario</b>, el <b>total</b> se calcula solo.</li>
+      <li>El <b>peso %</b> y el <b>total</b> (suma de las partidas “hoja”, sin duplicar los capítulos padre) se recalculan automáticamente.</li>
+    </ul>
+    <div class="fig">
+      <div class="cap"><b>Figura 3.</b> Partidas (WBS) importadas del Excel de obra</div>
+      <div class="canvas">
+        <table class="wbs">
+          <tr><th>Código</th><th>ITEM</th><th>Unidad</th><th class="r">Cantidad</th><th class="r">Valor Unitario</th><th class="r">Total</th><th class="r">Peso %</th></tr>
+          <tr class="n1"><td>1</td><td>Indirectos</td><td></td><td class="r"></td><td class="r"></td><td class="r">$150.533.985</td><td class="r">—</td></tr>
+          <tr><td>1.1</td><td style="padding-left:16px;">Pólizas talleres</td><td>glb</td><td class="r">6</td><td class="r">$3.049.297</td><td class="r">$18.295.782</td><td class="r">0.7%</td></tr>
+          <tr><td>1.1.1</td><td style="padding-left:28px;">Buen manejo de anticipo</td><td>glb</td><td class="r">1</td><td class="r">$3.512.790</td><td class="r">$3.512.790</td><td class="r">0.1%</td></tr>
+          <tr><td>1.2</td><td style="padding-left:16px;">Impuestos</td><td>glb</td><td class="r">1</td><td class="r">$48.300.865</td><td class="r">$48.300.865</td><td class="r">1.8%</td></tr>
+          <tr style="background:#7c2d12;color:#fff;font-weight:800;"><td colspan="5" class="r">TOTAL (suma de hojas)</td><td class="r">$2.670.127.485</td><td></td></tr>
+        </table>
+      </div>
+    </div>
+    <div class="nota"><b>Importante:</b> el total suma solo las partidas “hoja” (las de último nivel) para no contar dos veces los capítulos que las agrupan. Así el presupuesto cuadra con el Excel original.</div>
+
+    <!-- 9. BITÁCORA -->
+    <h2><span class="n">9.</span> Bitácora de seguimiento</h2>
+    <p>Cada proyecto tiene una <b>bitácora</b> donde se registran notas y cambios de situación con fecha y usuario. Sirve para dejar el historial de decisiones y novedades del proyecto (retrasos, acuerdos, hitos). Se usa igual que en los demás módulos del CRM.</p>
+
+    <!-- 10. ESTADO -->
+    <h2><span class="n">10.</span> Estado del desarrollo (hoja de ruta)</h2>
+    <p>Este sistema se libera por fases. Estado a la fecha de este manual:</p>
+    <div class="estado">
+      <div class="e"><b>✅ Fase 0</b> Esqueleto del módulo y acceso desde el menú.</div>
+      <div class="e"><b>✅ Fase 1</b> Ficha del proyecto + datos base + vínculo a oferta.</div>
+      <div class="e"><b>✅ Fase 2a</b> WBS / partidas + presupuesto e importación de Excel.</div>
+      <div class="e pend"><b>🕓 Fase 2b</b> Capas Proyectado/Real y eje semanal → mensual.</div>
+      <div class="e pend"><b>🕓 Fase 3–4</b> Cortes de avance + Curva S (3 curvas) + KPIs.</div>
+      <div class="e pend"><b>🕓 Fase 5–6</b> Portafolio, semáforos, cartera, alertas y exportación.</div>
+    </div>
+    <div class="nota">Cada fase que se libere se documentará en la siguiente versión de este manual, con sus procesos paso a paso y capturas del sistema real.</div>
+
+  </div>
+
+  <footer>
+    <b>Manual de Procedimientos y Uso — Sistema Control de Proyectos</b> · v1.0 · 10/09/2026<br>
+    CRM Comercial Norton · Elaborado por Ing. José E. Palomares · Documento vivo: se actualiza con cada nueva fase.
+  </footer>
+
+</div>
+</body>
+</html>
