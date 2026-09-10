@@ -359,7 +359,14 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
                   borderLeft: active ? '3px solid #ffffff' : '3px solid transparent',
                 }}>
                 <span style={{ fontSize: 18, flexShrink: 0 }}>{item.icon}</span>
-                {!collapsed && <span>{item.label}</span>}
+                {!collapsed && (item.href === '/control-proyectos'
+                  ? (
+                    <span style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
+                      <b style={{ color: '#fb923c' }}>{item.label}</b>
+                      <span style={{ fontSize: 9, fontWeight: 800, color: '#ffffff', background: '#ea580c', padding: '1px 5px', borderRadius: 6, letterSpacing: 0.3, whiteSpace: 'nowrap' }}>🚧 EN OBRA</span>
+                    </span>
+                  )
+                  : <span>{item.label}</span>)}
               </button>
               {item.href === '/seguimiento-oferta' && ofertasGroup}
               </Fragment>
