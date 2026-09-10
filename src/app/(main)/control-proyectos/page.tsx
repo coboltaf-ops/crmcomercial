@@ -2,8 +2,9 @@
 import { useIdioma } from '@/shared/i18n/use-t'
 import { logAudit, computarDiff } from '@/shared/lib/audit'
 import { useState, useEffect, useRef } from 'react'
-import { useControlProyectosStore, ControlProyecto, Partida, nivelDeCodigo, esHoja } from '@/features/control-proyectos/store/control-proyectos-store'
+import { useControlProyectosStore, ControlProyecto, Partida, Corte, nivelDeCodigo, esHoja } from '@/features/control-proyectos/store/control-proyectos-store'
 import { parseWbsFromArrayBuffer } from '@/features/control-proyectos/lib/parse-wbs-excel'
+import CurvaS from '@/features/control-proyectos/components/curva-s'
 import { useSeguimientoOfertaStore } from '@/features/seguimiento-oferta/store/seguimiento-oferta-store'
 import { useProyectosStore } from '@/features/proyectos/store/proyectos-store'
 import { useClientesStore } from '@/features/clientes/store/clientes-store'
@@ -139,6 +140,15 @@ export default function ControlProyectosPage() {
     }) })
   }
   const delPartida = (id: string) => { if (!selected) return; setSelected({ ...selected, partidas: (selected.partidas || []).filter(p => p.id !== id) }) }
+
+  // ── Cortes de avance / Curva S (Fase 3) ──
+  const addCorte = () => {
+    if (!selected) return
+    const nro = (selected.cortes || []).length + 1
+    setSelected({ ...selected, cortes: [...(selected.cortes || []), { id: crypto.randomUUID(), periodo: 'Semana ' + nro, fecha: today, pct_plan: 0, pct_real: 0, nota: '' }] })
+  }
+  const updCorte = (id: string, patch: Partial<Corte>) => { if (!selected) return; setSelected({ ...selected, cortes: (selected.cortes || []).map(c => c.id === id ? { ...c, ...patch } : c) }) }
+  const delCorte = (id: string) => { if (!selected) return; setSelected({ ...selected, cortes: (selected.cortes || []).filter(c => c.id !== id) }) }
 
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault()
@@ -343,6 +353,37 @@ export default function ControlProyectosPage() {
                   {(selected.partidas || []).length === 0 && <tr><td colSpan={verLectura ? 7 : 8} style={{ padding: 18, textAlign: 'center', color: '#9a3412' }}>Sin partidas. Importa el Excel o agrega manualmente.</td></tr>}
                 </tbody>
                 {(selected.partidas || []).length > 0 && <tfoot><tr><td colSpan={5} style={{ ...tdW, textAlign: 'right', fontWeight: 800, color: '#7c2d12' }}>TOTAL (suma de hojas)</td><td style={{ ...tdW, textAlign: 'right', fontWeight: 800, color: '#7c2d12' }}>{fmtMoney(partidasTotal)}</td><td colSpan={verLectura ? 1 : 2} style={tdW}></td></tr></tfoot>}
+              </table>
+            </div>
+          </div>
+
+          {/* 📈 Cortes de Avance + Curva S — Fase 3 */}
+          <div style={{ marginTop: 22, border: '1px solid #fdba74', borderRadius: 12, overflow: 'hidden' }}>
+            <div style={{ background: '#fff7ed', padding: '10px 14px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8, flexWrap: 'wrap' }}>
+              <b style={{ color: '#9a3412', fontSize: 14 }}>📈 Cortes de Avance · Curva S</b>
+              {!verLectura && <button type="button" onClick={addCorte} style={{ ...btnStyle, padding: '6px 12px', fontSize: 12, background: '#ea580c', color: '#fff' }}>+ Corte</button>}
+            </div>
+            <CurvaS cortes={selected.cortes || []} />
+            <div style={{ overflowX: 'auto', borderTop: '1px solid #fed7aa' }}>
+              <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
+                <thead><tr>{['Periodo', 'Fecha', '% Plan acum.', '% Real acum.', 'Desv.', 'Hito / Nota', ...(verLectura ? [] : [''])].map((h, idx) => <th key={idx} style={{ background: '#fed7aa', color: '#7c2d12', padding: '6px 8px', textAlign: 'left', whiteSpace: 'nowrap' }}>{h}</th>)}</tr></thead>
+                <tbody>
+                  {(selected.cortes || []).map(ct => {
+                    const desv = (ct.pct_real || 0) - (ct.pct_plan || 0)
+                    return (
+                      <tr key={ct.id}>
+                        <td style={tdW}>{verLectura ? ct.periodo : <input value={ct.periodo} onChange={e => updCorte(ct.id, { periodo: e.target.value })} style={{ ...inW, width: 110 }} />}</td>
+                        <td style={tdW}>{verLectura ? (ct.fecha || '—') : <input type="date" value={ct.fecha} onChange={e => updCorte(ct.id, { fecha: e.target.value })} style={{ ...inW, width: 130 }} />}</td>
+                        <td style={{ ...tdW, textAlign: 'right' }}>{verLectura ? ((ct.pct_plan || 0) + '%') : <input type="number" value={ct.pct_plan || 0} onChange={e => updCorte(ct.id, { pct_plan: parseFloat(e.target.value) || 0 })} style={{ ...inW, width: 70, textAlign: 'right' }} />}</td>
+                        <td style={{ ...tdW, textAlign: 'right' }}>{verLectura ? ((ct.pct_real || 0) + '%') : <input type="number" value={ct.pct_real || 0} onChange={e => updCorte(ct.id, { pct_real: parseFloat(e.target.value) || 0 })} style={{ ...inW, width: 70, textAlign: 'right' }} />}</td>
+                        <td style={{ ...tdW, textAlign: 'right', fontWeight: 700, color: desv < 0 ? '#dc2626' : '#16a34a' }}>{desv > 0 ? '+' : ''}{desv.toFixed(1)}%</td>
+                        <td style={tdW}>{verLectura ? (ct.nota || '—') : <input value={ct.nota || ''} onChange={e => updCorte(ct.id, { nota: e.target.value })} placeholder="hito / retraso..." style={{ ...inW, minWidth: 180 }} />}</td>
+                        {!verLectura && <td style={tdW}><button type="button" onClick={() => delCorte(ct.id)} style={{ ...btnStyle, padding: '2px 8px', fontSize: 10, background: '#dc2626', color: '#fff' }}>✕</button></td>}
+                      </tr>
+                    )
+                  })}
+                  {(selected.cortes || []).length === 0 && <tr><td colSpan={verLectura ? 6 : 7} style={{ padding: 14, textAlign: 'center', color: '#9a3412' }}>Sin cortes. Pulsa “+ Corte” para registrar el avance por período.</td></tr>}
+                </tbody>
               </table>
             </div>
           </div>

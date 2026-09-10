@@ -20,6 +20,20 @@ export interface Partida {
   total_presupuesto: number   // línea base (viene del Excel o cantidad × VU)
 }
 
+/**
+ * Corte de avance (Fase 3). Cada corte es un punto histórico de la Curva S:
+ * el % de avance acumulado PLANEADO vs REAL a una fecha. La desviación se
+ * calcula (real − plan). Pensados como registro histórico (no se sobrescriben).
+ */
+export interface Corte {
+  id: string
+  periodo: string      // "Semana 1", "Mayo", etc.
+  fecha: string        // fecha del corte
+  pct_plan: number     // % avance PLANEADO acumulado (0–100)
+  pct_real: number     // % avance REAL acumulado (0–100)
+  nota?: string        // hito / observación del período
+}
+
 /** Nivel jerárquico según el código WBS ("1"->1, "1.2"->2, "1.2.3"->3). */
 export const nivelDeCodigo = (codigo: string): number =>
   String(codigo || '').replace(/\.+$/, '').split('.').filter(Boolean).length || 1
@@ -74,7 +88,9 @@ export interface ControlProyecto {
   seguimientos: Seguimiento[]
   // ── Fase 2a: WBS / partidas con presupuesto (línea base) ──
   partidas?: Partida[]
-  // ── Fase 2b+: cortes de avance por semana/mes, capas Proyectado/Real, etc. ──
+  // ── Fase 3: cortes de avance (histórico para la Curva S) ──
+  cortes?: Corte[]
+  // ── Fase 2b+: capas Proyectado/Real por partida, eje semanal→mensual, etc. ──
 }
 
 interface ControlProyectosState {

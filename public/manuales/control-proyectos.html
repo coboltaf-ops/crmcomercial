@@ -90,11 +90,11 @@
 
   <!-- PORTADA -->
   <div class="cover">
-    <span class="badge">🚧 SISTEMA EN CONSTRUCCIÓN · v1.0</span>
+    <span class="badge">🚧 SISTEMA EN CONSTRUCCIÓN · v1.1</span>
     <h1>Manual de Procedimientos y Uso</h1>
     <div class="sub">Sistema <b>Control de Proyectos</b> — Dashboard Gerencial de Obra · Norton</div>
     <div class="meta">
-      <b>Versión:</b> 1.0 &nbsp;·&nbsp; <b>Fecha:</b> 10 de septiembre de 2026 &nbsp;·&nbsp; <b>Cubre:</b> Fases 0, 1 y 2a<br>
+      <b>Versión:</b> 1.1 &nbsp;·&nbsp; <b>Fecha:</b> 10 de septiembre de 2026 &nbsp;·&nbsp; <b>Cubre:</b> Fases 0 a 3<br>
       <b>Elaborado por:</b> Ing. José E. Palomares — Consultor Sistemas de Información<br>
       <b>Módulo dentro de:</b> CRM Comercial Norton
     </div>
@@ -231,19 +231,50 @@
     </div>
     <div class="nota"><b>Importante:</b> el total suma solo las partidas “hoja” (las de último nivel) para no contar dos veces los capítulos que las agrupan. Así el presupuesto cuadra con el Excel original.</div>
 
-    <!-- 9. BITÁCORA -->
-    <h2><span class="n">9.</span> Bitácora de seguimiento</h2>
+    <!-- 9. PROCESO 4 -->
+    <h2><span class="n">9.</span> Proceso 4 — Registrar cortes y ver la Curva S</h2>
+    <p>La <b>Curva S</b> compara el avance <b>planeado</b> contra el <b>real</b> a lo largo del tiempo. Se alimenta de los <b>cortes de avance</b>: en cada período (semana o mes) se registra el % de avance acumulado.</p>
+    <ol class="pasos">
+      <li>En la ficha, baja a la sección <b>📈 Cortes de Avance · Curva S</b> y pulsa <b>+ Corte</b>.</li>
+      <li>Escribe el <b>periodo</b> (ej. “Semana 1”), la <b>fecha</b>, el <b>% Plan acumulado</b> y el <b>% Real acumulado</b> del corte.</li>
+      <li>Opcional: anota el <b>hito o retraso</b> del período (ej. “Retraso por planos del 9 al 11 de junio”).</li>
+      <li>La <b>Desviación</b> (real − plan) se calcula sola: <b style="color:#16a34a;">verde</b> si vas adelantado, <b style="color:#dc2626;">rojo</b> si hay atraso.</li>
+      <li>El gráfico de <b>Curva S</b> se dibuja automáticamente con cada corte. Guarda para conservar el histórico.</li>
+    </ol>
+    <div class="fig">
+      <div class="cap"><b>Figura 4.</b> Curva S — planeado (azul) vs real (naranja)</div>
+      <div class="canvas">
+        <svg viewBox="0 0 560 220" width="100%" style="max-width:560px;display:block;margin:0 auto;">
+          <line x1="40" y1="20"  x2="540" y2="20"  stroke="#e2e8f0"/><text x="32" y="24" text-anchor="end" font-size="10" fill="#64748b">100%</text>
+          <line x1="40" y1="70"  x2="540" y2="70"  stroke="#e2e8f0"/><text x="32" y="74" text-anchor="end" font-size="10" fill="#64748b">75%</text>
+          <line x1="40" y1="120" x2="540" y2="120" stroke="#e2e8f0"/><text x="32" y="124" text-anchor="end" font-size="10" fill="#64748b">50%</text>
+          <line x1="40" y1="170" x2="540" y2="170" stroke="#e2e8f0"/><text x="32" y="174" text-anchor="end" font-size="10" fill="#64748b">25%</text>
+          <polyline points="60,185 140,175 220,150 300,120 380,95 460,55 520,30" fill="none" stroke="#2563eb" stroke-width="2.5"/>
+          <polyline points="60,188 140,183 220,172 300,158 380,150 460,132 520,120" fill="none" stroke="#ea580c" stroke-width="2.5"/>
+          <text x="290" y="212" text-anchor="middle" font-size="10" fill="#475569">Semana 1 · 2 · 3 · 4 · 5 · 6 · 7</text>
+        </svg>
+        <div style="text-align:center;font-size:12px;color:#334155;font-weight:600;margin-top:4px;">
+          <span style="display:inline-block;width:14px;height:3px;background:#2563eb;vertical-align:middle;margin-right:6px;"></span>Planeado
+          &nbsp;&nbsp;<span style="display:inline-block;width:14px;height:3px;background:#ea580c;vertical-align:middle;margin-right:6px;"></span>Real
+        </div>
+      </div>
+    </div>
+    <div class="nota"><b>Lectura gerencial:</b> cuando la línea <b>real</b> (naranja) va por debajo de la <b>planeada</b> (azul), el proyecto está atrasado. La distancia entre ambas es la desviación acumulada — la alerta temprana para el comité de obra.</div>
+
+    <!-- 10. BITÁCORA -->
+    <h2><span class="n">10.</span> Bitácora de seguimiento</h2>
     <p>Cada proyecto tiene una <b>bitácora</b> donde se registran notas y cambios de situación con fecha y usuario. Sirve para dejar el historial de decisiones y novedades del proyecto (retrasos, acuerdos, hitos). Se usa igual que en los demás módulos del CRM.</p>
 
-    <!-- 10. ESTADO -->
-    <h2><span class="n">10.</span> Estado del desarrollo (hoja de ruta)</h2>
+    <!-- 11. ESTADO -->
+    <h2><span class="n">11.</span> Estado del desarrollo (hoja de ruta)</h2>
     <p>Este sistema se libera por fases. Estado a la fecha de este manual:</p>
     <div class="estado">
       <div class="e"><b>✅ Fase 0</b> Esqueleto del módulo y acceso desde el menú.</div>
       <div class="e"><b>✅ Fase 1</b> Ficha del proyecto + datos base + vínculo a oferta.</div>
       <div class="e"><b>✅ Fase 2a</b> WBS / partidas + presupuesto e importación de Excel.</div>
-      <div class="e pend"><b>🕓 Fase 2b</b> Capas Proyectado/Real y eje semanal → mensual.</div>
-      <div class="e pend"><b>🕓 Fase 3–4</b> Cortes de avance + Curva S (3 curvas) + KPIs.</div>
+      <div class="e"><b>✅ Fase 3</b> Cortes de avance + Curva S (planeado vs real) en vivo.</div>
+      <div class="e pend"><b>🕓 Fase 2b</b> Capas Proyectado/Real por partida y eje semanal → mensual.</div>
+      <div class="e pend"><b>🕓 Fase 4</b> Curva S financiera + 3ª curva (retrasos cliente) + KPIs del Resumen.</div>
       <div class="e pend"><b>🕓 Fase 5–6</b> Portafolio, semáforos, cartera, alertas y exportación.</div>
     </div>
     <div class="nota">Cada fase que se libere se documentará en la siguiente versión de este manual, con sus procesos paso a paso y capturas del sistema real.</div>
@@ -251,7 +282,7 @@
   </div>
 
   <footer>
-    <b>Manual de Procedimientos y Uso — Sistema Control de Proyectos</b> · v1.0 · 10/09/2026<br>
+    <b>Manual de Procedimientos y Uso — Sistema Control de Proyectos</b> · v1.1 · 10/09/2026<br>
     CRM Comercial Norton · Elaborado por Ing. José E. Palomares · Documento vivo: se actualiza con cada nueva fase.
   </footer>
 
