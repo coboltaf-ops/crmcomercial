@@ -285,9 +285,9 @@ export default function ControlProyectosPage() {
           {selected.id && <button type="button" onClick={exportarResumen} style={{ ...btnStyle, background: '#0f766e', color: '#ffffff' }}>📄 Exportar resumen (PDF)</button>}
         </div>
         {alertas.length > 0 && (
-          <div style={{ background: '#fef2f2', border: '1px solid #fecaca', borderRadius: 10, padding: '10px 14px', marginBottom: 16 }}>
+          <div className="po-root" style={{ background: '#fef2f2', border: '1px solid #fecaca', borderRadius: 10, padding: '10px 14px', marginBottom: 16 }}>
             <b style={{ color: '#9a3412', fontSize: 13 }}>🔔 Alertas ({alertas.length}):</b>{' '}
-            {alertas.map((a, i) => <span key={i} style={{ display: 'inline-block', background: a.color, color: '#fff', fontSize: 11, fontWeight: 700, padding: '2px 8px', borderRadius: 10, margin: '3px 3px 0 0' }}>{a.txt}</span>)}
+            {alertas.map((a, i) => <span key={i} style={{ display: 'inline-block', background: a.color, color: '#ffffff', fontSize: 11, fontWeight: 800, padding: '3px 9px', borderRadius: 10, margin: '3px 3px 0 0' }}><b style={{ color: '#ffffff' }}>{a.txt}</b></span>)}
           </div>
         )}
         <form onSubmit={handleSave} style={{ background: '#ffffff', borderRadius: 16, padding: 24, border: '2px solid #ea580c' }}>
