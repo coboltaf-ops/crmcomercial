@@ -5,6 +5,32 @@ import { apiUpsert, apiDelete } from '@/shared/lib/list-client'
 export type { Seguimiento }
 
 /**
+ * Partida del WBS (estructura jerárquica capítulo > partida > sub-partida).
+ * El nivel se deriva del código: "1" = 1, "1.1" = 2, "1.1.1" = 3.
+ * Fase 2a: presupuesto (línea base). Las capas Proyectado/Real/etc. y los
+ * cortes por semana/mes se agregan en fases siguientes.
+ */
+export interface Partida {
+  id: string
+  codigo: string              // "1", "1.1", "1.1.1"
+  item: string                // nombre de la partida
+  unidad: string              // glb, Kg, Ton, m2, un...
+  cantidad: number
+  valor_unitario: number
+  total_presupuesto: number   // línea base (viene del Excel o cantidad × VU)
+}
+
+/** Nivel jerárquico según el código WBS ("1"->1, "1.2"->2, "1.2.3"->3). */
+export const nivelDeCodigo = (codigo: string): number =>
+  String(codigo || '').replace(/\.+$/, '').split('.').filter(Boolean).length || 1
+
+/** ¿El código es una hoja (no tiene hijos en la lista)? Sirve para sumar sin duplicar. */
+export const esHoja = (codigo: string, todos: string[]): boolean => {
+  const pref = String(codigo || '').replace(/\.+$/, '') + '.'
+  return !todos.some(c => String(c || '').replace(/\.+$/, '').startsWith(pref))
+}
+
+/**
  * Módulo NUEVO: Control de Proyectos (dashboard gerencial).
  * Corresponde a la Sección I del documento de especificación de Norton.
  * OJO: es un módulo aparte del "Proyectos" actual (ese NO se toca).
@@ -46,7 +72,9 @@ export interface ControlProyecto {
   creado_por_usuario?: string
   creado_en?: string
   seguimientos: Seguimiento[]
-  // ── Fase 2+: WBS/partidas, cortes de avance, etc. se agregan aquí ──
+  // ── Fase 2a: WBS / partidas con presupuesto (línea base) ──
+  partidas?: Partida[]
+  // ── Fase 2b+: cortes de avance por semana/mes, capas Proyectado/Real, etc. ──
 }
 
 interface ControlProyectosState {

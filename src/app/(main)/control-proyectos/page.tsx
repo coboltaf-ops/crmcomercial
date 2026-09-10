@@ -1,8 +1,9 @@
 'use client'
 import { useIdioma } from '@/shared/i18n/use-t'
 import { logAudit, computarDiff } from '@/shared/lib/audit'
-import { useState, useEffect } from 'react'
-import { useControlProyectosStore, ControlProyecto } from '@/features/control-proyectos/store/control-proyectos-store'
+import { useState, useEffect, useRef } from 'react'
+import { useControlProyectosStore, ControlProyecto, Partida, nivelDeCodigo, esHoja } from '@/features/control-proyectos/store/control-proyectos-store'
+import { parseWbsFromArrayBuffer } from '@/features/control-proyectos/lib/parse-wbs-excel'
 import { useSeguimientoOfertaStore } from '@/features/seguimiento-oferta/store/seguimiento-oferta-store'
 import { useProyectosStore } from '@/features/proyectos/store/proyectos-store'
 import { useClientesStore } from '@/features/clientes/store/clientes-store'
@@ -104,6 +105,41 @@ export default function ControlProyectosPage() {
     })
   }
 
+  // ── WBS / Partidas (Fase 2a) ──
+  const fileRef = useRef<HTMLInputElement>(null)
+  const codigos = (selected?.partidas || []).map(p => p.codigo)
+  const partidasTotal = (selected?.partidas || [])
+    .filter(p => esHoja(p.codigo, codigos))
+    .reduce((s, p) => s + (p.total_presupuesto || 0), 0)
+
+  const handleImportExcel = async (file: File) => {
+    if (!selected) return
+    try {
+      const buf = await file.arrayBuffer()
+      const { partidas, hoja } = parseWbsFromArrayBuffer(buf)
+      if (!partidas.length) { alert('No se encontró una tabla de WBS (Código/ITEM) en el Excel.'); return }
+      const nuevas: Partida[] = partidas.map(p => ({ id: crypto.randomUUID(), ...p }))
+      const cods = nuevas.map(x => x.codigo)
+      const totalHojas = nuevas.filter(p => esHoja(p.codigo, cods)).reduce((s, p) => s + (p.total_presupuesto || 0), 0)
+      if (!confirm(`Se leyeron ${nuevas.length} partidas de la hoja "${hoja}".\nPresupuesto (suma de hojas): ${totalHojas.toLocaleString('es-CO')}\n\n¿Reemplazar las partidas actuales?`)) return
+      setSelected({ ...selected, partidas: nuevas, presupuesto_base: totalHojas || selected.presupuesto_base })
+    } catch (err) {
+      alert('Error leyendo el Excel: ' + (err as Error).message)
+    }
+  }
+  const addPartida = () => { if (!selected) return; setSelected({ ...selected, partidas: [...(selected.partidas || []), { id: crypto.randomUUID(), codigo: '', item: '', unidad: '', cantidad: 0, valor_unitario: 0, total_presupuesto: 0 }] }) }
+  const updPartida = (id: string, patch: Partial<Partida>) => {
+    if (!selected) return
+    setSelected({ ...selected, partidas: (selected.partidas || []).map(p => {
+      if (p.id !== id) return p
+      const np = { ...p, ...patch }
+      // auto-total si hay cantidad y VU (y no tocaron total manualmente)
+      if (('cantidad' in patch || 'valor_unitario' in patch) && np.cantidad && np.valor_unitario) np.total_presupuesto = np.cantidad * np.valor_unitario
+      return np
+    }) })
+  }
+  const delPartida = (id: string) => { if (!selected) return; setSelected({ ...selected, partidas: (selected.partidas || []).filter(p => p.id !== id) }) }
+
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault()
     if (!selected) return
@@ -124,6 +160,8 @@ export default function ControlProyectosPage() {
   const inputRO: React.CSSProperties = { ...inputStyle, opacity: 0.5 }
   const btnStyle: React.CSSProperties = { padding: '8px 16px', borderRadius: 8, border: 'none', cursor: 'pointer', fontSize: 13, fontWeight: 600 }
   const labelStyle: React.CSSProperties = { color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }
+  const tdW: React.CSSProperties = { padding: '4px 8px', borderBottom: '1px solid #fed7aa', color: '#000', whiteSpace: 'nowrap' }
+  const inW: React.CSSProperties = { padding: '4px 6px', borderRadius: 6, border: '1px solid #fdba74', background: '#fff', color: '#1e3a8a', fontSize: 12, outline: 'none' }
   const situColor = (s: string): React.CSSProperties => {
     const map: Record<string, string> = { 'En Planeación': '#2563eb', 'En Ejecución': '#16a34a', 'Suspendido': '#f59e0b', 'Finalizado': '#059669', 'Cancelado': '#dc2626' }
     return { background: 'transparent', color: map[s] || '#6b7280', border: `1px solid ${map[s] || '#6b7280'}`, padding: '3px 10px', borderRadius: 20, fontSize: 11, fontWeight: 700, display: 'inline-block' }
@@ -266,6 +304,49 @@ export default function ControlProyectosPage() {
               </div>
             </div>
           </fieldset>
+
+          {/* 🧱 WBS / Partidas — Fase 2a */}
+          <div style={{ marginTop: 22, border: '1px solid #fdba74', borderRadius: 12, overflow: 'hidden' }}>
+            <div style={{ background: '#fff7ed', padding: '10px 14px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8, flexWrap: 'wrap' }}>
+              <b style={{ color: '#9a3412', fontSize: 14 }}>🧱 Partidas (WBS) · Presupuesto línea base</b>
+              {!verLectura && (
+                <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+                  <input ref={fileRef} type="file" accept=".xlsx,.xls" style={{ display: 'none' }} onChange={e => { const f = e.target.files?.[0]; if (f) handleImportExcel(f); e.target.value = '' }} />
+                  <button type="button" onClick={() => fileRef.current?.click()} style={{ ...btnStyle, padding: '6px 12px', fontSize: 12, background: '#16a34a', color: '#fff' }}>⬆ Importar Excel</button>
+                  <button type="button" onClick={addPartida} style={{ ...btnStyle, padding: '6px 12px', fontSize: 12, background: '#ea580c', color: '#fff' }}>+ Partida</button>
+                </div>
+              )}
+            </div>
+            <div style={{ overflowX: 'auto' }}>
+              <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
+                <thead>
+                  <tr>{['Código', 'ITEM', 'Unidad', 'Cantidad', 'Valor Unitario', 'Total Presupuesto', 'Peso %', ...(verLectura ? [] : [''])].map((h, idx) => <th key={idx} style={{ background: '#fed7aa', color: '#7c2d12', padding: '6px 8px', textAlign: 'left', whiteSpace: 'nowrap' }}>{h}</th>)}</tr>
+                </thead>
+                <tbody>
+                  {(selected.partidas || []).map(pt => {
+                    const nivel = nivelDeCodigo(pt.codigo)
+                    const hoja = esHoja(pt.codigo, codigos)
+                    const peso = partidasTotal > 0 && hoja ? (pt.total_presupuesto / partidasTotal * 100) : 0
+                    return (
+                      <tr key={pt.id} style={{ background: nivel === 1 ? '#fff7ed' : '#fff' }}>
+                        <td style={tdW}>{verLectura ? pt.codigo : <input value={pt.codigo} onChange={e => updPartida(pt.id, { codigo: e.target.value })} style={{ ...inW, width: 70, fontWeight: 700 }} />}</td>
+                        <td style={tdW}><div style={{ paddingLeft: (nivel - 1) * 14 }}>{verLectura ? <span style={{ fontWeight: nivel === 1 ? 700 : 400 }}>{pt.item}</span> : <input value={pt.item} onChange={e => updPartida(pt.id, { item: e.target.value })} style={{ ...inW, minWidth: 200, fontWeight: nivel === 1 ? 700 : 400 }} />}</div></td>
+                        <td style={tdW}>{verLectura ? pt.unidad : <input value={pt.unidad} onChange={e => updPartida(pt.id, { unidad: e.target.value })} style={{ ...inW, width: 60 }} />}</td>
+                        <td style={{ ...tdW, textAlign: 'right' }}>{verLectura ? (pt.cantidad || 0).toLocaleString('es-CO') : <input type="number" value={pt.cantidad || 0} onChange={e => updPartida(pt.id, { cantidad: parseFloat(e.target.value) || 0 })} style={{ ...inW, width: 80, textAlign: 'right' }} />}</td>
+                        <td style={{ ...tdW, textAlign: 'right' }}>{verLectura ? fmtMoney(pt.valor_unitario || 0) : <input type="number" value={pt.valor_unitario || 0} onChange={e => updPartida(pt.id, { valor_unitario: parseFloat(e.target.value) || 0 })} style={{ ...inW, width: 110, textAlign: 'right' }} />}</td>
+                        <td style={{ ...tdW, textAlign: 'right' }}>{verLectura ? fmtMoney(pt.total_presupuesto || 0) : <input type="number" value={pt.total_presupuesto || 0} onChange={e => updPartida(pt.id, { total_presupuesto: parseFloat(e.target.value) || 0 })} style={{ ...inW, width: 130, textAlign: 'right' }} />}</td>
+                        <td style={{ ...tdW, textAlign: 'right', color: '#9a3412', fontWeight: 700 }}>{hoja ? peso.toFixed(1) + '%' : '—'}</td>
+                        {!verLectura && <td style={tdW}><button type="button" onClick={() => delPartida(pt.id)} style={{ ...btnStyle, padding: '2px 8px', fontSize: 10, background: '#dc2626', color: '#fff' }}>✕</button></td>}
+                      </tr>
+                    )
+                  })}
+                  {(selected.partidas || []).length === 0 && <tr><td colSpan={verLectura ? 7 : 8} style={{ padding: 18, textAlign: 'center', color: '#9a3412' }}>Sin partidas. Importa el Excel o agrega manualmente.</td></tr>}
+                </tbody>
+                {(selected.partidas || []).length > 0 && <tfoot><tr><td colSpan={5} style={{ ...tdW, textAlign: 'right', fontWeight: 800, color: '#7c2d12' }}>TOTAL (suma de hojas)</td><td style={{ ...tdW, textAlign: 'right', fontWeight: 800, color: '#7c2d12' }}>{fmtMoney(partidasTotal)}</td><td colSpan={verLectura ? 1 : 2} style={tdW}></td></tr></tfoot>}
+              </table>
+            </div>
+          </div>
+
           {verLectura && (
             <p style={{ color: '#000000', fontSize: 13, fontWeight: 700, marginTop: 14 }}>
               👤 Creado por: {selected.creado_por || '—'}{selected.creado_por_usuario ? ` (${selected.creado_por_usuario})` : ''}{selected.creado_en ? ` · ${selected.creado_en}` : ''}
