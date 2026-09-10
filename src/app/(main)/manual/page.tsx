@@ -160,6 +160,74 @@ const TARJETAS_OPERATIVAS: Tarjeta[] = [
     ],
   },
   {
+    id: 'seguimiento-oferta', titulo: 'Seguimiento Oferta', icono: '📄', color: '#0e7490',
+    intro: 'El Seguimiento Oferta le da vida propia al concepto de OFERTA, separándolo del módulo Oportunidades para lograr trazabilidad completa. Cuando una Oportunidad llega a la situación “Cliente Pide Oferta”, el sistema crea automáticamente una Oferta (OF-XXXXX) vinculada 1:1 a esa oportunidad. Desde aquí se controla todo el ciclo de vida de la oferta —preparación, presentación, evaluación y adjudicación— con la documentación exigida y la bitácora de gestión en un solo lugar.',
+    puntos: [
+      'Nace de la Oportunidad: cuando su situación pasa a “Cliente Pide Oferta”, la Oferta se genera automáticamente con los datos del negocio (cliente, proyecto, contacto).',
+      'Relación 1:1: cada Oportunidad tiene una sola Oferta y viceversa, siempre trazable a su origen.',
+      'Control de Oferta: reúne los campos de gestión de la oferta (fechas, monto, moneda, veredicto).',
+      'Documentos Requeridos: lista los documentos que exige la licitación/oferta para no dejar ninguno pendiente.',
+      'Situación de la oferta (En Preparación, Presentada, En Evaluación, Adjudicada, No Adjudicada) para saber siempre en qué punto está.',
+    ],
+    campos: [
+      { n: 'Nro Oferta', d: 'Consecutivo automático (OF-XXXXX).' },
+      { n: 'Oportunidad de origen', d: 'Oportunidad de la que nace la oferta (trazabilidad).' },
+      { n: 'Cliente / Proyecto', d: 'Cliente y proyecto ofertado (traídos de la oportunidad).' },
+      { n: 'Fecha de registro / Moneda', d: 'Fecha de creación y tipo de moneda de la oferta.' },
+      { n: 'Control de Oferta', d: 'Campos de gestión de la oferta (montos, fechas, veredicto).' },
+      { n: 'Documentos Exigidos', d: 'Lista de documentos requeridos por la licitación.' },
+      { n: 'Situación', d: 'En Preparación, Presentada, En Evaluación, Adjudicada, No Adjudicada.' },
+    ],
+    pasos: [
+      '1) En Oportunidades, cuando el negocio requiere oferta, cambia la Situación a “Cliente Pide Oferta”.',
+      '2) El sistema crea automáticamente la Oferta (OF-XXXXX) vinculada a esa oportunidad.',
+      '3) Entra a Seguimiento Oferta, abre la oferta y completa el Control de Oferta y los Documentos Requeridos.',
+      '4) Registra la gestión en la bitácora y actualiza la Situación hasta Adjudicada / No Adjudicada.',
+    ],
+    notas: [
+      'Bitácora de Seguimiento: registra la gestión (Fecha, Hora, Detalle, Persona y Situación); la Situación del seguimiento actualiza la de la oferta.',
+      'Multipaís: cada oferta lleva su país. Los usuarios GLOBAL ven todas; un usuario de un país ve solo las suyas (filtro 🌎).',
+      'Puente al proyecto: cuando la oferta se gana (Adjudicada), alimenta el arranque del proyecto en Control de Proyectos como línea base, evitando doble digitación.',
+      'Adjuntar archivos: en cada oferta se pueden subir documentos (PDF, Word, Excel).',
+    ],
+  },
+  {
+    id: 'control-proyectos', titulo: 'Control de Proyectos', icono: '📈', color: '#ea580c',
+    intro: 'El Control de Proyectos es el DASHBOARD GERENCIAL DE OBRA: hace seguimiento a cada proyecto en ejecución mostrando avance físico, avance financiero, facturación, costos y cumplimiento de cronograma, con la CURVA S como herramienta central para comparar lo planeado contra lo ejecutado. Reemplaza el control que hoy se lleva en Excel y le da a la Gerencia una visión inmediata para decidir. Es un módulo independiente del módulo Proyectos; se distingue en naranja mientras está 🚧 EN OBRA.',
+    puntos: [
+      'Ficha del proyecto con su presupuesto/línea base, que puede tomarse de la Oferta ganada para evitar doble digitación.',
+      'WBS jerárquico (Capítulo > Partida > Sub-partida) con el peso de cada partida; se puede IMPORTAR desde el Excel de control de obra.',
+      'Cortes de avance por período (semanal/mensual): % planeado vs % real. Cada corte queda como histórico inmutable.',
+      'Curva S física (%) y financiera ($) que se dibujan solas con cada corte.',
+      'Resumen Gerencial (KPIs): presupuesto, avance, margen presupuestado y proyectado, margen real a hoy, facturación y saldo por facturar.',
+      'Portafolio con semáforo (verde/ámbar/rojo) según la desviación de avance de cada proyecto.',
+      'Cartera por antigüedad, alertas automáticas por umbral y exportación del resumen ejecutivo de una página.',
+    ],
+    campos: [
+      { n: 'Nro Control', d: 'Consecutivo automático (CTP-XXXX).' },
+      { n: 'Proyecto / Cliente', d: 'Nombre de la obra y cliente asociado.' },
+      { n: 'Vincular Oferta', d: 'Trae cliente, proyecto, moneda y presupuesto desde la oferta ganada.' },
+      { n: 'Presupuesto / Línea Base', d: 'Valor total aprobado; base de todos los cálculos.' },
+      { n: 'Partidas (WBS)', d: 'Desglose por capítulos/partidas con unidad, cantidad, valor unitario, total y peso %.' },
+      { n: 'Cortes de Avance', d: '% plan y % real acumulado por período (alimentan la Curva S).' },
+      { n: 'Datos financieros', d: 'Costos, valor proyectado, ingresos, egresos y facturación (alimentan los KPIs).' },
+      { n: 'Cartera', d: 'Cuentas por cobrar por antigüedad (0–30, 31–60, 60+ días).' },
+    ],
+    pasos: [
+      '1) Pulsa “+ Nuevo Control” y llena los datos base — o vincula la Oferta ganada para auto-rellenar.',
+      '2) En Partidas (WBS) importa el Excel de obra (o captura las partidas a mano).',
+      '3) Registra los Cortes de Avance (% plan y % real) — la Curva S se dibuja sola.',
+      '4) Completa los Datos financieros y la Cartera → se calculan los KPIs y las alertas.',
+      '5) Revisa el Portafolio con semáforos y exporta el resumen ejecutivo para el comité de obra.',
+    ],
+    notas: [
+      'La Curva S es la herramienta central: cuando la línea real va por debajo de la planeada, el proyecto está atrasado; la distancia es la desviación acumulada.',
+      'Semáforo: 🟢 en verde (a tiempo), 🟠 atención (desviación −5% a −10%), 🔴 crítico (−10% o peor).',
+      'Manual propio: el sistema tiene su propio “Manual de Procedimientos y Uso” como primera opción, con más detalle y PDF descargable.',
+      'Módulo independiente y reversible: no toca el módulo Proyectos actual; se marca en naranja mientras está EN OBRA.',
+    ],
+  },
+  {
     id: 'cotizaciones', titulo: 'Cotizaciones', icono: '📋', color: '#6d28d9',
     intro: 'Las Cotizaciones son el corazón comercial del CRM: es donde toda la información dispersa se junta para producir una propuesta formal en minutos. Optimiza y agiliza el trabajo porque REUTILIZA los datos que ya viven en el sistema —el cliente, sus contactos, los productos y sus precios— evitando volver a digitar y reduciendo errores. En lugar de armar cada oferta a mano, se genera de forma consistente, con sus cálculos e impuestos automáticos.',
     puntos: [
@@ -459,7 +527,7 @@ export default function ManualPage() {
   const [abierta, setAbierta] = useState<string | null>(null)
 
   // Orden de las tarjetas = orden del menú lateral
-  const ORDEN_MENU = ['introduccion', 'dashboard', 'clientes', 'contactos', 'prospectos', 'oportunidades', 'ofertas', 'cotizaciones', 'pqrs', 'tareas']
+  const ORDEN_MENU = ['introduccion', 'dashboard', 'clientes', 'contactos', 'prospectos', 'oportunidades', 'seguimiento-oferta', 'ofertas', 'control-proyectos', 'cotizaciones', 'pqrs', 'tareas']
   const posMenu = (id: string) => { const i = ORDEN_MENU.indexOf(id); return i < 0 ? 999 : i }
   const operativasOrd = [...TARJETAS_OPERATIVAS].sort((a, b) => posMenu(a.id) - posMenu(b.id))
 
