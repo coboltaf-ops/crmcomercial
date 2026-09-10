@@ -59,6 +59,11 @@ nav li, nav a, nav button, nav div {
   color: #FFFFFF !important;
 }
 
+/* Módulo "Control de Proyectos" EN OBRA: naranja intenso en el menú.
+   Clase (0,1,1) para ganarle a 'nav *' (0,0,1) que pinta todo de blanco. */
+nav .cp-menu-label { color: #f97316 !important; background: transparent !important; }
+nav .cp-menu-badge { color: #ffffff !important; background: #ea580c !important; }
+
 /* Textos del Dashboard: azul oscuro (excepto dentro de Ofertas .po-root) */
 h1:not(:where(.po-root *)), h2:not(:where(.po-root *)), h3:not(:where(.po-root *)), h4:not(:where(.po-root *)), h5:not(:where(.po-root *)), h6:not(:where(.po-root *)) {
   color: #013978 !important;

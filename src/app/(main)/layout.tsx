@@ -362,8 +362,8 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
                 {!collapsed && (item.href === '/control-proyectos'
                   ? (
                     <span style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
-                      <b style={{ color: '#fb923c' }}>{item.label}</b>
-                      <span style={{ fontSize: 9, fontWeight: 800, color: '#ffffff', background: '#ea580c', padding: '1px 5px', borderRadius: 6, letterSpacing: 0.3, whiteSpace: 'nowrap' }}>🚧 EN OBRA</span>
+                      <b className="cp-menu-label" style={{ color: '#f97316' }}>{item.label}</b>
+                      <span className="cp-menu-badge" style={{ fontSize: 9, fontWeight: 800, color: '#ffffff', background: '#ea580c', padding: '1px 5px', borderRadius: 6, letterSpacing: 0.3, whiteSpace: 'nowrap' }}>🚧 EN OBRA</span>
                     </span>
                   )
                   : <span>{item.label}</span>)}

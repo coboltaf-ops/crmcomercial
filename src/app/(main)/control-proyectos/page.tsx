@@ -28,7 +28,7 @@ export default function ControlProyectosPage() {
       {/* Encabezado */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap', marginBottom: 16 }}>
         <span style={{ fontSize: 30 }}>📈</span>
-        <h1 style={{ margin: 0, fontSize: 26, fontWeight: 800, color: '#0f172a' }}>Control de Proyectos</h1>
+        <h1 style={{ margin: 0, fontSize: 26, fontWeight: 900, color: '#ea580c' }}>Control de Proyectos</h1>
         <span style={{ fontSize: 12, fontWeight: 800, color: '#ffffff', background: '#ea580c', padding: '4px 10px', borderRadius: 8, letterSpacing: 0.3 }}>
           🚧 EN CONSTRUCCIÓN
         </span>
