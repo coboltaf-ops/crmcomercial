@@ -7,7 +7,7 @@ import path from 'path'
 
 const CHROME = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
 const SRC = path.resolve('public/manuales/control-proyectos.html')
-const OUT_DOCS = path.resolve('docs/Manual Procedimientos y Uso Sistema Control de Proyectos.pdf')
+const OUT_DOCS = path.resolve('docs/Proceso 360 de Control Proyectos/Manual Procedimientos y Uso Sistema Control de Proyectos.pdf')
 const OUT_PUB = path.resolve('public/manuales/Manual-Procedimientos-Control-Proyectos.pdf')
 
 if (!fs.existsSync(SRC)) { console.error('No existe el HTML fuente:', SRC); process.exit(1) }
