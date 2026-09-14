@@ -5,6 +5,7 @@ import { useState, useEffect, useRef } from 'react'
 import { useControlProyectosStore, ControlProyecto, Partida, Corte, nivelDeCodigo, esHoja } from '@/features/control-proyectos/store/control-proyectos-store'
 import { parseWbsFromArrayBuffer } from '@/features/control-proyectos/lib/parse-wbs-excel'
 import CurvaS from '@/features/control-proyectos/components/curva-s'
+import MiniBars from '@/features/control-proyectos/components/mini-bars'
 import { useSeguimientoOfertaStore } from '@/features/seguimiento-oferta/store/seguimiento-oferta-store'
 import { useProyectosStore } from '@/features/proyectos/store/proyectos-store'
 import { useClientesStore } from '@/features/clientes/store/clientes-store'
@@ -503,6 +504,22 @@ export default function ControlProyectosPage() {
                 {kpi('Facturado', factPct.toFixed(1) + '%', '#2563eb', fmtMoney(selected.facturado_acum || 0))}
                 {kpi('Saldo por facturar', fmtMoney(saldoFacturar), saldoFacturar > 0 ? '#f59e0b' : '#16a34a', '(avance × ppto) − facturado')}
               </div>
+
+              {/* Comparativo financiero (gráfico de barras) */}
+              <div style={{ marginTop: 18 }}>
+                <div style={{ fontSize: 12, fontWeight: 700, color: '#9a3412', marginBottom: 10 }}>Comparativo financiero</div>
+                <MiniBars
+                  items={[
+                    { label: 'Presupuesto', value: presupuesto, color: '#1e3a8a' },
+                    { label: 'Proyectado', value: selected.valor_proyectado || presupuesto, color: '#0e7490' },
+                    { label: 'Facturado', value: selected.facturado_acum || 0, color: '#2563eb' },
+                    { label: 'Recaudo', value: selected.ingresos_real || 0, color: '#16a34a' },
+                    { label: 'Egresos', value: selected.egresos_real || 0, color: '#ea580c' },
+                  ]}
+                  fmt={fmtMoney}
+                />
+              </div>
+
               <fieldset disabled={verLectura} style={{ border: 'none', padding: 0, margin: '16px 0 0', minInlineSize: 'auto' }}>
                 <div style={{ fontSize: 12, fontWeight: 700, color: '#9a3412', marginBottom: 8 }}>Datos financieros (alimentan los KPIs)</div>
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 12 }}>
@@ -600,6 +617,17 @@ export default function ControlProyectosPage() {
           <button onClick={() => { setSelected(emptyControlProyecto(nextConsecutivo('CTP-', items.map(p => p.codigo)).codigo, `${currentUser?.nombre || ''} ${currentUser?.apellido || ''}`.trim(), usuarioGlobal ? (PAISES_ACTIVOS[0]?.codigo || 'Colombia') : paisUsuario)); setVerLectura(false); setIsForm(true) }} style={{ ...btnStyle, background: '#ea580c', color: '#ffffff' }}>+ Nuevo Control</button>
         )}
       </div>
+
+      {filtered.length > 0 && (
+        <div style={{ border: '1px solid #fed7aa', borderRadius: 12, padding: '14px 16px', marginBottom: 16, background: '#fff' }}>
+          <div style={{ fontSize: 13, fontWeight: 700, color: '#9a3412', marginBottom: 12 }}>📊 Avance por proyecto (real, % — color según semáforo)</div>
+          <MiniBars
+            items={filtered.map(p => { const e = estadoDe(p); return { label: `${p.codigo} · ${p.nombre_proyecto || ''}`.slice(0, 28), value: e.real, color: e.color } })}
+            fmt={v => v.toFixed(0) + '%'}
+            maxHint={100}
+          />
+        </div>
+      )}
 
       <div style={{ borderRadius: 12, border: '1px solid #ea580c', overflow: 'hidden' }}>
         <div style={{ overflowX: 'auto' }}>
