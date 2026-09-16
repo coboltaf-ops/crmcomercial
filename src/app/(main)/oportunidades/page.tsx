@@ -6,7 +6,6 @@ import ModuleHeader from '@/shared/components/module-header'
 import EnviarCorreoModal from '@/shared/components/enviar-correo-modal'
 import { useOportunidadesStore, Oportunidad, DocumentoExigido } from '@/features/oportunidades/store/oportunidades-store'
 import { useClientesStore } from '@/features/clientes/store/clientes-store'
-import { useSeguimientoOfertaStore } from '@/features/seguimiento-oferta/store/seguimiento-oferta-store'
 import { useContactosStore } from '@/features/contactos/store/contactos-store'
 import { buildWhatsAppLink, isValidPhone } from '@/shared/lib/whatsapp'
 import { useReferenceStore } from '@/features/referencias/store/reference-store'
@@ -53,9 +52,6 @@ export default function OportunidadesPage() {
   const usuarioGlobal = esGlobal(paisUsuario)
   const { oportunidades, addOportunidad, updateOportunidad, deleteOportunidad } = useOportunidadesStore()
   const loadOportunidades = useOportunidadesStore(s => s.loadOportunidades)
-  const ofertasSeg = useSeguimientoOfertaStore(s => s.ofertas)
-  const addOfertaSeg = useSeguimientoOfertaStore(s => s.addOferta)
-  const loadOfertasSeg = useSeguimientoOfertaStore(s => s.loadOfertas)
   const clientes = useClientesStore(s => s.clientes).filter(c => {
     const sit = (c.situacion || '').trim().toLowerCase()
     return sit === 'activo' || sit === 'prospectando' || sit === 'prospecto'
@@ -77,7 +73,7 @@ export default function OportunidadesPage() {
   const searchParams = useSearchParams()
   const router = useRouter()
 
-  useEffect(() => { loadOportunidades(); loadOfertasSeg() }, [loadOportunidades, loadOfertasSeg])
+  useEffect(() => { loadOportunidades() }, [loadOportunidades])
 
   useEffect(() => {
     const openId = searchParams.get('open')
@@ -135,30 +131,6 @@ export default function OportunidadesPage() {
     } else {
       addOportunidad({ ...toSave, id: crypto.randomUUID(), fecha_registro: today, creado_por: `${currentUser?.nombre || ''} ${currentUser?.apellido || ''}`.trim() || (currentUser?.usuario || 'desconocido'), creado_por_usuario: currentUser?.usuario || '', creado_por_rol: currentUser?.rol || '', creado_en: today })
       logAudit({ ...auditParams(), accion: 'CREAR', registro_codigo: toSave.codigo, registro_nombre: toSave.proyecto })
-    }
-
-    // ── Disparador: al pasar a "Cliente Pide Oferta" se abre un Seguimiento de Oferta (1:1) ──
-    if (toSave.situacion === 'Cliente Pide Oferta') {
-      const yaExiste = ofertasSeg.some(o => o.oportunidad_id === toSave.id || (toSave.codigo && o.oportunidad_codigo === toSave.codigo))
-      if (!yaExiste) {
-        const nro = nextConsecutivo('OF-', ofertasSeg.map(o => o.nro_oferta)).codigo
-        const autor = `${currentUser?.nombre || ''} ${currentUser?.apellido || ''}`.trim() || (currentUser?.usuario || 'desconocido')
-        addOfertaSeg({
-          id: crypto.randomUUID(), nro_oferta: nro,
-          oportunidad_id: toSave.id, oportunidad_codigo: toSave.codigo,
-          fecha_registro: today, cliente_id: toSave.cliente_id, cliente_nombre: toSave.cliente_nombre,
-          contacto_id: toSave.contacto_id, contacto_nombre: toSave.contacto_nombre,
-          proyecto: toSave.proyecto, ciudad: toSave.ciudad, pais: toSave.pais, tipo_moneda: toSave.tipo_moneda,
-          adjudicacion: toSave.adjudicacion, mgc: toSave.mgc, ejecucion_anyo_pct: toSave.ejecucion_anyo_pct, parcial_euros_anyo: toSave.parcial_euros_anyo,
-          fecha_inicio_consultas: toSave.fecha_inicio_consultas, fecha_final_consultas: toSave.fecha_final_consultas,
-          fecha_presentar_oferta: toSave.fecha_presentar_oferta, fecha_real_presentacion_oferta: toSave.fecha_real_presentacion_oferta,
-          monto_real_oferta: toSave.monto_real_oferta, fecha_esperada_veredicto: toSave.fecha_esperada_veredicto,
-          veredicto: toSave.veredicto || 'Pendiente', empresa_ganadora: toSave.empresa_ganadora,
-          documentos_exigidos: (toSave.documentos_exigidos as never[]) || [], observaciones: '', situacion: 'En Preparación', seguimientos: [],
-          creado_por: autor, creado_por_usuario: currentUser?.usuario || '', creado_por_rol: currentUser?.rol || '', creado_en: today,
-        })
-        alert(`Se abrió el Seguimiento de Oferta ${nro} para esta oportunidad. Complétalo en el módulo "Seguimiento Oferta".`)
-      }
     }
 
     setIsForm(false); setSelected(null)
@@ -497,9 +469,7 @@ export default function OportunidadesPage() {
             </div>
           </div>
 
-          {/* CONTROL DE OFERTA + DOCUMENTOS — MIGRADOS a "Seguimiento Oferta". Quedan SOLO LECTURA para verificar; se eliminarán tras la validación. */}
-          <div style={{ background: '#fff7ed', border: '1px solid #fed7aa', color: '#9a3412', borderRadius: 8, padding: '9px 12px', margin: '16px 0 4px', fontSize: 12, fontWeight: 700 }}>🔒 Estos apartados (Control Oferta y Documentos) se gestionan ahora en el módulo <b>Seguimiento Oferta</b>. Aquí quedan solo de lectura para verificación.</div>
-          <fieldset disabled style={{ border: 'none', padding: 0, margin: 0, minInlineSize: 'auto', opacity: 0.9 }}>
+          {/* CONTROL DE OFERTA */}
           <h3 className="seccion-franja" style={sectionTitle()}>{t('lbl.controlOferta')}</h3>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: 14, marginBottom: 20 }}>
             <div>
@@ -642,7 +612,6 @@ export default function OportunidadesPage() {
               </tbody>
             </table>
           </div>
-          </fieldset>
 
           <div style={{ marginBottom: 14 }}>
             <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.observaciones')}</label>
