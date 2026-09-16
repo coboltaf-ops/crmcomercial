@@ -159,38 +159,7 @@ const TARJETAS_OPERATIVAS: Tarjeta[] = [
       'Adjuntar archivos: en cada registro se pueden subir fotos, imágenes y documentos (PDF, Word, Excel), hasta 50 MB por archivo.',
     ],
   },
-  {
-    id: 'seguimiento-oferta', titulo: 'Seguimiento Oferta', icono: '📄', color: '#0e7490',
-    intro: 'El Seguimiento Oferta le da vida propia al concepto de OFERTA, separándolo del módulo Oportunidades para lograr trazabilidad completa. Cuando una Oportunidad llega a la situación “Cliente Pide Oferta”, el sistema crea automáticamente una Oferta (OF-XXXXX) vinculada 1:1 a esa oportunidad. Desde aquí se controla todo el ciclo de vida de la oferta —preparación, presentación, evaluación y adjudicación— con la documentación exigida y la bitácora de gestión en un solo lugar.',
-    puntos: [
-      'Nace de la Oportunidad: cuando su situación pasa a “Cliente Pide Oferta”, la Oferta se genera automáticamente con los datos del negocio (cliente, proyecto, contacto).',
-      'Relación 1:1: cada Oportunidad tiene una sola Oferta y viceversa, siempre trazable a su origen.',
-      'Control de Oferta: reúne los campos de gestión de la oferta (fechas, monto, moneda, veredicto).',
-      'Documentos Requeridos: lista los documentos que exige la licitación/oferta para no dejar ninguno pendiente.',
-      'Situación de la oferta (En Preparación, Presentada, En Evaluación, Adjudicada, No Adjudicada) para saber siempre en qué punto está.',
-    ],
-    campos: [
-      { n: 'Nro Oferta', d: 'Consecutivo automático (OF-XXXXX).' },
-      { n: 'Oportunidad de origen', d: 'Oportunidad de la que nace la oferta (trazabilidad).' },
-      { n: 'Cliente / Proyecto', d: 'Cliente y proyecto ofertado (traídos de la oportunidad).' },
-      { n: 'Fecha de registro / Moneda', d: 'Fecha de creación y tipo de moneda de la oferta.' },
-      { n: 'Control de Oferta', d: 'Campos de gestión de la oferta (montos, fechas, veredicto).' },
-      { n: 'Documentos Exigidos', d: 'Lista de documentos requeridos por la licitación.' },
-      { n: 'Situación', d: 'En Preparación, Presentada, En Evaluación, Adjudicada, No Adjudicada.' },
-    ],
-    pasos: [
-      '1) En Oportunidades, cuando el negocio requiere oferta, cambia la Situación a “Cliente Pide Oferta”.',
-      '2) El sistema crea automáticamente la Oferta (OF-XXXXX) vinculada a esa oportunidad.',
-      '3) Entra a Seguimiento Oferta, abre la oferta y completa el Control de Oferta y los Documentos Requeridos.',
-      '4) Registra la gestión en la bitácora y actualiza la Situación hasta Adjudicada / No Adjudicada.',
-    ],
-    notas: [
-      'Bitácora de Seguimiento: registra la gestión (Fecha, Hora, Detalle, Persona y Situación); la Situación del seguimiento actualiza la de la oferta.',
-      'Multipaís: cada oferta lleva su país. Los usuarios GLOBAL ven todas; un usuario de un país ve solo las suyas (filtro 🌎).',
-      'Puente al proyecto: cuando la oferta se gana (Adjudicada), alimenta el arranque del proyecto en Control de Proyectos como línea base, evitando doble digitación.',
-      'Adjuntar archivos: en cada oferta se pueden subir documentos (PDF, Word, Excel).',
-    ],
-  },
+  // Tarjeta 'Seguimiento Oferta' OCULTA (2026-09-16): el módulo salió del menú; la oferta se maneja en Oportunidades. Para reactivar, restaurar este objeto.
   {
     id: 'control-proyectos', titulo: 'Control de Proyectos', icono: '📈', color: '#ea580c',
     intro: 'El Control de Proyectos es el DASHBOARD GERENCIAL DE OBRA: hace seguimiento a cada proyecto en ejecución mostrando avance físico, avance financiero, facturación, costos y cumplimiento de cronograma, con la CURVA S como herramienta central para comparar lo planeado contra lo ejecutado. Reemplaza el control que hoy se lleva en Excel y le da a la Gerencia una visión inmediata para decidir. Es un módulo independiente del módulo Proyectos; se distingue en naranja mientras está 🚧 EN OBRA.',
@@ -527,7 +496,7 @@ export default function ManualPage() {
   const [abierta, setAbierta] = useState<string | null>(null)
 
   // Orden de las tarjetas = orden del menú lateral
-  const ORDEN_MENU = ['introduccion', 'dashboard', 'clientes', 'contactos', 'prospectos', 'oportunidades', 'seguimiento-oferta', 'ofertas', 'control-proyectos', 'cotizaciones', 'pqrs', 'tareas']
+  const ORDEN_MENU = ['introduccion', 'dashboard', 'clientes', 'contactos', 'prospectos', 'oportunidades', 'ofertas', 'control-proyectos', 'cotizaciones', 'pqrs', 'tareas']
   const posMenu = (id: string) => { const i = ORDEN_MENU.indexOf(id); return i < 0 ? 999 : i }
   const operativasOrd = [...TARJETAS_OPERATIVAS].sort((a, b) => posMenu(a.id) - posMenu(b.id))
 

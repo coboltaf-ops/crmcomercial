@@ -23,7 +23,9 @@ const defaultModulos: Modulo[] = [
   { id: 'contactos', label: 'Contactos', icon: '👤', href: '/contactos', activo: true, grupo: 'principal' },
   { id: 'prospectos', label: 'Prospectos', icon: '🧲', href: '/prospectos', activo: true, grupo: 'principal' },
   { id: 'oportunidades', label: 'Oportunidades', icon: '🎯', href: '/oportunidades', activo: true, grupo: 'principal' },
-  { id: 'seguimiento-oferta', label: 'Seguimiento Oferta', icon: '📄', href: '/seguimiento-oferta', activo: true, grupo: 'principal' },
+  // Seguimiento Oferta — OCULTO del menú (2026-09-16): las ofertas se gestionan por ahora en Oportunidades.
+  // La página (/seguimiento-oferta), su API y sus datos quedan intactos; para reactivarlo, descomentar esta línea.
+  // { id: 'seguimiento-oferta', label: 'Seguimiento Oferta', icon: '📄', href: '/seguimiento-oferta', activo: true, grupo: 'principal' },
   { id: 'proyectos', label: 'Proyectos', icon: '🏗️', href: '/proyectos', activo: true, grupo: 'principal' },
   { id: 'control-proyectos-manual', label: 'Manual Control Proyectos', icon: '📘', href: '/control-proyectos/manual', activo: true, grupo: 'principal' },
   { id: 'control-proyectos', label: 'Control de Proyectos', icon: '📈', href: '/control-proyectos', activo: true, grupo: 'principal' },
