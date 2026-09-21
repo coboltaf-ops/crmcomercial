@@ -444,18 +444,26 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
             <div style={{ display: 'flex', alignItems: 'center', gap: 4, background: 'rgba(255,255,255,0.12)', borderRadius: 8, padding: 4 }}>
               <button onClick={() => setIdioma('es')} title="Español"
                 style={{
-                  padding: '4px 8px', borderRadius: 6, cursor: 'pointer', fontSize: 18, lineHeight: 1,
+                  display: 'inline-flex', alignItems: 'center', gap: 5,
+                  padding: '4px 8px', borderRadius: 6, cursor: 'pointer', lineHeight: 1,
                   border: idioma === 'es' ? '2px solid #ffffff' : '2px solid transparent',
                   background: idioma === 'es' ? 'rgba(255,255,255,0.25)' : 'transparent',
-                  opacity: idioma === 'es' ? 1 : 0.55,
-                }}>🇪🇸</button>
+                  opacity: idioma === 'es' ? 1 : 0.7,
+                }}>
+                <span style={{ fontSize: 16 }}>🇪🇸</span>
+                <span style={{ fontSize: 12, fontWeight: 800, color: '#ffffff', letterSpacing: 0.5 }}>ES</span>
+              </button>
               <button onClick={() => setIdioma('en')} title="English"
                 style={{
-                  padding: '4px 8px', borderRadius: 6, cursor: 'pointer', fontSize: 18, lineHeight: 1,
+                  display: 'inline-flex', alignItems: 'center', gap: 5,
+                  padding: '4px 8px', borderRadius: 6, cursor: 'pointer', lineHeight: 1,
                   border: idioma === 'en' ? '2px solid #ffffff' : '2px solid transparent',
                   background: idioma === 'en' ? 'rgba(255,255,255,0.25)' : 'transparent',
-                  opacity: idioma === 'en' ? 1 : 0.55,
-                }}>🇺🇸</button>
+                  opacity: idioma === 'en' ? 1 : 0.7,
+                }}>
+                <span style={{ fontSize: 16 }}>🇺🇸</span>
+                <span style={{ fontSize: 12, fontWeight: 800, color: '#ffffff', letterSpacing: 0.5 }}>EN</span>
+              </button>
             </div>
             {pathname !== '/dashboard' && (
               <button onClick={() => router.push('/dashboard')}

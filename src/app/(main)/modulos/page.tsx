@@ -1,13 +1,16 @@
 'use client'
 import { useModulosStore } from '@/features/modulos/store/modulos-store'
 import { useCurrentUserStore } from '@/features/usuarios-gestion/store/current-user-store'
+import { useIdioma } from '@/shared/i18n/use-t'
 
 export default function ModulosPage() {
+  const idioma = useIdioma()
+  const L = (es: string, en: string) => (idioma === 'en' ? en : es)
   const currentUser = useCurrentUserStore(s => s.user)
   const { modulos, toggleModulo } = useModulosStore()
 
   if (currentUser?.rol.toLowerCase() !== 'admin') {
-    return <div style={{ color: '#fca5a5', padding: 40, textAlign: 'center' }}>No tienes acceso a esta sección</div>
+    return <div style={{ color: '#fca5a5', padding: 40, textAlign: 'center' }}>{L('No tienes acceso a esta sección', 'You do not have access to this section')}</div>
   }
 
   const btnStyle: React.CSSProperties = { padding: '8px 16px', borderRadius: 8, border: 'none', cursor: 'pointer', fontSize: 13, fontWeight: 600 }
@@ -17,18 +20,18 @@ export default function ModulosPage() {
 
   return (
     <div>
-      <h1 style={{ fontSize: 24, fontWeight: 700, color: '#ffffff', marginBottom: 4 }}>Módulos del Sistema</h1>
-      <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: 14, marginBottom: 20 }}>Activa o desactiva los módulos disponibles en el menú</p>
+      <h1 style={{ fontSize: 24, fontWeight: 700, color: '#ffffff', marginBottom: 4 }}>{L('Módulos del Sistema', 'System Modules')}</h1>
+      <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: 14, marginBottom: 20 }}>{L('Activa o desactiva los módulos disponibles en el menú', 'Enable or disable the modules available in the menu')}</p>
 
       {/* Resumen */}
       <div style={{ display: 'flex', gap: 16, marginBottom: 24 }}>
         <div style={{ background: '#0f1b3d', borderRadius: 12, padding: '12px 24px', border: '1px solid #1e3a5f', textAlign: 'center' }}>
           <p style={{ color: '#ffffff', fontSize: 28, fontWeight: 800 }}>{activos}</p>
-          <p style={{ color: '#ffffff', fontSize: 12 }}>Activos</p>
+          <p style={{ color: '#ffffff', fontSize: 12 }}>{L('Activos', 'Active')}</p>
         </div>
         <div style={{ background: '#b91c1c', borderRadius: 12, padding: '12px 24px', border: '1px solid #dc2626', textAlign: 'center' }}>
           <p style={{ color: '#ffffff', fontSize: 28, fontWeight: 800 }}>{inactivos}</p>
-          <p style={{ color: '#ffffff', fontSize: 12 }}>Inactivos</p>
+          <p style={{ color: '#ffffff', fontSize: 12 }}>{L('Inactivos', 'Inactive')}</p>
         </div>
       </div>
 
@@ -49,7 +52,7 @@ export default function ModulosPage() {
               </div>
               {isProtected ? (
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                  <span style={{ color: 'rgba(255,255,255,0.5)', fontSize: 12 }}>Siempre activo</span>
+                  <span style={{ color: 'rgba(255,255,255,0.5)', fontSize: 12 }}>{L('Siempre activo', 'Always active')}</span>
                   <div className="switch-on" style={{ width: 52, height: 28, borderRadius: 14, display: 'flex', alignItems: 'center', justifyContent: 'flex-end', padding: '0 3px', opacity: 0.6 }}>
                     <div style={{ width: 22, height: 22, borderRadius: '50%', background: '#fff' }} />
                   </div>

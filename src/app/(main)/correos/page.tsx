@@ -1,6 +1,7 @@
 'use client'
 import { useState, useEffect, useCallback } from 'react'
 import { useCurrentUserStore } from '@/features/usuarios-gestion/store/current-user-store'
+import { useIdioma } from '@/shared/i18n/use-t'
 
 interface CorreoLog {
   id: string

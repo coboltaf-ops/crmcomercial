@@ -1,6 +1,7 @@
 'use client'
 import { useEffect, useState, useCallback } from 'react'
 import { useCurrentUserStore } from '@/features/usuarios-gestion/store/current-user-store'
+import { useIdioma } from '@/shared/i18n/use-t'
 
 interface Registro {
   id: string
@@ -22,6 +23,8 @@ const ACCIONES = ['CREAR', 'MODIFICAR', 'ELIMINAR']
 const accColor = (a: string) => a === 'CREAR' ? '#15803d' : a === 'ELIMINAR' ? '#dc2626' : '#1d4ed8'
 
 export default function AuditoriaPage() {
+  const idioma = useIdioma()
+  const L = (es: string, en: string) => (idioma === 'en' ? en : es)
   const currentUser = useCurrentUserStore(s => s.user)
   const [registros, setRegistros] = useState<Registro[]>([])
   const [cargando, setCargando] = useState(false)
@@ -53,8 +56,8 @@ export default function AuditoriaPage() {
   const borrar = async () => {
     const porRango = !!(fDesde && fHasta)
     const msg = porRango
-      ? `⚠️ ¿Borrar los registros de auditoría del ${fDesde} al ${fHasta}? No se puede deshacer.`
-      : '⚠️ ¿Borrar TODA la auditoría? No se puede deshacer.'
+      ? L(`⚠️ ¿Borrar los registros de auditoría del ${fDesde} al ${fHasta}? No se puede deshacer.`, `⚠️ Delete the audit records from ${fDesde} to ${fHasta}? This cannot be undone.`)
+      : L('⚠️ ¿Borrar TODA la auditoría? No se puede deshacer.', '⚠️ Delete the ENTIRE audit log? This cannot be undone.')
     if (!confirm(msg)) return
     setBorrando(true)
     try {
@@ -67,19 +70,19 @@ export default function AuditoriaPage() {
       })
       const data = await res.json()
       if (res.ok) {
-        alert(`✅ ${data.mensaje || 'Auditoría limpiada'}`)
+        alert(`✅ ${data.mensaje || L('Auditoría limpiada', 'Audit log cleared')}`)
         await cargar()
       } else {
-        alert(`❌ ${data.error || 'No se pudo borrar'}`)
+        alert(`❌ ${data.error || L('No se pudo borrar', 'Could not delete')}`)
       }
     } catch (err) {
-      alert(`❌ Error de conexión: ${err}`)
+      alert(`❌ ${L('Error de conexión', 'Connection error')}: ${err}`)
     }
     setBorrando(false)
   }
 
   if (currentUser?.rol?.toLowerCase() !== 'admin') {
-    return <div style={{ color: '#013978', padding: 40, textAlign: 'center' }}>No tienes acceso a esta sección (solo Admin).</div>
+    return <div style={{ color: '#013978', padding: 40, textAlign: 'center' }}>{L('No tienes acceso a esta sección (solo Admin).', 'You do not have access to this section (Admin only).')}</div>
   }
 
   const fmtFecha = (iso: string) => {
@@ -91,26 +94,26 @@ export default function AuditoriaPage() {
   return (
     <div>
       <div style={{ marginBottom: 16 }}>
-        <h1 style={{ fontSize: 24, fontWeight: 700, color: '#ffffff', marginBottom: 4 }}>🔍 Auditoría del Sistema</h1>
-        <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: 14 }}>Historial de acciones: quién hizo qué, cuándo y en qué módulo</p>
+        <h1 style={{ fontSize: 24, fontWeight: 700, color: '#ffffff', marginBottom: 4 }}>🔍 {L('Auditoría del Sistema', 'System Audit')}</h1>
+        <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: 14 }}>{L('Historial de acciones: quién hizo qué, cuándo y en qué módulo', 'Action history: who did what, when, and in which module')}</p>
       </div>
 
       {/* Filtros */}
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, marginBottom: 16, background: '#ffffff', padding: 14, borderRadius: 12, border: '1px solid #1e3a8a' }}>
-        <input placeholder="Usuario..." value={fUsuario} onChange={e => setFUsuario(e.target.value)} style={inputStyle} />
+        <input placeholder={L('Usuario...', 'User...')} value={fUsuario} onChange={e => setFUsuario(e.target.value)} style={inputStyle} />
         <select value={fModulo} onChange={e => setFModulo(e.target.value)} style={inputStyle}>
-          <option value="">Todos los módulos</option>
+          <option value="">{L('Todos los módulos', 'All modules')}</option>
           {MODULOS.map(m => <option key={m} value={m}>{m}</option>)}
         </select>
         <select value={fAccion} onChange={e => setFAccion(e.target.value)} style={inputStyle}>
-          <option value="">Todas las acciones</option>
+          <option value="">{L('Todas las acciones', 'All actions')}</option>
           {ACCIONES.map(a => <option key={a} value={a}>{a}</option>)}
         </select>
-        <input type="date" value={fDesde} onChange={e => setFDesde(e.target.value)} style={inputStyle} title="Desde" />
-        <input type="date" value={fHasta} onChange={e => setFHasta(e.target.value)} style={inputStyle} title="Hasta" />
-        <button onClick={() => { setFUsuario(''); setFModulo(''); setFAccion(''); setFDesde(''); setFHasta('') }} style={{ ...inputStyle, background: '#64748b', color: '#fff', border: 'none', cursor: 'pointer', fontWeight: 700 }}>Limpiar filtros</button>
+        <input type="date" value={fDesde} onChange={e => setFDesde(e.target.value)} style={inputStyle} title={L('Desde', 'From')} />
+        <input type="date" value={fHasta} onChange={e => setFHasta(e.target.value)} style={inputStyle} title={L('Hasta', 'To')} />
+        <button onClick={() => { setFUsuario(''); setFModulo(''); setFAccion(''); setFDesde(''); setFHasta('') }} style={{ ...inputStyle, background: '#64748b', color: '#fff', border: 'none', cursor: 'pointer', fontWeight: 700 }}>{L('Limpiar filtros', 'Clear filters')}</button>
         <button onClick={borrar} disabled={borrando} style={{ ...inputStyle, background: borrando ? '#9ca3af' : '#dc2626', color: '#fff', border: 'none', cursor: borrando ? 'default' : 'pointer', fontWeight: 700 }}>
-          {borrando ? 'Borrando…' : (fDesde && fHasta ? '🗑️ Borrar rango' : '🗑️ Borrar auditoría')}
+          {borrando ? L('Borrando…', 'Deleting…') : (fDesde && fHasta ? L('🗑️ Borrar rango', '🗑️ Delete range') : L('🗑️ Borrar auditoría', '🗑️ Delete audit log'))}
         </button>
       </div>
 
@@ -119,14 +122,14 @@ export default function AuditoriaPage() {
         <table style={{ width: '100%', borderCollapse: 'collapse' }}>
           <thead>
             <tr>
-              {['Fecha/Hora', 'Usuario', 'Acción', 'Módulo', 'Registro', 'Qué cambió'].map(h => (
+              {[L('Fecha/Hora', 'Date/Time'), L('Usuario', 'User'), L('Acción', 'Action'), L('Módulo', 'Module'), L('Registro', 'Record'), L('Qué cambió', 'What changed')].map(h => (
                 <th key={h} style={{ padding: '10px 12px', background: '#1e3a8a', color: '#fff', fontSize: 12, textAlign: 'left' }}>{h}</th>
               ))}
             </tr>
           </thead>
           <tbody>
-            {cargando && <tr><td colSpan={6} style={{ padding: 30, textAlign: 'center', color: '#888' }}>Cargando...</td></tr>}
-            {!cargando && registros.length === 0 && <tr><td colSpan={6} style={{ padding: 30, textAlign: 'center', color: '#888' }}>Sin registros de auditoría.</td></tr>}
+            {cargando && <tr><td colSpan={6} style={{ padding: 30, textAlign: 'center', color: '#888' }}>{L('Cargando...', 'Loading...')}</td></tr>}
+            {!cargando && registros.length === 0 && <tr><td colSpan={6} style={{ padding: 30, textAlign: 'center', color: '#888' }}>{L('Sin registros de auditoría.', 'No audit records.')}</td></tr>}
             {registros.map((r, i) => (
               <tr key={r.id} style={{ background: i % 2 === 0 ? '#f8fafc' : '#fff' }}>
                 <td style={{ padding: '8px 12px', borderBottom: '1px solid #e2e8f0', color: '#000', fontSize: 12, whiteSpace: 'nowrap' }}>{fmtFecha(r.fecha)}</td>
@@ -142,7 +145,7 @@ export default function AuditoriaPage() {
           </tbody>
         </table>
       </div>
-      <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 11, marginTop: 10 }}>Mostrando las últimas {registros.length} acciones (máx. 1000).</p>
+      <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 11, marginTop: 10 }}>{L(`Mostrando las últimas ${registros.length} acciones (máx. 1000).`, `Showing the last ${registros.length} actions (max. 1000).`)}</p>
     </div>
   )
 }
