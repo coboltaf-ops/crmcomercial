@@ -42,11 +42,11 @@ export default function LoginPage() {
 
   return (
     <div className="login-screen" style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#1e3a8a' }}>
-      <div className="login-card" style={{ background: '#0f1b3d', border: '3px solid #1e3a8a', borderRadius: 20, padding: 40, width: 400 }}>
+      <div className="login-card" style={{ background: '#0f1b3d', border: '3px solid #1e3a8a', borderRadius: 20, padding: 40, width: 440 }}>
         <div style={{ textAlign: 'center', marginBottom: 32 }}>
           {/* Logo Empresarial */}
           <div style={{ marginBottom: 24 }}>
-            <img src="/logo-norton.jpeg" alt="Norton" style={{ width: 240, height: 120, borderRadius: 16, objectFit: 'contain', background: '#ffffff', padding: 12, margin: '0 auto' }} />
+            <img src="/logo-norton.jpeg" alt="Norton" style={{ width: '100%', maxWidth: 340, height: 180, borderRadius: 16, objectFit: 'contain', background: '#ffffff', padding: 16, margin: '0 auto', display: 'block' }} />
           </div>
           <h1 style={{ fontSize: 28, fontWeight: 800, color: '#ffffff', marginBottom: 4 }}>Grupo GTM LATAM</h1>
           <p style={{ color: '#ffffff', fontSize: 15, fontWeight: 700, margin: '0 0 4px' }}>Gestión Comercial</p>
