@@ -41,6 +41,8 @@ function saveCorreosToStorage(correos: CorreoLog[]) {
 }
 
 export default function CorreosPage() {
+  const idioma = useIdioma()
+  const L = (es: string, en: string) => (idioma === 'en' ? en : es)
   const user = useCurrentUserStore(s => s.user)
   const [correos, setCorreos] = useState<CorreoLog[]>([])
   const [loading, setLoading] = useState(true)
@@ -63,7 +65,7 @@ export default function CorreosPage() {
   const isAdmin = user.rol.toLowerCase() === 'admin'
 
   const eliminar = (id: string) => {
-    if (!confirm('¿Está seguro de eliminar este registro de correo?')) return
+    if (!confirm(L('¿Está seguro de eliminar este registro de correo?', 'Are you sure you want to delete this email record?'))) return
     const updated = correos.filter(c => c.id !== id)
     setCorreos(updated)
     saveCorreosToStorage(updated)
@@ -97,25 +99,25 @@ export default function CorreosPage() {
 
   // ═══════════ VISTA DETALLE ═══════════
   if (viewDetail) {
-    const fields = [
-      { label: 'Fecha', value: viewDetail.fecha },
-      { label: 'Hora', value: viewDetail.hora },
-      { label: 'De', value: viewDetail.de },
-      { label: 'Para', value: viewDetail.para },
-      { label: 'Asunto', value: viewDetail.asunto },
-      { label: 'Módulo', value: moduloLabels[viewDetail.modulo] || viewDetail.modulo },
-      { label: 'Referencia', value: viewDetail.referencia },
-      { label: 'Estado', value: viewDetail.estado },
+    const fields: { label: string; value: string; full?: boolean }[] = [
+      { label: L('Fecha', 'Date'), value: viewDetail.fecha },
+      { label: L('Hora', 'Time'), value: viewDetail.hora },
+      { label: L('De', 'From'), value: viewDetail.de },
+      { label: L('Para', 'To'), value: viewDetail.para },
+      { label: L('Asunto', 'Subject'), value: viewDetail.asunto },
+      { label: L('Módulo', 'Module'), value: moduloLabels[viewDetail.modulo] || viewDetail.modulo },
+      { label: L('Referencia', 'Reference'), value: viewDetail.referencia },
+      { label: L('Estado', 'Status'), value: viewDetail.estado },
     ]
     if (viewDetail.detalle_error) {
-      fields.push({ label: 'Detalle Error', value: viewDetail.detalle_error })
+      fields.push({ label: L('Detalle Error', 'Error Detail'), value: viewDetail.detalle_error, full: true })
     }
     return (
       <div>
         <div style={{ display: 'flex', gap: 10, marginBottom: 16 }}>
-          <button onClick={() => setViewDetail(null)} style={{ ...btnStyle, background: '#000000', color: '#ffffff', border: '1px solid #333333' }}>← Volver</button>
+          <button onClick={() => setViewDetail(null)} style={{ ...btnStyle, background: '#000000', color: '#ffffff', border: '1px solid #333333' }}>← {L('Volver', 'Back')}</button>
           {isAdmin && (
-            <button onClick={() => eliminar(viewDetail.id)} style={{ ...btnStyle, background: '#dc2626', color: '#ffffff', border: '1px solid #ef4444' }}>Eliminar</button>
+            <button onClick={() => eliminar(viewDetail.id)} style={{ ...btnStyle, background: '#dc2626', color: '#ffffff', border: '1px solid #ef4444' }}>{L('Eliminar', 'Delete')}</button>
           )}
         </div>
         <div style={{ background: 'rgba(255,255,255,0.05)', borderRadius: 16, padding: 24, border: '1px solid rgba(255,255,255,0.15)' }}>
@@ -123,13 +125,13 @@ export default function CorreosPage() {
             <div style={{ width: 44, height: 44, borderRadius: 12, background: 'rgba(59,130,246,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 22 }}>📧</div>
             <div>
               <h2 style={{ color: '#ffffff', fontSize: 18, fontWeight: 700, margin: 0 }}>{viewDetail.asunto}</h2>
-              <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 12, margin: 0 }}>Enviado a {viewDetail.para}</p>
+              <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 12, margin: 0 }}>{L('Enviado a', 'Sent to')} {viewDetail.para}</p>
             </div>
             <span style={estadoBadge(viewDetail.estado)}>{viewDetail.estado}</span>
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 16 }}>
             {fields.map(f => (
-              <div key={f.label} style={f.label === 'Detalle Error' ? { gridColumn: 'span 3' } : undefined}>
+              <div key={f.label} style={f.full ? { gridColumn: 'span 3' } : undefined}>
                 <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 11, marginBottom: 2 }}>{f.label}</p>
                 <p style={{ color: '#ffffff', fontSize: 14 }}>{f.value || '—'}</p>
               </div>
@@ -148,42 +150,42 @@ export default function CorreosPage() {
         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
           <div style={{ width: 42, height: 42, borderRadius: 12, background: 'rgba(59,130,246,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 22 }}>📧</div>
           <div>
-            <h1 style={{ color: '#ffffff', fontSize: 22, fontWeight: 800, margin: 0 }}>Correos Enviados</h1>
-            <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: 13, margin: 0 }}>Historial de correos enviados desde el sistema</p>
+            <h1 style={{ color: '#ffffff', fontSize: 22, fontWeight: 800, margin: 0 }}>{L('Correos Enviados', 'Sent Emails')}</h1>
+            <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: 13, margin: 0 }}>{L('Historial de correos enviados desde el sistema', 'History of emails sent from the system')}</p>
           </div>
         </div>
         <button onClick={cargar} style={{ ...btnStyle, background: '#1e3a8a', color: '#ffffff', border: '1px solid #2563eb' }}>
-          🔄 Actualizar
+          🔄 {L('Actualizar', 'Refresh')}
         </button>
       </div>
 
       {/* Filtros */}
       <div style={{ display: 'flex', gap: 12, marginBottom: 16, flexWrap: 'wrap' }}>
         <input value={search} onChange={e => setSearch(e.target.value)}
-          placeholder="Buscar por destinatario, asunto o referencia..."
+          placeholder={L('Buscar por destinatario, asunto o referencia...', 'Search by recipient, subject or reference...')}
           style={{ ...inputStyle, flex: 1, minWidth: 250 }} />
         <select value={filtroModulo} onChange={e => setFiltroModulo(e.target.value)} style={inputStyle}>
-          <option value="">Todos los módulos</option>
-          <option value="cotizaciones">Cotizaciones</option>
-          <option value="prospectos">Prospectos</option>
+          <option value="">{L('Todos los módulos', 'All modules')}</option>
+          <option value="cotizaciones">{L('Cotizaciones', 'Quotes')}</option>
+          <option value="prospectos">{L('Prospectos', 'Prospects')}</option>
           <option value="pqrs">PQRS</option>
-          <option value="clientes">Empresas</option>
-          <option value="oportunidades">Oportunidades</option>
+          <option value="clientes">{L('Empresas', 'Companies')}</option>
+          <option value="oportunidades">{L('Oportunidades', 'Opportunities')}</option>
         </select>
         <select value={filtroEstado} onChange={e => setFiltroEstado(e.target.value)} style={inputStyle}>
-          <option value="">Todos los estados</option>
-          <option value="Enviado">Enviado</option>
-          <option value="Error">Error</option>
+          <option value="">{L('Todos los estados', 'All statuses')}</option>
+          <option value="Enviado">{L('Enviado', 'Sent')}</option>
+          <option value="Error">{L('Error', 'Error')}</option>
         </select>
       </div>
 
       {/* Estadísticas rápidas */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12, marginBottom: 20 }}>
         {[
-          { label: 'Total Enviados', value: correos.filter(c => c.estado === 'Enviado').length, color: '#3b82f6' },
-          { label: 'Cotizaciones', value: correos.filter(c => c.modulo === 'cotizaciones').length, color: '#8b5cf6' },
-          { label: 'Prospectos', value: correos.filter(c => c.modulo === 'prospectos').length, color: '#22c55e' },
-          { label: 'Errores', value: correos.filter(c => c.estado === 'Error').length, color: '#ef4444' },
+          { label: L('Total Enviados', 'Total Sent'), value: correos.filter(c => c.estado === 'Enviado').length, color: '#3b82f6' },
+          { label: L('Cotizaciones', 'Quotes'), value: correos.filter(c => c.modulo === 'cotizaciones').length, color: '#8b5cf6' },
+          { label: L('Prospectos', 'Prospects'), value: correos.filter(c => c.modulo === 'prospectos').length, color: '#22c55e' },
+          { label: L('Errores', 'Errors'), value: correos.filter(c => c.estado === 'Error').length, color: '#ef4444' },
         ].map(s => (
           <div key={s.label} style={{ background: 'rgba(255,255,255,0.05)', borderRadius: 12, padding: '14px 16px', border: '1px solid rgba(255,255,255,0.1)' }}>
             <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 11, marginBottom: 4 }}>{s.label}</p>
@@ -194,19 +196,19 @@ export default function CorreosPage() {
 
       {/* Tabla */}
       {loading ? (
-        <p style={{ color: 'rgba(255,255,255,0.5)', textAlign: 'center', padding: 40 }}>Cargando...</p>
+        <p style={{ color: 'rgba(255,255,255,0.5)', textAlign: 'center', padding: 40 }}>{L('Cargando...', 'Loading...')}</p>
       ) : filtered.length === 0 ? (
         <div style={{ textAlign: 'center', padding: 60, color: 'rgba(255,255,255,0.4)' }}>
           <p style={{ fontSize: 40, marginBottom: 12 }}>📭</p>
-          <p style={{ fontSize: 15 }}>No hay correos registrados</p>
-          <p style={{ fontSize: 12, marginTop: 8 }}>Los correos aparecerán aquí cuando se envíen desde Cotizaciones, Prospectos o PQRS</p>
+          <p style={{ fontSize: 15 }}>{L('No hay correos registrados', 'No emails recorded')}</p>
+          <p style={{ fontSize: 12, marginTop: 8 }}>{L('Los correos aparecerán aquí cuando se envíen desde Cotizaciones, Prospectos o PQRS', 'Emails will appear here when sent from Quotes, Prospects or PQRS')}</p>
         </div>
       ) : (
         <div style={{ background: 'rgba(255,255,255,0.05)', borderRadius: 12, border: '1px solid rgba(255,255,255,0.1)', overflow: 'hidden' }}>
           <table style={{ width: '100%', borderCollapse: 'collapse' }}>
             <thead>
               <tr style={{ background: 'rgba(255,255,255,0.08)' }}>
-                {['Fecha', 'Hora', 'Para', 'Asunto', 'Módulo', 'Referencia', 'Estado', 'Acción'].map(h => (
+                {[L('Fecha', 'Date'), L('Hora', 'Time'), L('Para', 'To'), L('Asunto', 'Subject'), L('Módulo', 'Module'), L('Referencia', 'Reference'), L('Estado', 'Status'), L('Acción', 'Action')].map(h => (
                   <th key={h} style={{ padding: '12px 14px', textAlign: 'left', color: 'rgba(255,255,255,0.7)', fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: 0.5, borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
                     {h}
                   </th>
@@ -227,12 +229,12 @@ export default function CorreosPage() {
                     <div style={{ display: 'flex', gap: 6 }}>
                       <button onClick={() => setViewDetail(c)}
                         style={{ ...btnStyle, background: 'rgba(59,130,246,0.15)', color: '#60a5fa', border: '1px solid rgba(59,130,246,0.3)', padding: '5px 12px', fontSize: 12 }}>
-                        Ver
+                        {L('Ver', 'View')}
                       </button>
                       {isAdmin && (
                         <button onClick={() => eliminar(c.id)}
                           style={{ ...btnStyle, background: 'rgba(239,68,68,0.15)', color: '#ef4444', border: '1px solid rgba(239,68,68,0.3)', padding: '5px 12px', fontSize: 12 }}>
-                          Eliminar
+                          {L('Eliminar', 'Delete')}
                         </button>
                       )}
                     </div>
@@ -245,7 +247,7 @@ export default function CorreosPage() {
       )}
 
       <p style={{ textAlign: 'center', color: 'rgba(255,255,255,0.3)', fontSize: 11, marginTop: 16 }}>
-        Mostrando {filtered.length} de {correos.length} correos
+        {L(`Mostrando ${filtered.length} de ${correos.length} correos`, `Showing ${filtered.length} of ${correos.length} emails`)}
       </p>
     </div>
   )

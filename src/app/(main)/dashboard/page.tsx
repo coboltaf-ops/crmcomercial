@@ -11,6 +11,7 @@ import { useProyectosStore } from '@/features/proyectos/store/proyectos-store'
 import { useFactoresStore } from '@/features/factores-monedas/store/factores-store'
 import { fmtMoney } from '@/shared/lib/format-number'
 import { DEPARTAMENTOS } from '@/features/dashboard/colombia-departamentos'
+import { useIdioma } from '@/shared/i18n/use-t'
 
 // ── Mapa de Colombia: proyección de coordenadas reales (lat/lon) a SVG ──
 const MAPA_W = 300, MAPA_H = 410
@@ -98,6 +99,8 @@ function regionDeCiudad(ciu: string): string {
 }
 
 export default function DashboardPage() {
+  const idioma = useIdioma()
+  const L = (es: string, en: string) => (idioma === 'en' ? en : es)
   const router = useRouter()
   const clientes = useClientesStore(s => s.clientes)
   const contactos = useContactosStore(s => s.contactos)
@@ -139,13 +142,13 @@ export default function DashboardPage() {
   }
 
   const cards = [
-    { label: 'Empresas', value: clientes.length, icon: '🏢', color: '#000000', href: '/clientes' },
-    { label: 'Contactos', value: contactos.length, icon: '👤', color: '#000000', href: '/contactos' },
-    { label: 'Oportunidades', value: opoAbiertas.length, icon: '🎯', color: '#000000', href: '/oportunidades' },
-    { label: 'Proyectos', value: proyectos.length, icon: '🏗️', color: '#000000', href: '/proyectos' },
-    { label: 'Cotizaciones', value: cotizaciones.length, icon: '📋', color: '#000000', href: '/cotizaciones' },
-    { label: 'PQRS Abiertas', value: pqrsAbiertas.length, icon: '📩', color: '#000000', href: '/pqrs' },
-    { label: 'Productos', value: productos.length, icon: '📦', color: '#000000', href: '/productos' },
+    { label: L('Empresas', 'Companies'), value: clientes.length, icon: '🏢', color: '#000000', href: '/clientes' },
+    { label: L('Contactos', 'Contacts'), value: contactos.length, icon: '👤', color: '#000000', href: '/contactos' },
+    { label: L('Oportunidades', 'Opportunities'), value: opoAbiertas.length, icon: '🎯', color: '#000000', href: '/oportunidades' },
+    { label: L('Proyectos', 'Projects'), value: proyectos.length, icon: '🏗️', color: '#000000', href: '/proyectos' },
+    { label: L('Cotizaciones', 'Quotes'), value: cotizaciones.length, icon: '📋', color: '#000000', href: '/cotizaciones' },
+    { label: L('PQRS Abiertas', 'Open PQRS'), value: pqrsAbiertas.length, icon: '📩', color: '#000000', href: '/pqrs' },
+    { label: L('Productos', 'Products'), value: productos.length, icon: '📦', color: '#000000', href: '/productos' },
   ]
 
   // PQRS por tipo
@@ -158,7 +161,7 @@ export default function DashboardPage() {
   // Clientes por ciudad (gráfico de barras)
   const ciudadCount: Record<string, number> = {}
   clientes.forEach(c => {
-    const ciu = (c.ciudad || '').trim() || 'Sin ciudad'
+    const ciu = (c.ciudad || '').trim() || L('Sin ciudad', 'No city')
     ciudadCount[ciu] = (ciudadCount[ciu] || 0) + 1
   })
   const clientesPorCiudad = Object.entries(ciudadCount)
@@ -170,7 +173,7 @@ export default function DashboardPage() {
   // Clientes por Región (usa la región guardada, o la deduce desde la ciudad para Colombia)
   const regionCount: Record<string, number> = {}
   clientes.forEach(c => {
-    const r = (c.region || '').trim() || regionDeCiudad(c.ciudad || '') || 'Sin región'
+    const r = (c.region || '').trim() || regionDeCiudad(c.ciudad || '') || L('Sin región', 'No region')
     regionCount[r] = (regionCount[r] || 0) + 1
   })
   const clientesPorRegion = Object.entries(regionCount).map(([region, count]) => ({ region, count })).sort((a, b) => b.count - a.count)
@@ -211,7 +214,7 @@ export default function DashboardPage() {
   }
   const etapaMap: Record<string, { count: number; monto: number }> = {}
   oportunidades.forEach(o => {
-    const e = (o.etapa || '').trim() || 'Sin etapa'
+    const e = (o.etapa || '').trim() || L('Sin etapa', 'No stage')
     if (!etapaMap[e]) etapaMap[e] = { count: 0, monto: 0 }
     etapaMap[e].count++
     etapaMap[e].monto += (o.valor_estimado || o.monto_estimado || 0)
@@ -232,7 +235,7 @@ export default function DashboardPage() {
   // Proyectos por situación — monto aprobado y cobrado
   const proySitMap: Record<string, { aprobado: number; cobrado: number; count: number }> = {}
   proyectos.forEach(p => {
-    const s = (p.situacion || '').trim() || 'Sin situación'
+    const s = (p.situacion || '').trim() || L('Sin situación', 'No status')
     if (!proySitMap[s]) proySitMap[s] = { aprobado: 0, cobrado: 0, count: 0 }
     proySitMap[s].aprobado += p.monto_aprobado || 0
     proySitMap[s].cobrado += p.monto_cobrado || 0
@@ -265,7 +268,7 @@ export default function DashboardPage() {
   }
   const cotSitMap: Record<string, { count: number; valor: number }> = {}
   cotizaciones.forEach(c => {
-    const s = (c.situacion || '').trim() || 'Sin situación'
+    const s = (c.situacion || '').trim() || L('Sin situación', 'No status')
     if (!cotSitMap[s]) cotSitMap[s] = { count: 0, valor: 0 }
     cotSitMap[s].count++
     cotSitMap[s].valor += cotAColombia(c)
@@ -283,7 +286,7 @@ export default function DashboardPage() {
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: 16, marginBottom: 24 }}>
         {cards.map(c => (
           <div key={c.label} className="dash-card" onClick={() => router.push(c.href)}
-            title={`Ir a ${c.label}`} style={{ ...cardStyle, cursor: 'pointer' }}>
+            title={L(`Ir a ${c.label}`, `Go to ${c.label}`)} style={{ ...cardStyle, cursor: 'pointer' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
               <span style={{ fontSize: 28 }}>{c.icon}</span>
               <span style={{ fontSize: 32, fontWeight: 800, color: c.color }}>{c.value}</span>
@@ -295,22 +298,22 @@ export default function DashboardPage() {
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 24 }}>
         {/* Pipeline de Ventas — barras verticales por etapa */}
-        <div className="dash-card" onClick={() => router.push('/oportunidades')} title="Ir a Oportunidades" style={{ ...cardStyle, cursor: 'pointer' }}>
-          <h2 style={{ color: '#000000', fontSize: 16, fontWeight: 600, marginBottom: 16 }}>Pipeline de Ventas</h2>
+        <div className="dash-card" onClick={() => router.push('/oportunidades')} title={L('Ir a Oportunidades', 'Go to Opportunities')} style={{ ...cardStyle, cursor: 'pointer' }}>
+          <h2 style={{ color: '#000000', fontSize: 16, fontWeight: 600, marginBottom: 16 }}>{L('Pipeline de Ventas', 'Sales Pipeline')}</h2>
           {/* Totales arriba */}
           <div style={{ display: 'flex', gap: 24, marginBottom: 14 }}>
             <div>
-              <p style={{ color: '#000000', fontSize: 12 }}>Total Oportunidades</p>
+              <p style={{ color: '#000000', fontSize: 12 }}>{L('Total Oportunidades', 'Total Opportunities')}</p>
               <p style={{ color: '#000000', fontSize: 22, fontWeight: 900 }}>{totalOpoCount}</p>
             </div>
             <div>
-              <p style={{ color: '#000000', fontSize: 12 }}>Total General</p>
+              <p style={{ color: '#000000', fontSize: 12 }}>{L('Total General', 'Grand Total')}</p>
               <p style={{ color: '#000000', fontSize: 19, fontWeight: 900 }}>{usd(totalOpoMonto)}</p>
               <p style={{ color: '#000000', fontSize: 19, fontWeight: 900 }}>{eur(totalOpoMonto)}</p>
             </div>
           </div>
           {totalOpoCount === 0 ? (
-            <p style={{ color: '#000000', fontSize: 13 }}>No hay oportunidades registradas</p>
+            <p style={{ color: '#000000', fontSize: 13 }}>{L('No hay oportunidades registradas', 'No opportunities registered')}</p>
           ) : (
             <div style={{ overflowX: 'auto', paddingTop: 8 }}>
               <svg width={Math.max(opoPorEtapa.length * 110, 240)} height={216} viewBox={`0 0 ${Math.max(opoPorEtapa.length * 110, 240)} 216`} preserveAspectRatio="xMinYMin meet" style={{ display: 'block' }}>
@@ -325,7 +328,7 @@ export default function DashboardPage() {
                       <text x={cx} y={y - 16} textAnchor="middle" fontSize={10} fontWeight={900} fill="#000000">{usd(e.monto)}</text>
                       <text x={cx} y={y - 5} textAnchor="middle" fontSize={10} fontWeight={900} fill="#000000">{eur(e.monto)}</text>
                       <text x={cx} y={topPad + chartH + 17} textAnchor="middle" fontSize={11} fontWeight={800} fill="#000000">{e.etapa}</text>
-                      <text x={cx} y={topPad + chartH + 31} textAnchor="middle" fontSize={10} fontWeight={700} fill="#000000">{e.count} op.</text>
+                      <text x={cx} y={topPad + chartH + 31} textAnchor="middle" fontSize={10} fontWeight={700} fill="#000000">{e.count} {L('op.', 'opp.')}</text>
                     </g>
                   )
                 })}
@@ -335,25 +338,25 @@ export default function DashboardPage() {
         </div>
 
         {/* Cotizaciones resumen */}
-        <div className="dash-card" onClick={() => router.push('/cotizaciones')} title="Ir a Cotizaciones" style={{ ...cardStyle, cursor: 'pointer' }}>
-          <h2 style={{ color: '#000000', fontSize: 16, fontWeight: 600, marginBottom: 16 }}>Cotizaciones</h2>
+        <div className="dash-card" onClick={() => router.push('/cotizaciones')} title={L('Ir a Cotizaciones', 'Go to Quotes')} style={{ ...cardStyle, cursor: 'pointer' }}>
+          <h2 style={{ color: '#000000', fontSize: 16, fontWeight: 600, marginBottom: 16 }}>{L('Cotizaciones', 'Quotes')}</h2>
           <div style={{ display: 'flex', gap: 16, marginBottom: 16 }}>
             <div>
-              <p style={{ color: '#000000', fontSize: 12 }}>Pendientes</p>
+              <p style={{ color: '#000000', fontSize: 12 }}>{L('Pendientes', 'Pending')}</p>
               <p style={{ color: '#000000', fontSize: 28, fontWeight: 800 }}>{cotPendientes.length}</p>
             </div>
             <div>
-              <p style={{ color: '#000000', fontSize: 12 }}>Total</p>
+              <p style={{ color: '#000000', fontSize: 12 }}>{L('Total', 'Total')}</p>
               <p style={{ color: '#000000', fontSize: 28, fontWeight: 800 }}>{cotizaciones.length}</p>
             </div>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-            {['Borrador', 'Enviada', 'Aprobada', 'Rechazada', 'Vencida'].map(s => {
+            {[{ v: 'Borrador', en: 'Draft' }, { v: 'Enviada', en: 'Sent' }, { v: 'Aprobada', en: 'Approved' }, { v: 'Rechazada', en: 'Rejected' }, { v: 'Vencida', en: 'Expired' }].map(({ v: s, en }) => {
               const count = cotizaciones.filter(c => c.situacion === s).length
               const colors: Record<string, string> = { Borrador: '#1e3a8a', Enviada: '#1e3a8a', Aprobada: '#1e3a8a', Rechazada: '#1e3a8a', Vencida: '#1e3a8a' }
               return (
                 <div key={s} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <span style={{ color: '#000000', fontSize: 12 }}>{s}</span>
+                  <span style={{ color: '#000000', fontSize: 12 }}>{L(s, en)}</span>
                   <span style={{ color: colors[s] || '#fff', fontSize: 13, fontWeight: 600 }}>{count}</span>
                 </div>
               )
@@ -362,15 +365,15 @@ export default function DashboardPage() {
         </div>
 
         {/* PQRS por tipo */}
-        <div className="dash-card" onClick={() => router.push('/pqrs')} title="Ir a PQRS" style={{ ...cardStyle, cursor: 'pointer' }}>
-          <h2 style={{ color: '#000000', fontSize: 16, fontWeight: 600, marginBottom: 16 }}>PQRS por Tipo</h2>
+        <div className="dash-card" onClick={() => router.push('/pqrs')} title={L('Ir a PQRS', 'Go to PQRS')} style={{ ...cardStyle, cursor: 'pointer' }}>
+          <h2 style={{ color: '#000000', fontSize: 16, fontWeight: 600, marginBottom: 16 }}>{L('PQRS por Tipo', 'PQRS by Type')}</h2>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
             {pqrsPorTipo.map(t => (
               <div key={t.tipo} style={{ background: '#f1f5f9', borderRadius: 10, padding: 12, textAlign: 'center' }}>
                 <span style={{ fontSize: 24 }}>{tipoIcons[t.tipo]}</span>
                 <p style={{ color: '#000000', fontSize: 18, fontWeight: 800 }}>{t.count}</p>
-                <p style={{ color: '#000000', fontSize: 11 }}>{t.tipo}</p>
-                {t.abiertas > 0 && <p style={{ color: '#000000', fontSize: 10 }}>{t.abiertas} abiertas</p>}
+                <p style={{ color: '#000000', fontSize: 11 }}>{L(t.tipo, ({ 'Petición': 'Request', 'Queja': 'Complaint', 'Reclamo': 'Claim', 'Sugerencia': 'Suggestion' } as Record<string, string>)[t.tipo] || t.tipo)}</p>
+                {t.abiertas > 0 && <p style={{ color: '#000000', fontSize: 10 }}>{t.abiertas} {L('abiertas', 'open')}</p>}
               </div>
             ))}
           </div>
@@ -378,26 +381,26 @@ export default function DashboardPage() {
 
         {/* Actividad reciente */}
         <div className="dash-card" style={cardStyle}>
-          <h2 style={{ color: '#000000', fontSize: 16, fontWeight: 600, marginBottom: 16 }}>Resumen General</h2>
+          <h2 style={{ color: '#000000', fontSize: 16, fontWeight: 600, marginBottom: 16 }}>{L('Resumen General', 'General Summary')}</h2>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', borderBottom: '1px solid #e5e7eb' }}>
-              <span style={{ color: '#000000', fontSize: 13 }}>Empresas Activas</span>
+              <span style={{ color: '#000000', fontSize: 13 }}>{L('Empresas Activas', 'Active Companies')}</span>
               <span style={{ color: '#000000', fontWeight: 600 }}>{clientes.filter(c => c.situacion === 'Activo').length}</span>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', borderBottom: '1px solid #e5e7eb' }}>
-              <span style={{ color: '#000000', fontSize: 13 }}>Contactos Principales</span>
+              <span style={{ color: '#000000', fontSize: 13 }}>{L('Contactos Principales', 'Primary Contacts')}</span>
               <span style={{ color: '#000000', fontWeight: 600 }}>{contactos.filter(c => c.es_principal).length}</span>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', borderBottom: '1px solid #e5e7eb' }}>
-              <span style={{ color: '#000000', fontSize: 13 }}>Productos Activos</span>
+              <span style={{ color: '#000000', fontSize: 13 }}>{L('Productos Activos', 'Active Products')}</span>
               <span style={{ color: '#000000', fontWeight: 600 }}>{productos.filter(p => p.situacion === 'Activo').length}</span>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', borderBottom: '1px solid #e5e7eb' }}>
-              <span style={{ color: '#000000', fontSize: 13 }}>Oportunidades Ganadas</span>
+              <span style={{ color: '#000000', fontSize: 13 }}>{L('Oportunidades Ganadas', 'Won Opportunities')}</span>
               <span style={{ color: '#000000', fontWeight: 600 }}>{oportunidades.filter(o => o.situacion === 'Ganada').length}</span>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0' }}>
-              <span style={{ color: '#000000', fontSize: 13 }}>PQRS Urgentes</span>
+              <span style={{ color: '#000000', fontSize: 13 }}>{L('PQRS Urgentes', 'Urgent PQRS')}</span>
               <span style={{ color: '#000000', fontWeight: 600 }}>{pqrs.filter(p => p.prioridad === 'Urgente' && p.situacion !== 'Cerrada').length}</span>
             </div>
           </div>
@@ -405,33 +408,33 @@ export default function DashboardPage() {
       </div>
 
       {/* Gráfico: Proyectos por Situación (barras horizontales) */}
-      <div className="dash-card" onClick={() => router.push('/proyectos')} title="Ir a Proyectos" style={{ ...cardStyle, marginBottom: 24, cursor: 'pointer' }}>
-        <h2 style={{ color: '#000000', fontSize: 16, fontWeight: 600, marginBottom: 12 }}>🏗️ Proyectos por Situación</h2>
+      <div className="dash-card" onClick={() => router.push('/proyectos')} title={L('Ir a Proyectos', 'Go to Projects')} style={{ ...cardStyle, marginBottom: 24, cursor: 'pointer' }}>
+        <h2 style={{ color: '#000000', fontSize: 16, fontWeight: 600, marginBottom: 12 }}>🏗️ {L('Proyectos por Situación', 'Projects by Status')}</h2>
         {/* Totales + leyenda */}
         <div style={{ display: 'flex', gap: 28, flexWrap: 'wrap', alignItems: 'center', marginBottom: 14 }}>
           <div>
-            <p style={{ color: '#000000', fontSize: 13 }}>Total Aprobado</p>
+            <p style={{ color: '#000000', fontSize: 13 }}>{L('Total Aprobado', 'Total Approved')}</p>
             <p style={{ color: '#000000', fontSize: 19, fontWeight: 900 }}>{usd(totalProyAprobado)}</p>
             <p style={{ color: '#000000', fontSize: 19, fontWeight: 900 }}>{eur(totalProyAprobado)}</p>
           </div>
           <div>
-            <p style={{ color: '#15803d', fontSize: 13 }}>Total Cobrado</p>
+            <p style={{ color: '#15803d', fontSize: 13 }}>{L('Total Cobrado', 'Total Collected')}</p>
             <p style={{ color: '#000000', fontSize: 19, fontWeight: 900 }}>{usd(totalProyCobrado)}</p>
             <p style={{ color: '#000000', fontSize: 19, fontWeight: 900 }}>{eur(totalProyCobrado)}</p>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 18, fontWeight: 800, color: '#000000' }}>
               <svg width="14" height="14"><circle cx="7" cy="7" r="7" fill="#1e3a8a" /></svg>
-              Aprobado
+              {L('Aprobado', 'Approved')}
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 18, fontWeight: 800, color: '#15803d' }}>
               <svg width="14" height="14"><circle cx="7" cy="7" r="7" fill="#15803d" /></svg>
-              Cobrado
+              {L('Cobrado', 'Collected')}
             </div>
           </div>
         </div>
         {proyPorSituacion.length === 0 ? (
-          <p style={{ color: '#000000', fontSize: 13 }}>No hay proyectos registrados</p>
+          <p style={{ color: '#000000', fontSize: 13 }}>{L('No hay proyectos registrados', 'No projects registered')}</p>
         ) : (
           <div style={{ overflowX: 'auto' }}>
             <svg viewBox={`0 0 880 ${proyPorSituacion.length * 72 + 12}`} preserveAspectRatio="xMinYMin meet" style={{ display: 'block', width: '100%', minWidth: 620, maxWidth: 880, height: 'auto' }}>
@@ -443,7 +446,7 @@ export default function DashboardPage() {
                 return (
                   <g key={p.situacion}>
                     <text x={0} y={rowY + 30} fontSize={15} fontWeight={900} fill="#000000">{p.situacion}</text>
-                    <text x={0} y={rowY + 48} fontSize={12} fontWeight={700} fill="#000000">{p.count} proy.</text>
+                    <text x={0} y={rowY + 48} fontSize={12} fontWeight={700} fill="#000000">{p.count} {L('proy.', 'proj.')}</text>
                     <rect x={x0} y={rowY + 6} width={wA} height={22} rx={4} fill="#1e3a8a" />
                     <text x={x0 + wA + 8} y={rowY + 22} fontSize={12} fontWeight={900} fill="#000000">{usd(p.aprobado)} · {eur(p.aprobado)}</text>
                     <rect x={x0} y={rowY + 34} width={wC} height={22} rx={4} fill="#15803d" />
@@ -457,11 +460,11 @@ export default function DashboardPage() {
       </div>
 
       {/* Gráfico: Cotizaciones por Situación (barras horizontales) */}
-      <div className="dash-card" onClick={() => router.push('/cotizaciones')} title="Ir a Cotizaciones" style={{ ...cardStyle, marginBottom: 24, cursor: 'pointer' }}>
-        <h2 style={{ color: '#000000', fontSize: 16, fontWeight: 600, marginBottom: 8 }}>📋 Cotizaciones por Situación</h2>
-        <p style={{ color: '#000000', fontSize: 13, marginBottom: 12 }}>{cotizaciones.length} cotizaciones · Valor total: <b>{cop(totalCotValor)}</b></p>
+      <div className="dash-card" onClick={() => router.push('/cotizaciones')} title={L('Ir a Cotizaciones', 'Go to Quotes')} style={{ ...cardStyle, marginBottom: 24, cursor: 'pointer' }}>
+        <h2 style={{ color: '#000000', fontSize: 16, fontWeight: 600, marginBottom: 8 }}>📋 {L('Cotizaciones por Situación', 'Quotes by Status')}</h2>
+        <p style={{ color: '#000000', fontSize: 13, marginBottom: 12 }}>{cotizaciones.length} {L('cotizaciones · Valor total:', 'quotes · Total value:')} <b>{cop(totalCotValor)}</b></p>
         {cotPorSituacion.length === 0 ? (
-          <p style={{ color: '#000000', fontSize: 13 }}>No hay cotizaciones registradas</p>
+          <p style={{ color: '#000000', fontSize: 13 }}>{L('No hay cotizaciones registradas', 'No quotes registered')}</p>
         ) : (
           <div style={{ overflowX: 'auto' }}>
             <svg viewBox={`0 0 660 ${cotPorSituacion.length * 46 + 10}`} preserveAspectRatio="xMinYMin meet" style={{ display: 'block', width: '100%', maxWidth: 660, height: 'auto' }}>
@@ -474,7 +477,7 @@ export default function DashboardPage() {
                 return (
                   <g key={c.situacion}>
                     <text x={0} y={rowY + 18} fontSize={14} fontWeight={800} fill="#000000">{c.situacion}</text>
-                    <text x={0} y={rowY + 34} fontSize={12} fontWeight={700} fill="#334155">{c.count} cotización{c.count === 1 ? '' : 'es'}</text>
+                    <text x={0} y={rowY + 34} fontSize={12} fontWeight={700} fill="#334155">{c.count} {L(`cotización${c.count === 1 ? '' : 'es'}`, `quote${c.count === 1 ? '' : 's'}`)}</text>
                     <rect x={x0} y={rowY + 6} width={w} height={24} rx={4} fill={color} />
                     <text x={x0 + w + 8} y={rowY + 23} fontSize={12} fontWeight={900} fill="#000000">{cop(c.valor)}</text>
                   </g>
@@ -486,10 +489,10 @@ export default function DashboardPage() {
       </div>
 
       {/* Gráfico: Clientes por Ciudad (barras horizontales) */}
-      <div className="dash-card" onClick={() => router.push('/clientes')} title="Ir a Empresas" style={{ ...cardStyle, marginBottom: 24, cursor: 'pointer' }}>
-        <h2 style={{ color: '#000000', fontSize: 16, fontWeight: 600, marginBottom: 20 }}>Clientes por Ciudad</h2>
+      <div className="dash-card" onClick={() => router.push('/clientes')} title={L('Ir a Empresas', 'Go to Companies')} style={{ ...cardStyle, marginBottom: 24, cursor: 'pointer' }}>
+        <h2 style={{ color: '#000000', fontSize: 16, fontWeight: 600, marginBottom: 20 }}>{L('Clientes por Ciudad', 'Clients by City')}</h2>
         {clientesPorCiudad.length === 0 ? (
-          <p style={{ color: '#000000', fontSize: 13 }}>No hay clientes registrados</p>
+          <p style={{ color: '#000000', fontSize: 13 }}>{L('No hay clientes registrados', 'No clients registered')}</p>
         ) : (
           <div style={{ overflowX: 'auto' }}>
             <svg viewBox={`0 0 600 ${clientesPorCiudad.length * 32 + 10}`} preserveAspectRatio="xMinYMin meet" style={{ display: 'block', width: '100%', maxWidth: 600, height: 'auto' }}>
@@ -512,10 +515,10 @@ export default function DashboardPage() {
       </div>
 
       {/* Gráfico: Clientes por Región (barras horizontales) */}
-      <div className="dash-card" onClick={() => router.push('/clientes')} title="Ir a Empresas" style={{ ...cardStyle, marginBottom: 24, cursor: 'pointer' }}>
-        <h2 style={{ color: '#000000', fontSize: 16, fontWeight: 600, marginBottom: 20 }}>Clientes por Región</h2>
+      <div className="dash-card" onClick={() => router.push('/clientes')} title={L('Ir a Empresas', 'Go to Companies')} style={{ ...cardStyle, marginBottom: 24, cursor: 'pointer' }}>
+        <h2 style={{ color: '#000000', fontSize: 16, fontWeight: 600, marginBottom: 20 }}>{L('Clientes por Región', 'Clients by Region')}</h2>
         {clientesPorRegion.length === 0 ? (
-          <p style={{ color: '#000000', fontSize: 13 }}>No hay clientes registrados</p>
+          <p style={{ color: '#000000', fontSize: 13 }}>{L('No hay clientes registrados', 'No clients registered')}</p>
         ) : (
           <div style={{ overflowX: 'auto' }}>
             <svg viewBox={`0 0 640 ${clientesPorRegion.length * 32 + 10}`} preserveAspectRatio="xMinYMin meet" style={{ display: 'block', width: '100%', maxWidth: 640, height: 'auto' }}>
@@ -539,9 +542,9 @@ export default function DashboardPage() {
 
       {/* Mapa de Colombia: clientes por ubicación */}
       <div className="dash-card" style={{ ...cardStyle, marginBottom: 24 }}>
-        <h2 style={{ color: '#000000', fontSize: 16, fontWeight: 600, marginBottom: 8 }}>🗺️ Clientes en el Mapa de Colombia</h2>
+        <h2 style={{ color: '#000000', fontSize: 16, fontWeight: 600, marginBottom: 8 }}>🗺️ {L('Clientes en el Mapa de Colombia', 'Clients on the Map of Colombia')}</h2>
         {mapaCiudades.length === 0 ? (
-          <p style={{ color: '#000000', fontSize: 13 }}>No hay clientes en ciudades con ubicación en el mapa.</p>
+          <p style={{ color: '#000000', fontSize: 13 }}>{L('No hay clientes en ciudades con ubicación en el mapa.', 'No clients in cities with a location on the map.')}</p>
         ) : (
           <div style={{ display: 'flex', justifyContent: 'center', overflowX: 'auto' }}>
             <svg width={MAPA_W} height={MAPA_H} viewBox={`0 0 ${MAPA_W} ${MAPA_H}`} style={{ maxWidth: '100%' }}>
@@ -560,7 +563,7 @@ export default function DashboardPage() {
               />
               {mapaPuntos.map(c => (
                 <g key={c.ciudad}>
-                  <title>{`${c.ciudad}: ${c.count} cliente(s)`}</title>
+                  <title>{L(`${c.ciudad}: ${c.count} cliente(s)`, `${c.ciudad}: ${c.count} client(s)`)}</title>
                   <circle cx={c.x} cy={c.y} r={4} fill="#dc2626" stroke="#ffffff" strokeWidth={1} />
                   <text x={c.x} y={c.y - 6} textAnchor="middle" fontSize={12} fontWeight={900} fill="#000000">{c.count}</text>
                   <text x={c.x} y={c.y + 14} textAnchor="middle" fontSize={9} fontWeight={700} fill="#000000">{c.ciudad}</text>
@@ -569,7 +572,7 @@ export default function DashboardPage() {
             </svg>
           </div>
         )}
-        <p style={{ color: '#64748b', fontSize: 11, marginTop: 8, textAlign: 'center' }}>El tamaño del punto indica cuántos clientes hay en cada ciudad.</p>
+        <p style={{ color: '#64748b', fontSize: 11, marginTop: 8, textAlign: 'center' }}>{L('El tamaño del punto indica cuántos clientes hay en cada ciudad.', 'The dot size indicates how many clients there are in each city.')}</p>
       </div>
     </div>
   )
