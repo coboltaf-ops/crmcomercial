@@ -1,6 +1,8 @@
 'use client'
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useCurrentUserStore } from '@/features/usuarios-gestion/store/current-user-store'
+import { useIdioma } from '@/shared/i18n/use-t'
+import { MANUAL_EN } from './manual-en'
 
 // ── Tarjeta del manual: frente de color intenso; al pulsar se abre en página completa ──
 type CampoManual = { n: string; d: string }
@@ -490,10 +492,114 @@ function GraficosEjemplo({ color }: { color: string }) {
   )
 }
 
+// ── Lector de voz (Web Speech API): lee el texto en el idioma seleccionado ──
+function limpiarParaVoz(texto: string): string {
+  return texto
+    .replace(/[\u{1F000}-\u{1FAFF}\u{2600}-\u{27BF}\u{2190}-\u{21FF}\u{2B00}-\u{2BFF}️]/gu, ' ')
+    .replace(/[►▸◂📌•]/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+}
+
+function LectorVoz({ texto, idioma }: { texto: string; idioma: 'es' | 'en' }) {
+  const [estado, setEstado] = useState<'idle' | 'playing' | 'paused'>('idle')
+  const [soportado, setSoportado] = useState(true)
+  const utterRef = useRef<SpeechSynthesisUtterance | null>(null)
+
+  const lang = idioma === 'en' ? 'en-US' : 'es-ES'
+
+  const elegirVoz = (): SpeechSynthesisVoice | null => {
+    const voces = window.speechSynthesis.getVoices()
+    if (!voces.length) return null
+    const pref = voces.find(v => v.lang?.toLowerCase().startsWith(idioma === 'en' ? 'en' : 'es'))
+    return pref || null
+  }
+
+  const hablar = () => {
+    if (typeof window === 'undefined' || !('speechSynthesis' in window)) { setSoportado(false); return }
+    window.speechSynthesis.cancel()
+    const u = new SpeechSynthesisUtterance(limpiarParaVoz(texto))
+    u.lang = lang
+    u.rate = 1
+    u.pitch = 1
+    const v = elegirVoz()
+    if (v) u.voice = v
+    u.onend = () => setEstado('idle')
+    u.onerror = () => setEstado('idle')
+    utterRef.current = u
+    window.speechSynthesis.speak(u)
+    setEstado('playing')
+  }
+
+  const pausar = () => { window.speechSynthesis.pause(); setEstado('paused') }
+  const reanudar = () => { window.speechSynthesis.resume(); setEstado('playing') }
+  const detener = () => { window.speechSynthesis.cancel(); setEstado('idle') }
+
+  // Auto-lectura al abrir la tarjeta o al cambiar de idioma; limpia al desmontar
+  useEffect(() => {
+    if (typeof window === 'undefined' || !('speechSynthesis' in window)) { setSoportado(false); return }
+    const t = setTimeout(() => hablar(), 400)
+    return () => { clearTimeout(t); window.speechSynthesis.cancel() }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [texto, idioma])
+
+  if (!soportado) return null
+
+  const btn: React.CSSProperties = {
+    display: 'inline-flex', alignItems: 'center', gap: 6, padding: '8px 14px', borderRadius: 999,
+    border: '1px solid rgba(255,255,255,0.55)', background: 'rgba(255,255,255,0.20)', color: '#ffffff',
+    fontSize: 13, fontWeight: 800, cursor: 'pointer', whiteSpace: 'nowrap',
+  }
+
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginLeft: 'auto' }}>
+      {estado === 'idle' && (
+        <button onClick={hablar} style={btn} title={idioma === 'en' ? 'Listen' : 'Escuchar'}>🔊 {idioma === 'en' ? 'Listen' : 'Escuchar'}</button>
+      )}
+      {estado === 'playing' && (
+        <button onClick={pausar} style={btn} title={idioma === 'en' ? 'Pause' : 'Pausar'}>⏸ {idioma === 'en' ? 'Pause' : 'Pausar'}</button>
+      )}
+      {estado === 'paused' && (
+        <button onClick={reanudar} style={btn} title={idioma === 'en' ? 'Resume' : 'Reanudar'}>▶ {idioma === 'en' ? 'Resume' : 'Reanudar'}</button>
+      )}
+      {estado !== 'idle' && (
+        <button onClick={detener} style={btn} title={idioma === 'en' ? 'Stop' : 'Detener'}>⏹ {idioma === 'en' ? 'Stop' : 'Detener'}</button>
+      )}
+    </div>
+  )
+}
+
 export default function ManualPage() {
   const user = useCurrentUserStore(s => s.user)
   const isAdmin = (user?.rol || '').toLowerCase() === 'admin'
+  const idioma = useIdioma()
+  const L = (es: string, en: string) => (idioma === 'en' ? en : es)
   const [abierta, setAbierta] = useState<string | null>(null)
+
+  // Devuelve el contenido de la tarjeta en el idioma seleccionado (EN si existe, si no ES)
+  const loc = (t: Tarjeta) => {
+    const en = idioma === 'en' ? MANUAL_EN[t.id] : undefined
+    return {
+      titulo: en?.titulo || t.titulo,
+      intro: en?.intro ?? t.intro,
+      puntos: en?.puntos ?? t.puntos,
+      pasos: en?.pasos ?? t.pasos,
+      campos: en?.campos ?? t.campos,
+      notas: en?.notas ?? t.notas,
+    }
+  }
+
+  // Arma el texto corrido que leerá la voz, a partir del contenido localizado
+  const textoVoz = (t: Tarjeta): string => {
+    const l = loc(t)
+    const partes: string[] = [l.titulo]
+    if (l.intro) partes.push(l.intro)
+    if (l.puntos) partes.push(...l.puntos)
+    if (l.pasos) partes.push(...l.pasos.map(p => p.replace(/^\d+\)\s*/, '')))
+    if (l.campos) partes.push(...l.campos.map(c => `${c.n}: ${c.d}`))
+    if (l.notas) partes.push(...l.notas)
+    return partes.join('. ')
+  }
 
   // Orden de las tarjetas = orden del menú lateral
   const ORDEN_MENU = ['introduccion', 'dashboard', 'clientes', 'contactos', 'prospectos', 'oportunidades', 'ofertas', 'control-proyectos', 'cotizaciones', 'pqrs', 'tareas']
@@ -518,8 +624,8 @@ export default function ManualPage() {
       onMouseLeave={e => (e.currentTarget.style.transform = 'none')}
     >
       <span style={{ fontSize: 48, lineHeight: 1 }}>{t.icono}</span>
-      <span style={{ color: '#ffffff', fontSize: 18, fontWeight: 800, letterSpacing: 0.3 }}>{t.titulo}</span>
-      <span style={{ color: 'rgba(255,255,255,0.85)', fontSize: 12, fontWeight: 600 }}>toca para abrir ▸</span>
+      <span style={{ color: '#ffffff', fontSize: 18, fontWeight: 800, letterSpacing: 0.3 }}>{loc(t).titulo}</span>
+      <span style={{ color: 'rgba(255,255,255,0.85)', fontSize: 12, fontWeight: 600 }}>{L('toca para abrir ▸', 'tap to open ▸')}</span>
     </div>
   )
 
@@ -530,40 +636,42 @@ export default function ManualPage() {
   // ── Vista en PÁGINA COMPLETA de una tarjeta ──
   if (tarjeta) {
     const t = tarjeta
+    const l = loc(t)
     return (
       <div style={{ ['--card-bg' as string]: t.color } as React.CSSProperties}>
         <button
           onClick={() => setAbierta(null)}
           style={{ padding: '10px 18px', borderRadius: 10, background: '#000000', color: '#ffffff', border: '1px solid #333', fontWeight: 700, cursor: 'pointer', fontSize: 13, marginBottom: 16 }}
         >
-          ◂ Volver a las tarjetas
+          ◂ {L('Volver a las tarjetas', 'Back to cards')}
         </button>
 
-        {/* Encabezado de color */}
+        {/* Encabezado de color con lector de voz */}
         <div className="manual-card-front" style={{ background: t.color, borderRadius: 18, padding: '26px 24px', display: 'flex', alignItems: 'center', gap: 16, boxShadow: '0 10px 24px rgba(0,0,0,0.18)' }}>
           <span style={{ fontSize: 52, lineHeight: 1 }}>{t.icono}</span>
-          <span style={{ color: '#ffffff', fontSize: 28, fontWeight: 900 }}>{t.titulo}</span>
+          <span style={{ color: '#ffffff', fontSize: 28, fontWeight: 900 }}>{l.titulo}</span>
+          <LectorVoz key={`${t.id}-${idioma}`} texto={textoVoz(t)} idioma={idioma} />
         </div>
 
         {/* Contenido */}
         <div style={{ background: '#ffffff', borderRadius: 18, padding: 28, border: `2px solid ${t.color}`, marginTop: 16, maxWidth: 900 }}>
           {!tieneContenido(t) ? (
-            <p style={{ color: '#94a3b8', fontSize: 15, fontStyle: 'italic' }}>Contenido en preparación…</p>
+            <p style={{ color: '#94a3b8', fontSize: 15, fontStyle: 'italic' }}>{L('Contenido en preparación…', 'Content in preparation…')}</p>
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
-              {t.intro && <p style={{ color: '#0f172a', fontSize: 16, lineHeight: 1.6, fontWeight: 600 }}>{t.intro}</p>}
+              {l.intro && <p style={{ color: '#0f172a', fontSize: 16, lineHeight: 1.6, fontWeight: 600 }}>{l.intro}</p>}
 
-              {t.puntos && t.puntos.length > 0 && (
+              {l.puntos && l.puntos.length > 0 && (
                 <ul style={{ margin: 0, paddingLeft: 22, display: 'flex', flexDirection: 'column', gap: 9 }}>
-                  {t.puntos.map((p, i) => <li key={i} style={{ color: '#0f172a', fontSize: 14.5, lineHeight: 1.55 }}>{p}</li>)}
+                  {l.puntos.map((p, i) => <li key={i} style={{ color: '#0f172a', fontSize: 14.5, lineHeight: 1.55 }}>{p}</li>)}
                 </ul>
               )}
 
-              {t.pasos && t.pasos.length > 0 && (
+              {l.pasos && l.pasos.length > 0 && (
                 <div>
-                  <p style={{ color: t.color, fontSize: 16, fontWeight: 800, marginBottom: 10 }}>Paso a paso</p>
+                  <p style={{ color: t.color, fontSize: 16, fontWeight: 800, marginBottom: 10 }}>{L('Paso a paso', 'Step by step')}</p>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-                    {t.pasos.map((paso, i) => (
+                    {l.pasos.map((paso, i) => (
                       <div key={i} style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
                         <span style={{ flexShrink: 0, width: 28, height: 28, borderRadius: 999, background: t.color, color: '#ffffff', fontSize: 14, fontWeight: 800, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{i + 1}</span>
                         <p style={{ color: '#0f172a', fontSize: 14.5, lineHeight: 1.55, paddingTop: 3 }}>{paso.replace(/^\d+\)\s*/, '')}</p>
@@ -573,11 +681,11 @@ export default function ManualPage() {
                 </div>
               )}
 
-              {t.campos && t.campos.length > 0 && (
+              {l.campos && l.campos.length > 0 && (
                 <div>
-                  <p style={{ color: t.color, fontSize: 16, fontWeight: 800, marginBottom: 8 }}>Campos del formulario</p>
+                  <p style={{ color: t.color, fontSize: 16, fontWeight: 800, marginBottom: 8 }}>{L('Campos del formulario', 'Form fields')}</p>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-                    {t.campos.map((c, i) => (
+                    {l.campos.map((c, i) => (
                       <p key={i} style={{ color: '#0f172a', fontSize: 14, lineHeight: 1.5 }}>
                         <b>{c.n}:</b> {c.d}
                       </p>
@@ -586,7 +694,7 @@ export default function ManualPage() {
                 </div>
               )}
 
-              {t.notas && t.notas.map((nota, i) => (
+              {l.notas && l.notas.map((nota, i) => (
                 <div key={i} style={{ background: '#eff6ff', border: `1.5px solid ${t.color}`, borderRadius: 10, padding: '12px 14px' }}>
                   <p style={{ color: '#0f172a', fontSize: 14, lineHeight: 1.55 }}>📌 {nota}</p>
                 </div>
@@ -601,7 +709,7 @@ export default function ManualPage() {
           onClick={() => setAbierta(null)}
           style={{ padding: '10px 18px', borderRadius: 10, background: t.color, color: '#ffffff', border: 'none', fontWeight: 700, cursor: 'pointer', fontSize: 13, marginTop: 18 }}
         >
-          ◂ Cerrar y elegir otra tarjeta
+          ◂ {L('Cerrar y elegir otra tarjeta', 'Close and choose another card')}
         </button>
       </div>
     )
@@ -615,14 +723,14 @@ export default function ManualPage() {
         background: 'linear-gradient(135deg, #1e3a8a 0%, #0f766e 100%)', borderRadius: 18, padding: '28px 24px',
         marginBottom: 8, boxShadow: '0 10px 24px rgba(0,0,0,0.15)',
       }}>
-        <h1 style={{ color: '#ffffff', fontSize: 30, fontWeight: 900, letterSpacing: 0.3 }}>Manual de Uso — GESTIÓN COMERCIAL NORTON</h1>
+        <h1 style={{ color: '#ffffff', fontSize: 30, fontWeight: 900, letterSpacing: 0.3 }}>{L('Manual de Uso — GESTIÓN COMERCIAL NORTON', 'User Manual — GESTIÓN COMERCIAL NORTON')}</h1>
         <p style={{ color: 'rgba(255,255,255,0.85)', fontSize: 14, marginTop: 6 }}>
-          Guía por módulos, paso a paso. Toca una tarjeta para abrirla en página completa.
+          {L('Guía por módulos, paso a paso. Toca una tarjeta para abrirla; se leerá en voz alta en el idioma seleccionado 🔊.', 'Module-by-module guide, step by step. Tap a card to open it; it will be read aloud in the selected language 🔊.')}
         </p>
       </div>
 
       {/* Módulos operativos */}
-      <h2 style={{ color: '#013978', fontSize: 18, fontWeight: 800, marginTop: 24 }}>Módulos Operativos</h2>
+      <h2 style={{ color: '#013978', fontSize: 18, fontWeight: 800, marginTop: 24 }}>{L('Módulos Operativos', 'Operational Modules')}</h2>
       <div style={grid}>
         {operativasOrd.map(t => <Tile key={t.id} t={t} />)}
       </div>
@@ -631,7 +739,7 @@ export default function ManualPage() {
       {isAdmin && (
         <>
           <h2 style={{ color: '#013978', fontSize: 18, fontWeight: 800, marginTop: 32 }}>
-            Administración / Configuración <span style={{ fontSize: 12, fontWeight: 700, color: '#9f1239', background: '#fee2e2', padding: '3px 10px', borderRadius: 12, marginLeft: 8 }}>Solo Admin</span>
+            {L('Administración / Configuración', 'Administration / Settings')} <span style={{ fontSize: 12, fontWeight: 700, color: '#9f1239', background: '#fee2e2', padding: '3px 10px', borderRadius: 12, marginLeft: 8 }}>{L('Solo Admin', 'Admin Only')}</span>
           </h2>
           <div style={grid}>
             {TARJETAS_ADMIN.map(t => <Tile key={t.id} t={t} />)}
