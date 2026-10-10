@@ -7,7 +7,7 @@ import { usePermisos } from '@/shared/hooks/use-permisos'
 import { nextConsecutivo } from '@/shared/lib/consecutivo'
 import { todayColombia } from '@/shared/lib/format-date'
 import { useIdioma } from '@/shared/i18n/use-t'
-import { PAISES_ACTIVOS, esGlobal, etiquetaPais } from '@/shared/lib/paises'
+import { PAISES_ACTIVOS, esGlobal, etiquetaPais, localeMoneda } from '@/shared/lib/paises'
 import SeguimientoPanel from '@/shared/components/seguimiento-panel'
 import { Seguimiento } from '@/shared/types/seguimiento'
 
@@ -80,7 +80,7 @@ export default function MaquinariasEquiposPage() {
     background: activo ? 'rgba(34,197,94,0.15)' : 'rgba(156,163,175,0.2)',
     color: activo ? '#15803d' : '#6b7280', border: `1px solid ${activo ? '#22c55e' : '#9ca3af'}`,
   })
-  const money = (n: number) => (Number(n) || 0).toLocaleString('es', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+  const money = (n: number) => (Number(n) || 0).toLocaleString(localeMoneda(paisUsuario), { minimumFractionDigits: 2, maximumFractionDigits: 2 })
 
   // ═══════════ FORMULARIO CREAR / EDITAR ═══════════
   if (isForm && selected) {

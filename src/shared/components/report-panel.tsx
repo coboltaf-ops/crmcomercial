@@ -1,6 +1,7 @@
 'use client'
 import { useState } from 'react'
 import { exportToPDF, exportToExcel, printReport } from '@/shared/lib/export-report'
+import { getMonedaLocale } from '@/shared/lib/format-number'
 
 type Column = { header: string; key: string; width?: number }
 type FilterDef = { label: string; key: string; options: string[] }
@@ -65,7 +66,7 @@ export default function ReportPanel({ title, columns, rows, filters = [], summab
               {summableKeys.length > 0 && (
                 <tr style={{ background: 'rgba(255,255,255,0.1)', fontWeight: 700 }}>
                   {visibleCols.map(c => <td key={c.key} style={{ padding: '10px 12px', fontSize: 12, color: '#4ade80', borderTop: '2px solid rgba(34,197,94,0.3)' }}>
-                    {summableKeys.includes(c.key) ? filtered.reduce((s, r) => s + (typeof r[c.key] === 'number' ? r[c.key] as number : 0), 0).toLocaleString('en-US', { maximumFractionDigits: 0 }) : c === visibleCols[0] ? 'TOTALES' : ''}
+                    {summableKeys.includes(c.key) ? filtered.reduce((s, r) => s + (typeof r[c.key] === 'number' ? r[c.key] as number : 0), 0).toLocaleString(getMonedaLocale(), { maximumFractionDigits: 0 }) : c === visibleCols[0] ? 'TOTALES' : ''}
                   </td>)}
                 </tr>
               )}

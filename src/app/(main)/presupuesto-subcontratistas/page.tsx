@@ -11,7 +11,7 @@ import { usePermisos } from '@/shared/hooks/use-permisos'
 import { nextConsecutivo } from '@/shared/lib/consecutivo'
 import { todayColombia } from '@/shared/lib/format-date'
 import { useIdioma } from '@/shared/i18n/use-t'
-import { PAISES_ACTIVOS, esGlobal, etiquetaPais } from '@/shared/lib/paises'
+import { PAISES_ACTIVOS, esGlobal, etiquetaPais, localeMoneda } from '@/shared/lib/paises'
 
 export default function PresupuestoSubcontratistasPage() {
   const idioma = useIdioma()
@@ -71,7 +71,7 @@ export default function PresupuestoSubcontratistasPage() {
     }
   }
 
-  const money = (n: number, moneda: string) => `${moneda || ''} ${Number(n || 0).toLocaleString('en-US')}`.trim()
+  const money = (n: number, moneda: string) => `${moneda || ''} ${Number(n || 0).toLocaleString(localeMoneda(paisUsuario))}`.trim()
 
   // ── Estilos base ──
   const th: React.CSSProperties = { padding: '12px 14px', background: '#1e3a8a', color: '#fff', fontSize: 12, textAlign: 'left', whiteSpace: 'nowrap' }
