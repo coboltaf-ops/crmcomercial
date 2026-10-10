@@ -6,7 +6,7 @@ import { useProductosStore, Producto } from '@/features/productos/store/producto
 import { useReferenceStore } from '@/features/referencias/store/reference-store'
 import { useCurrentUserStore } from '@/features/usuarios-gestion/store/current-user-store'
 import { usePermisos } from '@/shared/hooks/use-permisos'
-import { fmtMoney, monedaSimbolo } from '@/shared/lib/format-number'
+import { fmtMoney, monedaSimbolo, setMonedaLocale } from '@/shared/lib/format-number'
 import { fDate, todayColombia } from '@/shared/lib/format-date'
 import { nextConsecutivo } from '@/shared/lib/consecutivo'
 import ReportPanel from '@/shared/components/report-panel'
@@ -38,6 +38,7 @@ export default function ProductosPage() {
   const paisUsuario = currentUser?.pais || ''
   const usuarioGlobal = esGlobal(paisUsuario)
   const paisNuevo = usuarioGlobal ? (PAISES_ACTIVOS[0]?.codigo || 'Colombia') : paisUsuario
+  setMonedaLocale(paisUsuario) // formato de número sigue al país del usuario (igual que el símbolo)
 
   useEffect(() => { loadProductos() }, [loadProductos])
 

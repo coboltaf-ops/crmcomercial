@@ -13,7 +13,7 @@ import { useReferenceStore } from '@/features/referencias/store/reference-store'
 import { useCurrentUserStore } from '@/features/usuarios-gestion/store/current-user-store'
 import { usePermisos } from '@/shared/hooks/use-permisos'
 import { fDate, todayColombia } from '@/shared/lib/format-date'
-import { fmtMoney } from '@/shared/lib/format-number'
+import { fmtMoney, setMonedaLocale, getMonedaLocale } from '@/shared/lib/format-number'
 import MoneyInput from '@/shared/components/money-input'
 import { nextConsecutivo } from '@/shared/lib/consecutivo'
 import SeguimientoPanel from '@/shared/components/seguimiento-panel'
@@ -43,6 +43,7 @@ export default function ControlProyectosPage() {
   const currentUser = useCurrentUserStore(s => s.user)
   const paisUsuario = currentUser?.pais || ''
   const usuarioGlobal = esGlobal(paisUsuario)
+  setMonedaLocale(paisUsuario) // formato de número sigue al país del usuario (igual que el símbolo)
   const permisos = usePermisos('control-proyectos')
 
   const items = useControlProyectosStore(s => s.items)
@@ -146,7 +147,7 @@ export default function ControlProyectosPage() {
       const nuevas: Partida[] = partidas.map(p => ({ id: crypto.randomUUID(), ...p }))
       const cods = nuevas.map(x => x.codigo)
       const totalHojas = nuevas.filter(p => esHoja(p.codigo, cods)).reduce((s, p) => s + (p.total_presupuesto || 0), 0)
-      if (!confirm(`Se leyeron ${nuevas.length} partidas de la hoja "${hoja}".\nPresupuesto (suma de hojas): ${totalHojas.toLocaleString('es-CO')}\n\n¿Reemplazar las partidas actuales?`)) return
+      if (!confirm(`Se leyeron ${nuevas.length} partidas de la hoja "${hoja}".\nPresupuesto (suma de hojas): ${totalHojas.toLocaleString(getMonedaLocale())}\n\n¿Reemplazar las partidas actuales?`)) return
       setSelected({ ...selected, partidas: nuevas, presupuesto_base: totalHojas || selected.presupuesto_base })
     } catch (err) {
       alert('Error leyendo el Excel: ' + (err as Error).message)
@@ -434,7 +435,7 @@ export default function ControlProyectosPage() {
                         <td style={tdW}>{verLectura ? pt.codigo : <input value={pt.codigo} onChange={e => updPartida(pt.id, { codigo: e.target.value })} style={{ ...inW, width: 70, fontWeight: 700 }} />}</td>
                         <td style={tdW}><div style={{ paddingLeft: (nivel - 1) * 14 }}>{verLectura ? <span style={{ fontWeight: nivel === 1 ? 700 : 400 }}>{pt.item}</span> : <input value={pt.item} onChange={e => updPartida(pt.id, { item: e.target.value })} style={{ ...inW, minWidth: 200, fontWeight: nivel === 1 ? 700 : 400 }} />}</div></td>
                         <td style={tdW}>{verLectura ? pt.unidad : <input value={pt.unidad} onChange={e => updPartida(pt.id, { unidad: e.target.value })} style={{ ...inW, width: 60 }} />}</td>
-                        <td style={{ ...tdW, textAlign: 'right' }}>{verLectura ? (pt.cantidad || 0).toLocaleString('es-CO') : <input type="number" value={pt.cantidad || 0} onChange={e => updPartida(pt.id, { cantidad: parseFloat(e.target.value) || 0 })} style={{ ...inW, width: 80, textAlign: 'right' }} />}</td>
+                        <td style={{ ...tdW, textAlign: 'right' }}>{verLectura ? (pt.cantidad || 0).toLocaleString(getMonedaLocale()) : <input type="number" value={pt.cantidad || 0} onChange={e => updPartida(pt.id, { cantidad: parseFloat(e.target.value) || 0 })} style={{ ...inW, width: 80, textAlign: 'right' }} />}</td>
                         <td style={{ ...tdW, textAlign: 'right' }}>{verLectura ? fmtMoney(pt.valor_unitario || 0) : <input type="number" value={pt.valor_unitario || 0} onChange={e => updPartida(pt.id, { valor_unitario: parseFloat(e.target.value) || 0 })} style={{ ...inW, width: 110, textAlign: 'right' }} />}</td>
                         <td style={{ ...tdW, textAlign: 'right' }}>{verLectura ? fmtMoney(pt.total_presupuesto || 0) : <input type="number" value={pt.total_presupuesto || 0} onChange={e => updPartida(pt.id, { total_presupuesto: parseFloat(e.target.value) || 0 })} style={{ ...inW, width: 130, textAlign: 'right' }} />}</td>
                         <td style={{ ...tdW, textAlign: 'right', color: '#9a3412', fontWeight: 700 }}>{hoja ? peso.toFixed(1) + '%' : '—'}</td>

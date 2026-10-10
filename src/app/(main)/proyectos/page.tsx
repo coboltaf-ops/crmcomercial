@@ -9,7 +9,7 @@ import { useReferenceStore } from '@/features/referencias/store/reference-store'
 import { useCurrentUserStore } from '@/features/usuarios-gestion/store/current-user-store'
 import { usePermisos } from '@/shared/hooks/use-permisos'
 import { fDate, todayColombia } from '@/shared/lib/format-date'
-import { fmtMoney } from '@/shared/lib/format-number'
+import { fmtMoney, setMonedaLocale } from '@/shared/lib/format-number'
 import MoneyInput from '@/shared/components/money-input'
 import { nextConsecutivo } from '@/shared/lib/consecutivo'
 import SeguimientoPanel from '@/shared/components/seguimiento-panel'
@@ -37,6 +37,7 @@ export default function ProyectosPage() {
   const currentUser = useCurrentUserStore(s => s.user)
   const paisUsuario = currentUser?.pais || ''
   const usuarioGlobal = esGlobal(paisUsuario)
+  setMonedaLocale(paisUsuario) // formato de número sigue al país del usuario (igual que el símbolo)
   const permisos = usePermisos('proyectos')
   const { proyectos, addProyecto, updateProyecto, deleteProyecto } = useProyectosStore()
   const loadProyectos = useProyectosStore(s => s.loadProyectos)

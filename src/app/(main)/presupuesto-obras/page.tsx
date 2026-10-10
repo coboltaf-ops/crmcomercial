@@ -15,16 +15,19 @@ import { useCotizacionesSubStore } from '@/features/cotizaciones-subcontratistas
 import { useMaquinariasStore } from '@/features/maquinarias-equipos/store/maquinarias-equipos-store'
 import { CreadoPorCell } from '@/shared/components/creado-por-cell'
 import { useCurrentUserStore } from '@/features/usuarios-gestion/store/current-user-store'
-import { PAISES_ACTIVOS, esGlobal, etiquetaPais, simboloMoneda, monedaDePais } from '@/shared/lib/paises'
+import { PAISES_ACTIVOS, esGlobal, etiquetaPais, simboloMoneda, monedaDePais, localeMoneda } from '@/shared/lib/paises'
 import SeguimientoPanel from '@/shared/components/seguimiento-panel'
 import { Seguimiento } from '@/shared/types/seguimiento'
 
 const inputSt: React.CSSProperties = { background: '#ffffff', border: '1px solid #e5e7eb', color: '#0b1d4a' }
+// OJO: fmtMonto es el value de inputs editables acoplados a parseMonto (solo dígitos+punto).
+// DEBE quedarse en 'en-US'; cambiarlo a locale país corrompería el dato (NaN→0).
 const fmtMonto = (n: number) => (n || n === 0) ? Number(n).toLocaleString('en-US') : ''
 const parseMonto = (s: string) => Number(String(s).replace(/[^\d.]/g, '')) || 0
-// Símbolo de moneda ACTIVO (se fija por país de la oferta en cada render). Cada país su moneda.
+// Símbolo + locale de moneda ACTIVOS (se fijan por país de la oferta en cada render). Cada país su moneda y formato.
 let SIM_MONEDA = 'S/'
-const money = (n: number) => SIM_MONEDA + ' ' + Math.round(n || 0).toLocaleString('en-US')
+let LOC_MONEDA = 'es-CO'
+const money = (n: number) => SIM_MONEDA + ' ' + Math.round(n || 0).toLocaleString(LOC_MONEDA)
 const fDate = (iso: string) => { if (!iso) return '—'; const [y, m, d] = iso.split('-'); return d && m && y ? `${d}/${m}/${y}` : iso }
 const hoy = () => new Date().toISOString().slice(0, 10)
 
@@ -97,7 +100,7 @@ export default function OfertasClientesPage() {
   const draftIdRef = useRef('')  // id del borrador que se está auto-guardando
 
   // Símbolo de moneda según el país de la oferta en foco (Ver → viewItem, Editar/Nuevo → form, si no → país del usuario).
-  SIM_MONEDA = simboloMoneda(viewItem?.pais || form?.pais || paisUsuario)
+  SIM_MONEDA = simboloMoneda(viewItem?.pais || form?.pais || paisUsuario); LOC_MONEDA = localeMoneda(viewItem?.pais || form?.pais || paisUsuario)
 
   // Carga las ofertas del servidor al montar (sin esto la lista sale vacía).
   useEffect(() => { loadOfertas() }, [loadOfertas])
@@ -135,7 +138,7 @@ export default function OfertasClientesPage() {
       const tipo = concepto === 'MOD' ? 'Directa' : 'Indirecta'
       return cargos.filter(c => c.situacion === 'Activo' && c.tipo_mo === tipo).map(c => {
         const cd = costoDiaCargo(c.salario_dia, c.pct_prestaciones)
-        return { id: c.id, label: `${c.consecutivo} · ${c.descripcion} · Día S/${cd.toLocaleString('en-US')}${cd === 0 ? ' ⚠ sin salario' : ''}`, codigo: c.consecutivo, descripcion: c.descripcion, unidad: 'día', costo: cd }
+        return { id: c.id, label: `${c.consecutivo} · ${c.descripcion} · Día ${SIM_MONEDA}${cd.toLocaleString(LOC_MONEDA)}${cd === 0 ? ' ⚠ sin salario' : ''}`, codigo: c.consecutivo, descripcion: c.descripcion, unidad: 'día', costo: cd }
       })
     }
     if (origen === 'producto') return productos.map(p => ({ id: p.id, label: `${p.codigo} — ${p.descripcion}`, codigo: p.codigo, descripcion: p.descripcion, unidad: p.unidad_medida || '', costo: p.costo_promedio || p.ult_costo || 0 }))
@@ -146,7 +149,7 @@ export default function OfertasClientesPage() {
     }
     if (origen === 'maquinaria') {
       // Maquinaria y Vehículos → catálogo de Maquinarias. Costo = Valor Día (editable a hora/semana/mes)
-      return maquinarias.filter(m => m.situacion === 'Activo').map(m => ({ id: m.id, label: `${m.consecutivo} · ${m.descripcion} · Día S/${(m.vr_dia || 0).toLocaleString('en-US')}`, codigo: m.consecutivo, descripcion: m.descripcion, unidad: 'día', costo: m.vr_dia || 0 }))
+      return maquinarias.filter(m => m.situacion === 'Activo').map(m => ({ id: m.id, label: `${m.consecutivo} · ${m.descripcion} · Día ${SIM_MONEDA}${(m.vr_dia || 0).toLocaleString(LOC_MONEDA)}`, codigo: m.consecutivo, descripcion: m.descripcion, unidad: 'día', costo: m.vr_dia || 0 }))
     }
     return []
   }

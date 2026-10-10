@@ -5,14 +5,15 @@ import { PRESUPUESTO_CSS } from '@/shared/lib/presupuesto-css'
 import { useSearchParams } from 'next/navigation'
 import { useOfertasStore } from '@/features/ofertas/store/ofertas-store'
 import { type RenglonOferta, esDetalle, costoTotal, montoVenta } from '@/features/ofertas/types'
-import { simboloMoneda } from '@/shared/lib/paises'
+import { simboloMoneda, localeMoneda } from '@/shared/lib/paises'
 
 // ---------- helpers ----------
 let SIM_R = 'S/'   // símbolo de moneda según el país de la oferta (se fija al cargar)
-const money = (n: number) => SIM_R + ' ' + Math.round(n || 0).toLocaleString('en-US')
-const money0 = (n: number) => Math.round(n || 0).toLocaleString('en-US')
-const money2 = (n: number) => SIM_R + ' ' + (n || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
-const qty = (n: number) => (n || 0).toLocaleString('en-US', { maximumFractionDigits: 2 })
+let LOC_R = 'es-CO' // locale de formato numérico según el país de la oferta (se fija al cargar)
+const money = (n: number) => SIM_R + ' ' + Math.round(n || 0).toLocaleString(LOC_R)
+const money0 = (n: number) => Math.round(n || 0).toLocaleString(LOC_R)
+const money2 = (n: number) => SIM_R + ' ' + (n || 0).toLocaleString(LOC_R, { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+const qty = (n: number) => (n || 0).toLocaleString(LOC_R, { maximumFractionDigits: 2 })
 const fecha = (iso: string) => { if (!iso) return '—'; const [y, m, d] = iso.split('-'); return `${d}/${m}/${y}` }
 const fechaHoy = () => { const d = new Date(); const p = (n: number) => String(n).padStart(2, '0'); return `${p(d.getDate())}/${p(d.getMonth() + 1)}/${d.getFullYear()}` }
 const pct = (costo: number, venta: number) => costo > 0 ? (Math.round(((venta - costo) / costo) * 1000) / 10) : 0
@@ -92,7 +93,7 @@ function ReporteResumen() {
   useEffect(() => { useOfertasStore.getState().loadOfertas() }, [])
 
   const oferta = useMemo(() => ofertas.find(o => o.id === ofertaId) || null, [ofertas, ofertaId])
-  SIM_R = simboloMoneda(oferta?.pais)
+  SIM_R = simboloMoneda(oferta?.pais); LOC_R = localeMoneda(oferta?.pais)
   useEffect(() => {
     if (oferta) document.title = `${oferta.consecutivo}${oferta.proyecto ? ' - ' + oferta.proyecto : ''}`
   }, [oferta])
@@ -238,7 +239,7 @@ function ReporteResumen() {
               { l: 'COSTO TOTAL', v: money(totCosto), bg: '#1f2d52' },
               { l: 'VENTA TOTAL', v: money(totVenta), bg: '#0b1d4a' },
               { l: 'UTILIDAD', v: money(totVenta - totCosto), bg: '#15803d' },
-              { l: 'MARGEN S/COSTO', v: pct(totCosto, totVenta) + '%', bg: '#b45309' },
+              { l: 'MARGEN SOBRE COSTO', v: pct(totCosto, totVenta) + '%', bg: '#b45309' },
             ].map(k => (
               <div key={k.l} style={{ flex: 1, background: k.bg, color: '#fff', borderRadius: 8, padding: '12px 14px' }}>
                 <div style={{ fontSize: 9.5, letterSpacing: 0.5, opacity: 0.85, fontWeight: 700 }}>{k.l}</div>

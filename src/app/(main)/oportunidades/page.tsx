@@ -12,7 +12,7 @@ import { useReferenceStore } from '@/features/referencias/store/reference-store'
 import MoneyInput from '@/shared/components/money-input'
 import { useCurrentUserStore } from '@/features/usuarios-gestion/store/current-user-store'
 import { usePermisos } from '@/shared/hooks/use-permisos'
-import { fmtMoney, monedaSimbolo } from '@/shared/lib/format-number'
+import { fmtMoney, monedaSimbolo, setMonedaLocale } from '@/shared/lib/format-number'
 import { fDate, todayColombia } from '@/shared/lib/format-date'
 import { nextConsecutivo } from '@/shared/lib/consecutivo'
 import ReportPanel from '@/shared/components/report-panel'
@@ -50,6 +50,7 @@ export default function OportunidadesPage() {
   const currentUser = useCurrentUserStore(s => s.user)
   const paisUsuario = currentUser?.pais || ''
   const usuarioGlobal = esGlobal(paisUsuario)
+  setMonedaLocale(paisUsuario) // formato de número sigue al país del usuario (igual que el símbolo)
   const { oportunidades, addOportunidad, updateOportunidad, deleteOportunidad } = useOportunidadesStore()
   const loadOportunidades = useOportunidadesStore(s => s.loadOportunidades)
   const clientes = useClientesStore(s => s.clientes).filter(c => {

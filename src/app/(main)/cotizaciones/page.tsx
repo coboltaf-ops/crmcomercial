@@ -12,7 +12,7 @@ import { useReferenceStore } from '@/features/referencias/store/reference-store'
 import { useCurrentUserStore } from '@/features/usuarios-gestion/store/current-user-store'
 import { useEmpresaStore } from '@/features/empresa/store/empresa-store'
 import { usePermisos } from '@/shared/hooks/use-permisos'
-import { monedaSimbolo } from '@/shared/lib/format-number'
+import { monedaSimbolo, setMonedaLocale, getMonedaLocale } from '@/shared/lib/format-number'
 import { fDate, todayColombia } from '@/shared/lib/format-date'
 import { nextConsecutivo } from '@/shared/lib/consecutivo'
 import ReportPanel from '@/shared/components/report-panel'
@@ -24,9 +24,9 @@ import { Seguimiento } from '@/shared/types/seguimiento'
 import { buildWhatsAppLink, isValidPhone } from '@/shared/lib/whatsapp'
 import { PAISES_ACTIVOS, esGlobal, etiquetaPais, monedaDePais } from '@/shared/lib/paises'
 
-// En Cotizaciones los montos se muestran CON 2 decimales (no afecta el resto del sistema).
-// Los valores guardados (enteros) se ven como 1,000.00 — no se altera el dato.
-const fmtMoney = (n: number) => (Number(n) || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+// En Cotizaciones los montos (DISPLAY) se muestran CON 2 decimales y el formato de miles/decimales
+// sigue al país activo (ver setMonedaLocale). No altera el dato guardado.
+const fmtMoney = (n: number) => (Number(n) || 0).toLocaleString(getMonedaLocale(), { minimumFractionDigits: 2, maximumFractionDigits: 2 })
 
 // Campo numérico de Cotizaciones: muestra 2 decimales cuando NO está enfocado
 // (ej. 1,000.00) y permite editar con decimales libremente al entrar. No altera el dato.
@@ -39,7 +39,8 @@ function NumInput({ value, onChange, placeholder, align, style }: {
 }) {
   const [editing, setEditing] = useState(false)
   const [text, setText] = useState('')
-  const fmt = value ? fmtMoney(value) : ''
+  // value de un <input> editable acoplado al parser replace(/[^0-9.]/g,'') → SIEMPRE en-US (dígitos+punto); localizarlo corrompería el dato.
+  const fmt = value ? (Number(value) || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : ''
   return (
     <input
       type="text"
@@ -98,6 +99,7 @@ export default function CotizacionesPage() {
   const currentUser = useCurrentUserStore(s => s.user)
   const paisUsuario = currentUser?.pais || ''
   const usuarioGlobal = esGlobal(paisUsuario)
+  setMonedaLocale(paisUsuario) // formato de número sigue al país del usuario (igual que el símbolo)
   const { cotizaciones, addCotizacion, updateCotizacion, deleteCotizacion } = useCotizacionesStore()
   const loadCotizaciones = useCotizacionesStore(s => s.loadCotizaciones)
   const allClientes = useClientesStore(s => s.clientes)

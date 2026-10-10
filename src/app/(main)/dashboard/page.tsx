@@ -9,7 +9,8 @@ import { useCotizacionesStore } from '@/features/cotizaciones/store/cotizaciones
 import { usePQRSStore } from '@/features/pqrs/store/pqrs-store'
 import { useProyectosStore } from '@/features/proyectos/store/proyectos-store'
 import { useFactoresStore } from '@/features/factores-monedas/store/factores-store'
-import { fmtMoney } from '@/shared/lib/format-number'
+import { fmtMoney, setMonedaLocale } from '@/shared/lib/format-number'
+import { PAISES_ACTIVOS } from '@/shared/lib/paises'
 import { DEPARTAMENTOS } from '@/features/dashboard/colombia-departamentos'
 import { useIdioma } from '@/shared/i18n/use-t'
 
@@ -126,6 +127,9 @@ export default function DashboardPage() {
     loadOportunidades(); loadCotizaciones(); loadPQRS(); loadProyectos(); loadFactores()
   }, [loadClientes, loadContactos, loadProductos, loadOportunidades, loadCotizaciones, loadPQRS, loadProyectos, loadFactores])
 
+  // Dashboard HQ multi-moneda (US$/COP/Euro): fija el formato al país por defecto del CRM
+  // (evita heredar el locale de la página anterior, que es module-level).
+  setMonedaLocale(PAISES_ACTIVOS[0]?.codigo)
   // Factor US$ → Euro (del registro activo más reciente de Factores). Euro = US$ / factor.
   const factorUsdEur = factores.filter(f => f.situacion === 'Activo').slice(-1)[0]?.factor_usd_euro || 0
   const factorPesosUsd = factores.filter(f => f.situacion === 'Activo').slice(-1)[0]?.factor_pesos_usd || 0

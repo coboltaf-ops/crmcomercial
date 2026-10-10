@@ -8,7 +8,7 @@ import { useContactosStore } from '@/features/contactos/store/contactos-store'
 import { useCotizacionesStore } from '@/features/cotizaciones/store/cotizaciones-store'
 import { useOportunidadesStore } from '@/features/oportunidades/store/oportunidades-store'
 import { usePQRSStore } from '@/features/pqrs/store/pqrs-store'
-import { fmtMoney } from '@/shared/lib/format-number'
+import { fmtMoney, setMonedaLocale } from '@/shared/lib/format-number'
 import { useReferenceStore } from '@/features/referencias/store/reference-store'
 import { useCurrentUserStore } from '@/features/usuarios-gestion/store/current-user-store'
 import { usePermisos } from '@/shared/hooks/use-permisos'
@@ -64,6 +64,7 @@ export default function ClientesPage() {
   const paisUsuario = currentUser?.pais || ''
   const usuarioGlobal = esGlobal(paisUsuario)
   const paisNuevo = usuarioGlobal ? (PAISES_ACTIVOS[0]?.codigo || 'Colombia') : paisUsuario
+  setMonedaLocale(paisUsuario) // formato de número sigue al país del usuario (igual que el símbolo)
   const router = useRouter()
   const { clientes, addCliente, updateCliente, deleteCliente } = useClientesStore()
   const loadClientes = useClientesStore(s => s.loadClientes)

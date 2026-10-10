@@ -8,7 +8,7 @@ import { useReferenceStore } from '@/features/referencias/store/reference-store'
 import { usePermisos } from '@/shared/hooks/use-permisos'
 import SeguimientoPanel from '@/shared/components/seguimiento-panel'
 import { Seguimiento } from '@/shared/types/seguimiento'
-import { fmtMoney, monedaSimbolo } from '@/shared/lib/format-number'
+import { fmtMoney, monedaSimbolo, setMonedaLocale } from '@/shared/lib/format-number'
 import { fDate, todayColombia } from '@/shared/lib/format-date'
 import { nextConsecutivo } from '@/shared/lib/consecutivo'
 import { esGlobal, PAISES_ACTIVOS, etiquetaPais } from '@/shared/lib/paises'
@@ -41,6 +41,7 @@ export default function SeguimientoOfertaPage() {
   const paisUsuario = currentUser?.pais || ''
   const usuarioGlobal = esGlobal(paisUsuario)
   const paisNuevo = usuarioGlobal ? (PAISES_ACTIVOS[0]?.codigo || 'Colombia') : paisUsuario
+  setMonedaLocale(paisUsuario) // formato de número sigue al país del usuario (igual que el símbolo)
 
   useEffect(() => { loadOfertas(); loadClientes() }, [loadOfertas, loadClientes])
 

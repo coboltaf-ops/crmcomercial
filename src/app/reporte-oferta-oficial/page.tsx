@@ -5,11 +5,12 @@ import { PRESUPUESTO_CSS } from '@/shared/lib/presupuesto-css'
 import { useSearchParams } from 'next/navigation'
 import { useOfertasStore } from '@/features/ofertas/store/ofertas-store'
 import { type RenglonOferta, esDetalle, precioUnit, montoVenta } from '@/features/ofertas/types'
-import { simboloMoneda } from '@/shared/lib/paises'
+import { simboloMoneda, localeMoneda } from '@/shared/lib/paises'
 
 // ---------- helpers ----------
 let SIM_R = 'S/'   // símbolo de moneda según el país de la oferta (se fija al cargar)
-const money = (n: number) => SIM_R + ' ' + Math.round(n || 0).toLocaleString('en-US')
+let LOC_R = 'es-CO' // locale de formato numérico según el país de la oferta (se fija al cargar)
+const money = (n: number) => SIM_R + ' ' + Math.round(n || 0).toLocaleString(LOC_R)
 const fecha = (iso: string) => { if (!iso) return '—'; const [y, m, d] = iso.split('-'); return `${d}/${m}/${y}` }
 const fechaHoy = () => { const d = new Date(); const p = (n: number) => String(n).padStart(2, '0'); return `${p(d.getDate())}/${p(d.getMonth() + 1)}/${d.getFullYear()}` }
 
@@ -45,7 +46,7 @@ function Oficial() {
   useEffect(() => { useOfertasStore.getState().loadOfertas() }, [])
 
   const oferta = useMemo(() => ofertas.find(o => o.id === ofertaId) || null, [ofertas, ofertaId])
-  SIM_R = simboloMoneda(oferta?.pais)
+  SIM_R = simboloMoneda(oferta?.pais); LOC_R = localeMoneda(oferta?.pais)
   // Nombre del documento = Proyecto → el PDF se guarda con ese nombre
   useEffect(() => {
     if (oferta) document.title = `${oferta.consecutivo}${oferta.proyecto ? ' - ' + oferta.proyecto : ''}`
@@ -194,7 +195,7 @@ function Oficial() {
                       <td style={{ padding: '6px 8px', color: '#6b7280', fontWeight: 600, whiteSpace: 'nowrap' }}>{r.codigo}</td>
                       <td style={{ padding: '6px 8px' }}>{r.descripcion || '—'}</td>
                       <td style={{ padding: '6px 8px', textAlign: 'center', color: '#6b7280' }}>{r.unidad || '—'}</td>
-                      <td style={{ padding: '6px 8px', textAlign: 'right' }}>{(r.cantidad || 0).toLocaleString('en-US')}</td>
+                      <td style={{ padding: '6px 8px', textAlign: 'right' }}>{(r.cantidad || 0).toLocaleString(LOC_R)}</td>
                       <td style={{ padding: '6px 8px', textAlign: 'right' }}>{money(precioUnit(r))}</td>
                       <td style={{ padding: '6px 8px', textAlign: 'right', fontWeight: 700, color: '#0b1d4a', whiteSpace: 'nowrap' }}>{money(montoVenta(r))}</td>
                     </tr>

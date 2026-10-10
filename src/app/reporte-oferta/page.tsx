@@ -5,12 +5,13 @@ import { PRESUPUESTO_CSS } from '@/shared/lib/presupuesto-css'
 import { useSearchParams } from 'next/navigation'
 import { useOfertasStore } from '@/features/ofertas/store/ofertas-store'
 import { type Oferta, type RenglonOferta, esDetalle, costoTotal, montoVenta, precioUnit } from '@/features/ofertas/types'
-import { simboloMoneda } from '@/shared/lib/paises'
+import { simboloMoneda, localeMoneda } from '@/shared/lib/paises'
 
 // ---------- helpers ----------
 let SIM_R = 'S/'   // símbolo de moneda según el país de la oferta (se fija al cargar)
-const money = (n: number) => SIM_R + ' ' + Math.round(n || 0).toLocaleString('en-US')
-const money0 = (n: number) => Math.round(n || 0).toLocaleString('en-US')
+let LOC_R = 'es-CO' // locale de formato numérico según el país de la oferta (se fija al cargar)
+const money = (n: number) => SIM_R + ' ' + Math.round(n || 0).toLocaleString(LOC_R)
+const money0 = (n: number) => Math.round(n || 0).toLocaleString(LOC_R)
 const fecha = (iso: string) => { if (!iso) return '—'; const [y, m, d] = iso.split('-'); return `${d}/${m}/${y}` }
 const fechaHoy = () => { const d = new Date(); const p = (n: number) => String(n).padStart(2, '0'); return `${p(d.getDate())}/${p(d.getMonth() + 1)}/${d.getFullYear()}` }
 const pct = (costo: number, venta: number) => costo > 0 ? (Math.round(((venta - costo) / costo) * 1000) / 10) : 0
@@ -103,7 +104,7 @@ function Reporte() {
   useEffect(() => { useOfertasStore.getState().loadOfertas() }, [])
 
   const oferta = useMemo(() => ofertas.find(o => o.id === ofertaId) || null, [ofertas, ofertaId])
-  SIM_R = simboloMoneda(oferta?.pais)
+  SIM_R = simboloMoneda(oferta?.pais); LOC_R = localeMoneda(oferta?.pais)
   useEffect(() => {
     if (oferta) document.title = `${oferta.consecutivo}${oferta.proyecto ? ' - ' + oferta.proyecto : ''}`
   }, [oferta])
@@ -265,7 +266,7 @@ function Reporte() {
               { l: 'COSTO DIRECTO TOTAL', v: money(totCosto), bg: '#1f2d52' },
               { l: 'VALOR PROYECTO (VENTA)', v: money(totVenta), bg: '#0b1d4a' },
               { l: 'UTILIDAD', v: money(totVenta - totCosto), bg: '#15803d' },
-              { l: 'MARGEN S/COSTO', v: pct(totCosto, totVenta) + '%', bg: '#b45309' },
+              { l: 'MARGEN SOBRE COSTO', v: pct(totCosto, totVenta) + '%', bg: '#b45309' },
             ].map(k => (
               <div key={k.l} style={{ flex: 1, background: k.bg, color: '#fff', borderRadius: 8, padding: '12px 14px' }}>
                 <div style={{ fontSize: 9.5, letterSpacing: 0.5, opacity: 0.85, fontWeight: 700 }}>{k.l}</div>
@@ -320,7 +321,7 @@ function Reporte() {
                   <th style={{ padding: '6px', textAlign: 'left' }}>CONCEPTO</th>
                   <th style={{ padding: '6px', textAlign: 'right' }}>COSTO TOTAL</th>
                   <th style={{ padding: '6px', textAlign: 'right' }}>MONTO (VENTA)</th>
-                  <th style={{ padding: '6px', textAlign: 'right' }}>% S/VENTA</th>
+                  <th style={{ padding: '6px', textAlign: 'right' }}>% SOBRE VENTA</th>
                 </tr>
               </thead>
               <tbody>
@@ -368,7 +369,7 @@ function Reporte() {
                       <tr key={r.id} style={{ borderBottom: '1px solid #eef1f6' }}>
                         <td style={{ padding: '5px 6px', fontWeight: 600 }}>{r.descripcion || '—'}</td>
                         <td style={{ padding: '5px 6px', textAlign: 'right' }}>{r.unidad || '—'}</td>
-                        <td style={{ padding: '5px 6px', textAlign: 'right' }}>{(r.cantidad || 0).toLocaleString('en-US')}</td>
+                        <td style={{ padding: '5px 6px', textAlign: 'right' }}>{(r.cantidad || 0).toLocaleString(LOC_R)}</td>
                         <td style={{ padding: '5px 6px', textAlign: 'right' }}>{money(r.costo_unitario)}{r.unidad ? ` / ${r.unidad}` : ''}</td>
                         <td style={{ padding: '5px 6px', textAlign: 'right', fontWeight: 700 }}>{money(montoVenta(r))}</td>
                         <td style={{ padding: '5px 6px', textAlign: 'right', color: '#b45309', fontWeight: 700 }}>{r.margen || 0}%</td>
@@ -399,7 +400,7 @@ function Reporte() {
 
           {/* Nota */}
           <div style={{ padding: '4px 20px 20px', fontSize: 9.5, color: '#9ca3af', lineHeight: 1.5 }}>
-            <b>Cómo se lee:</b> cada actividad muestra un <b>Subtotal por concepto</b> (M.O.D, M.O.I, Materiales, Maquinaria, Subcontratos, Otros) y su <b>SUBTOTAL de actividad</b> con su margen. Precio Unit. = Costo Unit. × (1 + Margen); Monto = Precio Unit. × Cantidad; Utilidad = Venta − Costo. Valor Proyecto (Venta) = {money(totVenta)} · Margen s/costo {pct(totCosto, totVenta)}%.
+            <b>Cómo se lee:</b> cada actividad muestra un <b>Subtotal por concepto</b> (M.O.D, M.O.I, Materiales, Maquinaria, Subcontratos, Otros) y su <b>SUBTOTAL de actividad</b> con su margen. Precio Unit. = Costo Unit. × (1 + Margen); Monto = Precio Unit. × Cantidad; Utilidad = Venta − Costo. Valor Proyecto (Venta) = {money(totVenta)} · Margen sobre costo {pct(totCosto, totVenta)}%.
             <div style={{ marginTop: 6, color: '#c0c4cc' }}>Grupo Tamoin · Sistema de Ofertas · Oferta {oferta.consecutivo} · Generado el {fechaHoy()}.</div>
           </div>
         </div>
@@ -453,7 +454,7 @@ function ConceptoGroup({ concepto, rows, costo, venta }: { concepto: string; row
             {r.descripcion || '—'}
           </td>
           <td style={{ padding: '4px 6px', textAlign: 'right', color: '#6b7280' }}>{r.unidad || '—'}</td>
-          <td style={{ padding: '4px 6px', textAlign: 'right' }}>{(r.cantidad || 0).toLocaleString('en-US')}</td>
+          <td style={{ padding: '4px 6px', textAlign: 'right' }}>{(r.cantidad || 0).toLocaleString(LOC_R)}</td>
           <td style={{ padding: '4px 6px', textAlign: 'right' }}>{money(r.costo_unitario)}</td>
           <td style={{ padding: '4px 6px', textAlign: 'right', color: '#b45309', fontWeight: 700 }}>{r.margen || 0}%</td>
           <td style={{ padding: '4px 6px', textAlign: 'right' }}>{money(precioUnit(r))}</td>
