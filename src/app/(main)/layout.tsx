@@ -332,8 +332,8 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6, marginTop: 8 }}>
               <img src="/logo-norton.jpeg" alt="Norton" style={{ width: 190, height: 84, borderRadius: 12, objectFit: 'contain', background: '#ffffff', padding: 8 }} />
               <div style={{ textAlign: 'center' }}>
-                <p style={{ color: '#ffffff', fontWeight: 800, fontSize: 16, lineHeight: 1.2, margin: 0 }}>GRUPO GTM</p>
-                <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: 11, margin: '2px 0 0' }}>Gestión Comercial</p>
+                <p style={{ color: '#ffffff', fontWeight: 800, fontSize: 16, lineHeight: 1.2, margin: 0 }}>GRUPO GTM LATAM</p>
+                <p style={{ color: '#000000', fontWeight: 900, fontSize: 12, letterSpacing: 0.5, margin: '5px auto 0', background: '#ffffff', display: 'inline-block', padding: '2px 12px', borderRadius: 6 }}>CRM COMERCIAL</p>
               </div>
             </div>
           )}
