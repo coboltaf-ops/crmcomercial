@@ -1,8 +1,10 @@
 import { create } from 'zustand'
 import { Seguimiento } from '@/shared/types/seguimiento'
+import type { RequerimientoInicial } from '@/features/oportunidades/store/oportunidades-store'
 import { apiUpsert, apiDelete } from '@/shared/lib/list-client'
 
 export type { Seguimiento }
+export type { RequerimientoInicial }
 
 export interface DocumentoExigido {
   id: string
@@ -46,6 +48,7 @@ export interface SeguimientoOferta {
   empresa_ganadora?: string
   // ── Documentos exigidos en la oferta ──
   documentos_exigidos?: DocumentoExigido[]
+  requerimientos_iniciales?: RequerimientoInicial[]
   observaciones?: string
   situacion?: string
   seguimientos: Seguimiento[]

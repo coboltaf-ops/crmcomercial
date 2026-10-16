@@ -20,6 +20,10 @@ export interface Tarea {
   fecha_requerida_fin: string
   fecha_real_fin: string
   descripcion: string
+  origen_tarea?: string
+  origen_codigo?: string
+  cliente_nombre?: string
+  proyecto?: string
   situacion: string
   creado_por?: string
   creado_por_usuario?: string
@@ -32,9 +36,31 @@ export interface Tarea {
 const defaultSituaciones: SituacionTarea[] = [
   { id: 'pendiente', nombre: 'Pendiente', color: 'yellow' },
   { id: 'en-proceso', nombre: 'En Proceso', color: 'blue' },
-  { id: 'completada', nombre: 'Completada', color: 'green' },
-  { id: 'cancelada', nombre: 'Cancelada', color: 'red' },
+  { id: 'finalizada', nombre: 'Finalizada', color: 'green' },
+  { id: 'cancelada', nombre: 'Cancelada', color: 'purple' },
+  { id: 'anulada', nombre: 'Anulada', color: 'red' },
 ]
+
+/** Estado "finalizado" de una tarea. Acepta 'Finalizada' (nuevo) y 'Completada' (datos viejos). */
+export const esTareaFinalizada = (s?: string) => s === 'Finalizada' || s === 'Completada'
+
+/** Mensaje estándar de notificación (WhatsApp) para una tarea asignada. */
+export function mensajeWhatsAppTarea(t: Tarea): string {
+  const fFecha = (d?: string) => { if (!d) return '—'; const [y, m, dd] = d.split('-'); return (dd && m && y) ? `${dd}/${m}/${y}` : d }
+  const origen = t.origen_tarea === 'Oportunidad' ? `Oportunidad N° ${t.origen_codigo || ''}`.trim()
+    : t.origen_tarea === 'Seguimiento Oferta' ? `Seguimiento Oferta N° ${t.origen_codigo || ''}`.trim()
+    : 'Tarea Independiente'
+  const fechaHora = `${fFecha(t.fecha_asignacion)}${t.hora_asignacion ? ' ' + t.hora_asignacion : ''}`
+  return [
+    `Hola ${t.persona_ejecuta},`,
+    `Se te ha asignado una nueva tarea (${t.codigo}).`,
+    `Persona que te asigna: ${t.persona_asigna}`,
+    `Fecha y hora: ${fechaHora}`,
+    `Viene de: ${origen}`,
+    `Fecha en que debes terminar la tarea: ${fFecha(t.fecha_requerida_fin)}`,
+    `Detalle del requerimiento: ${t.descripcion}`,
+  ].join('\n')
+}
 
 interface TareasState {
   tareas: Tarea[]

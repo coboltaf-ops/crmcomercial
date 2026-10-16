@@ -49,7 +49,7 @@ export default function UsuariosPage() {
   const emptyUser = (): Usuario => {
     const firstNonAdmin = roles.find(r => r.nombre !== 'Admin')
     return {
-      id: '', nombre: '', apellido: '', usuario: '', clave: '', correo: '',
+      id: '', nombre: '', apellido: '', usuario: '', clave: '', correo: '', celular: '',
       rol: firstNonAdmin?.nombre || 'Ventas', pais: 'Colombia', situacion: 'Activo',
       permisos: firstNonAdmin?.permisos || MODULOS_CRM.map(m => ({ modulo: m.id, leer: true, crear: false, editar: false, eliminar: false })),
     }
@@ -240,6 +240,10 @@ export default function UsuariosPage() {
                 <input value={(selected as unknown as Record<string, string>)[f.key] || ''} onChange={e => setSelected({ ...selected, [f.key]: (f.key === 'nombre' || f.key === 'apellido') ? e.target.value.toUpperCase() : e.target.value })} required style={inputStyle} />
               </div>
             ))}
+            <div>
+              <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, marginBottom: 4, display: 'block' }}>Celular (WhatsApp)</label>
+              <input value={selected.celular || ''} onChange={e => setSelected({ ...selected, celular: e.target.value })} placeholder="+57 300 000 0000" style={inputStyle} />
+            </div>
             <div>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, marginBottom: 4, display: 'block' }}>{es ? 'Clave' : 'Password'} {selected.id && '(dejar vacío = mantener)'}</label>
               <input type="password" value={selected.clave || ''} onChange={e => setSelected({ ...selected, clave: e.target.value })} required={!selected.id} style={inputStyle} />

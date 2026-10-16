@@ -1,7 +1,9 @@
 'use client'
 import { logAudit, computarDiff } from '@/shared/lib/audit'
 import { useState, useEffect } from 'react'
-import { useTareasStore, Tarea } from '@/features/tareas/store/tareas-store'
+import { useTareasStore, Tarea, esTareaFinalizada } from '@/features/tareas/store/tareas-store'
+import { useOportunidadesStore } from '@/features/oportunidades/store/oportunidades-store'
+import { useSeguimientoOfertaStore } from '@/features/seguimiento-oferta/store/seguimiento-oferta-store'
 import { useCurrentUserStore } from '@/features/usuarios-gestion/store/current-user-store'
 import { useReferenceStore } from '@/features/referencias/store/reference-store'
 import { nextConsecutivo } from '@/shared/lib/consecutivo'
@@ -42,9 +44,30 @@ export default function TareasPage() {
   const permisos = usePermisos('tareas')
   const { tareas, situaciones, addTarea, updateTarea, deleteTarea } = useTareasStore()
   const loadTareas = useTareasStore(s => s.loadTareas)
+  const oportunidades = useOportunidadesStore(s => s.oportunidades)
+  const updateOportunidad = useOportunidadesStore(s => s.updateOportunidad)
+  const loadOportunidades = useOportunidadesStore(s => s.loadOportunidades)
+  const ofertas = useSeguimientoOfertaStore(s => s.ofertas)
+  const updateOfertaSeg = useSeguimientoOfertaStore(s => s.updateOferta)
+  const loadOfertasSeg = useSeguimientoOfertaStore(s => s.loadOfertas)
   const vendedores = useReferenceStore(s => s.vendedores)
 
-  useEffect(() => { loadTareas() }, [loadTareas])
+  useEffect(() => { loadTareas(); loadOportunidades(); loadOfertasSeg() }, [loadTareas, loadOportunidades, loadOfertasSeg])
+
+  // Al finalizar una tarea, actualiza su renglón de requerimiento en el registro de origen
+  const syncRequerimientoDesdeTarea = (tarea: Tarea) => {
+    if (!tarea.origen_codigo || !esTareaFinalizada(tarea.situacion)) return
+    const fechaFin = tarea.fecha_real_fin || todayCO()
+    if (tarea.origen_tarea === 'Oportunidad') {
+      const op = oportunidades.find(o => o.codigo === tarea.origen_codigo)
+      if (!op || !(op.requerimientos_iniciales || []).some(r => r.tarea_codigo === tarea.codigo)) return
+      updateOportunidad(op.id, { requerimientos_iniciales: (op.requerimientos_iniciales || []).map(r => r.tarea_codigo === tarea.codigo ? { ...r, fecha: fechaFin, listo: true } : r) })
+    } else if (tarea.origen_tarea === 'Seguimiento Oferta') {
+      const of = ofertas.find(o => o.nro_oferta === tarea.origen_codigo)
+      if (!of || !(of.requerimientos_iniciales || []).some(r => r.tarea_codigo === tarea.codigo)) return
+      updateOfertaSeg(of.id, { requerimientos_iniciales: (of.requerimientos_iniciales || []).map(r => r.tarea_codigo === tarea.codigo ? { ...r, fecha: fechaFin, listo: true } : r) })
+    }
+  }
 
   const [vista, setVista] = useState<Vista>('lista')
   const [vistaLista, setVistaLista] = useState<VistaLista>('tabla')
@@ -137,7 +160,10 @@ export default function TareasPage() {
         } catch { /* no bloquear si falla el email */ }
       }
     } else {
-      const _anterior = tareas.find(x => x.id === selected.id); updateTarea(selected.id, selected); logAudit({ ...auditParams(), accion: "MODIFICAR", registro_codigo: selected.codigo, registro_nombre: selected.descripcion, detalle: computarDiff(_anterior as unknown as Record<string, unknown>, selected as unknown as Record<string, unknown>) })
+      const _anterior = tareas.find(x => x.id === selected.id)
+      const selFinal = (esTareaFinalizada(selected.situacion) && !selected.fecha_real_fin) ? { ...selected, fecha_real_fin: todayCO() } : selected
+      updateTarea(selFinal.id, selFinal); logAudit({ ...auditParams(), accion: "MODIFICAR", registro_codigo: selFinal.codigo, registro_nombre: selFinal.descripcion, detalle: computarDiff(_anterior as unknown as Record<string, unknown>, selFinal as unknown as Record<string, unknown>) })
+      syncRequerimientoDesdeTarea(selFinal)
     }
     setSelected(null)
     setVista('lista')
@@ -145,7 +171,10 @@ export default function TareasPage() {
 
   const handleDrop = (situacionNombre: string) => {
     if (!dragId) return
-    updateTarea(dragId, { situacion: situacionNombre })
+    const prev = tareas.find(t => t.id === dragId)
+    const extra = (esTareaFinalizada(situacionNombre) && prev && !prev.fecha_real_fin) ? { fecha_real_fin: todayCO() } : {}
+    updateTarea(dragId, { situacion: situacionNombre, ...extra })
+    if (prev) syncRequerimientoDesdeTarea({ ...prev, situacion: situacionNombre, ...extra })
     setDragId(null)
   }
 

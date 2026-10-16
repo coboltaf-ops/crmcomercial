@@ -14,6 +14,8 @@ export interface Usuario {
   clave: string
   clave_visible?: string
   correo: string
+  /** Celular con indicativo país para notificaciones por WhatsApp (ej. +57 300...). */
+  celular?: string
   rol: string
   /** País del usuario. 'GLOBAL' = HQ/Admin, ve todos los países. */
   pais: string

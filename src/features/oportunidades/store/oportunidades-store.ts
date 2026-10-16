@@ -15,6 +15,17 @@ export interface DocumentoExigido {
   observaciones?: string
 }
 
+/** Renglón de "Requerimientos Iniciales Solicitados por Prospecto y/o Cliente". */
+export interface RequerimientoInicial {
+  id: string
+  requerimiento: string
+  fecha?: string
+  listo?: boolean
+  tarea_codigo?: string
+  creado_en?: string
+  creado_por?: string
+}
+
 export interface Oportunidad {
   id: string
   codigo: string
@@ -58,6 +69,7 @@ export interface Oportunidad {
   codigo_interno?: string
   seguimientos: Seguimiento[]
   documentos_exigidos?: any[]
+  requerimientos_iniciales?: RequerimientoInicial[]
 }
 
 interface OportunidadesState {
