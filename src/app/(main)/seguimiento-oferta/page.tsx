@@ -224,7 +224,7 @@ export default function SeguimientoOfertaPage() {
       [L('Situación', 'Status'), o.situacion || '-'],
     ]
     return (
-      <div>
+      <div className="po-root">
         <button onClick={() => setViewDetail(null)} style={{ ...btnStyle, background: '#000', color: '#fff', marginBottom: 16 }}>← {L('Volver', 'Back')}</button>
         <div style={{ background: '#fff', borderRadius: 16, padding: 24, border: '1px solid #1e3a8a' }}>
           <h2 style={{ color: '#013978', fontSize: 18, fontWeight: 700, marginBottom: 16 }}>{o.nro_oferta} · {o.proyecto || o.cliente_nombre}</h2>
@@ -283,7 +283,7 @@ export default function SeguimientoOfertaPage() {
   }
 
   return (
-    <div>
+    <div className="po-root">
       <ModuleHeader title={L('Seguimiento Oferta', 'Offer Tracking')} subtitle={L('Control y seguimiento de ofertas / licitaciones', 'Control and tracking of offers / tenders')} />
 
       {!isForm && (
