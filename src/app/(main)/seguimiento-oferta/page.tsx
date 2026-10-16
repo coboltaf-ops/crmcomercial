@@ -232,24 +232,25 @@ export default function SeguimientoOfertaPage() {
             {campos.map(c => (<div key={c[0]}><p style={{ color: '#013978', fontSize: 12, fontWeight: 800, marginBottom: 2 }}>{c[0]}</p><p style={{ color: '#013978', fontSize: 14 }}>{c[1] || '—'}</p></div>))}
           </div>
           {(o.documentos_exigidos || []).length > 0 && (
-            <>
+            <div style={{ background: '#0b1d4a', borderRadius: 12, padding: 14, border: '1px solid #1e3a8a', marginTop: 10 }}>
               <h3 style={franja}>{L('DOCUMENTOS EXIGIDOS EN OFERTA', 'DOCUMENTS REQUIRED IN OFFER')} ({(o.documentos_exigidos || []).length})</h3>
               <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                 <thead><tr><th style={th}>#</th><th style={th}>{L('Documento', 'Document')}</th><th style={th}>{L('Fecha Procesado', 'Processed Date')}</th><th style={th}>{L('Listo', 'Done')}</th></tr></thead>
-                <tbody>{(o.documentos_exigidos || []).map((d, i) => (
-                  <tr key={d.id}><td style={td}>{i + 1}</td><td style={td}>{d.documento}</td><td style={td}>{d.fecha_procesado ? fDate(d.fecha_procesado) : '—'}</td><td style={td}>{d.listo ? '✓' : '—'}</td></tr>
-                ))}</tbody>
+                <tbody>{(o.documentos_exigidos || []).map((d, i) => { const tcb: React.CSSProperties = { ...td, color: '#ffffff', fontWeight: 700, borderBottom: '1px solid rgba(255,255,255,0.12)' }; return (
+                  <tr key={d.id}><td style={tcb}>{i + 1}</td><td style={tcb}>{d.documento}</td><td style={tcb}>{d.fecha_procesado ? fDate(d.fecha_procesado) : '—'}</td><td style={tcb}>{d.listo ? '✓' : '—'}</td></tr>
+                ) })}</tbody>
               </table>
-            </>
+            </div>
           )}
           {(o.requerimientos_iniciales || []).length > 0 && (
-            <>
+            <div style={{ background: '#0b1d4a', borderRadius: 12, padding: 14, border: '1px solid #1e3a8a', marginTop: 14 }}>
               <h3 style={{ ...franja, background: '#15803d' }}>{L('REQUERIMIENTOS DE DOCUMENTOS', 'DOCUMENT REQUIREMENTS')} ({(o.requerimientos_iniciales || []).length})</h3>
               <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                 <thead><tr><th style={th}>#</th><th style={th}>{L('Requerimiento', 'Requirement')}</th><th style={th}>{L('Fecha', 'Date')}</th><th style={th}>{L('Listo', 'Done')}</th><th style={th}>{L('Tarea', 'Task')}</th></tr></thead>
                 <tbody>{(o.requerimientos_iniciales || []).map((req, i) => {
                   const bloq = reqBloqueado(req)
-                  const tc: React.CSSProperties = { ...td, color: '#000000', fontWeight: bloq ? 700 : 400 }
+                  // Fila normal: texto BLANCO intenso sobre navy. Fila finalizada: azul claro con texto negro.
+                  const tc: React.CSSProperties = { ...td, color: bloq ? '#000000' : '#ffffff', fontWeight: bloq ? 800 : 700, borderBottom: '1px solid rgba(255,255,255,0.12)' }
                   return (
                     <tr key={req.id} style={{ background: bloq ? '#bfdbfe' : 'transparent' }}>
                       <td style={tc}>{i + 1}</td><td style={tc}>{req.requerimiento}</td>
@@ -260,7 +261,7 @@ export default function SeguimientoOfertaPage() {
                   )
                 })}</tbody>
               </table>
-            </>
+            </div>
           )}
         </div>
         {/* Bitácora de Seguimiento propia del módulo Seguimiento Oferta */}
