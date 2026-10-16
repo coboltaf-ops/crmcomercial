@@ -5,6 +5,7 @@ import { useClientesStore } from '@/features/clientes/store/clientes-store'
 import { useContactosStore } from '@/features/contactos/store/contactos-store'
 import { useProductosStore } from '@/features/productos/store/productos-store'
 import { useOportunidadesStore } from '@/features/oportunidades/store/oportunidades-store'
+import { useSeguimientoOfertaStore } from '@/features/seguimiento-oferta/store/seguimiento-oferta-store'
 import { useCotizacionesStore } from '@/features/cotizaciones/store/cotizaciones-store'
 import { usePQRSStore } from '@/features/pqrs/store/pqrs-store'
 import { useProyectosStore } from '@/features/proyectos/store/proyectos-store'
@@ -107,6 +108,8 @@ export default function DashboardPage() {
   const contactos = useContactosStore(s => s.contactos)
   const productos = useProductosStore(s => s.productos)
   const oportunidades = useOportunidadesStore(s => s.oportunidades)
+  const ofertas = useSeguimientoOfertaStore(s => s.ofertas)
+  const loadOfertasSeg = useSeguimientoOfertaStore(s => s.loadOfertas)
   const cotizaciones = useCotizacionesStore(s => s.cotizaciones)
   const pqrs = usePQRSStore(s => s.pqrs)
   const proyectos = useProyectosStore(s => s.proyectos)
@@ -124,8 +127,8 @@ export default function DashboardPage() {
   const loadFactores = useFactoresStore(s => s.loadFactores)
   useEffect(() => {
     loadClientes(); loadContactos(); loadProductos()
-    loadOportunidades(); loadCotizaciones(); loadPQRS(); loadProyectos(); loadFactores()
-  }, [loadClientes, loadContactos, loadProductos, loadOportunidades, loadCotizaciones, loadPQRS, loadProyectos, loadFactores])
+    loadOportunidades(); loadOfertasSeg(); loadCotizaciones(); loadPQRS(); loadProyectos(); loadFactores()
+  }, [loadClientes, loadContactos, loadProductos, loadOportunidades, loadOfertasSeg, loadCotizaciones, loadPQRS, loadProyectos, loadFactores])
 
   // Dashboard HQ multi-moneda (US$/COP/Euro): fija el formato al país por defecto del CRM
   // (evita heredar el locale de la página anterior, que es module-level).
@@ -149,6 +152,7 @@ export default function DashboardPage() {
     { label: L('Empresas', 'Companies'), value: clientes.length, icon: '🏢', color: '#000000', href: '/clientes' },
     { label: L('Contactos', 'Contacts'), value: contactos.length, icon: '👤', color: '#000000', href: '/contactos' },
     { label: L('Oportunidades', 'Opportunities'), value: opoAbiertas.length, icon: '🎯', color: '#000000', href: '/oportunidades' },
+    { label: L('Seguimiento Oferta', 'Offer Tracking'), value: ofertas.length, icon: '📄', color: '#000000', href: '/seguimiento-oferta' },
     { label: L('Proyectos', 'Projects'), value: proyectos.length, icon: '🏗️', color: '#000000', href: '/proyectos' },
     { label: L('Cotizaciones', 'Quotes'), value: cotizaciones.length, icon: '📋', color: '#000000', href: '/cotizaciones' },
     { label: L('PQRS Abiertas', 'Open PQRS'), value: pqrsAbiertas.length, icon: '📩', color: '#000000', href: '/pqrs' },
@@ -251,6 +255,12 @@ export default function DashboardPage() {
   const maxProyMonto = Math.max(1, ...proyPorSituacion.flatMap(p => [p.aprobado, p.cobrado]))
   const totalProyAprobado = proyPorSituacion.reduce((s, p) => s + p.aprobado, 0)
   const totalProyCobrado = proyPorSituacion.reduce((s, p) => s + p.cobrado, 0)
+
+  // Ofertas por situación (Seguimiento Oferta)
+  const ofertasPorSituacion = Object.entries(
+    (ofertas || []).reduce((m: Record<string, number>, o) => { const s = o.situacion || 'Sin situación'; m[s] = (m[s] || 0) + 1; return m }, {})
+  ).map(([situacion, count]) => ({ situacion, count: count as number })).sort((a, b) => b.count - a.count)
+  const maxOferta = Math.max(1, ...ofertasPorSituacion.map(o => o.count))
 
   // Cotizaciones por situación — cantidad y valor (unificado a COP)
   const esConstruccionCot = (cat?: string) => (cat || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').includes('construc')
@@ -484,6 +494,33 @@ export default function DashboardPage() {
                     <text x={0} y={rowY + 34} fontSize={12} fontWeight={700} fill="#334155">{c.count} {L(`cotización${c.count === 1 ? '' : 'es'}`, `quote${c.count === 1 ? '' : 's'}`)}</text>
                     <rect x={x0} y={rowY + 6} width={w} height={24} rx={4} fill={color} />
                     <text x={x0 + w + 8} y={rowY + 23} fontSize={12} fontWeight={900} fill="#000000">{cop(c.valor)}</text>
+                  </g>
+                )
+              })}
+            </svg>
+          </div>
+        )}
+      </div>
+
+      {/* Gráfico: Ofertas por Situación (barras horizontales) */}
+      <div className="dash-card" onClick={() => router.push('/seguimiento-oferta')} title={L('Ir a Seguimiento Oferta', 'Go to Offer Tracking')} style={{ ...cardStyle, marginBottom: 24, cursor: 'pointer' }}>
+        <h2 style={{ color: '#000000', fontSize: 16, fontWeight: 600, marginBottom: 8 }}>📄 {L('Ofertas por Situación', 'Offers by Status')}</h2>
+        <p style={{ color: '#000000', fontSize: 13, marginBottom: 12 }}>{ofertas.length} {L('ofertas en seguimiento', 'offers in tracking')}</p>
+        {ofertasPorSituacion.length === 0 ? (
+          <p style={{ color: '#000000', fontSize: 13 }}>{L('No hay ofertas registradas', 'No offers registered')}</p>
+        ) : (
+          <div style={{ overflowX: 'auto' }}>
+            <svg viewBox={`0 0 600 ${ofertasPorSituacion.length * 34 + 10}`} preserveAspectRatio="xMinYMin meet" style={{ display: 'block', width: '100%', maxWidth: 600, height: 'auto' }}>
+              {ofertasPorSituacion.map((o, i) => {
+                const OF_COLOR: Record<string, string> = { 'En Preparación': '#64748b', 'En Proceso': '#1d4ed8', 'Presentada': '#0891b2', 'En Evaluación': '#ea580c', 'Ganada': '#15803d', 'Perdida': '#dc2626', 'Desierta': '#b91c1c' }
+                const rowY = i * 34 + 6
+                const x0 = 170, maxW = 360
+                const w = Math.max(4, Math.round((o.count / maxOferta) * maxW))
+                return (
+                  <g key={o.situacion}>
+                    <text x={0} y={rowY + 18} fontSize={13} fontWeight={700} fill="#000000">{o.situacion}</text>
+                    <rect x={x0} y={rowY + 4} width={w} height={22} rx={4} fill={OF_COLOR[o.situacion] || '#1e3a8a'} />
+                    <text x={x0 + w + 8} y={rowY + 20} fontSize={13} fontWeight={900} fill="#000000">{o.count}</text>
                   </g>
                 )
               })}
