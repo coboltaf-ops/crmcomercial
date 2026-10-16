@@ -249,6 +249,8 @@ export default function OportunidadesPage() {
             ))}
           </div>
 
+          {/* CONTROL OFERTA — movido a Seguimiento Oferta. Oculto (la data se conserva). */}
+          {false && (<>
           <h3 className="seccion-franja" style={sectionTitle()}>{t('lbl.controlOferta')}</h3>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: 14, marginBottom: 20 }}>
             {[
@@ -267,6 +269,7 @@ export default function OportunidadesPage() {
               </div>
             ))}
           </div>
+          </>)}
 
           {viewDetail.observaciones && (
             <div style={{ marginTop: 4, padding: 14, background: '#ffffff', borderRadius: 10, border: '1px solid #1e3a8a' }}>
@@ -275,7 +278,7 @@ export default function OportunidadesPage() {
             </div>
           )}
 
-          {(viewDetail.documentos_exigidos || []).length > 0 && (
+          {false && (viewDetail.documentos_exigidos || []).length > 0 && (
             <div style={{ marginTop: 16, borderRadius: 10, border: '1px solid #1e3a8a', overflow: 'hidden' }}>
               <div className="seccion-franja" style={{ background: '#1e3a8a', padding: '8px 12px', color: '#fff', fontSize: 12, fontWeight: 700, letterSpacing: 0.5 }}>
                 DOCUMENTOS EXIGIDOS EN OFERTA ({(viewDetail.documentos_exigidos || []).length})
@@ -499,7 +502,8 @@ export default function OportunidadesPage() {
             </div>
           </div>
 
-          {/* CONTROL DE OFERTA */}
+          {/* CONTROL DE OFERTA + DOCUMENTOS — movidos a Seguimiento Oferta. Ocultos (la data se conserva, no se borra). */}
+          {false && (<>
           <h3 className="seccion-franja" style={sectionTitle()}>{t('lbl.controlOferta')}</h3>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: 14, marginBottom: 20 }}>
             <div>
@@ -642,6 +646,7 @@ export default function OportunidadesPage() {
               </tbody>
             </table>
           </div>
+          </>)}
 
           <div style={{ marginBottom: 14 }}>
             <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.observaciones')}</label>
