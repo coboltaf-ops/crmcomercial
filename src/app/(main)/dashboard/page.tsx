@@ -256,11 +256,17 @@ export default function DashboardPage() {
   const totalProyAprobado = proyPorSituacion.reduce((s, p) => s + p.aprobado, 0)
   const totalProyCobrado = proyPorSituacion.reduce((s, p) => s + p.cobrado, 0)
 
-  // Ofertas por situación (Seguimiento Oferta)
-  const ofertasPorSituacion = Object.entries(
-    (ofertas || []).reduce((m: Record<string, number>, o) => { const s = o.situacion || 'Sin situación'; m[s] = (m[s] || 0) + 1; return m }, {})
-  ).map(([situacion, count]) => ({ situacion, count: count as number })).sort((a, b) => b.count - a.count)
+  // Ofertas por situación (Seguimiento Oferta) — cantidad y monto de oferta
+  const ofAcc = (ofertas || []).reduce((m: Record<string, { count: number; monto: number }>, o) => {
+    const s = o.situacion || 'Sin situación'
+    if (!m[s]) m[s] = { count: 0, monto: 0 }
+    m[s].count += 1; m[s].monto += (o.monto_real_oferta || 0)
+    return m
+  }, {})
+  const ofertasPorSituacion = Object.entries(ofAcc).map(([situacion, v]) => ({ situacion, count: v.count, monto: v.monto })).sort((a, b) => b.monto - a.monto || b.count - a.count)
   const maxOferta = Math.max(1, ...ofertasPorSituacion.map(o => o.count))
+  const maxOfertaMonto = Math.max(1, ...ofertasPorSituacion.map(o => o.monto))
+  const totalMontoOfertas = ofertasPorSituacion.reduce((s, o) => s + o.monto, 0)
 
   // Cotizaciones por situación — cantidad y valor (unificado a COP)
   const esConstruccionCot = (cat?: string) => (cat || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').includes('construc')
@@ -505,22 +511,23 @@ export default function DashboardPage() {
       {/* Gráfico: Ofertas por Situación (barras horizontales) */}
       <div className="dash-card" onClick={() => router.push('/seguimiento-oferta')} title={L('Ir a Seguimiento Oferta', 'Go to Offer Tracking')} style={{ ...cardStyle, marginBottom: 24, cursor: 'pointer' }}>
         <h2 style={{ color: '#000000', fontSize: 16, fontWeight: 600, marginBottom: 8 }}>📄 {L('Ofertas por Situación', 'Offers by Status')}</h2>
-        <p style={{ color: '#000000', fontSize: 13, marginBottom: 12 }}>{ofertas.length} {L('ofertas en seguimiento', 'offers in tracking')}</p>
+        <p style={{ color: '#000000', fontSize: 13, marginBottom: 12 }}>{ofertas.length} {L('ofertas · Monto total:', 'offers · Total amount:')} <b>{cop(totalMontoOfertas)}</b></p>
         {ofertasPorSituacion.length === 0 ? (
           <p style={{ color: '#000000', fontSize: 13 }}>{L('No hay ofertas registradas', 'No offers registered')}</p>
         ) : (
           <div style={{ overflowX: 'auto' }}>
-            <svg viewBox={`0 0 600 ${ofertasPorSituacion.length * 34 + 10}`} preserveAspectRatio="xMinYMin meet" style={{ display: 'block', width: '100%', maxWidth: 600, height: 'auto' }}>
+            <svg viewBox={`0 0 660 ${ofertasPorSituacion.length * 46 + 10}`} preserveAspectRatio="xMinYMin meet" style={{ display: 'block', width: '100%', maxWidth: 660, height: 'auto' }}>
               {ofertasPorSituacion.map((o, i) => {
                 const OF_COLOR: Record<string, string> = { 'En Preparación': '#64748b', 'En Proceso': '#1d4ed8', 'Presentada': '#0891b2', 'En Evaluación': '#ea580c', 'Ganada': '#15803d', 'Perdida': '#dc2626', 'Desierta': '#b91c1c' }
-                const rowY = i * 34 + 6
-                const x0 = 170, maxW = 360
-                const w = Math.max(4, Math.round((o.count / maxOferta) * maxW))
+                const rowY = i * 46 + 8
+                const x0 = 200, maxW = 300
+                const w = Math.max(3, Math.round((o.monto / maxOfertaMonto) * maxW))
                 return (
                   <g key={o.situacion}>
-                    <text x={0} y={rowY + 18} fontSize={13} fontWeight={700} fill="#000000">{o.situacion}</text>
-                    <rect x={x0} y={rowY + 4} width={w} height={22} rx={4} fill={OF_COLOR[o.situacion] || '#1e3a8a'} />
-                    <text x={x0 + w + 8} y={rowY + 20} fontSize={13} fontWeight={900} fill="#000000">{o.count}</text>
+                    <text x={0} y={rowY + 18} fontSize={14} fontWeight={800} fill="#000000">{o.situacion}</text>
+                    <text x={0} y={rowY + 34} fontSize={12} fontWeight={700} fill="#334155">{o.count} {L(`oferta${o.count === 1 ? '' : 's'}`, `offer${o.count === 1 ? '' : 's'}`)}</text>
+                    <rect x={x0} y={rowY + 6} width={w} height={24} rx={4} fill={OF_COLOR[o.situacion] || '#1e3a8a'} />
+                    <text x={x0 + w + 8} y={rowY + 23} fontSize={12} fontWeight={900} fill="#000000">{cop(o.monto)}</text>
                   </g>
                 )
               })}
