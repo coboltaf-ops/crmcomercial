@@ -5,7 +5,7 @@ import { useCargosSalariosStore, CargoSalario } from '@/features/cargos-salarios
 import { useCurrentUserStore } from '@/features/usuarios-gestion/store/current-user-store'
 import { usePermisos } from '@/shared/hooks/use-permisos'
 import { nextConsecutivo } from '@/shared/lib/consecutivo'
-import { todayColombia } from '@/shared/lib/format-date'
+import { fDate, todayColombia  } from '@/shared/lib/format-date'
 import { useIdioma } from '@/shared/i18n/use-t'
 import { PAISES_ACTIVOS, esGlobal, etiquetaPais, localeMoneda } from '@/shared/lib/paises'
 import SeguimientoPanel from '@/shared/components/seguimiento-panel'
@@ -183,7 +183,7 @@ export default function CargosSalariosPage() {
               <Row label={es ? 'Salario Día' : 'Daily salary'} value={money(detalle.salario_dia)} />
               <Row label={es ? '% Prestaciones' : 'Benefits %'} value={String(detalle.pct_prestaciones)} />
               <Row label={es ? 'Salario Mes' : 'Monthly salary'} value={money(detalle.salario_mes)} />
-              <Row label={es ? 'Fecha actualización' : 'Updated on'} value={detalle.fecha_actualizacion} />
+              <Row label={es ? 'Fecha actualización' : 'Updated on'} value={fDate(detalle.fecha_actualizacion)} />
             </div>
           </div>
         </div>

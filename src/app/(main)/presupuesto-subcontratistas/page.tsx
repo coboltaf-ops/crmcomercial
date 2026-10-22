@@ -9,7 +9,7 @@ import {
 import { useCurrentUserStore } from '@/features/usuarios-gestion/store/current-user-store'
 import { usePermisos } from '@/shared/hooks/use-permisos'
 import { nextConsecutivo } from '@/shared/lib/consecutivo'
-import { todayColombia } from '@/shared/lib/format-date'
+import { fDate, todayColombia  } from '@/shared/lib/format-date'
 import { useIdioma } from '@/shared/i18n/use-t'
 import { PAISES_ACTIVOS, esGlobal, etiquetaPais, localeMoneda } from '@/shared/lib/paises'
 
@@ -189,13 +189,13 @@ export default function PresupuestoSubcontratistasPage() {
               <Row label={es ? 'Capítulo' : 'Chapter'} value={detalle.capitulo} />
               <Row label={es ? 'Responsable' : 'Responsible'} value={detalle.responsable} />
               <Row label={es ? 'Monto' : 'Amount'} value={money(detalle.monto, detalle.moneda)} />
-              <Row label={es ? 'Fecha de Emisión' : 'Issue date'} value={detalle.fecha_emision} />
+              <Row label={es ? 'Fecha de Emisión' : 'Issue date'} value={fDate(detalle.fecha_emision)} />
             </div>
             <div>
               <Row label={es ? 'País' : 'Country'} value={etiquetaPais(detalle.pais)} />
               <Row label={es ? 'Descripción' : 'Description'} value={detalle.descripcion} />
               <Row label={es ? 'Observaciones' : 'Notes'} value={detalle.observaciones} />
-              <Row label={es ? 'Fecha registro' : 'Registered'} value={detalle.fecha_registro} />
+              <Row label={es ? 'Fecha registro' : 'Registered'} value={fDate(detalle.fecha_registro)} />
             </div>
           </div>
         </div>

@@ -5,7 +5,7 @@ import { useMaquinariasStore, MaquinariaEquipo } from '@/features/maquinarias-eq
 import { useCurrentUserStore } from '@/features/usuarios-gestion/store/current-user-store'
 import { usePermisos } from '@/shared/hooks/use-permisos'
 import { nextConsecutivo } from '@/shared/lib/consecutivo'
-import { todayColombia } from '@/shared/lib/format-date'
+import { fDate, todayColombia  } from '@/shared/lib/format-date'
 import { useIdioma } from '@/shared/i18n/use-t'
 import { PAISES_ACTIVOS, esGlobal, etiquetaPais, localeMoneda } from '@/shared/lib/paises'
 import SeguimientoPanel from '@/shared/components/seguimiento-panel'
@@ -199,7 +199,7 @@ export default function MaquinariasEquiposPage() {
               <Row label={es ? 'Valor Semana' : 'Week rate'} value={money(detalle.vr_semana)} />
               <Row label={es ? 'Valor Mes' : 'Month rate'} value={money(detalle.vr_mes)} />
               <Row label={es ? 'País' : 'Country'} value={etiquetaPais(detalle.pais)} />
-              <Row label={es ? 'Fecha registro' : 'Registered'} value={detalle.fecha_registro} />
+              <Row label={es ? 'Fecha registro' : 'Registered'} value={fDate(detalle.fecha_registro)} />
             </div>
           </div>
         </div>

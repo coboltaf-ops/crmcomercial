@@ -5,7 +5,7 @@ import { useProductosVariosStore, ProductoVario } from '@/features/productos-var
 import { useCurrentUserStore } from '@/features/usuarios-gestion/store/current-user-store'
 import { usePermisos } from '@/shared/hooks/use-permisos'
 import { nextConsecutivo } from '@/shared/lib/consecutivo'
-import { todayColombia } from '@/shared/lib/format-date'
+import { fDate, todayColombia  } from '@/shared/lib/format-date'
 import { useIdioma } from '@/shared/i18n/use-t'
 import { PAISES_ACTIVOS, esGlobal, etiquetaPais } from '@/shared/lib/paises'
 import SeguimientoPanel from '@/shared/components/seguimiento-panel'
@@ -172,7 +172,7 @@ export default function ProductosVariosPage() {
               <Row label={es ? 'Unidad de Medida' : 'Unit'} value={detalle.unidad_medida} />
               <Row label={es ? 'Costo Unitario' : 'Unit cost'} value={String(detalle.costo_unitario ?? '')} />
               <Row label={es ? 'País' : 'Country'} value={etiquetaPais(detalle.pais)} />
-              <Row label={es ? 'Fecha registro' : 'Registered'} value={detalle.fecha_registro} />
+              <Row label={es ? 'Fecha registro' : 'Registered'} value={fDate(detalle.fecha_registro)} />
             </div>
           </div>
         </div>

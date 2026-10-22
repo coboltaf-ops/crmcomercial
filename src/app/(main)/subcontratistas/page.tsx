@@ -5,7 +5,7 @@ import { useSubcontratistasStore, Subcontratista } from '@/features/subcontratis
 import { useCurrentUserStore } from '@/features/usuarios-gestion/store/current-user-store'
 import { usePermisos } from '@/shared/hooks/use-permisos'
 import { nextConsecutivo } from '@/shared/lib/consecutivo'
-import { todayColombia } from '@/shared/lib/format-date'
+import { fDate, todayColombia  } from '@/shared/lib/format-date'
 import { useIdioma } from '@/shared/i18n/use-t'
 import { PAISES_ACTIVOS, esGlobal, etiquetaPais } from '@/shared/lib/paises'
 
@@ -185,7 +185,7 @@ export default function SubcontratistasPage() {
               <Row label={es ? 'Dirección' : 'Address'} value={detalle.direccion} />
               <Row label={es ? 'Ciudad' : 'City'} value={detalle.ciudad} />
               <Row label={es ? 'País' : 'Country'} value={etiquetaPais(detalle.pais)} />
-              <Row label={es ? 'Fecha registro' : 'Registered'} value={detalle.fecha_registro} />
+              <Row label={es ? 'Fecha registro' : 'Registered'} value={fDate(detalle.fecha_registro)} />
             </div>
           </div>
         </div>

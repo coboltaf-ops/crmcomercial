@@ -458,7 +458,7 @@ export default function ProspectosPage() {
                       <p style={{ color: '#013978', fontSize: 14, fontWeight: 600, margin: 0 }}>{ext.nombre} {ext.apellido}</p>
                       <p style={{ color: '#013978', fontSize: 12, margin: '2px 0' }}>{ext.empresa || 'Sin empresa'} | {ext.correo} | {ext.nro_movil || 'Sin móvil'}</p>
                       <p style={{ color: '#013978', fontSize: 11, margin: 0 }}>{ext.descripcion_requerimiento?.substring(0, 120)}{(ext.descripcion_requerimiento?.length || 0) > 120 ? '...' : ''}</p>
-                      <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: 10, margin: '4px 0 0' }}>{ext.fecha_registro} {ext.hora_registro}</p>
+                      <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: 10, margin: '4px 0 0' }}>{fDate(ext.fecha_registro)} {ext.hora_registro}</p>
                     </div>
                     <button onClick={() => importarProspecto(ext)} style={{ ...btnStyle, background: '#1e3a8a', color: '#ffffff', border: '1px solid #3b82f6', fontSize: 11, marginLeft: 12 }}>Importar al CRM</button>
                   </div>
