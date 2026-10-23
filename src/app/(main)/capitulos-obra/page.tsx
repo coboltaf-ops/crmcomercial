@@ -1,6 +1,7 @@
 'use client'
 
 import { useIdioma } from '@/shared/i18n/use-t'
+import { usePaisFiltroStore } from '@/features/ui/pais-filtro-store'
 import { useState, useEffect } from 'react'
 import { PRESUPUESTO_CSS } from '@/shared/lib/presupuesto-css'
 import { useCapitulosObraStore, type CapituloObra, type TipoCapitulo } from '@/features/capitulos-obra/store/capitulos-obra-store'
@@ -49,7 +50,8 @@ export default function CapitulosObraPage() {
   const [form, setForm] = useState<CapituloObra>(emptyForm)
   const [search, setSearch] = useState('')
   const [filtroTipo, setFiltroTipo] = useState<'Todos' | TipoCapitulo>('Todos')
-  const [filtroPais, setFiltroPais] = useState('')  // solo lo usan usuarios GLOBAL
+  const filtroPais = usePaisFiltroStore(s => s.paisFiltro)
+  const setFiltroPais = usePaisFiltroStore(s => s.setPaisFiltro)
   const [ofertaSel, setOfertaSel] = useState('')
   const [viewRecord, setViewRecord] = useState<CapituloObra | null>(null)
 

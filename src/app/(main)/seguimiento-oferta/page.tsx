@@ -1,5 +1,6 @@
 'use client'
 import { useState, useEffect } from 'react'
+import { usePaisFiltroStore } from '@/features/ui/pais-filtro-store'
 import ModuleHeader from '@/shared/components/module-header'
 import { useSeguimientoOfertaStore, SeguimientoOferta, DocumentoExigido, RequerimientoInicial } from '@/features/seguimiento-oferta/store/seguimiento-oferta-store'
 import { useTareasStore, Tarea, esTareaFinalizada, mensajeWhatsAppTarea } from '@/features/tareas/store/tareas-store'
@@ -61,7 +62,8 @@ export default function SeguimientoOfertaPage() {
   const [verLectura, setVerLectura] = useState(false)
   const [viewDetail, setViewDetail] = useState<SeguimientoOferta | null>(null)
   const [search, setSearch] = useState('')
-  const [filtroPais, setFiltroPais] = useState('')
+  const filtroPais = usePaisFiltroStore(s => s.paisFiltro)
+  const setFiltroPais = usePaisFiltroStore(s => s.setPaisFiltro)
   const [nuevoDoc, setNuevoDoc] = useState('')
   // Requerimientos + Tareas
   const [nuevoReqTexto, setNuevoReqTexto] = useState('')

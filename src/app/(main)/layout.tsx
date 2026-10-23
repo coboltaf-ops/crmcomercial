@@ -10,6 +10,8 @@ import { useReferenceStore } from '@/features/referencias/store/reference-store'
 import { useFlujoListener } from '@/features/flujos/lib/useFlujoListener'
 import { useAutoSeed } from '@/shared/hooks/use-auto-seed'
 import { useI18nStore } from '@/shared/i18n/use-t'
+import { usePaisFiltroStore } from '@/features/ui/pais-filtro-store'
+import { esGlobal, PAISES_ACTIVOS, etiquetaPais } from '@/shared/lib/paises'
 import AsistenteVoz from '@/shared/components/asistente-voz'
 import AutoUpdate from '@/shared/components/auto-update'
 
@@ -81,6 +83,9 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
   const empresa = empresas[0]
   const idioma = useI18nStore(s => s.idioma)
   const setIdioma = useI18nStore(s => s.setIdioma)
+  const usuarioGlobal = esGlobal(user?.pais || '')
+  const paisFiltro = usePaisFiltroStore(s => s.paisFiltro)
+  const setPaisFiltro = usePaisFiltroStore(s => s.setPaisFiltro)
 
   // Limpieza única: borrar datos viejos de los módulos guardados en el
   // navegador (versión antigua). Ya no se usan — los datos viven en KV.
@@ -341,6 +346,22 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
 
         {/* Navigation */}
         <nav style={{ flex: 1, padding: '12px 8px', display: 'flex', flexDirection: 'column', gap: 2, overflow: 'auto' }}>
+          {/* Selector de país GLOBAL (primer ítem) — solo usuarios GLOBAL. Filtra TODOS los módulos. */}
+          {usuarioGlobal && !collapsed && (
+            <div style={{ marginBottom: 10, padding: '8px 10px', background: 'rgba(255,255,255,0.08)', borderRadius: 10, border: '1px solid rgba(255,255,255,0.18)' }}>
+              <label style={{ display: 'block', color: '#ffffff', fontSize: 10, fontWeight: 900, letterSpacing: 0.5, marginBottom: 4 }}>🌎 {idioma === 'en' ? 'VIEWING COUNTRY' : 'PAÍS QUE ESTOY VIENDO'}</label>
+              <select value={paisFiltro} onChange={e => setPaisFiltro(e.target.value)}
+                style={{ width: '100%', padding: '8px 10px', borderRadius: 8, background: '#1e3a8a', border: '1px solid #60a5fa', color: '#ffffff', fontSize: 13, fontWeight: 800, cursor: 'pointer', outline: 'none' }}>
+                <option value="" style={{ color: '#ffffff', background: '#1e3a8a' }}>🌎 {idioma === 'en' ? 'All countries' : 'Todos los países'}</option>
+                {PAISES_ACTIVOS.map(p => <option key={p.codigo} value={p.codigo} style={{ color: '#ffffff', background: '#1e3a8a' }}>{p.bandera} {p.nombre}</option>)}
+              </select>
+              {paisFiltro && <p style={{ color: '#ffffff', fontSize: 10, fontWeight: 900, margin: '5px 0 0' }}>Viendo solo: {etiquetaPais(paisFiltro)}</p>}
+            </div>
+          )}
+          {usuarioGlobal && collapsed && (
+            <button title={paisFiltro ? etiquetaPais(paisFiltro) : (idioma === 'en' ? 'All countries' : 'Todos los países')} onClick={() => setCollapsed(false)}
+              style={{ marginBottom: 8, padding: '8px 0', borderRadius: 8, background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.18)', color: '#fff', fontSize: 18, cursor: 'pointer' }}>🌎</button>
+          )}
           {mainItems.map(item => {
             const active = pathname === item.href
             return (

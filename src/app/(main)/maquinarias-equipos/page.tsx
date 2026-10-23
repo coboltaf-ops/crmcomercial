@@ -1,5 +1,6 @@
 'use client'
 import { useState, useEffect, useMemo } from 'react'
+import { usePaisFiltroStore } from '@/features/ui/pais-filtro-store'
 import ModuleHeader from '@/shared/components/module-header'
 import { useMaquinariasStore, MaquinariaEquipo } from '@/features/maquinarias-equipos/store/maquinarias-equipos-store'
 import { useCurrentUserStore } from '@/features/usuarios-gestion/store/current-user-store'
@@ -23,7 +24,8 @@ export default function MaquinariasEquiposPage() {
   const loadMaquinarias = useMaquinariasStore(s => s.loadMaquinarias)
 
   const [q, setQ] = useState('')
-  const [filtroPais, setFiltroPais] = useState('')  // solo lo usan usuarios GLOBAL
+  const filtroPais = usePaisFiltroStore(s => s.paisFiltro)
+  const setFiltroPais = usePaisFiltroStore(s => s.setPaisFiltro)
   const [detalle, setDetalle] = useState<MaquinariaEquipo | null>(null)
   const [selected, setSelected] = useState<MaquinariaEquipo | null>(null)  // form crear/editar
   const [isForm, setIsForm] = useState(false)

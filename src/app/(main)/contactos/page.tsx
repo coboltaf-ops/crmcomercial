@@ -1,5 +1,6 @@
 'use client'
 import { logAudit, computarDiff } from '@/shared/lib/audit'
+import { usePaisFiltroStore } from '@/features/ui/pais-filtro-store'
 import { useState, useEffect } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import ModuleHeader from '@/shared/components/module-header'
@@ -49,7 +50,8 @@ export default function ContactosPage() {
   const [tab, setTab] = useState<'registros' | 'reportes'>('registros')
   const [search, setSearch] = useState('')
   const [filterCliente, setFilterCliente] = useState('')
-  const [filtroPais, setFiltroPais] = useState('')  // solo lo usan usuarios GLOBAL
+  const filtroPais = usePaisFiltroStore(s => s.paisFiltro)
+  const setFiltroPais = usePaisFiltroStore(s => s.setPaisFiltro)
   const { pendingSearch, pendingAction, clearPending } = useAsistenteStore()
   const searchParams = useSearchParams()
   const router = useRouter()

@@ -1,5 +1,6 @@
 'use client'
 import { logAudit, computarDiff } from '@/shared/lib/audit'
+import { usePaisFiltroStore } from '@/features/ui/pais-filtro-store'
 import { useState, useEffect } from 'react'
 import { useProspectosStore, Prospecto } from '@/features/prospectos/store/prospectos-store'
 import { useClientesStore, generarCodigoAcceso } from '@/features/clientes/store/clientes-store'
@@ -53,7 +54,8 @@ export default function ProspectosPage() {
   const [verLectura, setVerLectura] = useState(false)
   const [tab, setTab] = useState<'registros' | 'reportes'>('registros')
   const [search, setSearch] = useState('')
-  const [filtroPais, setFiltroPais] = useState('')  // solo lo usan usuarios GLOBAL
+  const filtroPais = usePaisFiltroStore(s => s.paisFiltro)
+  const setFiltroPais = usePaisFiltroStore(s => s.setPaisFiltro)
   const { pendingSearch, pendingAction, clearPending } = useAsistenteStore()
 
   // ── Prospectos externos ──

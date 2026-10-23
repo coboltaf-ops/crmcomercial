@@ -1,5 +1,6 @@
 'use client'
 import { logAudit, computarDiff } from '@/shared/lib/audit'
+import { usePaisFiltroStore } from '@/features/ui/pais-filtro-store'
 import { useState, useEffect } from 'react'
 import ModuleHeader from '@/shared/components/module-header'
 import { useProductosStore, Producto } from '@/features/productos/store/productos-store'
@@ -48,7 +49,8 @@ export default function ProductosPage() {
   const [viewDetail, setViewDetail] = useState<Producto | null>(null)
   const [tab, setTab] = useState<'registros' | 'reportes'>('registros')
   const [search, setSearch] = useState('')
-  const [filtroPais, setFiltroPais] = useState('')
+  const filtroPais = usePaisFiltroStore(s => s.paisFiltro)
+  const setFiltroPais = usePaisFiltroStore(s => s.setPaisFiltro)
   const { pendingSearch, pendingAction, clearPending } = useAsistenteStore()
   useEffect(() => {
     if (pendingSearch) setSearch(pendingSearch)

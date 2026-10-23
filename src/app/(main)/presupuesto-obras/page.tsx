@@ -1,6 +1,7 @@
 'use client'
 
 import { useIdioma } from '@/shared/i18n/use-t'
+import { usePaisFiltroStore } from '@/features/ui/pais-filtro-store'
 import { useState, useEffect, useRef, Fragment } from 'react'
 import { PRESUPUESTO_CSS } from '@/shared/lib/presupuesto-css'
 import { useOfertasStore } from '@/features/ofertas/store/ofertas-store'
@@ -87,7 +88,8 @@ export default function OfertasClientesPage() {
   const [isFormOpen, setIsFormOpen] = useState(false)
   const [formError, setFormError] = useState('')
   const [search, setSearch] = useState('')
-  const [filtroPais, setFiltroPais] = useState('')  // solo lo usan usuarios GLOBAL
+  const filtroPais = usePaisFiltroStore(s => s.paisFiltro)
+  const setFiltroPais = usePaisFiltroStore(s => s.setPaisFiltro)
   const [viewItem, setViewItem] = useState<Oferta | null>(null)
   const [vista, setVista] = useState<string>('todo')  // 'todo' o el id de un Título para enfocar
   // Editor de Porcentaje de Utilidad (en la vista): general o por capítulo

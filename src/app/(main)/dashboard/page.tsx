@@ -11,7 +11,9 @@ import { usePQRSStore } from '@/features/pqrs/store/pqrs-store'
 import { useProyectosStore } from '@/features/proyectos/store/proyectos-store'
 import { useFactoresStore } from '@/features/factores-monedas/store/factores-store'
 import { fmtMoney, setMonedaLocale } from '@/shared/lib/format-number'
-import { PAISES_ACTIVOS } from '@/shared/lib/paises'
+import { PAISES_ACTIVOS, esGlobal, etiquetaPais } from '@/shared/lib/paises'
+import { usePaisFiltroStore } from '@/features/ui/pais-filtro-store'
+import { useCurrentUserStore } from '@/features/usuarios-gestion/store/current-user-store'
 import { DEPARTAMENTOS } from '@/features/dashboard/colombia-departamentos'
 import { useIdioma } from '@/shared/i18n/use-t'
 
@@ -104,15 +106,19 @@ export default function DashboardPage() {
   const idioma = useIdioma()
   const L = (es: string, en: string) => (idioma === 'en' ? en : es)
   const router = useRouter()
-  const clientes = useClientesStore(s => s.clientes)
-  const contactos = useContactosStore(s => s.contactos)
-  const productos = useProductosStore(s => s.productos)
-  const oportunidades = useOportunidadesStore(s => s.oportunidades)
-  const ofertas = useSeguimientoOfertaStore(s => s.ofertas)
+  const currentUser = useCurrentUserStore(s => s.user)
+  const paisFiltro = usePaisFiltroStore(s => s.paisFiltro)
+  const usuarioGlobal = esGlobal(currentUser?.pais || '')
+  function fp<T extends { pais?: string }>(arr: T[]): T[] { return (usuarioGlobal && paisFiltro) ? (arr || []).filter(x => x.pais === paisFiltro) : (arr || []) }
+  const clientes = fp(useClientesStore(s => s.clientes))
+  const contactos = fp(useContactosStore(s => s.contactos))
+  const productos = fp(useProductosStore(s => s.productos))
+  const oportunidades = fp(useOportunidadesStore(s => s.oportunidades))
+  const ofertas = fp(useSeguimientoOfertaStore(s => s.ofertas))
   const loadOfertasSeg = useSeguimientoOfertaStore(s => s.loadOfertas)
-  const cotizaciones = useCotizacionesStore(s => s.cotizaciones)
-  const pqrs = usePQRSStore(s => s.pqrs)
-  const proyectos = useProyectosStore(s => s.proyectos)
+  const cotizaciones = fp(useCotizacionesStore(s => s.cotizaciones))
+  const pqrs = fp(usePQRSStore(s => s.pqrs))
+  const proyectos = fp(useProyectosStore(s => s.proyectos))
   const factores = useFactoresStore(s => s.factores)
 
   // El dashboard carga sus propios datos desde el servidor, así los conteos
@@ -300,7 +306,14 @@ export default function DashboardPage() {
 
   return (
     <div>
-      <h1 style={{ fontSize: 24, fontWeight: 700, color: '#ffffff', marginBottom: 24 }}>Dashboard</h1>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap', marginBottom: 24 }}>
+        <h1 style={{ fontSize: 24, fontWeight: 700, color: '#ffffff', margin: 0 }}>Dashboard</h1>
+        {usuarioGlobal && (
+          <span style={{ padding: '4px 14px', borderRadius: 20, fontSize: 13, fontWeight: 800, background: paisFiltro ? '#15803d' : 'rgba(255,255,255,0.15)', color: '#ffffff', border: '1px solid rgba(255,255,255,0.3)' }}>
+            {paisFiltro ? `📍 ${etiquetaPais(paisFiltro)}` : `🌎 ${idioma === 'en' ? 'All countries' : 'Todos los países'}`}
+          </span>
+        )}
+      </div>
 
       {/* Summary cards */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: 16, marginBottom: 24 }}>

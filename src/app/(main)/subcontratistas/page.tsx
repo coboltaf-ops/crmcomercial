@@ -1,5 +1,6 @@
 'use client'
 import { useState, useEffect, useMemo } from 'react'
+import { usePaisFiltroStore } from '@/features/ui/pais-filtro-store'
 import ModuleHeader from '@/shared/components/module-header'
 import { useSubcontratistasStore, Subcontratista } from '@/features/subcontratistas/store/subcontratistas-store'
 import { useCurrentUserStore } from '@/features/usuarios-gestion/store/current-user-store'
@@ -24,7 +25,8 @@ export default function SubcontratistasPage() {
   const loadSubcontratistas = useSubcontratistasStore(s => s.loadSubcontratistas)
 
   const [q, setQ] = useState('')
-  const [filtroPais, setFiltroPais] = useState('')  // solo lo usan usuarios GLOBAL
+  const filtroPais = usePaisFiltroStore(s => s.paisFiltro)
+  const setFiltroPais = usePaisFiltroStore(s => s.setPaisFiltro)
   const [detalle, setDetalle] = useState<Subcontratista | null>(null)
   const [selected, setSelected] = useState<Subcontratista | null>(null)  // form crear/editar
   const [isForm, setIsForm] = useState(false)

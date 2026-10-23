@@ -1,5 +1,6 @@
 'use client'
 import { useIdioma } from '@/shared/i18n/use-t'
+import { usePaisFiltroStore } from '@/features/ui/pais-filtro-store'
 import { logAudit, computarDiff } from '@/shared/lib/audit'
 import { useState, useEffect } from 'react'
 import ModuleHeader from '@/shared/components/module-header'
@@ -45,7 +46,8 @@ export default function ProveedoresPage() {
   const [isForm, setIsForm] = useState(false)
   const [verLectura, setVerLectura] = useState(false)
   const [search, setSearch] = useState('')
-  const [filtroPais, setFiltroPais] = useState('')  // solo lo usan usuarios GLOBAL
+  const filtroPais = usePaisFiltroStore(s => s.paisFiltro)
+  const setFiltroPais = usePaisFiltroStore(s => s.setPaisFiltro)
 
   const refOptions = (table: string, fallback: string[]) => {
     const opts = (refData[table as keyof typeof refData] || []).filter(r => r.situacion).map(r => r.descripcion)

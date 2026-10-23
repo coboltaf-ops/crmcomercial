@@ -1,5 +1,6 @@
 'use client'
 import { useState, useEffect } from 'react'
+import { usePaisFiltroStore } from '@/features/ui/pais-filtro-store'
 import { useRouter, useSearchParams } from 'next/navigation'
 import ModuleHeader from '@/shared/components/module-header'
 import EnviarCorreoModal from '@/shared/components/enviar-correo-modal'
@@ -82,7 +83,8 @@ export default function ClientesPage() {
   const [tab, setTab] = useState<'registros' | 'reportes'>('registros')
   const [detailTab, setDetailTab] = useState<'info' | 'contactos' | 'cotizaciones' | 'oportunidades' | 'tickets'>('info')
   const [search, setSearch] = useState('')
-  const [filtroPais, setFiltroPais] = useState('')  // solo lo usan usuarios GLOBAL
+  const filtroPais = usePaisFiltroStore(s => s.paisFiltro)
+  const setFiltroPais = usePaisFiltroStore(s => s.setPaisFiltro)
   const { pendingSearch, pendingAction, clearPending } = useAsistenteStore()
   const searchParams = useSearchParams()
   useEffect(() => {

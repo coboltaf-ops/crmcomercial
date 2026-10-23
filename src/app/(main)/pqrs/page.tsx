@@ -1,5 +1,6 @@
 'use client'
 import { useState, useEffect } from 'react'
+import { usePaisFiltroStore } from '@/features/ui/pais-filtro-store'
 import { usePQRSStore, PQRS } from '@/features/pqrs/store/pqrs-store'
 import { useEmpresaStore } from '@/features/empresa/store/empresa-store'
 import { logAudit, computarDiff } from '@/shared/lib/audit'
@@ -56,7 +57,8 @@ export default function PQRSPage() {
   const [viewDetail, setViewDetail] = useState<PQRS | null>(null)
   const [tab, setTab] = useState<'registros' | 'reportes'>('registros')
   const [search, setSearch] = useState('')
-  const [filtroPais, setFiltroPais] = useState('')  // solo lo usan usuarios GLOBAL
+  const filtroPais = usePaisFiltroStore(s => s.paisFiltro)
+  const setFiltroPais = usePaisFiltroStore(s => s.setPaisFiltro)
   const [externas, setExternas] = useState<PQRSExterna[]>([])
   const [showExternas, setShowExternas] = useState(false)
   const [loadingExternas, setLoadingExternas] = useState(false)

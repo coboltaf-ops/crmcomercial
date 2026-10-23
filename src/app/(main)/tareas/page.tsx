@@ -1,5 +1,6 @@
 'use client'
 import { logAudit, computarDiff } from '@/shared/lib/audit'
+import { usePaisFiltroStore } from '@/features/ui/pais-filtro-store'
 import { useState, useEffect } from 'react'
 import { useTareasStore, Tarea, esTareaFinalizada } from '@/features/tareas/store/tareas-store'
 import { useOportunidadesStore } from '@/features/oportunidades/store/oportunidades-store'
@@ -76,7 +77,8 @@ export default function TareasPage() {
   const [verLectura, setVerLectura] = useState(false)
   const [search, setSearch] = useState('')
   const [filtroSituacion, setFiltroSituacion] = useState('')
-  const [filtroPais, setFiltroPais] = useState('')  // solo lo usan usuarios GLOBAL
+  const filtroPais = usePaisFiltroStore(s => s.paisFiltro)
+  const setFiltroPais = usePaisFiltroStore(s => s.setPaisFiltro)
 
   // Kanban drag
   const [dragId, setDragId] = useState<string | null>(null)
