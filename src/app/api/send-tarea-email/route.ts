@@ -41,7 +41,7 @@ export async function POST(req: Request) {
     })
 
     await transporter.sendMail({
-      from: process.env.SMTP_USER,
+      from: `"NORTON" <${process.env.SMTP_USER}>`,
       to,
       subject: `Nueva tarea asignada: ${codigo}`,
       html,

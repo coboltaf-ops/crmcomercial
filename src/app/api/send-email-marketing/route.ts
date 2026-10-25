@@ -55,7 +55,7 @@ export async function POST(req: Request) {
           .replace(/\{\{empresa\}\}/g, empresa_nombre || 'CRM Comercial')
 
         await transporter.sendMail({
-          from: process.env.SMTP_USER,
+          from: `"NORTON" <${process.env.SMTP_USER}>`,
           to: dest.email,
           subject: asuntoFinal,
           html: contenidoFinal,
