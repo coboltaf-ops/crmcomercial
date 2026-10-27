@@ -721,7 +721,7 @@ export default function OportunidadesPage() {
       {tab === 'registros' && (
         <div style={{ marginBottom: 20, display: 'flex', justifyContent: 'space-between', gap: 8, flexWrap: 'wrap' }}>
           {permisos.editar
-            ? <button onClick={handleArchivarPerdidas} style={{ ...btnStyle, background: '#b45309', color: '#ffffff', fontWeight: 800 }}>🗃️ {es ? 'Repositorio Oportunidades' : 'Opportunities Archive'}</button>
+            ? <button onClick={handleArchivarPerdidas} style={{ ...btnStyle, background: '#facc15', color: '#000000', fontWeight: 800 }}>🗃️ {es ? 'Repositorio Oportunidades' : 'Opportunities Archive'}</button>
             : <span />}
           {permisos.crear && (
             <button onClick={() => { setSelected(emptyOportunidad(nextConsecutivo('OPP-', oportunidades.map(o => o.codigo)).codigo, '', usuarioGlobal ? (PAISES_ACTIVOS[0]?.codigo || 'Colombia') : paisUsuario)); setIsForm(true) }} style={{ ...btnStyle, background: '#0f1b3d', color: '#ffffff' }}>{t('page.oportunidades.btnNuevo')}</button>
