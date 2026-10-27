@@ -252,7 +252,7 @@ export default function DashboardPage() {
       <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap', marginBottom: 24 }}>
         <h1 style={{ fontSize: 24, fontWeight: 700, color: '#ffffff', margin: 0 }}>Dashboard</h1>
         {usuarioGlobal && (
-          <span style={{ padding: '4px 14px', borderRadius: 20, fontSize: 13, fontWeight: 800, background: paisFiltro ? '#15803d' : 'rgba(255,255,255,0.15)', color: '#ffffff', border: '1px solid rgba(255,255,255,0.3)' }}>
+          <span style={{ padding: '4px 14px', borderRadius: 20, fontSize: 13, fontWeight: 800, background: '#ffffff', color: '#000000', border: '1px solid rgba(255,255,255,0.3)' }}>
             {paisFiltro ? `📍 ${etiquetaPais(paisFiltro)}` : `🌎 ${idioma === 'en' ? 'All countries' : 'Todos los países'}`}
           </span>
         )}
