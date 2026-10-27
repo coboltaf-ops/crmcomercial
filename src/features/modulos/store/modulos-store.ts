@@ -31,6 +31,7 @@ const defaultModulos: Modulo[] = [
   { id: 'proveedores', label: 'Proveedores', icon: '🏭', href: '/proveedores', activo: true, grupo: 'principal' },
   { id: 'cotizaciones', label: 'Cotizaciones', icon: '📋', href: '/cotizaciones', activo: true, grupo: 'principal' },
   { id: 'pqrs', label: 'PQRS', icon: '📩', href: '/pqrs', activo: true, grupo: 'principal' },
+  { id: 'referencias', label: 'Referencias', icon: '⚙️', href: '/referencias', activo: true, grupo: 'principal' },
   { id: 'correos', label: 'Correos Enviados', icon: '📧', href: '/correos', activo: true, grupo: 'principal' },
   { id: 'tareas', label: 'Tareas', icon: '✅', href: '/tareas', activo: true, grupo: 'principal' },
 
@@ -43,7 +44,6 @@ const defaultModulos: Modulo[] = [
   { id: 'maquinarias-equipos', label: 'Maquinaria y Equipos', icon: '🚜', href: '/maquinarias-equipos', activo: true, grupo: 'ofertas' },
   { id: 'cargos-salarios', label: 'Cargos y Salarios', icon: '💼', href: '/cargos-salarios', activo: true, grupo: 'ofertas' },
 
-  { id: 'referencias', label: 'Referencias', icon: '⚙️', href: '/referencias', activo: true, grupo: 'configuracion' },
   { id: 'factores-monedas', label: 'Factores Conversión Monedas', icon: '💱', href: '/factores-monedas', activo: true, grupo: 'configuracion' },
 
   // ── Configuración ──
