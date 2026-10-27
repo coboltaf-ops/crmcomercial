@@ -74,6 +74,10 @@ const emptyCotizacion = (codigo: string, nro: number, responsable: string, pais:
 // El AIU aplica cuando el Tipo de Cotización es "Construcción" (sin/ con tilde, may/min).
 const esConstruccion = (cat?: string) =>
   (cat || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').includes('construc')
+// AIU (Administración/Imprevistos/Utilidad + IVA sobre la utilidad): Construcción o Servicio.
+// Se dispara por `aiu_activo` (lo marca el Tipo de Cotización en Colombia) o por categoría Construcción,
+// así las cotizaciones antiguas (aiu_activo indefinido) NO cambian su cálculo.
+const esAIU = (c: { categoria?: string; aiu_activo?: boolean }) => esConstruccion(c.categoria) || !!c.aiu_activo
 
 const calcTotals = (cot: Cotizacion) => {
   const subtotal = cot.detalles.reduce((s, d) => s + d.subtotal, 0)
@@ -93,7 +97,7 @@ const calcTotals = (cot: Cotizacion) => {
     const impuesto = ivaBienes + ivaServ
     return { subtotal, cdBienes, cdServ, admin, imprev, utilidad, aiuTotal, ivaBienes, ivaServ, impuesto, total: subtotal + aiuTotal + impuesto, mezclado: true }
   }
-  if (esConstruccion(cot.categoria)) {
+  if (esAIU(cot)) {
     // Cada componente = Subtotal × porcentaje.
     const admin = subtotal * ((cot.aiu_admin_pct || 0) / 100)
     const imprev = subtotal * ((cot.aiu_imprev_pct || 0) / 100)
@@ -211,17 +215,12 @@ export default function CotizacionesPage() {
     setIsForm(false); setSelected(null)
   }
 
-  // Nueva cotización: en Colombia pregunta Simple o Mezclada (S/M) antes de abrir el formulario.
+  // Nueva cotización: el modelo (Construcción/Servicio/Mezclada) se elige en el
+  // campo "Tipo de Cotización" del formulario (en Colombia).
   const iniciarNuevaCotizacion = () => {
     const nc = nextConsecutivo('COT-', cotizaciones.map(c => c.codigo))
     const paisNueva = usuarioGlobal ? (PAISES_ACTIVOS[0]?.codigo || 'Colombia') : paisUsuario
-    const base = emptyCotizacion(nc.codigo, nc.nro, `${currentUser?.nombre || ''} ${currentUser?.apellido || ''}`.trim(), paisNueva)
-    let mezclado = false
-    if (paisNueva === 'Colombia') {
-      const r = (window.prompt('¿Cotización Simple o Mezclada?  Escribe  S  o  M', 'S') || '').trim().toUpperCase()
-      mezclado = r.startsWith('M')
-    }
-    setSelected({ ...base, mezclado_activo: mezclado })
+    setSelected(emptyCotizacion(nc.codigo, nc.nro, `${currentUser?.nombre || ''} ${currentUser?.apellido || ''}`.trim(), paisNueva))
     setIsForm(true)
   }
 
@@ -330,7 +329,7 @@ export default function CotizacionesPage() {
         <p>Utilidad (${cot.aiu_utilidad_pct || 0}%): <strong>${sym}${fmtMoney(utilidad)}</strong></p>
         <br/>
         <p>IVA Servicios (${cot.iva_servicios_pct ?? 19}% sobre Utilidad): <strong>${sym}${fmtMoney(ivaServ)}</strong></p>
-        <br/>` : esConstruccion(cot.categoria) ? `
+        <br/>` : esAIU(cot) ? `
         <p>Administración (${cot.aiu_admin_pct || 0}%): <strong>${sym}${fmtMoney(admin)}</strong></p>
         <br/>
         <p>Imprevistos (${cot.aiu_imprev_pct || 0}%): <strong>${sym}${fmtMoney(imprev)}</strong></p>
@@ -390,10 +389,10 @@ export default function CotizacionesPage() {
       `*Subtotal:* ${sym}${fmtMoney(subtotal)}\n` +
       (mezclado
         ? `*IVA Bienes (${cot.pct_impuesto}%):* ${sym}${fmtMoney(ivaBienes)}\n*Administración (${cot.aiu_admin_pct || 0}%):* ${sym}${fmtMoney(admin)}\n*Imprevistos (${cot.aiu_imprev_pct || 0}%):* ${sym}${fmtMoney(imprev)}\n*Utilidad (${cot.aiu_utilidad_pct || 0}%):* ${sym}${fmtMoney(utilidad)}\n*IVA Servicios (${cot.iva_servicios_pct ?? 19}% sobre Utilidad):* ${sym}${fmtMoney(ivaServ)}\n`
-        : esConstruccion(cot.categoria)
+        : esAIU(cot)
         ? `*Administración (${cot.aiu_admin_pct || 0}%):* ${sym}${fmtMoney(admin)}\n*Imprevistos (${cot.aiu_imprev_pct || 0}%):* ${sym}${fmtMoney(imprev)}\n*Utilidad (${cot.aiu_utilidad_pct || 0}%):* ${sym}${fmtMoney(utilidad)}\n*IVA ${cot.pct_impuesto}% sobre Utilidad:* ${sym}${fmtMoney(impuesto)}\n`
         : `*IVA ${cot.pct_impuesto}%:* ${sym}${fmtMoney(impuesto)}\n`) +
-      `*TOTAL${esConstruccion(cot.categoria) ? ' GENERAL' : ''}: ${sym}${fmtMoney(total)}*\n\n` +
+      `*TOTAL${(esAIU(cot) || cot.mezclado_activo) ? ' GENERAL' : ''}: ${sym}${fmtMoney(total)}*\n\n` +
       (cot.observaciones ? `_${cot.observaciones}_\n\n` : '') +
       `Vendedor: ${cot.vendedor || cot.responsable}`
     window.open(`https://wa.me/${numero}?text=${encodeURIComponent(mensaje)}`, '_blank')
@@ -528,7 +527,7 @@ export default function CotizacionesPage() {
               <p style={{ color: '#013978', fontSize: 15 }}>Utilidad ({viewDetail.aiu_utilidad_pct || 0}%): <span style={{ color: '#013978', fontWeight: 600 }}>{monedaSimbolo(viewDetail.tipo_moneda)}{fmtMoney(utilidad)}</span></p>
               <div style={{ height: 8 }} />
               <p style={{ color: '#013978', fontSize: 15 }}>IVA servicios {viewDetail.iva_servicios_pct ?? 19}% sobre Utilidad: <span style={{ color: '#013978', fontWeight: 600 }}>{monedaSimbolo(viewDetail.tipo_moneda)}{fmtMoney(ivaServ)}</span></p>
-            </>) : esConstruccion(viewDetail.categoria) ? (<>
+            </>) : esAIU(viewDetail) ? (<>
               <p style={{ color: '#013978', fontSize: 15 }}>Administración ({viewDetail.aiu_admin_pct || 0}%): <span style={{ color: '#013978', fontWeight: 600 }}>{monedaSimbolo(viewDetail.tipo_moneda)}{fmtMoney(admin)}</span></p>
               <div style={{ height: 12 }} />
               <p style={{ color: '#013978', fontSize: 15 }}>Imprevistos ({viewDetail.aiu_imprev_pct || 0}%): <span style={{ color: '#013978', fontWeight: 600 }}>{monedaSimbolo(viewDetail.tipo_moneda)}{fmtMoney(imprev)}</span></p>
@@ -638,7 +637,18 @@ export default function CotizacionesPage() {
             </div>
             <div>
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{idioma === 'en' ? 'Quotation Type' : 'Tipo de Cotización'} *</label>
-              {verLectura ? <div className="ver-box">{selected.categoria || '—'}</div> : <select value={selected.categoria || ''} onChange={e => setSelected({ ...selected, categoria: e.target.value })} required style={inputStyle}>
+              {verLectura ? <div className="ver-box">{selected.categoria || '—'}</div> : selected.pais === 'Colombia' ? (
+                <select value={selected.categoria || ''} onChange={e => {
+                  const val = e.target.value
+                  setSelected({ ...selected, categoria: val, mezclado_activo: val === 'Mezclada', aiu_activo: val === 'Servicio' || val === 'Construcción' })
+                }} required style={inputStyle}>
+                  <option value="">Seleccione...</option>
+                  <option value="Construcción">Construcción</option>
+                  <option value="Servicio">Servicio</option>
+                  <option value="Mezclada">Mezclada</option>
+                  {selected.categoria && !['Construcción', 'Servicio', 'Mezclada'].includes(selected.categoria) && <option value={selected.categoria}>{selected.categoria}</option>}
+                </select>
+              ) : <select value={selected.categoria || ''} onChange={e => setSelected({ ...selected, categoria: e.target.value })} required style={inputStyle}>
                 <option value="">Seleccione...</option>
                 {refOptions('categoria_productos').map(o => <option key={o} value={o}>{o}</option>)}
               </select>}
@@ -707,20 +717,15 @@ export default function CotizacionesPage() {
                 <div style={{ ...inputStyle, background: '#f1f5f9', color: '#64748b' }}>{etiquetaPais(selected.pais)}</div>
               )}
             </div>
-            {/* Modelo MEZCLADO — SOLO Colombia, a discreción del usuario */}
-            {selected.pais === 'Colombia' && !verLectura && (
+            {/* Modelo MEZCLADO — SOLO Colombia (se elige "Mezclada" en Tipo de Cotización) */}
+            {selected.pais === 'Colombia' && selected.mezclado_activo && !verLectura && (
               <div style={{ gridColumn: 'span 3', background: '#fff7ed', border: '1px solid #fdba74', borderRadius: 10, padding: '10px 12px', display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap' }}>
-                <label style={{ display: 'flex', alignItems: 'center', gap: 8, color: '#9a3412', fontSize: 13, fontWeight: 800, cursor: 'pointer' }}>
-                  <input type="checkbox" checked={!!selected.mezclado_activo} onChange={e => setSelected({ ...selected, mezclado_activo: e.target.checked })} />
-                  🇨🇴 Cotización mezclada (marcar Bien / Servicio por renglón)
-                </label>
-                {selected.mezclado_activo && (
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                    <span style={{ color: '#013978', fontSize: 12, fontWeight: 600 }}>% IVA servicios (sobre utilidad)</span>
-                    <input type="number" step="0.01" min="0" value={selected.iva_servicios_pct ?? 19} onChange={e => setSelected({ ...selected, iva_servicios_pct: parseFloat(e.target.value) || 0 })} style={{ ...inputStyle, width: 80, padding: '4px 6px', textAlign: 'center' }} />
-                  </div>
-                )}
-                {selected.mezclado_activo && <span style={{ color: '#9a3412', fontSize: 11 }}>Los bienes usan el “% IVA” de arriba (pon 0% si es Zona Franca).</span>}
+                <span style={{ color: '#9a3412', fontSize: 13, fontWeight: 800 }}>🇨🇴 Cotización mezclada — marca Bien / Servicio en cada renglón</span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                  <span style={{ color: '#013978', fontSize: 12, fontWeight: 600 }}>% IVA servicios (sobre utilidad)</span>
+                  <input type="number" step="0.01" min="0" value={selected.iva_servicios_pct ?? 19} onChange={e => setSelected({ ...selected, iva_servicios_pct: parseFloat(e.target.value) || 0 })} style={{ ...inputStyle, width: 80, padding: '4px 6px', textAlign: 'center' }} />
+                </div>
+                <span style={{ color: '#9a3412', fontSize: 11 }}>Los bienes usan el “% IVA” de arriba (pon 0% si es Zona Franca).</span>
               </div>
             )}
             {verLectura && selected.mezclado_activo && (
@@ -754,7 +759,7 @@ export default function CotizacionesPage() {
               <>
               <input value={searchProd} onChange={e => setSearchProd(e.target.value)} placeholder="Buscar producto por código o descripción..." style={{ ...inputStyle, maxWidth: 500, marginBottom: 8 }} autoFocus />
               <div style={{ background: '#ffffff', border: '1px solid rgba(255,255,255,0.2)', borderRadius: 8, maxHeight: 220, overflow: 'auto' }}>
-                {productos.filter(p => p.situacion === 'Activo').filter(p => p.categoria === selected.categoria).filter(p => !searchProd || p.descripcion.toLowerCase().includes(searchProd.toLowerCase()) || p.codigo.toLowerCase().includes(searchProd.toLowerCase())).slice(0, 20).map(p => {
+                {productos.filter(p => p.situacion === 'Activo').filter(p => (selected.categoria === 'Servicio' || selected.categoria === 'Mezclada') ? true : p.categoria === selected.categoria).filter(p => !searchProd || p.descripcion.toLowerCase().includes(searchProd.toLowerCase()) || p.codigo.toLowerCase().includes(searchProd.toLowerCase())).slice(0, 20).map(p => {
                   const yaAgregado = selected.detalles.some(d => d.producto_id === p.id)
                   return (
                   <div key={p.id} onClick={() => {
@@ -775,7 +780,7 @@ export default function CotizacionesPage() {
                   </div>
                   )
                 })}
-                {productos.filter(p => p.situacion === 'Activo').filter(p => p.categoria === selected.categoria).filter(p => !searchProd || p.descripcion.toLowerCase().includes(searchProd.toLowerCase()) || p.codigo.toLowerCase().includes(searchProd.toLowerCase())).length === 0 && (
+                {productos.filter(p => p.situacion === 'Activo').filter(p => (selected.categoria === 'Servicio' || selected.categoria === 'Mezclada') ? true : p.categoria === selected.categoria).filter(p => !searchProd || p.descripcion.toLowerCase().includes(searchProd.toLowerCase()) || p.codigo.toLowerCase().includes(searchProd.toLowerCase())).length === 0 && (
                   <div style={{ padding: '16px 14px', color: '#013978', fontSize: 12, textAlign: 'center' }}>No se encontraron productos en la categoría «{selected.categoria}»</div>
                 )}
               </div>
@@ -867,7 +872,7 @@ export default function CotizacionesPage() {
                 </div>
                 <p style={{ color: '#013978', fontSize: 15, marginTop: 6 }}>IVA servicios {selected.iva_servicios_pct ?? 19}% sobre Utilidad: <span style={{ color: '#013978', fontWeight: 600 }}>{monedaSimbolo(selected.tipo_moneda)}{fmtMoney(ivaServ)}</span></p>
               </>
-            ) : esConstruccion(selected.categoria) ? (
+            ) : esAIU(selected) ? (
               <>
                 <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: 8, marginTop: 6 }}>
                   <span style={{ color: '#013978', fontSize: 15 }}>Administración</span>
@@ -892,7 +897,7 @@ export default function CotizacionesPage() {
             ) : (
               <p style={{ color: '#013978', fontSize: 15 }}>IVA {selected.pct_impuesto}%:<span style={{ color: '#013978', fontWeight: 600 }}>{monedaSimbolo(selected.tipo_moneda)}{fmtMoney(impuesto)}</span></p>
             )}
-            <p style={{ color: '#000000', fontSize: 18, fontWeight: 800, marginTop: 8 }}>TOTAL{(esConstruccion(selected.categoria) || selected.mezclado_activo) ? ' GENERAL' : ''}: {monedaSimbolo(selected.tipo_moneda)}{fmtMoney(total)}</p>
+            <p style={{ color: '#000000', fontSize: 18, fontWeight: 800, marginTop: 8 }}>TOTAL{(esAIU(selected) || selected.mezclado_activo) ? ' GENERAL' : ''}: {monedaSimbolo(selected.tipo_moneda)}{fmtMoney(total)}</p>
           </div>
 
           <div style={{ gridColumn: 'span 3', marginBottom: 16 }}>
