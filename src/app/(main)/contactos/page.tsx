@@ -315,7 +315,7 @@ export default function ContactosPage() {
               {clientes.map(c => <option key={c.id} value={c.id}>{c.razon_social}</option>)}
             </select>
             {usuarioGlobal && (
-              <select value={filtroPais} onChange={e => setFiltroPais(e.target.value)} style={{ ...inputStyle, maxWidth: 200 }}>
+              <select value={filtroPais} onChange={e => setFiltroPais(e.target.value)} className="pais-filtro" style={{ ...inputStyle, maxWidth: 200 }}>
                 <option value="">🌎 {idioma === 'en' ? 'All countries' : 'Todos'}</option>
                 {PAISES_ACTIVOS.map(p => <option key={p.codigo} value={p.codigo}>{p.bandera} {p.nombre}</option>)}
               </select>

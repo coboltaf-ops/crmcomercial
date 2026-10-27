@@ -23,6 +23,7 @@ const defaultModulos: Modulo[] = [
   { id: 'contactos', label: 'Contactos', icon: '👤', href: '/contactos', activo: true, grupo: 'principal' },
   { id: 'prospectos', label: 'Prospectos', icon: '🧲', href: '/prospectos', activo: true, grupo: 'principal' },
   { id: 'oportunidades', label: 'Oportunidades', icon: '🎯', href: '/oportunidades', activo: true, grupo: 'principal' },
+  { id: 'repositorio-oportunidades-perdidas', label: 'Repositorio Oportunidades Perdidas', icon: '🗃️', href: '/repositorio-oportunidades-perdidas', activo: true, grupo: 'principal' },
   // Seguimiento Oferta — REACTIVADO (2026-10-15): la gestión de ofertas se trasladó aquí (requerimientos→tareas + disparador).
   { id: 'seguimiento-oferta', label: 'Seguimiento Oferta', icon: '📄', href: '/seguimiento-oferta', activo: true, grupo: 'principal' },
   { id: 'proyectos', label: 'Proyectos', icon: '🏗️', href: '/proyectos', activo: true, grupo: 'principal' },

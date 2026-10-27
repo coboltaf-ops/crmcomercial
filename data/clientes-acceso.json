@@ -1,50 +1,290 @@
 [
   {
-    "id": "e98ff8ee-56a4-4f76-bff1-2da34f42a50f",
-    "codigo": "CLI-001",
-    "razon_social": "Grupo Empresarial Andino S.A.S.",
-    "codigo_acceso": "ACC-GRP001"
+    "id": "838b8ecf-a597-41fe-98ea-0750240e62b4",
+    "codigo": "CLI-00002",
+    "razon_social": "SCHRADER CAMARGO INGENIEROS ASOCIADOS S.A.S.",
+    "codigo_acceso": "ACC-Y6WSYQ"
   },
   {
-    "id": "de469477-0625-4e3b-acee-c118f9e6ef48",
-    "codigo": "CLI-002",
-    "razon_social": "Tecnología Peruana del Pacífico S.A.C.",
-    "codigo_acceso": "ACC-TPC002"
+    "id": "3bf9017e-3f65-41d5-8278-423126020335",
+    "codigo": "CLI-00003",
+    "razon_social": "PVC GERFOR S.A.S",
+    "codigo_acceso": "ACC-RR8XQN"
   },
   {
-    "id": "85058b3f-5a83-41c1-aa7e-7b614daad1ae",
-    "codigo": "CLI-003",
-    "razon_social": "Distribuidora Continental de Alimentos Ltda.",
-    "codigo_acceso": "ACC-DCA003"
+    "id": "0952b537-fce4-4ffd-a29a-27a5471cdef2",
+    "codigo": "CLI-00004",
+    "razon_social": "LATAM LOGISTIC PROPERTIES COLOMBIA S.A.S",
+    "codigo_acceso": "ACC-GSYXE2"
   },
   {
-    "id": "5a98e96d-f681-4acf-bcbf-da7c0870963b",
-    "codigo": "CLI-004",
-    "razon_social": "Soluciones Industriales Quito Cía. Ltda.",
-    "codigo_acceso": "ACC-SIQ004"
+    "id": "8493e559-0634-4119-833d-3318f0246b4e",
+    "codigo": "CLI-00005",
+    "razon_social": "POLYUPROTEC S.A.",
+    "codigo_acceso": "ACC-7DL2UB"
   },
   {
-    "id": "a1f3cd90-ba4e-4b18-b2d2-e2bd005dbe34",
-    "codigo": "CLI-005",
-    "razon_social": "Logística del Caribe S.A.",
-    "codigo_acceso": "ACC-LGC005"
+    "id": "9063ee8b-cffc-439b-a0dc-74986fcf7b5f",
+    "codigo": "CLI-00006",
+    "razon_social": "EMPRESA DE VIVIENDA Y DESARROLLO URBANO Y RURAL DE ENVIGADO - DESUR",
+    "codigo_acceso": "ACC-6TBKJE"
   },
   {
-    "id": "b529679e-bedd-4122-962c-625f77ed3272",
-    "codigo": "CLI-006",
-    "razon_social": "Minería Verde SpA",
-    "codigo_acceso": "ACC-MVD006"
+    "id": "c3a7539d-dd53-4ef9-afd0-0773d8dc43a6",
+    "codigo": "CLI-00007",
+    "razon_social": "BARRIERE INGENIERÍA",
+    "codigo_acceso": "ACC-QC7WQ2"
   },
   {
-    "id": "ce095559-a1eb-4ab0-9a0f-24fbc276ea78",
-    "codigo": "CLI-007",
-    "razon_social": "Agroindustrias del Llano C.A.",
-    "codigo_acceso": "ACC-AGL007"
+    "id": "3224539d-9dc5-40d6-993f-897e1911d48c",
+    "codigo": "CLI-00008",
+    "razon_social": "R Y P CONSTRUCTORA S.A.S.",
+    "codigo_acceso": "ACC-T2DE6S"
   },
   {
-    "id": "df30e918-180c-494c-9e4e-f454eeb9f40a",
-    "codigo": "CLI-008",
-    "razon_social": "Consultores Financieros del Valle S.A.S.",
-    "codigo_acceso": "ACC-CFV008"
+    "id": "0c7dcf19-0c27-441c-b8ba-4ac6e2e5e0f7",
+    "codigo": "CLI-00009",
+    "razon_social": "CONSULTORIAS & CONSTRUCCIONES TECNICAS COTEKNIK S.A.S.",
+    "codigo_acceso": "ACC-GGDYWT"
+  },
+  {
+    "id": "92081752-4f96-4c90-a391-9d2f7ef56c31",
+    "codigo": "CLI-00010",
+    "razon_social": "DIANA CORPORACION S.A.S.",
+    "codigo_acceso": "ACC-PLNS86"
+  },
+  {
+    "id": "a86c5135-f13f-4cad-a856-f8ff9baaf746",
+    "codigo": "CLI-00011",
+    "razon_social": "HORMIGÓN REFORZADO S.A.S.",
+    "codigo_acceso": "ACC-LZUV5A"
+  },
+  {
+    "id": "1cf09148-5dca-40b8-9415-0b5a924b0007",
+    "codigo": "CLI-00012",
+    "razon_social": " PUERTO BUENAVISTA S.A.",
+    "codigo_acceso": "ACC-UYSVKQ"
+  },
+  {
+    "id": "9ca43855-b3c9-46b0-b75f-29c484167a7b",
+    "codigo": "CLI-00013",
+    "razon_social": "NORTON EDIFICIOS INDUSTRIALES ECUADOR ",
+    "codigo_acceso": "ACC-V7747G"
+  },
+  {
+    "id": "aaaa33bf-54f5-404a-acc7-20153b66a3d9",
+    "codigo": "CLI-00014",
+    "razon_social": "ZOFRACAR S.A.S",
+    "codigo_acceso": "ACC-2XJB7F"
+  },
+  {
+    "id": "97c930c2-254f-429e-86b1-4240750b0efa",
+    "codigo": "CLI-00015",
+    "razon_social": "ESTAHL INGENIERIA S.A.S",
+    "codigo_acceso": "ACC-S9BG39"
+  },
+  {
+    "id": "e7291390-cc05-40dc-b67c-98701525c658",
+    "codigo": "CLI-00016",
+    "razon_social": "NEOLAND SAS",
+    "codigo_acceso": "ACC-76ZYEX"
+  },
+  {
+    "id": "12ec9958-c0e1-42c0-91f2-d2485b433b0a",
+    "codigo": "CLI-00017",
+    "razon_social": "UNIVERSIDAD DE CIENCIAS APLICADAS Y AMBIENTALES U.D.C.A",
+    "codigo_acceso": "ACC-Z2UUNK"
+  },
+  {
+    "id": "519d1c97-a056-4f62-8e13-1a53401edb53",
+    "codigo": "CLI-00018",
+    "razon_social": "ESTRATEGIAS S A S",
+    "codigo_acceso": "ACC-UWFHMB"
+  },
+  {
+    "id": "681b34dc-0259-49b1-aa7c-baa2276112b4",
+    "codigo": "CLI-00019",
+    "razon_social": "MEICO S A",
+    "codigo_acceso": "ACC-9YNVDQ"
+  },
+  {
+    "id": "cea4c3f1-9ef8-4d29-9085-41f7faaa7538",
+    "codigo": "CLI-00020",
+    "razon_social": "GRANOS Y ALIMENTOS DE COLOMBIA S.A.S.",
+    "codigo_acceso": "ACC-HWE5VV"
+  },
+  {
+    "id": "85515951-a81b-4fac-9a20-01aa163d82a1",
+    "codigo": "CLI-00021",
+    "razon_social": "CENTRAL DE SOLDADURAS Y PROTECCION INDUSTRIAL S A",
+    "codigo_acceso": "ACC-UVM2UX"
+  },
+  {
+    "id": "14d3823d-f9d8-4c3a-bd05-f297d1838f26",
+    "codigo": "CLI-00022",
+    "razon_social": "POLIPLASTICS S.A.S.",
+    "codigo_acceso": "ACC-2X7YKN"
+  },
+  {
+    "id": "78bae8e8-3b03-40c3-812d-d681047aeee6",
+    "codigo": "CLI-00023",
+    "razon_social": "CANGURO INTERNATIONAL S.A.",
+    "codigo_acceso": "ACC-X4BGBD"
+  },
+  {
+    "id": "4342d031-29a9-438b-b249-6a3ac8f150b7",
+    "codigo": "CLI-00024",
+    "razon_social": "C.I. QUALITY BUNKERS SUPPLY S.A.S.",
+    "codigo_acceso": "ACC-FRKBG6"
+  },
+  {
+    "id": "c3896f24-a11f-4f14-b19e-7f3cf4ac90f4",
+    "codigo": "CLI-00025",
+    "razon_social": "TEXVIGAR S.A.S.",
+    "codigo_acceso": "ACC-JSUZFP"
+  },
+  {
+    "id": "3895adee-6dfd-4034-b992-5478a7875a14",
+    "codigo": "CLI-00026",
+    "razon_social": "GEMCOAL S.A.S.",
+    "codigo_acceso": "ACC-LRQKEW"
+  },
+  {
+    "id": "0e37fff3-0225-44e5-8a2d-33fdab3e7bf9",
+    "codigo": "CLI-00027",
+    "razon_social": "ORGANIZACIÓN TERPEL S.A.",
+    "codigo_acceso": "ACC-928B4H"
+  },
+  {
+    "id": "e0f6c63d-c925-4e13-8f47-acc75371467f",
+    "codigo": "CLI-00028",
+    "razon_social": "TRAFIGURA ENERGY COLOMBIA S.A.S.",
+    "codigo_acceso": "ACC-2UE35S"
+  },
+  {
+    "id": "a9b552c1-eade-4bbb-b69a-f12aebf7c533",
+    "codigo": "CLI-00029",
+    "razon_social": "ORGANIZACION TERPEL S.A.",
+    "codigo_acceso": "ACC-5FRD3N"
+  },
+  {
+    "id": "2aeaeda9-d580-42d7-a10d-d0c8ae775ff8",
+    "codigo": "CLI-00030",
+    "razon_social": "CAMCO S.A.S.",
+    "codigo_acceso": "ACC-ZVNHDC"
+  },
+  {
+    "id": "33118358-f01e-4127-9304-1e8eff683f8f",
+    "codigo": "CLI-00031",
+    "razon_social": "OLEAGINOSAS SAN MARCOS S.A.",
+    "codigo_acceso": "ACC-PMKEDZ"
+  },
+  {
+    "id": "c7d3092d-f101-4409-a9eb-8bd57c715c9b",
+    "codigo": "CLI-00032",
+    "razon_social": "GUNVOR COLOMBIA S.A.S.",
+    "codigo_acceso": "ACC-73UZ5P"
+  },
+  {
+    "id": "47899adf-e38e-4fed-b512-98e77af3643d",
+    "codigo": "CLI-00033",
+    "razon_social": "CHEVRON PETROLEUM COMPANY",
+    "codigo_acceso": "ACC-5MKBUG"
+  },
+  {
+    "id": "866108be-ca1b-4e38-ae91-792528a0a14e",
+    "codigo": "CLI-00034",
+    "razon_social": "INVERSIONES GLP S.A.S. E.S.P.",
+    "codigo_acceso": "ACC-W55NSK"
+  },
+  {
+    "id": "845d3d4d-2087-4430-91fc-912416936e82",
+    "codigo": "CLI-00035",
+    "razon_social": "BIOMAX BIOCOMBUSTIBLES S.A.",
+    "codigo_acceso": "ACC-ZHW5R8"
+  },
+  {
+    "id": "4a06bb8a-bfbf-46f4-a42d-d2e172fd156c",
+    "codigo": "CLI-00036",
+    "razon_social": "C I TRAFIGURA PETROLEUM COLOMBIA S.A.S.",
+    "codigo_acceso": "ACC-PX7ZCY"
+  },
+  {
+    "id": "f8ad5726-a843-48f9-a9d2-4581e4af6c36",
+    "codigo": "CLI-00037",
+    "razon_social": "C I TRAFIGURA COAL COLOMBIA S.A.S.",
+    "codigo_acceso": "ACC-VTE6R2"
+  },
+  {
+    "id": "7d2a2e8c-475b-43d9-993f-04c153de81f2",
+    "codigo": "CLI-00038",
+    "razon_social": "COMPANIA DE ALMACENAMIENTO DE GAS S A",
+    "codigo_acceso": "ACC-UAP73U"
+  },
+  {
+    "id": "5cb93783-ca91-4a6a-9499-388701de8f2b",
+    "codigo": "CLI-00039",
+    "razon_social": "TRAFIGURA MARKETING COLOMBIA S.A.S. E.S.P.",
+    "codigo_acceso": "ACC-733SVK"
+  },
+  {
+    "id": "509b1fc3-fb4c-4f6f-bf25-4f747cdeff28",
+    "codigo": "CLI-00040",
+    "razon_social": "CHILCO DISTRIBUIDORA DE GAS Y ENERGÍA S.A.S. E.S.P.",
+    "codigo_acceso": "ACC-2WRZ56"
+  },
+  {
+    "id": "4b800eee-7eb1-4fd7-afc0-f0c46028e07b",
+    "codigo": "CLI-00041",
+    "razon_social": "CARBONES ANDINOS S.A.S.",
+    "codigo_acceso": "ACC-KKVPA2"
+  },
+  {
+    "id": "1a15d823-5b70-474a-8226-75dce18f5840",
+    "codigo": "CLI-00042",
+    "razon_social": "PETROBRAS COLOMBIA COMBUSTIBLES S.A.",
+    "codigo_acceso": "ACC-MLY5KZ"
+  },
+  {
+    "id": "7ea077a6-b6bc-419b-8c5b-01f14e3bb3ef",
+    "codigo": "CLI-00043",
+    "razon_social": "COMBUSTIBLES Y TRANSPORTES HERNÁNDEZ S.A.",
+    "codigo_acceso": "ACC-ZWQBX2"
+  },
+  {
+    "id": "a8a169f3-fd45-4dc7-8a32-c2a193644b55",
+    "codigo": "CLI-00044",
+    "razon_social": "COMERCIALIZADORA INTERNACIONAL MILPA S.A.",
+    "codigo_acceso": "ACC-5BHJ2S"
+  },
+  {
+    "id": "222ade62-5a26-45f8-b69e-83c83cae7135",
+    "codigo": "CLI-00045",
+    "razon_social": "C.I. PROCESOS INDUSTRIALES MARINOS S.A.S.",
+    "codigo_acceso": "ACC-NPV55E"
+  },
+  {
+    "id": "a67672a9-f769-46c8-8132-92214af419b7",
+    "codigo": "CLI-00046",
+    "razon_social": "ARPRO ARQUITECTOS INGENIEROS S.A.S. ",
+    "codigo_acceso": "ACC-ZNNGVD"
+  },
+  {
+    "id": "8d99cf32-df7a-4e90-8c50-acc946960ec6",
+    "codigo": "CLI-00047",
+    "razon_social": "CONSTRUCTORA CONCONCRETO S.A.",
+    "codigo_acceso": "ACC-B3MLEH"
+  },
+  {
+    "id": "10c8a1e4-9cbd-4f31-9534-6233495952f6",
+    "codigo": "CLI-00048",
+    "razon_social": "MOTA-ENGIL COLOMBIA S.A.S.",
+    "codigo_acceso": "ACC-G5Z5JH"
+  },
+  {
+    "id": "b025ee81-4233-456a-a34b-b0278d6f88cb",
+    "codigo": "CLI-00049",
+    "razon_social": "MAQUINARIA TECNOLOGIA Y CONSTRUCCION S.A.S.",
+    "codigo_acceso": "ACC-8KPLKB"
   }
 ]

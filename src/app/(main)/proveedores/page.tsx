@@ -246,7 +246,7 @@ export default function ProveedoresPage() {
         <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap', flex: 1 }}>
           <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Buscar por código, nombre, documento o contacto..." style={{ ...inputStyle, maxWidth: 380 }} />
           {usuarioGlobal && (
-            <select value={filtroPais} onChange={e => setFiltroPais(e.target.value)} style={{ ...inputStyle, maxWidth: 260, width: 'auto' }}>
+            <select value={filtroPais} onChange={e => setFiltroPais(e.target.value)} className="pais-filtro" style={{ ...inputStyle, maxWidth: 260, width: 'auto' }}>
               <option value="">🌎 Todos los países</option>
               {PAISES_ACTIVOS.map(p => <option key={p.codigo} value={p.codigo}>{p.bandera} {p.nombre}</option>)}
             </select>

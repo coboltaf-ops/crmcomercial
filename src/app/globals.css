@@ -24,6 +24,15 @@ main:not(:where(.po-root *)), section:not(:where(.po-root *)), article:not(:wher
   font-family: Arial, Helvetica, sans-serif;
 }
 
+/* Selector "país que estoy viendo" dentro de cada módulo:
+   fondo blanco y texto negro fuerte (pedido por el usuario). */
+select.pais-filtro,
+select.pais-filtro option {
+  background: #FFFFFF !important;
+  color: #000000 !important;
+  font-weight: 800 !important;
+}
+
 /* El módulo Ofertas (envuelto en .po-root) trae sus propios colores/estructura,
    igual que en Operaciones. Se excluye del fondo blanco global para no romperlo. */
 div:not(:where(.po-root, .po-root *)) {

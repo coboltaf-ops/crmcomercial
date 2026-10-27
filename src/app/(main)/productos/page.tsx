@@ -260,7 +260,7 @@ export default function ProductosPage() {
             <input value={search} onChange={e => setSearch(e.target.value)} placeholder={t('ph.buscarProducto')}
               style={{ ...inputStyle, maxWidth: 400, marginBottom: 0 }} />
             {usuarioGlobal && (
-              <select value={filtroPais} onChange={e => setFiltroPais(e.target.value)} style={{ ...inputStyle, maxWidth: 220, marginBottom: 0 }}>
+              <select value={filtroPais} onChange={e => setFiltroPais(e.target.value)} className="pais-filtro" style={{ ...inputStyle, maxWidth: 220, marginBottom: 0 }}>
                 <option value="">🌎 Todos los países</option>
                 {PAISES_ACTIVOS.map(p => <option key={p.codigo} value={p.codigo}>{p.bandera} {p.nombre}</option>)}
               </select>

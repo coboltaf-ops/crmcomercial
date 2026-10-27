@@ -487,7 +487,7 @@ export default function PQRSPage() {
             <input value={search} onChange={e => setSearch(e.target.value)} placeholder={idioma === 'en' ? 'Search by code or company...' : 'Buscar por código o empresa...'}
               style={{ ...inputStyle, maxWidth: 400 }} />
             {usuarioGlobal && (
-              <select value={filtroPais} onChange={e => setFiltroPais(e.target.value)} style={{ ...inputStyle, maxWidth: 220 }}>
+              <select value={filtroPais} onChange={e => setFiltroPais(e.target.value)} className="pais-filtro" style={{ ...inputStyle, maxWidth: 220 }}>
                 <option value="">🌎 {idioma === 'en' ? 'All countries' : 'Todos los países'}</option>
                 {PAISES_ACTIVOS.map(p => <option key={p.codigo} value={p.codigo}>{p.bandera} {p.nombre}</option>)}
               </select>

@@ -6,6 +6,7 @@ import { useSearchParams, useRouter } from 'next/navigation'
 import ModuleHeader from '@/shared/components/module-header'
 import EnviarCorreoModal from '@/shared/components/enviar-correo-modal'
 import { useOportunidadesStore, Oportunidad, DocumentoExigido } from '@/features/oportunidades/store/oportunidades-store'
+import { useRepositorioOportunidadesStore } from '@/features/repositorio-oportunidades/store/repositorio-oportunidades-store'
 import { useSeguimientoOfertaStore } from '@/features/seguimiento-oferta/store/seguimiento-oferta-store'
 import { useClientesStore } from '@/features/clientes/store/clientes-store'
 import { useContactosStore } from '@/features/contactos/store/contactos-store'
@@ -54,6 +55,7 @@ export default function OportunidadesPage() {
   const usuarioGlobal = esGlobal(paisUsuario)
   setMonedaLocale(paisUsuario) // formato de número sigue al país del usuario (igual que el símbolo)
   const { oportunidades, addOportunidad, updateOportunidad, deleteOportunidad } = useOportunidadesStore()
+  const archivarPerdida = useRepositorioOportunidadesStore(s => s.archivar)
   const addOfertaSeg = useSeguimientoOfertaStore(s => s.addOferta)
   const ofertasSeg = useSeguimientoOfertaStore(s => s.ofertas)
   const loadOfertasSeg = useSeguimientoOfertaStore(s => s.loadOfertas)
@@ -124,6 +126,28 @@ export default function OportunidadesPage() {
     const mg_parcial_anyo = parcial_anyo * (o.mgc || 0) / 100
     const mg_parcial_euros_anyo = parcial_euros_anyo * (o.mgc || 0) / 100
     return { parcial_probable, parcial_anyo, parcial_euros_anyo, mg_parcial_anyo, mg_parcial_euros_anyo }
+  }
+
+  // Enviar al Repositorio todas las oportunidades en estado "Perdida" (del país filtrado).
+  const handleArchivarPerdidas = () => {
+    const perdidas = visibles.filter(o =>
+      (o.situacion || '').trim().toLowerCase() === 'perdida' &&
+      (!usuarioGlobal || !filtroPais || o.pais === filtroPais)
+    )
+    if (perdidas.length === 0) {
+      alert(es ? 'No hay oportunidades en estado Perdida para enviar al repositorio.' : 'There are no Lost opportunities to send to the archive.')
+      return
+    }
+    if (!confirm(es
+      ? `¿Enviar ${perdidas.length} oportunidad(es) Perdida(s) al Repositorio Oportunidades Perdidas? Saldrán de esta lista y podrás verlas o restaurarlas desde el repositorio.`
+      : `Send ${perdidas.length} Lost opportunity(ies) to the Lost Opportunities Archive? They will leave this list; you can view or restore them from the archive.`)) return
+    const nombre = `${currentUser?.nombre || ''} ${currentUser?.apellido || ''}`.trim() || (currentUser?.usuario || '')
+    perdidas.forEach(o => {
+      archivarPerdida({ ...o, archivado_en: today, archivado_por: nombre })
+      deleteOportunidad(o.id)
+      logAudit({ ...auditParams(), accion: 'ARCHIVAR', registro_codigo: o.codigo, registro_nombre: o.proyecto, detalle: 'Enviada al Repositorio Oportunidades Perdidas' })
+    })
+    alert(es ? `${perdidas.length} oportunidad(es) enviada(s) al repositorio.` : `${perdidas.length} opportunity(ies) sent to the archive.`)
   }
 
   const handleSave = (e: React.FormEvent) => {
@@ -694,9 +718,14 @@ export default function OportunidadesPage() {
     <div>
       <ModuleHeader title={t('page.oportunidades.title')} subtitle={t('page.oportunidades.subtitle')} />
 
-      {permisos.crear && tab === 'registros' && (
-        <div style={{ marginBottom: 20, display: 'flex', justifyContent: 'flex-end' }}>
-          <button onClick={() => { setSelected(emptyOportunidad(nextConsecutivo('OPP-', oportunidades.map(o => o.codigo)).codigo, '', usuarioGlobal ? (PAISES_ACTIVOS[0]?.codigo || 'Colombia') : paisUsuario)); setIsForm(true) }} style={{ ...btnStyle, background: '#0f1b3d', color: '#ffffff' }}>{t('page.oportunidades.btnNuevo')}</button>
+      {tab === 'registros' && (
+        <div style={{ marginBottom: 20, display: 'flex', justifyContent: 'space-between', gap: 8, flexWrap: 'wrap' }}>
+          {permisos.editar
+            ? <button onClick={handleArchivarPerdidas} style={{ ...btnStyle, background: '#b45309', color: '#ffffff', fontWeight: 800 }}>🗃️ {es ? 'Repositorio Oportunidades' : 'Opportunities Archive'}</button>
+            : <span />}
+          {permisos.crear && (
+            <button onClick={() => { setSelected(emptyOportunidad(nextConsecutivo('OPP-', oportunidades.map(o => o.codigo)).codigo, '', usuarioGlobal ? (PAISES_ACTIVOS[0]?.codigo || 'Colombia') : paisUsuario)); setIsForm(true) }} style={{ ...btnStyle, background: '#0f1b3d', color: '#ffffff' }}>{t('page.oportunidades.btnNuevo')}</button>
+          )}
         </div>
       )}
 
@@ -711,7 +740,7 @@ export default function OportunidadesPage() {
             <input value={search} onChange={e => setSearch(e.target.value)} placeholder={t('ph.buscarOportunidad')}
               style={{ ...inputStyle, maxWidth: 500 }} />
             {usuarioGlobal && (
-              <select value={filtroPais} onChange={e => setFiltroPais(e.target.value)} style={{ ...inputStyle, maxWidth: 260, width: 'auto' }}>
+              <select value={filtroPais} onChange={e => setFiltroPais(e.target.value)} className="pais-filtro" style={{ ...inputStyle, maxWidth: 260, width: 'auto' }}>
                 <option value="">🌎 {idioma === 'en' ? 'All countries' : 'Todos los países'}</option>
                 {PAISES_ACTIVOS.map(p => <option key={p.codigo} value={p.codigo}>{p.bandera} {p.nombre}</option>)}
               </select>

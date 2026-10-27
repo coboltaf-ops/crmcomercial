@@ -472,7 +472,7 @@ export default function ProspectosPage() {
           <div style={{ display: 'flex', gap: 10, marginBottom: 16, alignItems: 'center', flexWrap: 'wrap' }}>
             <input value={search} onChange={e => setSearch(e.target.value)} placeholder={t('ph.buscarProspecto')} style={{ ...inputStyle, maxWidth: 400 }} />
             {usuarioGlobal && (
-              <select value={filtroPais} onChange={e => setFiltroPais(e.target.value)} style={{ ...inputStyle, maxWidth: 260, width: 'auto' }}>
+              <select value={filtroPais} onChange={e => setFiltroPais(e.target.value)} className="pais-filtro" style={{ ...inputStyle, maxWidth: 260, width: 'auto' }}>
                 <option value="">🌎 {idioma === 'en' ? 'All countries' : 'Todos los países'}</option>
                 {PAISES_ACTIVOS.map(p => <option key={p.codigo} value={p.codigo}>{p.bandera} {p.nombre}</option>)}
               </select>

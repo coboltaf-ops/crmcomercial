@@ -41,6 +41,7 @@ const MENU_EN: Record<string, string> = {
   contactos: 'Contacts',
   prospectos: 'Prospects',
   oportunidades: 'Opportunities',
+  'repositorio-oportunidades-perdidas': 'Lost Opportunities Archive',
   proyectos: 'Projects',
   proveedores: 'Suppliers',
   productos: 'Products',

@@ -486,7 +486,7 @@ export default function TareasPage() {
               {situaciones.map(s => <option key={s.id} value={s.nombre}>{s.nombre}</option>)}
             </select>
             {usuarioGlobal && (
-              <select value={filtroPais} onChange={e => setFiltroPais(e.target.value)} style={{ ...inputStyle, width: 'auto', maxWidth: 200 }}>
+              <select value={filtroPais} onChange={e => setFiltroPais(e.target.value)} className="pais-filtro" style={{ ...inputStyle, width: 'auto', maxWidth: 200 }}>
                 <option value="">🌎 {idi === 'en' ? 'All countries' : 'Todos los países'}</option>
                 {PAISES_ACTIVOS.map(p => <option key={p.codigo} value={p.codigo}>{p.bandera} {p.nombre}</option>)}
               </select>

@@ -468,7 +468,7 @@ export default function OfertasClientesPage() {
         <button onClick={abrirNuevo} className="px-5 py-2.5 rounded-xl text-sm font-bold text-white transition-all hover:scale-105" style={{ background: 'linear-gradient(135deg, #2d3f66, #5c80be)' }}>+ Nueva Oferta</button>
         <input type="text" placeholder="Buscar por consecutivo o proyecto…" value={search} onChange={e => setSearch(e.target.value)} className="flex-1 px-4 py-2.5 rounded-xl text-sm text-[#0b1d4a] outline-none" style={inputSt} />
         {usuarioGlobal && (
-          <select value={filtroPais} onChange={e => setFiltroPais(e.target.value)} className="px-3 py-2.5 rounded-xl text-sm outline-none" style={inputSt}>
+          <select value={filtroPais} onChange={e => setFiltroPais(e.target.value)} className="pais-filtro px-3 py-2.5 rounded-xl text-sm outline-none" style={inputSt}>
             <option value="">🌎 Todos los países</option>
             {PAISES_ACTIVOS.map(p => <option key={p.codigo} value={p.codigo}>{p.bandera} {p.nombre}</option>)}
           </select>

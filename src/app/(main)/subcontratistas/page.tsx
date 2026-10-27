@@ -208,7 +208,7 @@ export default function SubcontratistasPage() {
           style={{ flex: 1, minWidth: 240, padding: '10px 14px', borderRadius: 10, background: '#fff', border: '1px solid #1e3a8a', color: '#0f172a', fontSize: 14, outline: 'none' }}
         />
         {usuarioGlobal && (
-          <select value={filtroPais} onChange={e => setFiltroPais(e.target.value)}
+          <select value={filtroPais} onChange={e => setFiltroPais(e.target.value)} className="pais-filtro"
             style={{ padding: '10px 14px', borderRadius: 10, background: '#fff', border: '1px solid #1e3a8a', color: '#0f172a', fontSize: 13, outline: 'none' }}>
             <option value="">🌎 {es ? 'Todos los países' : 'All countries'}</option>
             {PAISES_ACTIVOS.map(p => <option key={p.codigo} value={p.codigo}>{p.bandera} {p.nombre}</option>)}

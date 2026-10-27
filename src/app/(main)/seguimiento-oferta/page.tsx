@@ -294,7 +294,7 @@ export default function SeguimientoOfertaPage() {
             {permisos.crear && <button onClick={nuevo} style={{ ...btnStyle, background: '#1e3a8a', color: '#fff' }}>{L('+ Nueva Oferta', '+ New Offer')}</button>}
             <input value={search} onChange={e => setSearch(e.target.value)} placeholder={L('Buscar oferta, cliente o proyecto…', 'Search offer, client or project…')} style={{ ...inputStyle, maxWidth: 380 }} />
             {usuarioGlobal && (
-              <select value={filtroPais} onChange={e => setFiltroPais(e.target.value)} style={{ ...inputStyle, maxWidth: 200 }}>
+              <select value={filtroPais} onChange={e => setFiltroPais(e.target.value)} className="pais-filtro" style={{ ...inputStyle, maxWidth: 200 }}>
                 <option value="">🌎 {L('Todos los países', 'All countries')}</option>
                 {PAISES_ACTIVOS.map(p => <option key={p.codigo} value={p.codigo}>{p.bandera} {p.nombre}</option>)}
               </select>
