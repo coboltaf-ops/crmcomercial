@@ -14,6 +14,8 @@ export interface DetalleCotizacion {
   unidad_medida: string
   descuento_pct: number
   subtotal: number
+  /** Solo modelo mezclado (Colombia): 'bien' lleva IVA sobre valor; 'servicio' va al AIU con IVA sobre la utilidad. */
+  tipo_fiscal?: 'bien' | 'servicio'
 }
 
 export interface Cotizacion {
@@ -37,6 +39,10 @@ export interface Cotizacion {
   aiu_imprev_pct: number
   aiu_utilidad_pct: number
   aiu_base_iva: string
+  /** Colombia: cotización mezclada (bienes + servicios en un mismo documento). */
+  mezclado_activo?: boolean
+  /** IVA % que se liquida sobre la Utilidad de los renglones de servicio (modelo mezclado). */
+  iva_servicios_pct?: number
   observaciones: string
   detalles: DetalleCotizacion[]
   situacion: string
