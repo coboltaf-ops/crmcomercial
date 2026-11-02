@@ -322,8 +322,8 @@ export default function CapitulosObraPage() {
             {TIPOS.map(t => <option key={t} value={t}>{t}</option>)}
           </select>
           {usuarioGlobal && (
-            <select value={filtroPais} onChange={e => setFiltroPais(e.target.value)} className="pais-filtro"
-              className="rounded-xl px-4 py-2 text-[#0b1d4a] outline-none"
+            <select value={filtroPais} onChange={e => setFiltroPais(e.target.value)}
+              className="pais-filtro rounded-xl px-4 py-2 text-[#0b1d4a] outline-none"
               style={{ background: '#ffffff', border: '1px solid #e5e7eb' }}>
               <option value="">🌎 Todos los países</option>
               {PAISES_ACTIVOS.map(p => <option key={p.codigo} value={p.codigo}>{p.bandera} {p.nombre}</option>)}
