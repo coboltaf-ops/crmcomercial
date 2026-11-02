@@ -4,10 +4,10 @@ import { useRouter } from 'next/navigation'
 import { useCurrentUserStore } from '@/features/usuarios-gestion/store/current-user-store'
 import { useEmpresaStore } from '@/features/empresa/store/empresa-store'
 
-// Este despliegue ES el CRM de Norton. El de Tamoin (GTM) vive en otra URL.
+// Este despliegue ES el CRM de Norton. Cada CRM valida SOLO a sus propios
+// usuarios; no hay salto automático entre apps. El otro CRM se abre desde su
+// propia dirección.
 const CRM_ACTUAL: 'tamoin' | 'norton' = 'norton'
-const URL_TAMOIN = process.env.NEXT_PUBLIC_CRM_TAMOIN_URL || 'http://localhost:3014'
-const URL_NORTON = process.env.NEXT_PUBLIC_CRM_NORTON_URL || 'http://localhost:3013'
 
 export default function LoginPage() {
   const router = useRouter()
@@ -20,11 +20,10 @@ export default function LoginPage() {
 
   useEffect(() => { loadEmpresas() }, [loadEmpresas])
 
-  // Elegir CRM: si es el de esta app, muestra el formulario; si es el otro, redirige.
+  // Elegir CRM: solo muestra el panel correspondiente. Sin redirección entre apps.
   const elegirCRM = (crm: 'tamoin' | 'norton') => {
     setError('')
-    if (crm === CRM_ACTUAL) { setCrmSel(crm); return }
-    window.location.href = crm === 'tamoin' ? URL_TAMOIN : URL_NORTON
+    setCrmSel(crm)
   }
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -68,12 +67,23 @@ export default function LoginPage() {
             <button onClick={() => elegirCRM('norton')} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '14px 16px', borderRadius: 12, background: '#7f1d1d', border: '1px solid #b91c1c', color: '#fff', fontWeight: 700, fontSize: 16, cursor: 'pointer', textAlign: 'left' }}>
               <span style={{ fontSize: 22 }}>🟥</span> CRM Norton
             </button>
-            <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 12, textAlign: 'center', marginTop: 6 }}>Tu acceso depende de tu usuario en el CRM elegido. Un usuario Global puede entrar a ambos.</p>
+            <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 12, textAlign: 'center', marginTop: 6 }}>Tu acceso se valida con tu usuario en este CRM. El otro CRM se abre desde su propia dirección.</p>
           </div>
         )}
 
-        {/* ── PASO 2: login del CRM elegido (esta app) ── */}
-        {crmSel && (
+        {/* ── Eligió el OTRO CRM: no se salta entre apps, se abre por su dirección ── */}
+        {crmSel && crmSel !== CRM_ACTUAL && (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 14, textAlign: 'center' }}>
+            <div style={{ background: 'rgba(255,255,255,0.08)', borderRadius: 10, padding: '14px 16px' }}>
+              <p style={{ color: '#fff', fontWeight: 700, fontSize: 15, marginBottom: 6 }}>📍 Estás en el {nombreCRM(CRM_ACTUAL)}</p>
+              <p style={{ color: 'rgba(255,255,255,0.8)', fontSize: 13 }}>El {nombreCRM(crmSel)} funciona en su propia dirección. Ábrelo desde ahí; aquí solo puedes ingresar al {nombreCRM(CRM_ACTUAL)}.</p>
+            </div>
+            <button type="button" onClick={() => setCrmSel(null)} style={{ padding: '12px', borderRadius: 10, background: '#2563eb', color: '#fff', fontWeight: 700, fontSize: 14, border: 'none', cursor: 'pointer' }}>← Volver a elegir</button>
+          </div>
+        )}
+
+        {/* ── PASO 2: login del CRM de esta app ── */}
+        {crmSel === CRM_ACTUAL && (
           <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: 'rgba(255,255,255,0.08)', borderRadius: 10, padding: '8px 12px' }}>
               <span style={{ color: '#fff', fontWeight: 700, fontSize: 14 }}>📍 {nombreCRM(crmSel)}</span>
