@@ -61,12 +61,16 @@ export default function LoginPage() {
         {!crmSel && (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
             <p style={{ color: 'rgba(255,255,255,0.85)', fontSize: 14, textAlign: 'center', marginBottom: 4 }}>¿Con qué CRM deseas trabajar?</p>
+            {CRM_ACTUAL === 'tamoin' && (
             <button onClick={() => elegirCRM('tamoin')} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '14px 16px', borderRadius: 12, background: '#1e3a8a', border: '1px solid #3b5fd4', color: '#fff', fontWeight: 700, fontSize: 16, cursor: 'pointer', textAlign: 'left' }}>
               <span style={{ fontSize: 22 }}>🟦</span> CRM Tamoin (GTM)
             </button>
+            )}
+            {CRM_ACTUAL === 'norton' && (
             <button onClick={() => elegirCRM('norton')} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '14px 16px', borderRadius: 12, background: '#7f1d1d', border: '1px solid #b91c1c', color: '#fff', fontWeight: 700, fontSize: 16, cursor: 'pointer', textAlign: 'left' }}>
               <span style={{ fontSize: 22 }}>🟥</span> CRM Norton
             </button>
+            )}
             <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 12, textAlign: 'center', marginTop: 6 }}>Tu acceso se valida con tu usuario en este CRM. El otro CRM se abre desde su propia dirección.</p>
           </div>
         )}
