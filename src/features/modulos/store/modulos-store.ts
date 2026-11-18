@@ -17,10 +17,10 @@ interface ModulosState {
 
 const defaultModulos: Modulo[] = [
   // ── Módulos Principales ──
-  { id: 'manual', label: 'Manual uso CRM', icon: '📖', href: '/manual', activo: true, grupo: 'principal' },
-  { id: 'dashboard', label: 'Dashboard', icon: '📊', href: '/dashboard', activo: true, grupo: 'principal' },
   { id: 'clientes', label: 'Empresas', icon: '🏢', href: '/clientes', activo: true, grupo: 'principal' },
   { id: 'contactos', label: 'Contactos', icon: '👤', href: '/contactos', activo: true, grupo: 'principal' },
+  { id: 'manual', label: 'Manual uso CRM', icon: '📖', href: '/manual', activo: true, grupo: 'principal' },
+  { id: 'dashboard', label: 'Dashboard', icon: '📊', href: '/dashboard', activo: true, grupo: 'principal' },
   { id: 'prospectos', label: 'Prospectos', icon: '🧲', href: '/prospectos', activo: true, grupo: 'principal' },
   { id: 'oportunidades', label: 'Oportunidades', icon: '🎯', href: '/oportunidades', activo: true, grupo: 'principal' },
   { id: 'repositorio-oportunidades-perdidas', label: 'Repositorio Oportunidades Perdidas', icon: '🗃️', href: '/repositorio-oportunidades-perdidas', activo: true, grupo: 'principal' },
