@@ -1,13 +1,24 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { readList, writeList } from '@/shared/lib/kv-store'
 import { verifySession, hashPassword, isHashed } from '@/shared/lib/auth-crypto'
+import { esGlobal, filtrarPorPais } from '@/shared/lib/paises'
 
 const KV_KEY = 'usuarios-datos'
 
-// Solo usuarios con sesión válida pueden ver/guardar la lista (ya NO es público).
-function autorizado(req: NextRequest): boolean {
-  const token = req.cookies.get('palomares_session')?.value
-  return verifySession(token) !== null
+type UsuarioRow = Record<string, unknown> & { id?: string; pais?: string; clave?: string; clave_visible?: string }
+
+/** Cifra las claves nuevas y conserva la clave_visible para consulta del Admin. */
+function cifrarClaves(data: UsuarioRow[], actual: UsuarioRow[]): UsuarioRow[] {
+  return data.map((u) => {
+    const clave = u.clave as string | undefined
+    const esPlano = !!(clave && !isHashed(clave))
+    const prev = actual.find((a) => a.id === u.id)
+    return {
+      ...u,
+      clave: esPlano ? hashPassword(clave as string) : clave,
+      clave_visible: esPlano ? clave : ((u.clave_visible as string) ?? prev?.clave_visible ?? ''),
+    }
+  })
 }
 
 // GET — listar usuarios (PROTEGIDO: requiere sesión)
@@ -17,16 +28,22 @@ export async function GET(req: NextRequest) {
   if (!sesion) {
     return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
   }
-  const data = await readList<Record<string, unknown>>(KV_KEY)
-  // Las claves (cifrada y visible) SOLO se entregan a sesiones con rol Admin.
+  const data = await readList<UsuarioRow>(KV_KEY)
   const esAdmin = String(sesion.rol || '').toLowerCase() === 'admin'
-  const salida = esAdmin ? data : data.map((u) => ({ ...u, clave: '', clave_visible: '' }))
+  const veTodo = esGlobal(String(sesion.pais || ''))
+  // Admin/usuario de país: SOLO ve los usuarios de su propio país (GLOBAL ve todos).
+  // Un usuario sin país (heredado) queda visible para todos (no se oculta a nadie).
+  const visibles = veTodo ? data : filtrarPorPais(data, String(sesion.pais || ''))
+  // Las claves (cifrada y visible) SOLO se entregan a sesiones con rol Admin.
+  const salida = esAdmin ? visibles : visibles.map((u) => ({ ...u, clave: '', clave_visible: '' }))
   return NextResponse.json(salida)
 }
 
 // POST — guardar la lista (PROTEGIDO + cifra las claves nuevas)
 export async function POST(req: NextRequest) {
-  if (!autorizado(req)) {
+  const token = req.cookies.get('palomares_session')?.value
+  const sesion = verifySession(token)
+  if (!sesion) {
     return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
   }
   try {
@@ -34,25 +51,34 @@ export async function POST(req: NextRequest) {
     if (!Array.isArray(data)) {
       return NextResponse.json({ error: 'Se esperaba un arreglo de usuarios' }, { status: 400 })
     }
-    // BLINDAJE ANTI-BORRADO: nunca permitir vaciar una lista que YA tiene usuarios.
-    // Esto evita que un fallo de sesión/red sobrescriba a todos los usuarios.
-    const actual = await readList<Record<string, unknown>>(KV_KEY)
-    if (Array.isArray(actual) && actual.length > 0 && data.length === 0) {
-      console.error('[api/usuarios] BLOQUEADO: intento de vaciar la lista de usuarios')
-      return NextResponse.json({ error: 'Bloqueado: no se permite vaciar la lista de usuarios' }, { status: 409 })
-    }
-    // Cifra las claves nuevas para el login; y guarda una copia VISIBLE (texto plano)
-    // SOLO para que un Admin pueda consultarla dentro del módulo de Usuarios.
-    const segura = data.map((u: Record<string, unknown>) => {
-      const clave = u.clave as string | undefined
-      const esPlano = !!(clave && !isHashed(clave))
-      const prev = actual.find((a) => (a as { id?: string }).id === (u as { id?: string }).id) as { clave_visible?: string } | undefined
-      return {
-        ...u,
-        clave: esPlano ? hashPassword(clave as string) : clave,
-        clave_visible: esPlano ? clave : ((u.clave_visible as string) ?? prev?.clave_visible ?? ''),
+    const actual = await readList<UsuarioRow>(KV_KEY)
+    const veTodo = esGlobal(String(sesion.pais || ''))
+
+    let finalList: UsuarioRow[]
+    if (veTodo) {
+      // Admin GLOBAL: guarda la lista completa. Blindaje anti-vaciado.
+      if (Array.isArray(actual) && actual.length > 0 && data.length === 0) {
+        console.error('[api/usuarios] BLOQUEADO: intento de vaciar la lista de usuarios')
+        return NextResponse.json({ error: 'Bloqueado: no se permite vaciar la lista de usuarios' }, { status: 409 })
       }
-    })
+      finalList = data as UsuarioRow[]
+    } else {
+      // Usuario POR PAÍS: solo puede afectar usuarios de SU país. Los de otros países
+      // (y los GLOBAL) se preservan intactos desde el KV → nunca puede borrarlos.
+      const miPais = String(sesion.pais || '')
+      const otros = (actual as UsuarioRow[]).filter((u) => {
+        const p = String(u.pais || '')
+        return p && p !== miPais // GLOBAL y otros países quedan intactos
+      })
+      // Sella el país de los usuarios entrantes a su propio país (no puede crear en otro país ni GLOBAL).
+      const mios = (data as UsuarioRow[]).map((u) => ({ ...u, pais: miPais }))
+      finalList = [...otros, ...mios]
+      if (finalList.length === 0) {
+        return NextResponse.json({ error: 'Bloqueado: lista vacía' }, { status: 409 })
+      }
+    }
+
+    const segura = cifrarClaves(finalList, actual as UsuarioRow[])
     await writeList(KV_KEY, segura)
     return NextResponse.json({ ok: true })
   } catch (err) {
