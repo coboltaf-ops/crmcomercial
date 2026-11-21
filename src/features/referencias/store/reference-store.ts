@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import { BaseReference, ReferenceTableId, Vendedor } from '../types'
+import ubicacionesSeed from '../ubicaciones-seed.json'
 
 type RefData = Record<ReferenceTableId, BaseReference[]>
 
@@ -17,6 +18,8 @@ interface ReferenceState {
 }
 
 const initialData: RefData = {
+  // Ubicaciones jerárquicas País → Ciudad (con coordenada lat/lon). Semilla en ubicaciones-seed.json.
+  ubicaciones: ubicacionesSeed as BaseReference[],
   pais: [
     { id: '1', descripcion: 'Colombia', situacion: true },
     { id: '2', descripcion: 'Venezuela', situacion: true },

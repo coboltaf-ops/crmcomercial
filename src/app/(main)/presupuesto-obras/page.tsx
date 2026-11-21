@@ -78,7 +78,8 @@ export default function OfertasClientesPage() {
   const refData = useReferenceStore(s => s.data)
   const personalActivo = usePersonalEmpresaStore(s => s.personal).filter(p => p.situacion === 'Activo')
   const clientesLista = useClientesStore(s => s.clientes).filter(c => c.situacion === 'Activo').slice().sort((a, b) => (a.razon_social || '').localeCompare(b.razon_social || '', 'es'))
-  const ciudadesRef = (refData.ciudad ?? []).filter(c => c.situacion).slice().sort((a, b) => a.descripcion.localeCompare(b.descripcion, 'es'))
+  // Ciudades del catálogo Ubicaciones (País → Ciudad): los nodos con padre (ciudades), de todos los países.
+  const ciudadesRef = (refData.ubicaciones ?? []).filter(c => c.padre_id && c.situacion).slice().sort((a, b) => a.descripcion.localeCompare(b.descripcion, 'es'))
   const cargos = useCargosSalariosStore(s => s.cargos)
   const maquinarias = useMaquinariasStore(s => s.maquinarias)
   const productos = useProductosStore(s => s.productos)
@@ -532,6 +533,7 @@ export default function OfertasClientesPage() {
               <label className="block text-xl font-extrabold text-[#0b1d4a] mb-1">{es ? 'Lugar Ejecución' : 'Execution Site'}</label>
               <select value={form.lugar_ejecucion || ''} onChange={e => setForm({ ...form, lugar_ejecucion: e.target.value })} className="w-full px-3 py-2.5 rounded-lg text-lg outline-none" style={inputSt}>
                 <option value="">Seleccione Ciudad…</option>
+                {form.lugar_ejecucion && !ciudadesRef.some(c => c.descripcion === form.lugar_ejecucion) && <option value={form.lugar_ejecucion}>{form.lugar_ejecucion}</option>}
                 {ciudadesRef.map(c => <option key={c.id} value={c.descripcion}>{c.descripcion}</option>)}
               </select>
             </div>

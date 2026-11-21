@@ -2,6 +2,14 @@ export interface BaseReference {
   id: string
   descripcion: string
   situacion: boolean
+  padre_id?: string // Árbol jerárquico (ej. Ubicaciones: País → Ciudad). Vacío = raíz.
+  lat?: number      // Coordenada (solo Ciudad en 'ubicaciones') — para el mapa.
+  lon?: number
+}
+
+// Tablas jerárquicas (árbol) y las etiquetas de cada nivel.
+export const JERARQUIA_NIVELES: Record<string, string[]> = {
+  ubicaciones: ['País', 'Ciudad'],
 }
 
 export interface Vendedor {
@@ -15,6 +23,7 @@ export interface Vendedor {
 }
 
 export const REFERENCE_TABLES = [
+  { id: 'ubicaciones', label: 'Ubicaciones (País → Ciudad)' },
   { id: 'pais', label: 'País' },
   { id: 'ciudad', label: 'Ciudad' },
   { id: 'actividad_cliente', label: 'Actividad Empresa' },

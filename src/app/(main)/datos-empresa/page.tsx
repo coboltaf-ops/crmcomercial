@@ -3,6 +3,7 @@ import { useState, useRef, useEffect } from 'react'
 import DocumentosPanel from '@/shared/components/documentos-panel'
 import { useEmpresaStore, Empresa } from '@/features/empresa/store/empresa-store'
 import { useReferenceStore } from '@/features/referencias/store/reference-store'
+import { paisesUbicRef, ciudadesUbicRef } from '@/shared/lib/ubicaciones-ref'
 import { useCurrentUserStore } from '@/features/usuarios-gestion/store/current-user-store'
 import { usePermisos } from '@/shared/hooks/use-permisos'
 import { nextConsecutivo } from '@/shared/lib/consecutivo'
@@ -234,14 +235,14 @@ export default function DatosEmpresaPage() {
                 <label style={labelStyle}>{t('lbl.ciudad')}</label>
                 <select value={selected.ciudad} onChange={e => setSelected({ ...selected, ciudad: e.target.value })} style={inputStyle}>
                   <option value="">{t("campo.seleccionar")}</option>
-                  {refOptions('ciudad').map(o => <option key={o} value={o}>{o}</option>)}
+                  {(() => { const ubic = refData.ubicaciones || []; const cs = selected.pais ? ciudadesUbicRef(ubic, selected.pais) : ubic.filter(u => u.padre_id && u.situacion).map(u => u.descripcion).sort((a, b) => a.localeCompare(b, 'es')); return (<>{selected.ciudad && !cs.includes(selected.ciudad) && <option value={selected.ciudad}>{selected.ciudad}</option>}{cs.map(o => <option key={o} value={o}>{o}</option>)}</>) })()}
                 </select>
               </div>
               <div>
                 <label style={labelStyle}>{t('lbl.pais')}</label>
                 <select value={selected.pais} onChange={e => setSelected({ ...selected, pais: e.target.value })} style={inputStyle}>
                   <option value="">{t("campo.seleccionar")}</option>
-                  {refOptions('pais').map(o => <option key={o} value={o}>{o}</option>)}
+                  {(() => { const ps = paisesUbicRef(refData.ubicaciones || []); return (<>{selected.pais && !ps.includes(selected.pais) && <option value={selected.pais}>{selected.pais}</option>}{ps.map(o => <option key={o} value={o}>{o}</option>)}</>) })()}
                 </select>
               </div>
               <div>

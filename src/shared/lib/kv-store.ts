@@ -74,6 +74,28 @@ export async function readList<T>(key: string): Promise<T[]> {
   return readSeed<T>(key)
 }
 
+// Como readList pero AVISA si la lectura falló (KV no confiable). El guardado (POST)
+// debe ABORTAR cuando error:true, para no sobrescribir datos buenos con un fallback
+// vacío. Evita la pérdida masiva como la del 2026-11-21 en crmgtm.
+export async function readListSafe<T>(key: string): Promise<{ data: T[]; error: boolean }> {
+  if (USE_POSTGRES) {
+    const raw = await (await pg()).pgRead(key)
+    if (raw === null) return { data: readSeed<T>(key), error: false }
+    try { const data = JSON.parse(raw); return { data: Array.isArray(data) ? data : [], error: false } } catch { return { data: [], error: false } }
+  }
+  if (useKV) {
+    try {
+      const kv = await getKv()
+      const data = await kv.get<T[]>(key)
+      return { data: data || [], error: false }  // null = vacío genuino
+    } catch (err) {
+      console.error('[kv-store] readListSafe error:', err)
+      return { data: [], error: true }            // ERROR → NO escribir
+    }
+  }
+  return { data: readSeed<T>(key), error: false }
+}
+
 export async function writeList<T>(key: string, data: T[]): Promise<void> {
   if (USE_POSTGRES) {
     await (await pg()).pgWrite(key, JSON.stringify(data))
@@ -81,6 +103,17 @@ export async function writeList<T>(key: string, data: T[]): Promise<void> {
   }
   if (useKV) {
     const kv = await getKv()
+    // CANDADO ANTI-VACIADO: nunca sobrescribir una lista CON datos por una vacía o
+    // drásticamente menor (señal de lectura fallida). Doble protección.
+    if (Array.isArray(data)) {
+      try {
+        const actual = await kv.get<T[]>(key)
+        if (Array.isArray(actual) && actual.length > 0 && (data.length === 0 || data.length < Math.ceil(actual.length / 2))) {
+          console.error(`[kv-store] BLOQUEADO vaciado/pérdida de '${key}': ${actual.length} → ${data.length}. No se sobrescribe.`)
+          return
+        }
+      } catch { /* si el chequeo falla, el POST ya validó con readListSafe */ }
+    }
     await kv.set(key, data)
     return
   }

@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react'
 import { useProspectosStore, Prospecto } from '@/features/prospectos/store/prospectos-store'
 import { useClientesStore, generarCodigoAcceso } from '@/features/clientes/store/clientes-store'
 import { useReferenceStore } from '@/features/referencias/store/reference-store'
+import { ciudadesUbicRef } from '@/shared/lib/ubicaciones-ref'
 import { useCurrentUserStore } from '@/features/usuarios-gestion/store/current-user-store'
 import { usePermisos } from '@/shared/hooks/use-permisos'
 import { fDate, todayColombia } from '@/shared/lib/format-date'
@@ -359,7 +360,7 @@ export default function ProspectosPage() {
               <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.ciudad')}</label>
               {verLectura ? <div className="ver-box">{selected.ciudad || '—'}</div> : <select value={selected.ciudad} onChange={e => setSelected({ ...selected, ciudad: e.target.value })} style={inputStyle}>
                 <option value="">{t("campo.seleccionar")}</option>
-                {refOptions('ciudad').map(o => <option key={o} value={o}>{o}</option>)}
+                {(() => { const ubic = refData.ubicaciones || []; const cs = selected.pais ? ciudadesUbicRef(ubic, selected.pais) : ubic.filter(u => u.padre_id && u.situacion).map(u => u.descripcion).sort((a, b) => a.localeCompare(b, 'es')); return (<>{selected.ciudad && !cs.includes(selected.ciudad) && <option value={selected.ciudad}>{selected.ciudad}</option>}{cs.map(o => <option key={o} value={o}>{o}</option>)}</>) })()}
               </select>}
             </div>
             <div>

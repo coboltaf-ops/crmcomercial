@@ -11,6 +11,7 @@ import { useOportunidadesStore } from '@/features/oportunidades/store/oportunida
 import { usePQRSStore } from '@/features/pqrs/store/pqrs-store'
 import { fmtMoney, setMonedaLocale } from '@/shared/lib/format-number'
 import { useReferenceStore } from '@/features/referencias/store/reference-store'
+import { ciudadesUbicRef } from '@/shared/lib/ubicaciones-ref'
 import { useCurrentUserStore } from '@/features/usuarios-gestion/store/current-user-store'
 import { usePermisos } from '@/shared/hooks/use-permisos'
 import { fDate, todayColombia } from '@/shared/lib/format-date'
@@ -368,10 +369,7 @@ export default function ClientesPage() {
     const refOptions = (table: string) => (refData[table as keyof typeof refData] || []).filter(r => r.situacion).map(r => r.descripcion)
     // Ubicación Colombia (cascada Región → Departamento → Ciudad). Para registros antiguos deduce desde la ciudad guardada.
     const paisEff = selected.pais || 'Colombia'
-    const ubicDed = (!selected.region && selected.ciudad) ? deducirUbic(paisEff, selected.ciudad) : null
-    const regionEff = selected.region || ubicDed?.region || ''
-    const deptoEff = selected.departamento || ubicDed?.departamento || ''
-    const ciudadesDepto = ciudadesUbic(paisEff, regionEff, deptoEff)
+    const ciudadesCat = ciudadesUbicRef(refData.ubicaciones || [], paisEff)
     const cId = selected.id
     const misContactos = cId ? contactos.filter(c => c.cliente_id === cId) : []
     const misCotizaciones = cId ? cotizaciones.filter(c => c.cliente_id === cId) : []
@@ -572,26 +570,13 @@ export default function ClientesPage() {
                   <div style={{ ...inputStyle, opacity: 0.7, background: '#f1f5f9', color: '#64748b' }}>{etiquetaPais(selected.pais)}</div>
                 )}
               </div>
-              <div>
-                <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{es ? 'Región' : 'Region'}</label>
-                {verLectura ? <div className="ver-box">{regionEff || '—'}</div> : <select value={regionEff} onChange={e => { const v = e.target.value; const same = v === regionEff; setSelected({ ...selected, region: v, departamento: same ? deptoEff : '', ciudad: same ? selected.ciudad : '' }) }} style={inputStyle}>
-                  <option value="">{t("campo.seleccionar")}</option>
-                  {nivel1De(paisEff).map(o => <option key={o} value={o}>{o}</option>)}
-                </select>}
-              </div>
-              <div>
-                <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{es ? 'Departamento (Provincia)' : 'Department (Province)'}</label>
-                {verLectura ? <div className="ver-box">{deptoEff || '—'}</div> : <select value={deptoEff} onChange={e => { const v = e.target.value; const same = v === deptoEff; setSelected({ ...selected, region: regionEff, departamento: v, ciudad: same ? selected.ciudad : '' }) }} disabled={!regionEff} style={{ ...inputStyle, opacity: regionEff ? 1 : 0.5 }}>
-                  <option value="">{t("campo.seleccionar")}</option>
-                  {nivel2De(paisEff, regionEff).map(o => <option key={o} value={o}>{o}</option>)}
-                </select>}
-              </div>
+              {/* Ciudad del catálogo Ubicaciones (según el País). Región/Depto se conservan ocultos. */}
               <div>
                 <label style={{ color: '#013978', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>{t('lbl.ciudad')}</label>
-                {verLectura ? <div className="ver-box">{selected.ciudad || '—'}</div> : <select value={selected.ciudad} onChange={e => setSelected({ ...selected, region: regionEff, departamento: deptoEff, ciudad: e.target.value })} disabled={!deptoEff} style={{ ...inputStyle, opacity: deptoEff ? 1 : 0.5 }}>
+                {verLectura ? <div className="ver-box">{selected.ciudad || '—'}</div> : <select value={selected.ciudad || ''} onChange={e => setSelected({ ...selected, ciudad: e.target.value })} disabled={!paisEff} style={{ ...inputStyle, opacity: paisEff ? 1 : 0.5 }}>
                   <option value="">{t("campo.seleccionar")}</option>
-                  {selected.ciudad && !ciudadesDepto.includes(selected.ciudad) && <option value={selected.ciudad}>{selected.ciudad}</option>}
-                  {ciudadesDepto.map(o => <option key={o} value={o}>{o}</option>)}
+                  {selected.ciudad && !ciudadesCat.includes(selected.ciudad) && <option value={selected.ciudad}>{selected.ciudad}</option>}
+                  {ciudadesCat.map(o => <option key={o} value={o}>{o}</option>)}
                 </select>}
               </div>
               <div>

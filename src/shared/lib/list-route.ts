@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { readList, writeList } from '@/shared/lib/kv-store'
+import { readList, writeList, readListSafe } from '@/shared/lib/kv-store'
 import { getSesion, sesionVeTodo } from '@/shared/lib/session'
 import { filtrarPorPais, puedeAccederRegistro } from '@/shared/lib/paises'
 
@@ -65,7 +65,15 @@ export function makeListHandlers(KV_KEY: string, options: ListOptions = {}) {
   async function POST(req: NextRequest) {
     try {
       const body = await req.json()
-      const current = await readList<WithId>(KV_KEY)
+      // SEGURIDAD DE DATOS: si el almacenamiento no respondió de forma confiable,
+      // ABORTAR la escritura (no sobrescribir datos buenos con un fallback vacío).
+      const { data: current, error: readErr } = await readListSafe<WithId>(KV_KEY)
+      if (readErr) {
+        return NextResponse.json(
+          { error: 'Almacenamiento no disponible. Intenta de nuevo en unos segundos.' },
+          { status: 503, headers: noStore },
+        )
+      }
       const sesion = scopePais ? getSesion(req) : null
       const veTodo = sesionVeTodo(sesion)
 
