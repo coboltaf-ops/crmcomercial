@@ -1,6 +1,6 @@
 # No mandar basura al build de Docker (más rápido y seguro)
 node_modules
-.next
+.next*
 .git
 .env*
 npm-debug.log*
