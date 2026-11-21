@@ -1,0 +1,42 @@
+# ─────────────────────────────────────────────────────────────
+# CRM Comercial + PostgreSQL — stack de una app, listo para el server de Abreu.
+# Pieza del ÁREA NortonLatam. Más adelante comparte red con OperCore/NominaCore.
+#
+# Uso:
+#   cp .env.docker.example .env.docker   # y edita las claves
+#   docker compose --env-file .env.docker up -d --build
+#
+# Los datos de Postgres viven en un volumen nombrado → NO se pierden al recrear.
+# ─────────────────────────────────────────────────────────────
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-crmcomercial}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?define POSTGRES_PASSWORD en .env.docker}
+      POSTGRES_DB: ${POSTGRES_DB:-crmcomercial}
+    volumes:
+      - crmcomercial_db:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-crmcomercial} -d ${POSTGRES_DB:-crmcomercial}"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  crmcomercial:
+    build:
+      context: .
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATA_BACKEND: postgres
+      DATABASE_URL: postgres://${POSTGRES_USER:-crmcomercial}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB:-crmcomercial}
+      PORT: "3000"
+    ports:
+      - "${CRMCOMERCIAL_PORT:-3000}:3000"
+
+volumes:
+  crmcomercial_db:
